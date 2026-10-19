@@ -1,0 +1,91 @@
+site_name: COMP3430 Operating Systems · Self-study guides
+site_description: Weekly self-study guides for COMP3430 (NNU, Fall 2026)
+site_url: https://REPLACE-ME.github.io/comp3430-guides/
+use_directory_urls: true
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  font:
+    text: Source Serif 4
+    code: JetBrains Mono
+
+extra_css:
+  - assets/extra.css
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: "¶"
+      toc_depth: 3
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - "Week 1 · Introduction: three easy pieces":
+      - Start here (Part 0): w01/index.md
+      - "Class 1 · What an OS is; a private CPU and a private memory (OSTEP 1, 2)": w01/class-1.md
+      - "Class 2 · Concurrency and persistence: a lost update, a write not yet on disk (OSTEP 2)": w01/class-2.md
+      - Exercises and answers: w01/review.md
+      - "Appendix A · Hexadecimal, and the marks of C": w01/appendix.md
+  - "Week 2 · The process: fork, exec, wait, and how the OS stays in control":
+      - Start here (Part 0): w02/index.md
+      - "Class 1 · What a process is, how one is made, how it runs a new program (OSTEP 4, 5)": w02/class-1.md
+      - "Class 2 · Limited direct execution: staying in control (OSTEP 6)": w02/class-2.md
+      - Exercises and answers: w02/review.md
+      - "Appendix A · Hex, sizes, time units, reading C": w02/appendix.md
+  - "Week 3 · Memory: the address space and the memory API":
+      - Start here (Part 0): w03/index.md
+      - "Class 1 · The address space, malloc and free (OSTEP 13, 14)": w03/class-1.md
+      - "Class 2 · Address translation: base and bounds (OSTEP 15)": w03/class-2.md
+      - Exercises and answers: w03/review.md
+      - "Appendix A · Binary, hex, powers of two, units": w03/appendix.md
+  - "Week 4 · Memory: chopping the address space into pieces":
+      - Start here (Part 0): w04/index.md
+      - "Class 1 · Segments, and the holes they leave behind (OSTEP 16, 17)": w04/class-1.md
+      - "Class 2 · Pages, and the TLB that makes them affordable (OSTEP 18, 19)": w04/class-2.md
+      - Exercises and answers: w04/review.md
+      - "Appendix A · Binary, hex, powers of two, bit operators": w04/appendix.md
+  - "Week 5 · Memory: smaller tables, and more memory than you have":
+      - Start here (Part 0): w05/index.md
+      - "Class 1 · Multi-level page tables (OSTEP 20)": w05/class-1.md
+      - "Class 2 · Swapping and page replacement (OSTEP 21, 22)": w05/class-2.md
+      - Exercises and answers: w05/review.md
+      - "Appendix A · Binary, hex, bit operators": w05/appendix.md
+  - "Week 6 · Scheduling: which process runs next, and for how long":
+      - Start here (Part 0): w06/index.md
+      - "Class 1 · FIFO, SJF, STCF, round robin (OSTEP 7)": w06/class-1.md
+      - "Class 2 · The multi-level feedback queue (OSTEP 8)": w06/class-2.md
+      - Exercises and answers: w06/review.md
+      - "Appendix A · The small arithmetic": w06/appendix.md

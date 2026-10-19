@@ -1,0 +1,32 @@
+/* COMP3430 self-study site: section labels, figures, reading width */
+:root {
+  --lbl-problem: #b23a48; --lbl-concept: #1f6f8b; --lbl-example: #5b7a2a;
+  --lbl-kernel: #6b4fa0; --lbl-machine: #a0632a; --lbl-check: #2a7a6b;
+  --lbl-roadmap: #555; --lbl-summary: #555; --lbl-deeper: #7a7a7a;
+}
+.lbl {
+  display: inline-block; font-size: 0.62em; font-weight: 600; letter-spacing: .03em;
+  text-transform: uppercase; color: #fff; border-radius: 4px; padding: .15em .5em;
+  margin-right: .4em; vertical-align: middle; line-height: 1.4;
+}
+.lbl-problem { background: var(--lbl-problem); }
+.lbl-concept { background: var(--lbl-concept); }
+.lbl-example { background: var(--lbl-example); }
+.lbl-kernel  { background: var(--lbl-kernel); }
+.lbl-machine { background: var(--lbl-machine); }
+.lbl-check   { background: var(--lbl-check); }
+.lbl-roadmap, .lbl-summary { background: var(--lbl-roadmap); }
+.lbl-deeper  { background: var(--lbl-deeper); }
+
+.md-typeset figure { margin: 1.2em auto; text-align: center; }
+.md-typeset figure img { max-width: 100%; height: auto; border: 1px solid rgba(0,0,0,.08); border-radius: 4px; }
+.md-typeset figcaption { font-size: .78rem; color: var(--md-default-fg-color--light); max-width: 48rem; margin: .5em auto 0; text-align: left; }
+[data-md-color-scheme="slate"] .md-typeset figure img { background: #fff; }
+
+.md-typeset { font-size: .82rem; line-height: 1.65; }
+.md-typeset h1 { font-size: 1.7em; line-height: 1.25; }
+.md-typeset h2 { font-size: 1.35em; margin-top: 2.2em; }
+.md-typeset h3 { font-size: 1.1em; margin-top: 1.8em; }
+.md-grid { max-width: 72rem; }
+.md-typeset strong { font-weight: 600; }
+.md-typeset .admonition.note, .md-typeset details.note { font-size: .74rem; }

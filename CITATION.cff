@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use these guides, please cite them as below."
+title: "COMP3430 Operating Systems: self-study guides"
+authors:
+  - family-names: Zhou
+    given-names: Annie
+    affiliation: Northwest Nazarene University
+year: 2026
+url: "https://<your-username>.github.io/comp3430-guides/"
+repository-code: "https://github.com/<your-username>/comp3430-guides"
+license: CC-BY-4.0
+type: dataset
