@@ -10,7 +10,7 @@ You are free to share and adapt this material for any purpose, including commerc
 
 Suggested credit line:
 
-> Annie Zhou, *COMP3430 Operating Systems: self-study guides*, Northwest Nazarene University, 2026. https://github.com/<your-username>/comp3430-guides. Licensed CC BY 4.0.
+> Annie Zhou, *COMP3430 Operating Systems: self-study guides*, Northwest Nazarene University, 2026. https://github.com/Annie983284450-1/SelfStudyWebsite. Licensed CC BY 4.0.
 
 Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
 
