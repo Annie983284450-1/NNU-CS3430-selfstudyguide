@@ -20,17 +20,32 @@ The bottom of Figure 5.1 is the five assumptions. Four are crossed out: same len
 What we have is STCF, which needs each job's remaining time, and round robin, which needs nothing and treats every job alike. On xv6 the policy is round robin with a slice of one tick, about 0.1 s.
 
 <figure markdown="1">
-![Figure 5.2. What the kernel sees when a job starts (left), and the xv6 capture xv6_resp.out (right).](figs/nolength.svg){width=100%}
-<figcaption markdown="1">Figure 5.2. What the kernel sees when a job starts (left), and the xv6 capture xv6_resp.out (right).</figcaption>
+![Figure 5.2. What the kernel sees when a job starts: a 20 ms keystroke handler and a 200 ms compile become the same RUNNABLE entry.](figs/nolength_left.svg){width=62%}
+<figcaption markdown="1">Figure 5.2. What the kernel sees when a job starts: a 20 ms keystroke handler and a 200 ms compile become the same RUNNABLE entry.</figcaption>
 </figure>
 
-Where it breaks: to the kernel, a 20 ms keystroke handler and a 200 ms compile look identical at the moment they start. Both become a RUNNABLE entry in the process array, the same entry, with no length written anywhere. The right side of Figure 5.2 shows what that costs on xv6. The program `resp` starts some number of children that compute without stopping, then sleeps for one tick, wakes up, and counts how many ticks passed before it actually ran again. With 0 computing processes it woke after 1 tick, which is the sleep itself. With 1, also 1. With 2, after 2 ticks. With 3, after 3. Each competitor beyond the first costs the sleeper one extra tick of waiting, a tenth of a second each (the next paragraph says why the first costs nothing), because round robin gives everyone a full slice in turn and has no way to know that the sleeper is the one somebody is waiting for.
+*The console capture `xv6_resp.out`, xv6 under QEMU with one CPU: the keystroke's wait, in ticks.*
+
+```text
+$ resp 0
+0 computing processes: slept 1 tick 20 times; woke after 1 ticks on average, 1 at worst
+$ resp 1
+1 computing processes: slept 1 tick 20 times; woke after 1 ticks on average, 1 at worst
+$ resp 2
+2 computing processes: slept 1 tick 20 times; woke after 2 ticks on average, 2 at worst
+$ resp 3
+3 computing processes: slept 1 tick 20 times; woke after 3 ticks on average, 3 at worst
+$
+```
+
+Where it breaks: to the kernel, a 20 ms keystroke handler and a 200 ms compile look identical at the moment they start. Both become a RUNNABLE entry in the process array, the same entry, with no length written anywhere. The capture under Figure 5.2 shows what that costs on xv6. The program `resp` starts some number of children that compute without stopping, then sleeps for one tick, wakes up, and counts how many ticks passed before it actually ran again. With 0 computing processes it woke after 1 tick, which is the sleep itself. With 1, also 1. With 2, after 2 ticks. With 3, after 3. Each competitor beyond the first costs the sleeper one extra tick of waiting, a tenth of a second each (the next paragraph says why the first costs nothing), because round robin gives everyone a full slice in turn and has no way to know that the sleeper is the one somebody is waiting for.
 
 The reason it is exactly one tick per competitor is this. A spinner is a job that never stops computing. When the sleeper goes to sleep, the scheduler loop continues from the sleeper's slot to the next one, which is the first spinner (the parent's slot comes before all its children's, because it was created first), and that spinner runs until the next tick. At that tick two things happen at once: the sleeper is woken, and the running spinner is stopped. The loop continues from the first spinner's slot, so every spinner after it runs a full tick before the loop wraps around to the sleeper. With one spinner there is nobody after it, so the sleeper runs at once; with two, one full tick passes; with three, two.
 
 So we need a scheduler that watches how a job behaves and uses the recent past to predict the future. Two kinds of job are worth telling apart. An **interactive job** works in short bursts and keeps stopping to wait, for a person or a device; response time matters to it. A **CPU-bound job** computes for a long time without waiting; turnaround matters to it, response does not. The scheduler cannot be told which is which, but it can notice: a job that keeps giving up the CPU early is probably interactive, a job that uses every slice it gets is probably CPU-bound; and it can change its mind when the evidence changes. The textbook's crux puts it this way: how can we design a scheduler that both minimizes response time for interactive jobs while also minimizing turnaround time without a priori knowledge of job length (a priori means in advance).
 
-What this part settled: the kernel cannot read lengths, but it can watch behavior. What it leaves open: a structure that lets it act on what it notices, which is next.
+- What this part settled: the kernel cannot read lengths, but it can watch behavior.
+- What it leaves open: a structure that lets it act on what it notices, which is next.
 
 ### 5.2 <span class="lbl lbl-concept">Concept</span> Priority queues: MLFQ Rules 1 and 2 {#sec-5-2 data-toc-label="5.2 [Concept] Priority queues: MLFQ Rules 1 and 2"}
 
@@ -43,28 +58,51 @@ The scheduler built here is the **multi-level feedback queue**, MLFQ: multi-leve
 
 Eight queues, Q8 at the top with the highest priority, Q1 at the bottom with the lowest. **Priority** is a job's rank, and here the rank is simply which queue the job sits on. A job that is ready to run sits on exactly one queue. In Figure 5.3, A and B are on Q8, C is on Q4, D is on Q1.
 
-The first two rules. Rule 1: if Priority(A) > Priority(B), A runs and B does not. Rule 2: if Priority(A) = Priority(B), A and B run in round robin. So the scheduler always runs from the highest queue that has a job on it, and shares that queue by taking turns.
+The first two rules:
+
+- Rule 1: if Priority(A) > Priority(B), A runs and B does not.
+- Rule 2: if Priority(A) = Priority(B), A and B run in round robin.
+
+So the scheduler always runs from the highest queue that has a job on it, and shares that queue by taking turns.
 
 With only these two rules the scheduler is terrible. In Figure 5.3, A and B share Q8 forever, and C and D never run at all. The two rules only say who runs now. Everything interesting is in how a job's priority changes over time, because that is where the kernel's guess from behavior lives: keep a job high if it keeps giving up the CPU, lower it if it hogs the CPU.
 
-What this part settled: the structure. What it leaves open: the rules that move a job between queues.
+- What this part settled: the structure.
+- What it leaves open: the rules that move a job between queues.
 
 ### 5.3 <span class="lbl lbl-concept">Concept</span> Changing priority with the allotment: Rules 3 and 4 {#sec-5-3 data-toc-label="5.3 [Concept] Changing priority with the allotment: Rules 3 and 4"}
 
-Three more rules, and these are the ones that learn. Rule 3: a job that enters the system goes on the topmost queue. Rule 4a: a job that uses up its **allotment** while running moves down one queue. Rule 4b: a job that gives up the CPU before its allotment is up stays where it is, and its allotment is reset; this is for jobs that stop to wait for a person, which must not be punished for waiting.
+Three more rules, and these are the ones that learn:
+
+- Rule 3: a job that enters the system goes on the topmost queue.
+- Rule 4a: a job that uses up its **allotment** while running moves down one queue.
+- Rule 4b: a job that gives up the CPU before its allotment is up stays where it is, and its allotment is reset; this is for jobs that stop to wait for a person, which must not be punished for waiting.
 
 The allotment is the amount of CPU time a job may spend at one priority level before it is moved down. For now it equals one time slice, and the slice is 10 ms in every trace until [Section 7.1](#sec-7-1).
 
 Put the three rules together and you get the guess. Every new job is assumed to be short, so it starts at the top. If it really is short, it finishes near the top. If it is not, it proves that by using its allotment, slice after slice, and sinks to where the long jobs live.
 
 <figure markdown="1">
-![Figure 5.4. OSTEP Figure 8.2 drawn from a real run of the official simulator: one 200 ms job, three queues, 10 ms slices; below it, the lines of the trace where the job changes queue.](figs/longjob.svg){width=70%}
-<figcaption markdown="1">Figure 5.4. OSTEP Figure 8.2 drawn from a real run of the official simulator: one 200 ms job, three queues, 10 ms slices; below it, the lines of the trace where the job changes queue.</figcaption>
+![Figure 5.4. OSTEP Figure 8.2 drawn from a real run of the official simulator: one 200 ms job, three queues, 10 ms slices.](figs/longjob.svg){width=70%}
+<figcaption markdown="1">Figure 5.4. OSTEP Figure 8.2 drawn from a real run of the official simulator: one 200 ms job, three queues, 10 ms slices.</figcaption>
 </figure>
 
-Every queue picture in this class comes from a small program, `mlfq.py`, that the textbook authors publish with chapter 8 (the guide calls it the simulator). You give it jobs and rules, and it prints, millisecond by millisecond, which job ran on which queue. Figure 5.4 is its output for one 200 ms job. The simulator numbers its queues from 0, so with three queues the top one is Q2 and the bottom one is Q0 (OSTEP Figure 8.1 counted from 1). The job enters on Q2 by Rule 3. After one slice of 10 ms it has used its allotment, so Rule 4a drops it to Q1. After one more slice it drops to Q0, and it stays there for the remaining 180 ms. The three lines under the strip are the lines of the trace where the job changes queue: at time 0 it runs at priority 2, at time 10 at priority 1, at time 20 at priority 0. Check this: 200 − 10 − 10 = 180 ms on Q0.
+*From the trace `ex1_longjob.txt`: the command, the lines where the job changes queue, and the last line.*
 
-What this part settled: priority comes from behavior, and a long job sinks. What it leaves open: whether a short job and a waiting job really win, which the next two traces show.
+```text
+$ python3 mlfq.py -n 3 -q 10 -l 0,200,0 -c
+...
+[ time 0 ] Run JOB 0 at PRIORITY 2 [ TICKS 9 ALLOT 1 TIME 199 (of 200) ]
+[ time 10 ] Run JOB 0 at PRIORITY 1 [ TICKS 9 ALLOT 1 TIME 189 (of 200) ]
+[ time 20 ] Run JOB 0 at PRIORITY 0 [ TICKS 9 ALLOT 1 TIME 179 (of 200) ]
+...
+  Job  0: startTime   0 - response   0 - turnaround 200
+```
+
+Every queue picture in this class comes from a small program, `mlfq.py`, that the textbook authors publish with chapter 8 (the guide calls it the simulator). You give it jobs and rules, and it prints, millisecond by millisecond, which job ran on which queue. Figure 5.4 is its output for one 200 ms job. The simulator numbers its queues from 0, so with three queues the top one is Q2 and the bottom one is Q0 (OSTEP Figure 8.1 counted from 1). The job enters on Q2 by Rule 3. After one slice of 10 ms it has used its allotment, so Rule 4a drops it to Q1. After one more slice it drops to Q0, and it stays there for the remaining 180 ms. The three `Run JOB` lines in the capture are the lines of the trace where the job changes queue: at time 0 it runs at priority 2, at time 10 at priority 1, at time 20 at priority 0. Check this: 200 − 10 − 10 = 180 ms on Q0.
+
+- What this part settled: priority comes from behavior, and a long job sinks.
+- What it leaves open: whether a short job and a waiting job really win, which the next two traces show.
 
 ### 5.4 <span class="lbl lbl-example">Worked example</span> A short job and an I/O-bound job under MLFQ {#sec-5-4 data-toc-label="5.4 [Worked example] A short job and an I/O-bound job under MLFQ"}
 
@@ -109,7 +147,11 @@ int main(int argc, char **argv) {
 }
 ```
 
-What it does: 200 times, it asks to sleep for 10 ms, and when it wakes up it measures how late it got the CPU back; then it does a little work, like a program redrawing a window, and sleeps again. Line 18 is the sleep, `nanosleep`, the same request as in [Section 4.1](class-1.md#sec-4-1). Line 19 is the measurement: the time that actually passed minus the 10 ms asked for; that difference is how long the kernel made the process wait for the CPU after it was ready (lines 20 and 21 keep the worst and the total). Lines 22 and 23 are the little work.
+What it does: 200 times, it asks to sleep for 10 ms, and when it wakes up it measures how late it got the CPU back; then it does a little work, like a program redrawing a window, and sleeps again. 
+
+- Line 18 is the sleep, `nanosleep`, the same request as in [Section 4.1](class-1.md#sec-4-1).
+- Line 19 is the measurement: the time that actually passed minus the 10 ms asked for; that difference is how long the kernel made the process wait for the CPU after it was ready (lines 20 and 21 keep the worst and the total).
+- Lines 22 and 23 are the little work.
 
 *The capture `latency.out`: alone, beside one spinner, beside three. Ubuntu 24.04 x86-64, Linux 6.18.*
 
@@ -153,15 +195,26 @@ Where it breaks: A is a 200 ms job and by time 100 it has sunk to Q0. At 100, B 
 So we need a way back up: every so often, forgive everyone and move every job in the system to the top queue. That is Rule 5, the **priority boost**: after some time period S, move all the jobs in the system to the topmost queue.
 
 <figure markdown="1">
-![Figure 6.2. OSTEP Figure 8.4 right, as the trace: the same three jobs with a boost every 100 ms, and the trace's last lines.](figs/boost.svg){width=78%}
-<figcaption markdown="1">Figure 6.2. OSTEP Figure 8.4 right, as the trace: the same three jobs with a boost every 100 ms, and the trace's last lines.</figcaption>
+![Figure 6.2. OSTEP Figure 8.4 right, as the trace: the same three jobs with a boost every 100 ms.](figs/boost.svg){width=78%}
+<figcaption markdown="1">Figure 6.2. OSTEP Figure 8.4 right, as the trace: the same three jobs with a boost every 100 ms.</figcaption>
 </figure>
+
+*From the trace `ex4_boost.txt`: the command (`-B 100` is the boost) and the last lines.*
+
+```text
+$ python3 mlfq.py -n 3 -q 10 -l 0,200,0:100,50,1:100,50,1 -i 1 -S -B 100 -c
+...
+  Job  0: startTime   0 - response   0 - turnaround 300
+  Job  1: startTime 100 - response  10 - turnaround 119
+  Job  2: startTime 100 - response  11 - turnaround 120
+```
 
 At 100 and again at 200, every job is lifted to Q2. A runs a full 10 ms slice at the top each time, then sinks again, but it makes progress: no more starvation. The last lines show the price: B and C now wait 10 ms before their first run (response 10 and 11), because A had the top for one slice. The boost solves both failures: no job starves, because at the top queue it shares the CPU by round robin and gets served; and a CPU-bound job that has turned interactive is treated properly as soon as the next boost lifts it, since from then on it keeps its level by giving up the CPU early.
 
 The obvious question is what S should be. Set it too high and long jobs still starve for a long stretch; too low and the interactive jobs keep losing the top to the long ones. There is no formula. John Ousterhout, a well-known systems researcher, called values like this **voo-doo constants**, because setting them right seems to need black magic; the tip named after him, Ousterhout's law, says to avoid them where you can and to expect a configuration file full of them where you cannot. In the trace S is 100 ms, far too small for a real system; it was chosen so the picture fits.
 
-What this part settled: a periodic boost stops starvation and rescues jobs that changed. What it leaves open: Rule 4b still has a hole that a program can exploit on purpose.
+- What this part settled: a periodic boost stops starvation and rescues jobs that changed.
+- What it leaves open: Rule 4b still has a hole that a program can exploit on purpose.
 
 ### 6.2 <span class="lbl lbl-problem">Problem</span> Gaming the scheduler, and better accounting: the new Rule 4 {#sec-6-2 data-toc-label="6.2 [Problem] Gaming the scheduler, and better accounting: the new Rule 4"}
 
@@ -177,9 +230,18 @@ Where it breaks: a program can trigger the rule on purpose. In the trace, B comp
 So we need accounting that remembers. Count the allotment across all of a job's bursts at a level, however many times it gave up the CPU in between; when the total is used up, the job drops, whatever shape its work had. Rules 4a and 4b become one Rule 4: once a job uses up its time allotment at a given level, regardless of how many times it has given up the CPU, its priority is reduced and it moves down one queue.
 
 <figure markdown="1">
-![Figure 6.4. OSTEP Figure 8.5 right, as the trace: the same A and B under the new Rule 4, and the last lines.](figs/rule4.svg){width=78%}
-<figcaption markdown="1">Figure 6.4. OSTEP Figure 8.5 right, as the trace: the same A and B under the new Rule 4, and the last lines.</figcaption>
+![Figure 6.4. OSTEP Figure 8.5 right, as the trace: the same A and B under the new Rule 4.](figs/rule4.svg){width=78%}
+<figcaption markdown="1">Figure 6.4. OSTEP Figure 8.5 right, as the trace: the same A and B under the new Rule 4.</figcaption>
 </figure>
+
+*From the trace `ex5_accounting.txt` (without `-S` the simulator uses the new Rule 4): the command and the last lines.*
+
+```text
+$ python3 mlfq.py -n 3 -q 10 -l 0,200,0:0,200,9 -i 1 -c
+...
+  Job  0: startTime   0 - response   0 - turnaround 308
+  Job  1: startTime   0 - response  10 - turnaround 410
+```
 
 The scheduler keeps a running total of CPU time per job per level. B's 9 ms bursts add up, so after 10 ms at Q2, B drops to Q1 just as A did, then to Q0. From then on A and B share the bottom queue by round robin, with B's 1 ms gaps as the only difference. A finishes at 308 instead of 400; B at 410 instead of 232. The honest job got its share back. And the interactive job is still fine: a job that computes 1 ms and then waits uses its 10 ms allotment only after 10 bursts, and the next boost lifts it again; short bursts still live near the top, and only a job that is a long job in disguise sinks.
 
@@ -205,9 +267,18 @@ Where it breaks: a 10 ms slice on the bottom queue makes two CPU-bound jobs trad
 So we need three things: longer slices on the lower queues, where the long jobs live; a table an administrator can tune, instead of constants in the code; and a way for a user to give the kernel advice about a job, since the kernel's guess from behavior is only a guess.
 
 <figure markdown="1">
-![Figure 7.2. OSTEP Figure 8.6 as the trace: two jobs, slices 10 ms on Q2, 20 ms on Q1, 40 ms on Q0; and the trace's last lines.](figs/quanta.svg){width=78%}
-<figcaption markdown="1">Figure 7.2. OSTEP Figure 8.6 as the trace: two jobs, slices 10 ms on Q2, 20 ms on Q1, 40 ms on Q0; and the trace's last lines.</figcaption>
+![Figure 7.2. OSTEP Figure 8.6 as the trace: two jobs, slices 10 ms on Q2, 20 ms on Q1, 40 ms on Q0.](figs/quanta.svg){width=78%}
+<figcaption markdown="1">Figure 7.2. OSTEP Figure 8.6 as the trace: two jobs, slices 10 ms on Q2, 20 ms on Q1, 40 ms on Q0.</figcaption>
 </figure>
+
+*From the trace `ex6_quanta.txt` (`-Q` gives a slice per queue): the command and the last lines.*
+
+```text
+$ python3 mlfq.py -Q 10,20,40 -l 0,140,0:0,140,0 -c
+...
+  Job  0: startTime   0 - response   0 - turnaround 250
+  Job  1: startTime   0 - response  10 - turnaround 280
+```
 
 At the top the two jobs alternate every 10 ms, which is what interactive jobs would need. On Q0 they alternate every 40 ms: fewer switches, and nobody is waiting for them anyway. High queues get short slices, low queues long ones; in real systems the bottom slices are hundreds of milliseconds.
 
@@ -251,7 +322,12 @@ SCHED_IDLE min/max priority	: 0/0
 SCHED_DEADLINE min/max priority	: 0/0
 ```
 
-The program is simple. Lines 19 and 20 compute for 3 s of wall-clock time, whatever the scheduler gives us. Lines 21 and 22 report how much CPU time we actually got in those 3 s. Two copies run on core 0 at the same time, one started with `nice -n 0` and one with `nice -n 10`. The nice 0 copy got 2.71 s of CPU in 3 s, which is 2.71 / 3.00 = 0.903, 90%. The nice 10 copy got 0.29 s, which is 0.29 / 3.00 = 0.097, 10%.
+The program is simple.
+
+- Lines 19 and 20 compute for 3 s of wall-clock time, whatever the scheduler gives us.
+- Lines 21 and 22 report how much CPU time we actually got in those 3 s.
+
+Two copies run on core 0 at the same time, one started with `nice -n 0` and one with `nice -n 10`. The nice 0 copy got 2.71 s of CPU in 3 s, which is 2.71 / 3.00 = 0.903, 90%. The nice 10 copy got 0.29 s, which is 0.29 / 3.00 = 0.097, 10%.
 
 *Linux v6.18, `kernel/sched/core.c`: nice becomes a weight (five rows of the 40-entry table; the whole table is in `W06_demos/linux_sched_prio_to_weight.txt`).*
 
@@ -281,7 +357,16 @@ The five rules in one line: higher priority runs; equal priority shares by round
 
 #### The week in ten sentences
 
-The scheduler is a policy, not machinery: the timer and the context switch let the kernel run anyone, and the policy says whom. Turnaround time (finish minus arrival) measures work; response time (first run minus arrival) measures what a person feels. FIFO convoys short jobs behind a long one. Shortest first (SJF, and STCF with preemption) is best for turnaround but needs the job lengths and makes long jobs wait. Round robin runs a slice of each job in turn and is best for response but worst for turnaround; the slice is a trade-off against the cost of a switch, about 1.5 µs measured plus the hidden cache cost. A job that waits is split into bursts, and the CPU runs someone else in the gap. No real kernel knows job lengths, so MLFQ guesses from behavior: start every job at the top and let the long ones sink. Priority that only goes down starves, so boost everyone every S; priority that resets on every wait can be gamed, so count the allotment across bursts. The numbers come from tables and advice; Linux turns nice into weights. xv6 is plain round robin with a one-tick slice; Linux's default scheduler is neither round robin nor MLFQ but reaches the same goals by keeping an account of who is owed time.
+- The scheduler is a policy, not machinery: the timer and the context switch let the kernel run anyone, and the policy says whom.
+- Turnaround time (finish minus arrival) measures work; response time (first run minus arrival) measures what a person feels.
+- FIFO convoys short jobs behind a long one.
+- Shortest first (SJF, and STCF with preemption) is best for turnaround but needs the job lengths and makes long jobs wait.
+- Round robin runs a slice of each job in turn and is best for response but worst for turnaround; the slice is a trade-off against the cost of a switch, about 1.5 µs measured plus the hidden cache cost.
+- A job that waits is split into bursts, and the CPU runs someone else in the gap.
+- No real kernel knows job lengths, so MLFQ guesses from behavior: start every job at the top and let the long ones sink.
+- Priority that only goes down starves, so boost everyone every S; priority that resets on every wait can be gamed, so count the allotment across bursts.
+- The numbers come from tables and advice; Linux turns nice into weights.
+- xv6 is plain round robin with a one-tick slice; Linux's default scheduler is neither round robin nor MLFQ but reaches the same goals by keeping an account of who is owed time.
 
 ## Going deeper (optional) {#extras-2}
 

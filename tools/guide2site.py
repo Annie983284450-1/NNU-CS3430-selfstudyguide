@@ -57,7 +57,7 @@ def read_front_matter(lines):
         while i < len(lines) and lines[i].strip() != "---":
             m = re.match(r'^(\w+):\s*"?(.*?)"?\s*$', lines[i])
             if m:
-                meta[m.group(1)] = m.group(2)
+                meta[m.group(1)] = m.group(2).replace('\\"', '"')
             i += 1
         return meta, lines[i + 1:]
     return meta, lines
@@ -131,12 +131,16 @@ def ref_target(kind, num, ids):
         hid = f"chapter-{num}"
     elif kind == "Appendix":
         hid = f"appendix-{num.lower()}"
+    elif kind == "Answer":
+        hid = "answers"
+    elif kind == "Exercise":
+        hid = "exercises"
     else:
         return None
     return hid if hid in ids else None
 
 
-PROSE_REF = re.compile(r"\b(Section|Extra|Chapter|Appendix) ([0-9]+(?:\.[0-9]+)?|[A-Z])\b(?![^\[]*\]\()")
+PROSE_REF = re.compile(r"\b(Section|Extra|Chapter|Appendix|Answer|Exercise) ([0-9]+(?:\.[0-9]+)?|[A-Z])\b(?![^\[]*\]\()")
 
 
 def link_prose_refs(text, ids, this_page):
@@ -157,6 +161,9 @@ def link_prose_refs(text, ids, this_page):
             page = ids[hid]
             href = f"#{hid}" if page == this_page else f"{page}#{hid}"
             return f"[{m.group(0)}]({href})"
+        if "appendix-a-operators" in ids:
+            part = re.sub(r"\bAppendix A, the four bit operators\b(?![^\[]*\]\()",
+                          lambda m: "[%s](%s#appendix-a-operators)" % (m.group(0), "" if ids["appendix-a-operators"] == this_page else ids["appendix-a-operators"]), part)
         part = PROSE_REF.sub(repl, part)
 
         def repl_list(m):
@@ -337,8 +344,70 @@ def convert_page(key, title, lines, ids, meta, week, legend):
     return "\n".join(cleaned).rstrip() + "\n"
 
 
+def convert_qa(qa_path, qa_figs, ids, outdir):
+    """A standalone Q&A document (W04_Paging_QA.md) becomes qa.md: its Contents block is dropped, the recap
+    blockquotes become admonitions, figures are numbered Q.n and wrapped like the guide's, and every
+    "Section 4.3", "Extra 13", "Answer 13", "Appendix A, the four bit operators" becomes a link into the
+    week's pages. The master's own `## Q&A` section is then left off the review page (see convert_page)."""
+    lines = qa_path.read_text(encoding="utf-8").splitlines()
+    meta, body = read_front_matter(lines)
+    (outdir / "qa_figs").mkdir(exist_ok=True)
+    for f in qa_figs.iterdir():
+        if f.is_file():
+            shutil.copy2(f, outdir / "qa_figs" / f.name)
+    this_page = "qa.md"
+    out = [f"# {meta.get('title', 'Q&A')}", ""]
+    if meta.get("subtitle"):
+        out += [f"*{meta['subtitle']}*", ""]
+    # the Contents list carries a short title per question: keep it as the table-of-contents label
+    short = dict(re.findall(r"\[(Q\d+\. [^\]]*)\]\(#(q\d+)\)", "\n".join(body)))
+    short = {hid: title for title, hid in short.items()}
+    skipping = False
+    for line in body:
+        m = HEADING.match(line)
+        if m and m.group(1) == "##" and m.group(2).startswith("Contents"):
+            skipping = True
+            continue
+        if skipping:
+            if m and m.group(1) == "##":
+                skipping = False
+            else:
+                continue
+        if m:
+            if m.group(4) in short:
+                label = short[m.group(4)].replace('"', "'")
+                line = f'{m.group(1)} {m.group(2)} {{#{m.group(4)} data-toc-label="{label}"}}'
+            out.append(line)
+            continue
+        if line.startswith("> **Recap.**"):
+            out.append('!!! abstract "Recap"')
+            out.append("")
+            out.append("    " + line[len("> **Recap.** "):])
+            continue
+        im = IMAGE.match(line)
+        if im:
+            cap = re.sub(r"^Figure (\d+)\. ", r"Figure Q.\1. ", im.group("cap"))
+            src = "qa_figs/" + Path(im.group("src")).name
+            attr = im.group("attr") or ""
+            out.append('<figure markdown="1">')
+            out.append(f"![{cap}]({src}){attr}")
+            out.append('<figcaption markdown="1">' + link_prose_refs(cap, ids, this_page) + "</figcaption>")
+            out.append("</figure>")
+            continue
+        text = re.sub(r"\bFigure (\d+)(?!\d)(?!\.\d)", r"Figure Q.\1", line)
+        out.append(link_prose_refs(rewrite_anchor_links(text, ids, this_page), ids, this_page))
+    cleaned = []
+    for l in out:
+        if l.strip() == "" and cleaned and cleaned[-1].strip() == "":
+            continue
+        cleaned.append(l)
+    (outdir / "qa.md").write_text("\n".join(cleaned).rstrip() + "\n", encoding="utf-8")
+    print(f"qa.md from {qa_path.name}: {sum(1 for _ in (outdir / 'qa_figs').iterdir())} figures")
+
+
 def main():
     week, md_path, figs_path = sys.argv[1], Path(sys.argv[2]), Path(sys.argv[3])
+    qa = (Path(sys.argv[5]), Path(sys.argv[6])) if len(sys.argv) > 6 and sys.argv[4] == "--qa" else None
     wk = week.lower()
     lines = md_path.read_text(encoding="utf-8").splitlines()
     meta, body = read_front_matter(lines)
@@ -354,10 +423,28 @@ def main():
             shutil.copy2(f, outdir / "figs" / f.name)
 
     for key, title, plines in pages:
+        if qa and key == "review":
+            plines = drop_block(plines, "student-questions")
         text = convert_page(key, title, plines, ids, meta, week, None)
         (outdir / f"{key}.md").write_text(text, encoding="utf-8")
         print(f"{wk}/{key}.md  {len(plines)} lines  ({title or meta.get('title')})")
     print(f"{len(ids)} anchors, {sum(1 for _ in (outdir / 'figs').iterdir())} figures")
+    if qa:
+        convert_qa(qa[0], qa[1], ids, outdir)
+
+
+def drop_block(plines, hid):
+    """Remove one `## ... {#hid}` block (up to the next `## ` heading) from a page's lines."""
+    out, skipping, in_fence = [], False, False
+    for line in plines:
+        if line.startswith("```"):
+            in_fence = not in_fence
+        m = HEADING.match(line) if not in_fence else None
+        if m and m.group(1) == "##":
+            skipping = (m.group(4) == hid)
+        if not skipping:
+            out.append(line)
+    return out
 
 
 if __name__ == "__main__":

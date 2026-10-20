@@ -83,7 +83,8 @@ nav:
       - Start here: w04/index.md
       - "Class 1 · Segments and holes": w04/class-1.md
       - "Class 2 · Pages and the TLB": w04/class-2.md
-      - "Exercises, answers, Q&A": w04/review.md
+      - Exercises and answers: w04/review.md
+      - "Q&A · Paging and the TLB": w04/qa.md
       - "Appendix A · Bits and hex": w04/appendix.md
   - "Week 5 · Tables and swapping":
       - Start here: w05/index.md

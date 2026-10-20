@@ -19,7 +19,8 @@ Count the average finishing time in each order. Backup first: (100 + 110 + 120) 
 
 So we need two things. We need simplifying assumptions about the jobs, so the problem is small enough to think about, and we need one number to compare orders by. A rule for choosing is called a **scheduling policy**; the set of jobs it faces, described by what they need and when they arrive, is the **workload**. The plan for the whole first class is then to drop the assumptions one at a time and fix whatever breaks. The textbook puts the question this way, as the crux of its chapter: how should we develop a basic framework for thinking about scheduling policies, what are the key assumptions, what metrics are important (a metric is a number used to measure something), and what basic approaches have been used in the earliest of computer systems.
 
-What this part settled: the choice matters by a factor of two. What it leaves open: the yardstick itself, which the next part supplies.
+- What this part settled: the choice matters by a factor of two.
+- What it leaves open: the yardstick itself, which the next part supplies.
 
 ### 1.2 <span class="lbl lbl-concept">Concept</span> The workload assumptions, and turnaround time {#sec-1-2 data-toc-label="1.2 [Concept] The workload assumptions, and turnaround time"}
 
@@ -30,7 +31,15 @@ The yardstick comes in two halves: a simplified workload, and a number.
 <figcaption markdown="1">Figure 1.2. The five assumptions, with the question that drops each one.</figcaption>
 </figure>
 
-Start with a workload so simple that every policy is easy to judge. Assume that (1) every job runs for the same amount of time, (2) all jobs arrive at the same time, (3) once started, a job runs to completion, (4) jobs only use the CPU and never wait for anything, and (5) the run time of each job is known in advance. Figure 1.2 says when each assumption goes: 1 in this block of parts, 2 and 3 in the next, 4 in the last block of the first class, and 5 only in the second class. Assumption 5 is the least realistic: no real operating system knows how long a job will run. The first class keeps it because it makes the best rules easy to see.
+Start with a workload so simple that every policy is easy to judge. Assume that:
+
+1. every job runs for the same amount of time,
+2. all jobs arrive at the same time,
+3. once started, a job runs to completion,
+4. jobs only use the CPU and never wait for anything, and
+5. the run time of each job is known in advance.
+
+Figure 1.2 says when each assumption goes: 1 in this block of parts, 2 and 3 in the next, 4 in the last block of the first class, and 5 only in the second class. Assumption 5 is the least realistic: no real operating system knows how long a job will run. The first class keeps it because it makes the best rules easy to see.
 
 <figure markdown="1">
 ![Figure 1.3. The one number for the first class, and a note that it is only one kind of number.](figs/metric.svg){width=72%}
@@ -41,7 +50,8 @@ The number is **turnaround time**: the moment a job finishes minus the moment it
 
 Turnaround time is a **performance** metric: it measures how fast work gets done. There is another kind of metric, **fairness**, which asks whether every job gets a reasonable share of the CPU. The two often pull in opposite directions, because the fastest way to finish work is sometimes to keep a few jobs waiting. The first class measures performance; fairness comes back on its own with round robin in [Section 3.2](#sec-3-2).
 
-What this part settled: a workload and one number. What it leaves open: a rule to try the number on. The simplest one is next.
+- What this part settled: a workload and one number.
+- What it leaves open: a rule to try the number on. The simplest one is next.
 
 ### 1.3 <span class="lbl lbl-concept">Concept</span> FIFO scheduling, and the convoy effect {#sec-1-3 data-toc-label="1.3 [Concept] FIFO scheduling, and the convoy effect"}
 
@@ -101,7 +111,14 @@ int main(int argc, char **argv) {
 }
 ```
 
-You do not need to follow every line of the program. Here is what it does: you give it a letter, a number of milliseconds, and a shared start time; it prints the moment it first runs, computes until it has used that many milliseconds of CPU, and prints the moment it finished. Lines 8 to 15 are two helpers: `wall()` (line 8) gives the time on the wall clock, and `cpu()` (line 12) gives how much CPU time this process has used so far, which is less than wall time whenever the process is waiting for its turn. Line 21 prints the first-run line. Lines 23 and 24 are the loop that keeps adding numbers until the CPU time reaches the target; the word `volatile` on line 22 tells the compiler (the program that turns C into machine instructions) that `x`, the variable the loop keeps adding to, matters, so it cannot delete the loop as useless work. Line 25 prints the finish line. In the capture, the command `taskset -c 0` in front of each job pins it to core 0 (a core is one CPU; the Ubuntu machine has several, numbered from 0), so all the jobs compete for one CPU, which is the one-CPU world of this week.
+You do not need to follow every line of the program. Here is what it does: you give it a letter, a number of milliseconds, and a shared start time; it prints the moment it first runs, computes until it has used that many milliseconds of CPU, and prints the moment it finished. 
+
+- Lines 8 to 15 are two helpers: `wall()` (line 8) gives the time on the wall clock, and `cpu()` (line 12) gives how much CPU time this process has used so far, which is less than wall time whenever the process is waiting for its turn.
+- Line 21 prints the first-run line.
+- Lines 23 and 24 are the loop that keeps adding numbers until the CPU time reaches the target; the word `volatile` on line 22 tells the compiler (the program that turns C into machine instructions) that `x`, the variable the loop keeps adding to, matters, so it cannot delete the loop as useless work.
+- Line 25 prints the finish line.
+
+In the capture, the command `taskset -c 0` in front of each job pins it to core 0 (a core is one CPU; the Ubuntu machine has several, numbered from 0), so all the jobs compete for one CPU, which is the one-CPU world of this week.
 
 *The capture `batch_fifo.out`, Ubuntu 24.04 x86-64, Linux 6.18.*
 
@@ -123,7 +140,11 @@ C finished at 1.205 s
 
 The shell runs A with 1000 ms, then B with 100, then C with 100, one after another. Read the capture: A finished at 1.005 s. B first ran at 1.007 s and finished at 1.105 s. C finished at 1.205 s. B and C each did 0.1 s of work and waited a full second for it. Average turnaround: (1.005 + 1.105 + 1.205) / 3 = 3.315 / 3 = 1.105 s, about 1.1. Check this: 1.005 + 1.105 is 2.110, plus 1.205 is 3.315, and 3.315 / 3 is 1.105. The convoy is real. The next part runs the same three jobs B, C, A and the average falls to 0.5.
 
-**Checkpoint 1.** Settled: we judge a schedule by one number, the average turnaround time (finish minus arrival); the simplest rule, FIFO, is fine when jobs are alike and convoys when one long job gets in front, 110 s against 50 in the drawing and 1.1 s against 0.5 on the Ubuntu machine. Still open: the order matters by a factor of two, so which order is best, and does it stay best when jobs arrive at different times? You should now be able to compute the average turnaround time of a three-job schedule from its timeline, and say what the convoy effect is.
+**Checkpoint 1.**
+
+- Settled: we judge a schedule by one number, the average turnaround time (finish minus arrival); the simplest rule, FIFO, is fine when jobs are alike and convoys when one long job gets in front, 110 s against 50 in the drawing and 1.1 s against 0.5 on the Ubuntu machine.
+- Still open: the order matters by a factor of two, so which order is best, and does it stay best when jobs arrive at different times?
+- You should now be able to compute the average turnaround time of a three-job schedule from its timeline, and say what the convoy effect is.
 
 ## Chapter 2. Shortest job first, and preemption {#chapter-2}
 
@@ -142,7 +163,8 @@ B runs from 0 to 10, C from 10 to 20, and A, the 100 s job, from 20 to 120. Turn
 
 The capture at the bottom of Figure 2.1 is the same three processes on the Ubuntu machine, now run B, C, A: B finished at 0.103 s, C at 0.203, A at 1.204. Average (0.103 + 0.203 + 1.204) / 3 = 1.510 / 3 = 0.503 s, about 0.5, against 1.105 in arrival order. The same factor of two as the drawing. Stores apply the principle too: an express line for people with few items keeps the average wait down.
 
-What this part settled: with everyone present at time 0, shortest first is the best order. What it leaves open: assumption 2, that everyone is present at time 0, which the next part drops.
+- What this part settled: with everyone present at time 0, shortest first is the best order.
+- What it leaves open: assumption 2, that everyone is present at time 0, which the next part drops.
 
 ### 2.2 <span class="lbl lbl-concept">Concept</span> Preemption, and Shortest Time-to-Completion First (STCF) {#sec-2-2 data-toc-label="2.2 [Concept] Preemption, and Shortest Time-to-Completion First (STCF)"}
 
@@ -170,7 +192,11 @@ A starts at 0. At 10, B and C arrive, and now three jobs are in the system: A wi
 
 A word of history. The old batch systems were non-preemptive: a job ran to the end before anything else was considered. Virtually every modern scheduler is preemptive and will stop one process to run another, using exactly the context switch of the processes week.
 
-**Checkpoint 2.** Settled: when job lengths are known, shortest first is best for turnaround, as SJF when everyone arrives together and as STCF (shortest remaining time, with preemption) when jobs arrive whenever they like; both give the three-job example an average of 50 s against FIFO's 110. Still open: every job so far is judged by when it ends, and a person typing at a terminal (the screen and keyboard through which a person talks to the computer) does not care when the 100 s job ends. You should now be able to draw the STCF timeline for three jobs with different arrival times and compute its average turnaround, including the subtraction of the arrival time.
+**Checkpoint 2.**
+
+- Settled: when job lengths are known, shortest first is best for turnaround, as SJF when everyone arrives together and as STCF (shortest remaining time, with preemption) when jobs arrive whenever they like; both give the three-job example an average of 50 s against FIFO's 110.
+- Still open: every job so far is judged by when it ends, and a person typing at a terminal (the screen and keyboard through which a person talks to the computer) does not care when the 100 s job ends.
+- You should now be able to draw the STCF timeline for three jobs with different arrival times and compute its average turnaround, including the subtraction of the arrival time.
 
 ## Chapter 3. Response time, and round robin {#chapter-3}
 
@@ -191,7 +217,8 @@ A waited 0 before starting, B waited 5, C waited 10: average (0 + 5 + 10) / 3 = 
 
 So we need a second number. **Response time** is the moment a job first runs minus the moment it arrived: T_response = T_firstrun − T_arrival. For the three jobs here that is 0, 5 and 10, average 5. The definition is the best case, as if the job answered the instant it first ran. And we need a rule that gets every job started quickly, even if nothing finishes early.
 
-What this part settled: a second number, and why turnaround could not see the typing user. What it leaves open: the rule, which is next.
+- What this part settled: a second number, and why turnaround could not see the typing user.
+- What it leaves open: the rule, which is next.
 
 ### 3.2 <span class="lbl lbl-concept">Concept</span> Round robin (RR) {#sec-3-2 data-toc-label="3.2 [Concept] Round robin (RR)"}
 
@@ -202,11 +229,18 @@ The rule that gets everyone started is **round robin** (RR): run a job for a **t
 <figcaption markdown="1">Figure 3.2. OSTEP Figures 7.6 and 7.7 on the same three 5 s jobs, and the table of both metrics.</figcaption>
 </figure>
 
-The top timeline is shortest first: A, then B, then C, whole. The bottom one is round robin with a 1 s slice: A for 1 s, then B, then C, then A again, and so on around, five rounds in all. Read the table. Under round robin, A first runs at 0, B at 1, C at 2: average response (0 + 1 + 2) / 3 = 1 s, instead of 5. That is the win. Now the other column: A finishes at 13, B at 14, C at 15, so average turnaround (13 + 14 + 15) / 3 = 42 / 3 = 14. Under shortest first the same jobs finished at 5, 10 and 15, average (5 + 10 + 15) / 3 = 30 / 3 = 10; and because the three jobs are equal, FIFO gives the same 10. So round robin is worse than FIFO here. Round robin stretches every job out to the end, because it only ever runs a short bit of each one. Check this: five rounds of three 1 s slices is 15 s; A's fifth slice is the thirteenth slice overall, so A ends at 13.
+The top timeline is shortest first: A, then B, then C, whole. The bottom one is round robin with a 1 s slice: A for 1 s, then B, then C, then A again, and so on around, five rounds in all. Read the table.
+
+- Under round robin, A first runs at 0, B at 1, C at 2: average response (0 + 1 + 2) / 3 = 1 s, instead of 5. That is the win.
+- Now the other column: A finishes at 13, B at 14, C at 15, so average turnaround (13 + 14 + 15) / 3 = 42 / 3 = 14.
+- Under shortest first the same jobs finished at 5, 10 and 15, average (5 + 10 + 15) / 3 = 30 / 3 = 10; and because the three jobs are equal, FIFO gives the same 10.
+
+So round robin is worse than FIFO here. Round robin stretches every job out to the end, because it only ever runs a short bit of each one. Check this: five rounds of three 1 s slices is 15 s; A's fifth slice is the thirteenth slice overall, so A ends at 13.
 
 So there are two families. Shortest first (SJF, STCF) wins turnaround and loses response. Round robin wins response and loses turnaround. And this is not a flaw to engineer away: any policy that is **fair**, giving every job an even share over a short window, pays in turnaround, because nothing finishes early; any policy that favors short jobs pays in response, because somebody is made to wait. You cannot have both.
 
-What this part settled: the second family, and the trade-off between the two. What it leaves open: the one knob round robin has, the slice length, which is next.
+- What this part settled: the second family, and the trade-off between the two.
+- What it leaves open: the one knob round robin has, the slice length, which is next.
 
 ### 3.3 <span class="lbl lbl-concept">Concept</span> The time slice, and the cost of a context switch {#sec-3-3 data-toc-label="3.3 [Concept] The time slice, and the cost of a context switch"}
 
@@ -246,7 +280,8 @@ There is a cost the capture does not see. While a job runs, it fills the CPU's *
 
 Real kernels choose much longer slices. Linux gives its round-robin scheduling class a slice of 100 ms (Linux has several sets of scheduling rules, called classes; the ordinary one is not round robin, and [Section 7.2](class-2.md#sec-7-2) lists them) (the first line of the last capture, read from the file `/proc/sys/kernel/sched_rr_timeslice_ms`). xv6 switches on every timer tick (a tick is one timer interrupt), and the tick is set in `kernel/trap.c` line 177 to 1,000,000 cycles of the machine's clock. QEMU's clock counts 10,000,000 cycles per second (a design fact of the simulator), so 1,000,000 cycles is 1,000,000 / 10,000,000 = 0.1 s, a tenth of a second.
 
-What this part settled: the slice is a trade-off with a measured number on one side and a human on the other. What it leaves open: nothing new; the next part shows round robin running in a real kernel.
+- What this part settled: the slice is a trade-off with a measured number on one side and a human on the other.
+- What it leaves open: nothing new; the next part shows round robin running in a real kernel.
 
 ### 3.4 <span class="lbl lbl-kernel">Real kernel</span> Round robin in xv6: scheduler() {#sec-3-4 data-toc-label="3.4 [Real kernel] Round robin in xv6: scheduler()"}
 
@@ -308,9 +343,20 @@ Here is what the function does: it is the loop each CPU runs forever; it walks t
 <figcaption markdown="1">Figure 3.3. The proc array: 64 slots, the states of the processes in them, and what one tick does.</figcaption>
 </figure>
 
-Look at Figure 3.3 first. `proc` is an **array** (a row of equal-sized slots reached by position number) of 64 process records, one per process. Each has a state: `init` (the first process, which starts everything else) and the shell are SLEEPING (blocked, waiting for something), A is RUNNING, B is RUNNABLE (ready), and the rest are UNUSED. Now the listing of `scheduler()`, line by line. Line 438, `for(p = proc; p < &proc[NPROC]; p++)`, is the walk over the array, slot by slot: `p` points at one slot, `p++` moves it to the next, and `&proc[NPROC]` is the address just past the last slot (`&` means "the address of"; `NPROC` is 64, the size of the array). Line 440, `if(p->state == RUNNABLE)`, is the only test: a slot is a candidate only if it is ready; sleeping and unused slots are skipped (`p->state` means "the state field of the record p points at"; `==` tests equality). Lines 444 and 445 mark the chosen process RUNNING and record it as this CPU's current process. Line 446, `swtch(&c->context, &p->context)`, is the context switch of the processes week (`c` is this CPU's own record, `p` the chosen process, and `context` the saved registers of each): it saves the scheduler's own registers and loads the process's, and from this line on the process is running while the scheduler is frozen on this line until the process gives the CPU back. Line 457, `asm volatile("wfi")`, is what happens when the whole array had nothing ready: the CPU waits for an interrupt and then scans again.
+Look at Figure 3.3 first. `proc` is an **array** (a row of equal-sized slots reached by position number) of 64 process records, one per process. Each has a state: `init` (the first process, which starts everything else) and the shell are SLEEPING (blocked, waiting for something), A is RUNNING, B is RUNNABLE (ready), and the rest are UNUSED. Now the listing of `scheduler()`, line by line.
 
-A process gives the CPU back through `yield()`, the second listing: line 495 marks the process RUNNABLE again, so it will get another turn, and line 496 switches back to the scheduler loop, which continues from the next slot, not from the top. The third listing is who calls `yield()`: in the trap handler (the kernel code that runs whenever the CPU jumps into the kernel because of an interrupt; the jump is called a trap, and xv6 names the handler `usertrap`), `which_dev == 2` means the timer interrupt, so every tick the running process is forced to yield. Put it together: no priorities, no job lengths, no memory of the past; a slice of one tick, in array order. That is round robin.
+- Line 438, `for(p = proc; p < &proc[NPROC]; p++)`, is the walk over the array, slot by slot: `p` points at one slot, `p++` moves it to the next, and `&proc[NPROC]` is the address just past the last slot (`&` means "the address of"; `NPROC` is 64, the size of the array).
+- Line 440, `if(p->state == RUNNABLE)`, is the only test: a slot is a candidate only if it is ready; sleeping and unused slots are skipped (`p->state` means "the state field of the record p points at"; `==` tests equality).
+- Lines 444 and 445 mark the chosen process RUNNING and record it as this CPU's current process.
+- Line 446, `swtch(&c->context, &p->context)`, is the context switch of the processes week (`c` is this CPU's own record, `p` the chosen process, and `context` the saved registers of each): it saves the scheduler's own registers and loads the process's, and from this line on the process is running while the scheduler is frozen on this line until the process gives the CPU back.
+- Line 457, `asm volatile("wfi")`, is what happens when the whole array had nothing ready: the CPU waits for an interrupt and then scans again.
+
+A process gives the CPU back through `yield()`, the second listing:
+
+- Line 495 marks the process RUNNABLE again, so it will get another turn.
+- Line 496 switches back to the scheduler loop, which continues from the next slot, not from the top.
+
+The third listing is who calls `yield()`: in the trap handler (the kernel code that runs whenever the CPU jumps into the kernel because of an interrupt; the jump is called a trap, and xv6 names the handler `usertrap`), `which_dev == 2` means the timer interrupt, so every tick the running process is forced to yield. Put it together: no priorities, no job lengths, no memory of the past; a slice of one tick, in array order. That is round robin.
 
 Code is only convincing when you watch it, so here is a program that makes the array order visible.
 
@@ -349,7 +395,12 @@ main(int argc, char *argv[])
 }
 ```
 
-What it does: the parent `fork`s n children (fork makes a copy of the running process; the copy is the child). Each child computes without stopping for 10 ticks, and every time it notices that the tick number changed, it prints its letter and the tick. Line 12 is the fork, inside a loop (line 11) whose counter `k` is 0, 1, 2, so the letters are A, B, C. Line 17, `uptime()`, asks the kernel for the current tick count. Lines 18 and 19 print only when the tick changed since the last print, so each letter marks the start of one turn. Line 22 is busy work, so the child never sleeps and never gives up the CPU on its own.
+What it does: the parent `fork`s n children (fork makes a copy of the running process; the copy is the child). Each child computes without stopping for 10 ticks, and every time it notices that the tick number changed, it prints its letter and the tick. 
+
+- Line 12 is the fork, inside a loop (line 11) whose counter `k` is 0, 1, 2, so the letters are A, B, C.
+- Line 17, `uptime()`, asks the kernel for the current tick count.
+- Lines 18 and 19 print only when the tick changed since the last print, so each letter marks the start of one turn.
+- Line 22 is busy work, so the child never sleeps and never gives up the CPU on its own.
 
 *The console capture `xv6_rr.out`, xv6 under QEMU with one CPU (the boot messages are cut).*
 
@@ -369,15 +420,42 @@ $
 
 With two children the console (the text screen of the xv6 machine) reads A2 B3 A4 B5 A6 B7 and so on: A had tick 2, B had tick 3, A had tick 4; strictly alternating, one tick each. With three children: A15 B16 C17 A18 B19 C20, a turn each, in array order, around and around. Each red arrow in Figure 3.4 is one timer interrupt: `usertrap` sees `which_dev == 2`, calls `yield()`, and the scheduler loop moves to the next RUNNABLE slot. A tick is about a tenth of a second, so each turn is a slice of 0.1 s. One detail at the end of the first line, B12 B13: each child counts its 10 ticks from the moment it started; A was forked first and began counting a tick or two earlier than B, so A's window closed first, and B's last prints, B12 and B13, came after A had exited, with the CPU to itself; the loop simply finds that only one slot is ready.
 
-What this part settled: round robin is not a drawing; it is about 30 lines of your own kernel (23 in the loop, 9 in yield, 2 in the trap handler), and the console shows the turns. What it leaves open: the same rule on a full Linux machine, which is next.
+- What this part settled: round robin is not a drawing; it is about 30 lines of your own kernel (23 in the loop, 9 in yield, 2 in the trap handler), and the console shows the turns.
+- What it leaves open: the same rule on a full Linux machine, which is next.
 
 ### 3.5 <span class="lbl lbl-machine">Real machine</span> Round robin on Linux: three jobs at once {#sec-3-5 data-toc-label="3.5 [Real machine] Round robin on Linux: three jobs at once"}
 
 OSTEP Figure 7.7 can be measured on the Ubuntu machine with the same spin program as [Section 1.4](#sec-1-4): three 1 s jobs, run two ways.
 
+*The capture `batch_three.out`: three 1000 ms jobs, one after another. Ubuntu 24.04 x86-64, Linux 6.18.*
+
+```text
+$ # three 1000 ms jobs, one after another
+$ T0=$(now); for j in A B C; do taskset -c 0 ./spin $j 1000 $T0; done
+A first ran at 0.004 s
+A finished at 1.003 s
+B first ran at 1.005 s
+B finished at 2.003 s
+C first ran at 2.006 s
+C finished at 3.004 s
+```
+
+*The capture `together.out`: the same three jobs started together, all pinned to core 0.*
+
+```text
+$ # the same three 1000 ms jobs started together, all pinned to core 0
+$ T0=$(now); for j in A B C; do taskset -c 0 ./spin $j 1000 $T0 & done; wait
+A first ran at 0.004 s
+B first ran at 0.006 s
+C first ran at 0.009 s
+A finished at 2.999 s
+B finished at 3.001 s
+C finished at 3.002 s
+```
+
 <figure markdown="1">
-![Figure 3.5. batch_three.out and together.out, both drawn as timelines, and the table of both metrics. Captured on Ubuntu 24.04 x86-64, Linux 6.18.](figs/linux3.svg){width=100%}
-<figcaption markdown="1">Figure 3.5. batch_three.out and together.out, both drawn as timelines, and the table of both metrics. Captured on Ubuntu 24.04 x86-64, Linux 6.18.</figcaption>
+![Figure 3.5. The two captures drawn as timelines, in seconds: one after another (left), and together, the kernel slicing the core among them (right).](figs/linux3_timelines.svg){width=100%}
+<figcaption markdown="1">Figure 3.5. The two captures drawn as timelines, in seconds: one after another (left), and together, the kernel slicing the core among them (right).</figcaption>
 </figure>
 
 First, one after another: A finished at 1.003 s, B at 2.003, C at 3.004; B first ran at 1.005 and C at 2.006. That is the batch, FIFO. Second, all three started together, pinned to core 0: A first ran at 0.004 s, B at 0.006, C at 0.009, so all three were running within 10 ms; and they finished at 2.999, 3.001 and 3.002, all together near 3 s.
@@ -386,7 +464,11 @@ Read the table. One after another: response 0.004, 1.005, 2.006, average about 1
 
 One honest note. Linux's default scheduler time-slices the core, but its exact rule is not plain round robin: it keeps a running account of how much CPU each job has had and favors the one that is furthest behind. The right-hand strip in Figure 3.5 is drawn as even slices to show the idea, not as a trace of what the kernel did millisecond by millisecond.
 
-**Checkpoint 3.** Settled: two families; shortest first (SJF, STCF) wins turnaround and makes the third job wait 10 s for its first instruction; round robin runs a slice of each job in turn, response 1 instead of 5, turnaround 14 instead of 10; no rule wins both, and the slice length is the knob, short for response, long enough to amortize the switch (1.5 µs here; 100 ms slices in Linux's round-robin class, one tick on xv6). Still open: every job so far only computes, and a real job stops to wait for the disk, the network, a key. You should now be able to compute response and turnaround time for three equal jobs under round robin with a given slice, and name the trade-off.
+**Checkpoint 3.**
+
+- Settled: two families; shortest first (SJF, STCF) wins turnaround and makes the third job wait 10 s for its first instruction; round robin runs a slice of each job in turn, response 1 instead of 5, turnaround 14 instead of 10; no rule wins both, and the slice length is the knob, short for response, long enough to amortize the switch (1.5 µs here; 100 ms slices in Linux's round-robin class, one tick on xv6).
+- Still open: every job so far only computes, and a real job stops to wait for the disk, the network, a key.
+- You should now be able to compute response and turnaround time for three equal jobs under round robin with a given slice, and name the trade-off.
 
 ## Chapter 4. I/O and scheduling {#chapter-4}
 
@@ -437,7 +519,11 @@ int main(int argc, char **argv) {
 }
 ```
 
-You do not need every line. Lines 17 to 20 are a helper that uses a given number of milliseconds of CPU. Lines 25 to 30 are job A: five times, compute 10 ms (line 27) and then `nanosleep` for 10 ms (line 29), which waits the way a disk read would make it wait (`nanosleep` is a request to the kernel to put this process to sleep for a given time; the process is blocked until the time is up). Line 32 is job B: 50 ms of CPU straight through.
+You do not need every line.
+
+- Lines 17 to 20 are a helper that uses a given number of milliseconds of CPU.
+- Lines 25 to 30 are job A: five times, compute 10 ms (line 27) and then `nanosleep` for 10 ms (line 29), which waits the way a disk read would make it wait (`nanosleep` is a request to the kernel to put this process to sleep for a given time; the process is blocked until the time is up).
+- Line 32 is job B: 50 ms of CPU straight through.
 
 *The capture `overlap.out`: A then B, then A and B together on core 0. Ubuntu 24.04 x86-64, Linux 6.18.*
 
@@ -458,7 +544,11 @@ A finished at 0.136 s
 
 One after another: A finished at 0.105 s, then B started and finished at 0.157 s. Together on one core: B finished at 0.085 s and A at 0.136 s. B's 50 ms of computing happened inside A's waits, so the pair finished at 136 ms instead of 157, which is 21 ms sooner. Check this: 157 − 136 = 21. The drawing promises 50 ms of saving; the kernel gave back 21. The reason is that the real scheduler does not hand the CPU back to A the instant A's wait ends; it lets B's turn run a little longer first, so each of A's bursts was delayed a few milliseconds. Overlap is real, and so is the scheduler's own say in when a woken job runs; the second class is exactly about that say.
 
-**Checkpoint 4.** Settled: a job that waits is split into bursts, and the CPU runs someone else during each wait; 150 ms became 100 in the drawing, 157 became 136 on the Ubuntu machine; jobs that keep stopping to wait, which is what jobs that answer people do, get run often. Still open: four assumptions are gone, and the fifth is the worst: shortest first needs each job's length, and a real kernel does not know it. You should now be able to draw the overlapped timeline for one waiting job and one computing job, and say why each burst counts as a job of its own.
+**Checkpoint 4.**
+
+- Settled: a job that waits is split into bursts, and the CPU runs someone else during each wait; 150 ms became 100 in the drawing, 157 became 136 on the Ubuntu machine; jobs that keep stopping to wait, which is what jobs that answer people do, get run often.
+- Still open: four assumptions are gone, and the fifth is the worst: shortest first needs each job's length, and a real kernel does not know it.
+- You should now be able to draw the overlapped timeline for one waiting job and one computing job, and say why each burst counts as a job of its own.
 
 ## <span class="lbl lbl-summary">Summary</span> Summary of the first class: scheduling policies and metrics {#summary-13 data-toc-label="[Summary] Summary of the first class: scheduling policies and metrics"}
 
