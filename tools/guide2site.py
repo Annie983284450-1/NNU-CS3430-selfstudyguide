@@ -264,9 +264,9 @@ def convert_page(key, title, lines, ids, meta, week, legend):
             level, text, hid = m.group(1), m.group(2), m.group(4)
             close_listing()
             if hid == "contents":
+                # the Contents list and the label legend are dropped: the sidebar replaces the list,
+                # and the home page explains the labels once for every week
                 skip_contents = True
-                out.append("## How to read this guide {#contents}")
-                out.append("")
                 i += 1
                 continue
             skip_contents = False
@@ -305,13 +305,6 @@ def convert_page(key, title, lines, ids, meta, week, legend):
             if line.startswith("- ") or line.startswith("    ") or not line.strip():
                 i += 1
                 continue
-            legend_text = rewrite_anchor_links(line, ids, this_page)
-            legend_text = legend_text.replace("Every line below is a link. The label", "The label")
-            out.append(legend_text)
-            out.append("")
-            out.append("The navigation on the left lists every class and chapter of this week; "
-                       "the table of contents on the right lists the sections of the page you are on. "
-                       "Every section number in the text (\"Section 3.5\", \"Extra 4\") is a link.")
             i += 1
             continue
 

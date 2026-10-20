@@ -28,5 +28,3 @@ The left sidebar lists every page; the right-hand column lists the sections of t
 - [Week 4 · Memory: chopping the address space into pieces](w04/index.md) (OSTEP 16 to 19)
 - [Week 5 · Memory: smaller tables, and more memory than you have](w05/index.md) (OSTEP 20, 21, 22)
 - [Week 6 · Scheduling: which process runs next, and for how long](w06/index.md) (OSTEP 7, 8)
-
-The PDF edition of each guide stays on Canvas.

@@ -4,13 +4,13 @@
 
 ## Where this guide comes from {#source}
 
-This guide comes from chapters 1 and 2 of the textbook (OSTEP: *Operating Systems: Three Easy Pieces*). It also draws on xv6, the small operating system you use in the labs: on chapter 1 of the short book that explains it, and on its source code. It follows the slides of the week in order, with the same pictures (this guide calls the set of slides the deck). The captured outputs in it come from four places. The two programs of the first class use the textbook's own transcripts. The counts of running programs and of memory come from an Ubuntu 24.04 machine, the shared-counter runs of the second class from an arm64 Mac, and the file runs from an Ubuntu 22.04 machine. (Ubuntu is a widely used version of Linux, an operating system, and arm64 is a family of processor. Part 0 explains these names; until then they are just the names of the machines.) Where a figure, a number or a line of code comes from one of those, the guide says so, so you can look it up later if you want to go deeper. When this guide names a part of the textbook, it always says so (textbook section 2.2, the textbook's Figure 2.4); "[Section 2.2](class-1.md#sec-2-2)" alone always means a section of this guide.
+This guide follows *Operating Systems: Three Easy Pieces* (OSTEP) by Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau, which the authors publish free at [https://pages.cs.wisc.edu/~remzi/OSTEP](https://pages.cs.wisc.edu/~remzi/OSTEP/). The figures and examples credited to the textbook are theirs. The code the guide reads is from [xv6](https://github.com/mit-pdos/xv6-riscv), the teaching operating system from MIT, and its [xv6 book](https://mit-pdos.github.io/xv6-riscv-book/).
 
-## How to read this guide {#contents}
+Read with this week:
 
-The label in brackets says what kind of section it is. A **Problem** section states what we have, where it breaks and what we need, before any fix. A **Concept** section explains the idea that answers it. A **Worked example** runs the idea on a small, complete program or on small numbers. A **Real kernel** section reads real operating-system code. A **Real machine** section reads an output captured on a real computer. **Check yourself** and **Your turn** are for you to do before reading on. **Extra** sections are optional and go deeper on a question already answered.
-
-The navigation on the left lists every class and chapter of this week; the table of contents on the right lists the sections of the page you are on. Every section number in the text ("Section 3.5", "Extra 4") is a link.
+- [OSTEP chapter 1. A Dialogue on the Book](https://pages.cs.wisc.edu/~remzi/OSTEP/dialogue-threeeasy.pdf)
+- [OSTEP chapter 2. Introduction to Operating Systems](https://pages.cs.wisc.edu/~remzi/OSTEP/intro.pdf)
+- [Chapter 1](class-1.md#chapter-1) of the xv6 book, and the xv6 source.
 
 ## Part 0. Where we are in the course, and what a beginner needs first {#part-0}
 
@@ -21,15 +21,15 @@ This part does two jobs before the new material starts. It shows where this week
 A week of material makes sense only if you know which question it answers and what comes after it. So the first picture is the whole course.
 
 <figure markdown="1">
-![Figure 1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask. From slide 2.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask. From slide 2.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask. From slide 2.](figs/coursemap.png){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask. From slide 2.</figcaption>
 </figure>
 
-An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own processor and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 1. The textbook calls them the three easy pieces, and the title of this guide is the title of the week's deck.
+An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own processor and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1. The textbook calls them the three easy pieces, and the title of this guide is the title of the week's deck.
 
-The second row of Figure 1 cuts the course into five blocks (groups of weeks). Virtualization takes the first three: the processor from the point of view of a running program, then memory, then the processor again to ask which program should run next. Block 4 is concurrency, and block 5 is devices and files. The strip of boxes under the blocks is the weeks of the course, and the first one is marked "we are here"; nothing is done yet.
+The second row of Figure 0.1 cuts the course into five blocks (groups of weeks). Virtualization takes the first three: the processor from the point of view of a running program, then memory, then the processor again to ask which program should run next. Block 4 is concurrency, and block 5 is devices and files. The strip of boxes under the blocks is the weeks of the course, and the first one is marked "we are here"; nothing is done yet.
 
-The table in the lower half of Figure 1 is the plan. Each block answers one question, and its answer opens the next block's question. This week does something different from every later week: it does not go deep into any one block. Instead it says what an operating system is and watches it do each of its three jobs once, with a real program each time. The first class covers the first job, virtualization, twice: once for the processor and once for memory. The second class covers the other two jobs, concurrency and persistence. Each later week then takes one of those jobs apart.
+The table in the lower half of Figure 0.1 is the plan. Each block answers one question, and its answer opens the next block's question. This week does something different from every later week: it does not go deep into any one block. Instead it says what an operating system is and watches it do each of its three jobs once, with a real program each time. The first class covers the first job, virtualization, twice: once for the processor and once for memory. The second class covers the other two jobs, concurrency and persistence. Each later week then takes one of those jobs apart.
 
 #### What a program is, and what the processor does with it {#p0-program}
 

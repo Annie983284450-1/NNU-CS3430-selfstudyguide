@@ -4,13 +4,14 @@
 
 ## Where this guide comes from {#source}
 
-This guide comes from chapters 4, 5 and 6 of the textbook (OSTEP: *Operating Systems: Three Easy Pieces*), from chapter 1 and sections 4.1 to 4.3 of the short book that explains the xv6 source code, and from the xv6 source tree you use in the labs. It follows the slides of the week in order, with the same pictures (this guide calls the set of slides the deck). It also comes from small programs that were run on two real machines: an Ubuntu 24.04 x86-64 machine in the cloud, and xv6 under QEMU on RISC-V. (x86-64 and RISC-V are two families of processor. xv6 is the small teaching operating system you read all term, and QEMU is the program that runs it as a pretend RISC-V computer. Part 0 explains the names; until then they are just the names of the two machines.) Where a figure, a number or a line of code comes from one of those, the guide says so, so you can look it up later if you want to go deeper.
+This guide follows *Operating Systems: Three Easy Pieces* (OSTEP) by Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau, which the authors publish free at [https://pages.cs.wisc.edu/~remzi/OSTEP](https://pages.cs.wisc.edu/~remzi/OSTEP/). The figures and examples credited to the textbook are theirs. The code the guide reads is from [xv6](https://github.com/mit-pdos/xv6-riscv), the teaching operating system from MIT, and its [xv6 book](https://mit-pdos.github.io/xv6-riscv-book/).
 
-## How to read this guide {#contents}
+Read with this week:
 
-The label in brackets says what kind of section it is: a **Problem** section states what we have, where it breaks and what we need, before any fix; a **Concept** section explains the idea that answers it; a **Real kernel** section reads the xv6 code; a **Real machine** section reads an output captured on a real computer; the **Checkpoint** paragraph at the end of each chapter is for you to test yourself before reading on; **Extra** sections are optional and go deeper on a question already answered, and Q1, Q2 or Q3 in their label names which of the class's three questions they deepen.
-
-The navigation on the left lists every class and chapter of this week; the table of contents on the right lists the sections of the page you are on. Every section number in the text ("Section 3.5", "Extra 4") is a link.
+- [OSTEP chapter 4. The Abstraction: The Process](https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf)
+- [OSTEP chapter 5. Interlude: Process API](https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf)
+- [OSTEP chapter 6. Mechanism: Limited Direct Execution](https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf)
+- [Chapter 1](class-1.md#chapter-1) and sections 4.1 to 4.3 of the xv6 book, and the xv6 source.
 
 ## Part 0. Where we are in the course, and what the first week taught {#part-0}
 
@@ -21,24 +22,24 @@ A few words first, so the map can be read. A **program** is a file of instructio
 ### The course map {#part-0-map}
 
 <figure markdown="1">
-![Figure 1. The whole course on one page: the three pieces, the five blocks, the fourteen weeks with this one marked, and the question each step left open. From slide 2.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 1. The whole course on one page: the three pieces, the five blocks, the fourteen weeks with this one marked, and the question each step left open. From slide 2.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the fourteen weeks with this one marked, and the question each step left open. From slide 2.](figs/coursemap.png){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the fourteen weeks with this one marked, and the question each step left open. From slide 2.</figcaption>
 </figure>
 
-An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own CPU and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 1.
+An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own CPU and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1.
 
-The second row of Figure 1 cuts the course into five blocks. Virtualization takes the first three. Block 1, in red, is the CPU from the process's point of view: what a process is, and the machinery that lets the OS run one and stay in charge. Block 2 is memory. Block 3 goes back to the CPU to ask which process should run next. Block 4 is concurrency, and block 5 is files and devices. Block 1 takes the first two weeks: the first introduced the three jobs, and this week, the second, is the process, the cell marked "we are here".
+The second row of Figure 0.1 cuts the course into five blocks. Virtualization takes the first three. Block 1, in red, is the CPU from the process's point of view: what a process is, and the machinery that lets the OS run one and stay in charge. Block 2 is memory. Block 3 goes back to the CPU to ask which process should run next. Block 4 is concurrency, and block 5 is files and devices. Block 1 takes the first two weeks: the first introduced the three jobs, and this week, the second, is the process, the cell marked "we are here".
 
-The lower half of Figure 1 is the reason the weeks come in this order: each one answers the question the one before it left open. The first week gave the three jobs and showed the first illusion, many CPUs out of one. It did not say what one of those virtual CPUs really is, or how the OS keeps control of it. That is the red row, and it is this week. The grey rows come later: a private memory for each process, memory cut into fixed-size pieces called pages, and the policy, the rule, that decides who runs next.
+The lower half of Figure 0.1 is the reason the weeks come in this order: each one answers the question the one before it left open. The first week gave the three jobs and showed the first illusion, many CPUs out of one. It did not say what one of those virtual CPUs really is, or how the OS keeps control of it. That is the red row, and it is this week. The grey rows come later: a private memory for each process, memory cut into fixed-size pieces called pages, and the policy, the rule, that decides who runs next.
 
 ### The first week, first class: one machine made to look like many {#part-0-c1}
 
 <figure markdown="1">
-![Figure 2. The first class of the first week, drawn: four copies of one program on one CPU, two programs at the same address, and the three things the OS is. From slide 3.](figs/w1_class1.png){width=89%}
-<figcaption markdown="1">Figure 2. The first class of the first week, drawn: four copies of one program on one CPU, two programs at the same address, and the three things the OS is. From slide 3.</figcaption>
+![Figure 0.2. The first class of the first week, drawn: four copies of one program on one CPU, two programs at the same address, and the three things the OS is. From slide 3.](figs/w1_class1.png){width=89%}
+<figcaption markdown="1">Figure 0.2. The first class of the first week, drawn: four copies of one program on one CPU, two programs at the same address, and the three things the OS is. From slide 3.</figcaption>
 </figure>
 
-The first class of the course had one question: what an operating system is for. The answer came as two demos and three words, and Figure 2 is all of it.
+The first class of the course had one question: what an operating system is for. The answer came as two demos and three words, and Figure 0.2 is all of it.
 
 The first demo was a program called `cpu.c`, which prints a letter once a second forever. Four copies of it were started on a machine with one CPU, each given a different letter. The letters kept coming, A B D C A B D C, and every copy behaved as if it owned the machine. One CPU looked like four. The belief that each copy holds, that the machine is its own, is called a **virtual CPU**, and the thing that owns one is a process.
 
@@ -47,13 +48,13 @@ The second demo was `mem.c`, which asks for a few bytes of memory, prints their 
 Then came three words for what the OS is. It is an **illusionist**: it makes one machine look like many. It is a **library**: it answers requests, the system calls such as open, read, write and fork. And it is a **referee**: it shares the machine out and protects each program from the others. Under the illusion, in xv6, every running program is one record in the kernel's memory, a C `struct` named `struct proc`. (A **struct** is a C record: a group of named fields kept together, like one row of a table with a name for each column.) It was only glanced at then. This week it becomes the definition of a process.
 
 <figure markdown="1">
-![Figure 3. What the first class settled, and what it left open. From slide 3.](figs/w1_class1_cards.png){width=54%}
-<figcaption markdown="1">Figure 3. What the first class settled, and what it left open. From slide 3.</figcaption>
+![Figure 0.3. What the first class settled, and what it left open. From slide 3.](figs/w1_class1_cards.png){width=54%}
+<figcaption markdown="1">Figure 0.3. What the first class settled, and what it left open. From slide 3.</figcaption>
 </figure>
 
-Figure 3 is the two cards beside the drawing. Settled: the illusions are real, and behind each virtual CPU there is a process. Left open, first: what one of those virtual CPUs actually is. A struct was seen, but not what the OS must keep to stop a program and start it again later. Left open, second: how a program asks the OS for anything, and how the OS takes the real CPU back from a program that never stops. Both are this week.
+Figure 0.3 is the two cards beside the drawing. Settled: the illusions are real, and behind each virtual CPU there is a process. Left open, first: what one of those virtual CPUs actually is. A struct was seen, but not what the OS must keep to stop a program and start it again later. Left open, second: how a program asks the OS for anything, and how the OS takes the real CPU back from a program that never stops. Both are this week.
 
-??? note "The program behind Figure 2: cpu.c and mem.c (you can skip this listing)"
+??? note "The program behind Figure 0.2: cpu.c and mem.c (you can skip this listing)"
 
     The two demos of the first week come from the textbook's chapter 2, and the slides show only what they printed. Here are both programs, as the textbook prints them (its Figures 2.1 and 2.3). Every line is explained in the paragraph before each one; [Appendix A](appendix.md#appendix-a) has the marks of C.
     
@@ -114,11 +115,11 @@ Figure 3 is the two cards beside the drawing. Settled: the illusions are real, a
 ### The first week, second class: two threads, one counter, and fsync {#part-0-c2}
 
 <figure markdown="1">
-![Figure 4. The second class of the first week, drawn: counter++ as three instructions and the lost increments, a write that returns before the disk has the bytes, and the three cruxes. From slide 4.](figs/w1_class2.png){width=90%}
-<figcaption markdown="1">Figure 4. The second class of the first week, drawn: counter++ as three instructions and the lost increments, a write that returns before the disk has the bytes, and the three cruxes. From slide 4.</figcaption>
+![Figure 0.4. The second class of the first week, drawn: counter++ as three instructions and the lost increments, a write that returns before the disk has the bytes, and the three cruxes. From slide 4.](figs/w1_class2.png){width=90%}
+<figcaption markdown="1">Figure 0.4. The second class of the first week, drawn: counter++ as three instructions and the lost increments, a write that returns before the disk has the bytes, and the three cruxes. From slide 4.</figcaption>
 </figure>
 
-The second class took the other two jobs, and each came with a surprise. Figure 4 draws both.
+The second class took the other two jobs, and each came with a surprise. Figure 0.4 draws both.
 
 The first surprise was about threads. A **thread** is one stream of instructions inside a process; a process can have several, and they share the process's memory. Two threads each added 1 to the same counter many times. `counter++` (C for "add 1 to counter") looks like one step, but the CPU does it as three: load the counter into a register, add 1 in the register, store the register back. If the other thread slips in between the load and the store, one addition is lost. With 1000 loops each the answer was right every time, 2000, because the first thread finished before the second started. With 100,000 loops each the expected 200,000 came out as 103,902 once and 120,205 the next time. That is a **race**: two threads touching one variable with no order, so the result depends on timing. A **lock**, a flag that only one thread can hold at a time, put around the three steps, made every run right. The bug was there at 1000 loops too; only the long run gave it a chance to show.
 
@@ -127,20 +128,20 @@ The second surprise was about files. When the system call `write()` returns, the
 Then the three **cruxes**, the textbook's word for the central question a chapter is built around: how to make one machine look like many, how to build correct concurrent programs, how to keep data safe when the power goes. Three pieces, three cruxes, in that order through the term.
 
 <figure markdown="1">
-![Figure 5. What the second class settled, and what it left open. From slide 4.](figs/w1_class2_cards.png){width=54%}
-<figcaption markdown="1">Figure 5. What the second class settled, and what it left open. From slide 4.</figcaption>
+![Figure 0.5. What the second class settled, and what it left open. From slide 4.](figs/w1_class2_cards.png){width=54%}
+<figcaption markdown="1">Figure 0.5. What the second class settled, and what it left open. From slide 4.</figcaption>
 </figure>
 
-Figure 5: settled, the three surprises and the three cruxes. Left open: piece 1 in detail. The first week said what the OS does; it did not say how. The first how is the process: what it is made of, how one is created, and how the OS stays in control of it. That is this week.
+Figure 0.5: settled, the three surprises and the three cruxes. Left open: piece 1 in detail. The first week said what the OS does; it did not say how. The first how is the process: what it is made of, how one is created, and how the OS stays in control of it. That is this week.
 
 ### The first week's words, in one place {#part-0-words}
 
 <figure markdown="1">
-![Figure 6. The first week's words, each in one sentence, with the textbook section where each is defined. From slide 5.](figs/w1_words.png){width=100%}
-<figcaption markdown="1">Figure 6. The first week's words, each in one sentence, with the textbook section where each is defined. From slide 5.</figcaption>
+![Figure 0.6. The first week's words, each in one sentence, with the textbook section where each is defined. From slide 5.](figs/w1_words.png){width=100%}
+<figcaption markdown="1">Figure 0.6. The first week's words, each in one sentence, with the textbook section where each is defined. From slide 5.</figcaption>
 </figure>
 
-Figure 6 is the list from the slides. Most of it was defined above; the rest is here. A **pid** is the number the kernel gives each process (a process's parent's pid is its **PPID**; the next sentence says what a parent is). **ps** is the command that lists the running processes with their pids. A process is made by another process, called its **parent**; the new one is the **child**. **Mechanism** and **policy** are a pair: a mechanism is how a thing is done (the switch from one process to another), a policy is which choice is made (which process to switch to). **xv6** is the small teaching kernel read all term; **QEMU** is the program that runs it as a pretend RISC-V computer on your own machine. **strace** is a Linux tool that prints every system call a program makes, with its arguments and its result. These are the words the rest of this guide builds on. Some later parts repeat a definition as a reminder; the meaning never changes.
+Figure 0.6 is the list from the slides. Most of it was defined above; the rest is here. A **pid** is the number the kernel gives each process (a process's parent's pid is its **PPID**; the next sentence says what a parent is). **ps** is the command that lists the running processes with their pids. A process is made by another process, called its **parent**; the new one is the **child**. **Mechanism** and **policy** are a pair: a mechanism is how a thing is done (the switch from one process to another), a policy is which choice is made (which process to switch to). **xv6** is the small teaching kernel read all term; **QEMU** is the program that runs it as a pretend RISC-V computer on your own machine. **strace** is a Linux tool that prints every system call a program makes, with its arguments and its result. These are the words the rest of this guide builds on. Some later parts repeat a definition as a reminder; the meaning never changes.
 
 ### What the first week settled, and what it left open {#part-0-settled}
 

@@ -4,13 +4,15 @@
 
 ## Where this guide comes from {#source}
 
-This guide comes from chapters 16, 17, 18 and 19 of the textbook (OSTEP: *Operating Systems: Three Easy Pieces*) and from the xv6 source code you use in the labs, and it follows the slides of the week in order, with the same pictures (this guide calls the set of slides the deck). It covers both classes of the week, so you can read it after class or instead of class. It also comes from small programs that were run on two real machines: an Ubuntu 24.04 x86-64 machine in the cloud, and xv6 under QEMU on RISC-V. (x86-64 and RISC-V are two families of processor, the chip that runs a computer's instructions. Ubuntu is a widely used version of Linux, the operating system on most servers. xv6 is the small teaching operating system of the labs, and QEMU is the program that pretends to be a RISC-V computer so that xv6 can run on it. Until the guide uses them, these are just the names of the two machines.) Where a figure, a number or a line of code comes from one of those, the guide says so, so you can look it up later if you want to go deeper.
+This guide follows *Operating Systems: Three Easy Pieces* (OSTEP) by Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau, which the authors publish free at [https://pages.cs.wisc.edu/~remzi/OSTEP](https://pages.cs.wisc.edu/~remzi/OSTEP/). The figures and examples credited to the textbook are theirs. The code the guide reads is from [xv6](https://github.com/mit-pdos/xv6-riscv), the teaching operating system from MIT, and its [xv6 book](https://mit-pdos.github.io/xv6-riscv-book/).
 
-## How to read this guide {#contents}
+Read with this week:
 
-The label in brackets says what kind of section it is: a **Problem** section states what we have, where it breaks and what we need, before any fix; a **Concept** section explains the idea that answers it; a **Worked example** runs the idea on small numbers; a **Real kernel** section reads the xv6 code; a **Real machine** section reads an output captured on a real computer; **Check yourself** and **Your turn** are for you to do before reading on; **Extra** sections are optional and go deeper on a question already answered.
-
-The navigation on the left lists every class and chapter of this week; the table of contents on the right lists the sections of the page you are on. Every section number in the text ("Section 3.5", "Extra 4") is a link.
+- [OSTEP chapter 16. Segmentation](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf)
+- [OSTEP chapter 17. Free-Space Management](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf)
+- [OSTEP chapter 18. Paging: Introduction](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf)
+- [OSTEP chapter 19. Paging: Faster Translations (TLBs)](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf)
+- The xv6 source.
 
 ## Part 0. Where we are in the course, and what last week built {#part-0}
 
@@ -23,24 +25,24 @@ A few words first, so the map can be read. A computer runs **programs**: lists o
 #### The course map
 
 <figure markdown="1">
-![Figure 1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open. From slide 2.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open. From slide 2.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open. From slide 2.](figs/coursemap.png){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open. From slide 2.</figcaption>
 </figure>
 
-An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had the processor and the memory to itself. The second is **concurrency**: many things happen at the same time without breaking each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 1.
+An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had the processor and the memory to itself. The second is **concurrency**: many things happen at the same time without breaking each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1.
 
 The second row cuts the course into five blocks, and the first three belong to virtualization. Block 1 is the processor, seen from one process. Block 2 is memory, the red box. Block 3 goes back to the processor to ask which program should run next. Block 4 is concurrency, and block 5 is files and devices. The row of numbered cells is the weeks of the course, and memory takes three of them. This week is the middle one, the cell marked "we are here".
 
-The table in the lower half of Figure 1 reads like a chain. Each row is one step of the course, and the orange text on its right is the question that step could not answer, which the next step then takes up. Step 3 is last week: every process got a private memory of its own, moved into place by two registers. Its orange text is where we stopped: one block per program drags its empty middle into real memory. Step 4 is this week. The block becomes pieces: first a few big ones (segments) and the holes they leave, then many small equal ones (pages), with a table that says where each piece went and a cache that keeps the table affordable. Each of those words is defined when it arrives.
+The table in the lower half of Figure 0.1 reads like a chain. Each row is one step of the course, and the orange text on its right is the question that step could not answer, which the next step then takes up. Step 3 is last week: every process got a private memory of its own, moved into place by two registers. Its orange text is where we stopped: one block per program drags its empty middle into real memory. Step 4 is this week. The block becomes pieces: first a few big ones (segments) and the holes they leave, then many small equal ones (pages), with a table that says where each piece went and a cache that keeps the table affordable. Each of those words is defined when it arrives.
 
 #### Last week, first class: the address space, and malloc
 
 <figure markdown="1">
-![Figure 2. Last week's first class, drawn: one process's address space, the memory API, and the three goals every memory design is scored on. From slide 3.](figs/lastweek_c1.png){width=90%}
-<figcaption markdown="1">Figure 2. Last week's first class, drawn: one process's address space, the memory API, and the three goals every memory design is scored on. From slide 3.</figcaption>
+![Figure 0.2. Last week's first class, drawn: one process's address space, the memory API, and the three goals every memory design is scored on. From slide 3.](figs/lastweek_c1.png){width=90%}
+<figcaption markdown="1">Figure 0.2. Last week's first class, drawn: one process's address space, the memory API, and the three goals every memory design is scored on. From slide 3.</figcaption>
 </figure>
 
-Last week's first class asked what memory looks like to a running program. The answer was the **address space**: the set of addresses a process may use, numbered from 0, private to that process. Box 1 of Figure 2 draws a small one, 16 KB. It holds three things. The **code** is the program's instructions, which also live in memory. The **heap** is memory the program asks for while it runs, for data whose size it only learns then. The **stack** holds the working data of the program's **functions** (a function is a named piece of a program that other parts can call; each call needs a little memory for its own values, and gets it on the stack). Between the heap and the stack there is free space, so that both can grow. In this drawing address 0 is at the top and addresses increase downward. So on the page the heap grows downward, which is toward larger addresses, and the stack grows upward, which is toward smaller addresses. Because "up" and "down" depend on how a picture is drawn, the rest of this guide always says the direction in addresses: the heap grows toward larger addresses, and the stack grows toward smaller ones. The two grow toward each other, into the free middle.
+Last week's first class asked what memory looks like to a running program. The answer was the **address space**: the set of addresses a process may use, numbered from 0, private to that process. Box 1 of Figure 0.2 draws a small one, 16 KB. It holds three things. The **code** is the program's instructions, which also live in memory. The **heap** is memory the program asks for while it runs, for data whose size it only learns then. The **stack** holds the working data of the program's **functions** (a function is a named piece of a program that other parts can call; each call needs a little memory for its own values, and gets it on the stack). Between the heap and the stack there is free space, so that both can grow. In this drawing address 0 is at the top and addresses increase downward. So on the page the heap grows downward, which is toward larger addresses, and the stack grows upward, which is toward smaller addresses. Because "up" and "down" depend on how a picture is drawn, the rest of this guide always says the direction in addresses: the heap grows toward larger addresses, and the stack grows toward smaller ones. The two grow toward each other, into the free middle.
 
 The text under box 1 is the key word of last week. Every address a program uses is **virtual**: a name in its own private map, not a position in the chips. The real position in the memory chips is the **physical address**. Turning one into the other, on every single access, is called **address translation**. Linux even shuffles the map on every run (a defense called ASLR, address space layout randomization, which makes attacks that need to know where code sits in memory much harder), so the same program run three times printed three different addresses for its own `main` function, the function every program written in C starts in (C is the programming language of the operating system and of this week's programs; [Section 3.2](class-1.md#sec-3-2) says more).
 
@@ -51,8 +53,8 @@ The text under box 2 is two facts we measured. The kernel keeps its own list of 
 Box 3 is the scorecard. Every memory design is judged on three goals: **transparency** (the program never notices that it is being translated), **efficiency** (translation costs almost nothing per access), and **protection** (no process can reach another process's memory, or the kernel's).
 
 <figure markdown="1">
-![Figure 3. What last week's first class settled, and what it left open. From slide 3.](figs/lastweek_c1_cards.png){width=58%}
-<figcaption markdown="1">Figure 3. What last week's first class settled, and what it left open. From slide 3.</figcaption>
+![Figure 0.3. What last week's first class settled, and what it left open. From slide 3.](figs/lastweek_c1_cards.png){width=58%}
+<figcaption markdown="1">Figure 0.3. What last week's first class settled, and what it left open. From slide 3.</figcaption>
 </figure>
 
 Settled: every process has a private address space, and every address it sees is virtual. Left open: how the hardware makes that private map true on every load and store (a **load** is an instruction that reads a value from memory, a **store** one that writes a value to memory), at almost no cost, without the program noticing. That was last week's second class.
@@ -60,19 +62,19 @@ Settled: every process has a private address space, and every address it sees is
 #### Last week, second class: base and bounds, and its flaw
 
 <figure markdown="1">
-![Figure 4. Last week's second class, drawn: base and bounds in the MMU, and the one complaint about it. From slide 4.](figs/lastweek_c2.png){width=87%}
-<figcaption markdown="1">Figure 4. Last week's second class, drawn: base and bounds in the MMU, and the one complaint about it. From slide 4.</figcaption>
+![Figure 0.4. Last week's second class, drawn: base and bounds in the MMU, and the one complaint about it. From slide 4.](figs/lastweek_c2.png){width=87%}
+<figcaption markdown="1">Figure 0.4. Last week's second class, drawn: base and bounds in the MMU, and the one complaint about it. From slide 4.</figcaption>
 </figure>
 
-The second class gave the first mechanism. The **MMU** (memory management unit) is the part of the processor that translates addresses. For **base and bounds** it holds two registers per process: the **base**, where the process's memory starts in the chips, and the **bounds**, how big it is. Follow the one access drawn in box 1 of Figure 4. The program asks for virtual address 15 KB. The hardware first checks that 15 KB is below the bound, 16 KB, then adds the base, 32 KB, and lands at physical 15 + 32 = 47 KB. Doing this add and this check on every access, while the program runs, is called **dynamic relocation**.
+The second class gave the first mechanism. The **MMU** (memory management unit) is the part of the processor that translates addresses. For **base and bounds** it holds two registers per process: the **base**, where the process's memory starts in the chips, and the **bounds**, how big it is. Follow the one access drawn in box 1 of Figure 0.4. The program asks for virtual address 15 KB. The hardware first checks that 15 KB is below the bound, 16 KB, then adds the base, 32 KB, and lands at physical 15 + 32 = 47 KB. Doing this add and this check on every access, while the program runs, is called **dynamic relocation**.
 
 When the check fails, the hardware raises an **exception**: it stops the program and hands control to the OS, which usually ends the program. Last week's word for "hands control to the OS" was a **trap**, and a system call reaches the kernel the same way. The **shell** (the program that reads the commands you type) reports such a death as **Segmentation fault**. The text under box 1 lists the OS's duties: it keeps a free list of slots (a **free list** is a list of the pieces of memory not in use), loads the two registers before a process runs, saves them on every **context switch** (the moment the OS stops one process and starts another), and can move a process by copying it and changing one number.
 
 Box 2 is the complaint. The whole address space moves as one block, so the free middle between heap and stack sits inside that block in physical memory, taking real RAM while holding nothing. Waste inside a piece that was handed out whole is called **internal fragmentation**. And in our own numbers it is worse than waste. The address space measured on the Ubuntu machine was 128 TiB, and the machine has 7.8 GiB. 128 TiB is 128 × 1024 = 131,072 GiB. Linux reports the machine's RAM as 8,225,104 KB, which is 8,225,104 ÷ 1,048,576 = 7.844 GiB (a GiB is 1024 × 1024 = 1,048,576 KB). And 131,072 ÷ 7.844 is about 16,710. Check it the other way: 16,710 × 7.844 is about 131,073 GiB. One base and one bound cannot even load that process.
 
 <figure markdown="1">
-![Figure 5. What last week's second class settled, and what it left open. From slide 4.](figs/lastweek_c2_cards.png){width=58%}
-<figcaption markdown="1">Figure 5. What last week's second class settled, and what it left open. From slide 4.</figcaption>
+![Figure 0.5. What last week's second class settled, and what it left open. From slide 4.](figs/lastweek_c2_cards.png){width=58%}
+<figcaption markdown="1">Figure 0.5. What last week's second class settled, and what it left open. From slide 4.</figcaption>
 </figure>
 
 Settled: translation on every access, with one add and one compare in hardware, passing transparency, efficiency and protection. Left open: one pair of registers for the whole address space is too coarse. The process has to move in pieces. That is where this week starts.
@@ -80,11 +82,11 @@ Settled: translation on every access, with one add and one compare in hardware, 
 #### Last week's words, in one place
 
 <figure markdown="1">
-![Figure 6. Last week's words, each in one sentence, with the textbook section that defines it. From slide 5.](figs/lastweek_words.png){width=100%}
-<figcaption markdown="1">Figure 6. Last week's words, each in one sentence, with the textbook section that defines it. From slide 5.</figcaption>
+![Figure 0.6. Last week's words, each in one sentence, with the textbook section that defines it. From slide 5.](figs/lastweek_words.png){width=100%}
+<figcaption markdown="1">Figure 0.6. Last week's words, each in one sentence, with the textbook section that defines it. From slide 5.</figcaption>
 </figure>
 
-Figure 6 is the list from the slides. The left column is the first class and the right column the second; the section numbers in brackets are the textbook's. Two of the words come back this week in a new form. The free list returns as the central data structure of the first class. And internal fragmentation, waste inside a piece, gets a sibling: external fragmentation, waste between pieces, which [Section 2.1](class-1.md#sec-2-1) defines.
+Figure 0.6 is the list from the slides. The left column is the first class and the right column the second; the section numbers in brackets are the textbook's. Two of the words come back this week in a new form. The free list returns as the central data structure of the first class. And internal fragmentation, waste inside a piece, gets a sibling: external fragmentation, waste between pieces, which [Section 2.1](class-1.md#sec-2-1) defines.
 
 #### What last week settled, and what this week answers
 

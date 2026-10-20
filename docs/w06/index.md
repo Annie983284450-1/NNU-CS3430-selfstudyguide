@@ -2,15 +2,15 @@
 
 *Self-study guide · COMP3430 Operating Systems*
 
-## What to read {#source}
+## Where this guide comes from {#source}
 
-This guide covers chapters 7 and 8 of the textbook (OSTEP: *Operating Systems: Three Easy Pieces*). Read chapter 7, Scheduling: Introduction (sections 7.1 to 7.10), with the first class, and chapter 8, Scheduling: The Multi-Level Feedback Queue (sections 8.1 to 8.6), with the second class.
+This guide follows *Operating Systems: Three Easy Pieces* (OSTEP) by Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau, which the authors publish free at [https://pages.cs.wisc.edu/~remzi/OSTEP](https://pages.cs.wisc.edu/~remzi/OSTEP/). The figures and examples credited to the textbook are theirs. The code the guide reads is from [xv6](https://github.com/mit-pdos/xv6-riscv), the teaching operating system from MIT, and its [xv6 book](https://mit-pdos.github.io/xv6-riscv-book/).
 
-## How to read this guide {#contents}
+Read with this week:
 
-The label in brackets says what kind of section it is: a **Problem** section states what we have, where it breaks and what we need, before any fix; a **Concept** section explains the idea that answers it; a **Worked example** runs the idea on small numbers; a **Real kernel** section reads the xv6 code; a **Real machine** section reads an output captured on a real computer; **Check yourself** and **Your turn** are for you to do before reading on; **Extra** sections are optional and go deeper on a question already answered.
-
-The navigation on the left lists every class and chapter of this week; the table of contents on the right lists the sections of the page you are on. Every section number in the text ("Section 3.5", "Extra 4") is a link.
+- [OSTEP chapter 7. Scheduling: Introduction](https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf)
+- [OSTEP chapter 8. Scheduling: The Multi-Level Feedback Queue](https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)
+- The xv6 source.
 
 ## Part 0. Where we are, and what this week stands on {#part-0}
 
@@ -21,17 +21,17 @@ A few words first. The **operating system** (the **OS**) is the program that run
 #### The course map
 
 <figure markdown="1">
-![Figure 1. The memory unit closed (left), the mechanism the processes week built and the hole it left (right top), and the course map with this week marked (right bottom).](figs/recap_c1.svg){width=90%}
-<figcaption markdown="1">Figure 1. The memory unit closed (left), the mechanism the processes week built and the hole it left (right top), and the course map with this week marked (right bottom).</figcaption>
+![Figure 0.1. The memory unit closed (left), the mechanism the processes week built and the hole it left (right top), and the course map with this week marked (right bottom).](figs/recap_c1.svg){width=90%}
+<figcaption markdown="1">Figure 0.1. The memory unit closed (left), the mechanism the processes week built and the hole it left (right top), and the course map with this week marked (right bottom).</figcaption>
 </figure>
 
-An operating system has three big jobs, and the course takes them in order: **virtualization** (one computer pretends to be many, so every program behaves as if it had its own CPU and its own memory), **concurrency** (many things at once without chaos) and **persistence** (data that survives the power going off). Virtualization has three parts: the CPU seen from a process (the first two weeks), memory (the three weeks before this one), and the CPU again, which is this week. The bottom right of Figure 1 marks it.
+An operating system has three big jobs, and the course takes them in order: **virtualization** (one computer pretends to be many, so every program behaves as if it had its own CPU and its own memory), **concurrency** (many things at once without chaos) and **persistence** (data that survives the power going off). Virtualization has three parts: the CPU seen from a process (the first two weeks), memory (the three weeks before this one), and the CPU again, which is this week. The bottom right of Figure 0.1 marks it.
 
-The left column of Figure 1 is the memory unit in five steps, and you only need its last line: memory is done. A program's memory is cut into **pages** (fixed-size pieces), a table says where each page is, a page can live on disk, and when memory is full the OS chooses a page to throw out. Only one piece of it comes back this week, the TLB (a small cache inside the processor; [Section 3.3](class-1.md#sec-3-3) says what it holds), in [Section 3.3](class-1.md#sec-3-3).
+The left column of Figure 0.1 is the memory unit in five steps, and you only need its last line: memory is done. A program's memory is cut into **pages** (fixed-size pieces), a table says where each page is, a page can live on disk, and when memory is full the OS chooses a page to throw out. Only one piece of it comes back this week, the TLB (a small cache inside the processor; [Section 3.3](class-1.md#sec-3-3) says what it holds), in [Section 3.3](class-1.md#sec-3-3).
 
 #### What the processes week built, and the hole it left
 
-The top right of Figure 1 is the picture this whole week stands on, so read it slowly. Process A is running on the CPU. A **timer interrupt** fires: a hardware clock forces the CPU to stop whatever program is running and jump into the kernel, many times a second, whether the program likes it or not. The kernel lands in a loop called the **scheduler**. The loop looks at the processes that are ready to run (B, C and D in the picture), picks one, and performs a **context switch**: it saves A's registers (the small set of values inside the CPU that describe exactly where A was) and loads the chosen process's registers, so that process continues from exactly where it had stopped. All of that is machinery, and it works.
+The top right of Figure 0.1 is the picture this whole week stands on, so read it slowly. Process A is running on the CPU. A **timer interrupt** fires: a hardware clock forces the CPU to stop whatever program is running and jump into the kernel, many times a second, whether the program likes it or not. The kernel lands in a loop called the **scheduler**. The loop looks at the processes that are ready to run (B, C and D in the picture), picks one, and performs a **context switch**: it saves A's registers (the small set of values inside the CPU that describe exactly where A was) and loads the chosen process's registers, so that process continues from exactly where it had stopped. All of that is machinery, and it works.
 
 Here is the hole. The loop picks a ready process. Any one. The processes week never said which one, and never said how long it should run before the loop picks again. That decision is not machinery; it is a rule, and the word for a rule like that is a **policy**. This week is about that policy.
 
