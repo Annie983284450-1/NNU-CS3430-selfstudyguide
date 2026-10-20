@@ -1,6 +1,6 @@
 # COMP3430 self-study guides
 
-These pages are the self-study guides for COMP3430 Operating Systems (NNU, Fall 2026), one guide per week. Each guide follows the slides of its week in order, with the same pictures, and it is written so that it can be read without the slides.
+These pages are the self-study guides for COMP3430 Operating Systems (NNU, Fall 2026), one guide per week. Each guide covers the two classes of its week in order and is written to be read on its own: every idea arrives with the problem it solves, every number is worked out on the page, and every program and capture is the real file.
 
 ## How a week is laid out
 

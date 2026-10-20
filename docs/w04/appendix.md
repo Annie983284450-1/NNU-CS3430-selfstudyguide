@@ -46,8 +46,8 @@ The code this week cuts numbers into pieces of bits and glues pieces back togeth
 
 | written | name | what it does | example |
 |---|---|---|---|
-| `x >> n` | shift right | drop the lowest n bits; the rest slide right | 110000 >> 4 = 11 |
-| `x << n` | shift left | append n zero bits on the right | 010 << 4 = 0100000 |
+| `x >> n` | shift right | the bits slide right n places; the n that fall off the end are gone, and n zeros come in at the left | in 6 bits, 110000 >> 4 = 000011, which is 3 |
+| `x << n` | shift left | the bits slide left n places; n zeros come in at the right | in 7 bits, 0000010 << 4 = 0100000 |
 | `x & m` | and, with a mask | keep only the bits where m has a 1; every other bit becomes 0 | 110010 & 001111 = 000010 |
 | `x \| y` | or | a bit is 1 if it is 1 in x or in y or both | 0100000 \| 0000010 = 0100010 |
 

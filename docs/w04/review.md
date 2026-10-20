@@ -91,3 +91,105 @@ Do these on paper, with the figures of the sections they name beside you. Write 
 **Answer 14.** On the stack page, items are pushed toward lower addresses, and xv6 never gives the stack a second page. When a program calls functions deeper and deeper, its **stack pointer** (the register that holds the address of the newest item on the stack) moves from near 0x3fff, the top of the stack page, toward 0x3000, its lowest address. A program that pushes past the bottom of its one stack page does not get more stack. If it goes below 0x3000, the next byte it writes is inside the page at 0x2000. That page has a valid entry but no u bit, so a user program may not touch it. The hardware traps on the first such write, and the OS can see exactly what happened and stop the program. If the page were mapped `rw-u---` instead, the write would succeed silently. The overflowing stack would scribble over whatever was in that page, and the damage would show up later as a mysterious wrong answer or a crash far from the real cause. (Worse, the page below the guard, at 0x1000, holds the program's data.) The guard page turns a silent corruption into an immediate, precise trap. (In xv6 the guard page does have a frame behind it, 0x87f44000, because the kernel allocates the stack and the guard together and then clears the u bit on the guard.)
 
 **Answer 15.** A model answer. Without an ASID, a TLB entry says only "VPN 10 is in frame 100"; it does not say whose VPN 10 that is. After a switch from P1 to P2, P2's own VPN 10 is in frame 170, but the TLB could still answer "frame 100" and let P2 read P1's memory. The hardware cannot tell such entries apart, so they must never be in the TLB together. Therefore the TLB is flushed on every context switch: the OS runs a privileged instruction, or the hardware does it when the base register changes, and every TLB valid bit becomes 0. The cost is that each process starts with an empty TLB every time it runs, and misses again on every page it uses; the more often the OS switches, the more of those misses it pays. xv6 pays exactly this cost, and more often than a context switch requires, because it flushes on every trap and every return.
+
+## Your questions from Assignment 1, answered {#student-questions}
+
+These are the questions you sent in Assignment 1, in the order the guide covers them. Each one names the section to reread, then gives the answer.
+
+### Q1. "The guide says 110000 >> 4 is 11. I expected 000011, which is 3. Why does it say 11?" {#sq-1}
+
+Where in the guide: [Appendix A, the four bit operators](appendix.md#appendix-a-operators), and [Extra 13](class-2.md#extra-13).
+
+Your answer is the right one. The 11 was binary 11, which is 3; written with its full width it is 000011. A register has a fixed width, and a shift moves the bits inside that width: the bits that fall off one end are gone, and zeros come in at the other end. In six bits, 110000 >> 4 = 000011 = 3, and 000010 << 4 = 100000. The operator tables now write the examples this way.
+
+### Q2. "In the address-21 example the page number is 2 bits but the frame number is 3 bits, so the physical address is 7 bits long when the virtual one was 6. Why are the widths different? Is the first part in a different base?" {#sq-2}
+
+Where in the guide: [Section 4.3](class-2.md#sec-4-3), step 3.
+
+Every digit there is binary. The widths differ because the two address spaces are different sizes. The process's address space is 64 bytes, 2^6, so a virtual address is 6 bits: 2 for the page (four pages) and 4 for the offset (sixteen bytes per page). Physical memory in the example is 128 bytes, 2^7, eight frames, so a frame number takes 3 bits and a physical address is 3 + 4 = 7 bits. The offset keeps the same width on both sides, because a page and a frame are the same size; only the "which piece" part changes, from "which of 4 pages" to "which of 8 frames". Real machines do the same. On the RISC-V that xv6 runs on, a virtual address is 39 bits (27 of page number plus 12 of offset) and a physical address is up to 56 bits (44 of frame number plus the same 12), which is why the PPN field of a page-table entry in [Section 5.2](class-2.md#sec-5-2) is 44 bits wide.
+
+### Q3. "Reading the page-table entry is itself a memory access. Why does that access not need translating too? Would it not go on forever?" {#sq-3}
+
+Where in the guide: [Section 5.1](class-2.md#sec-5-1), and the satp value in [Section 5.3](class-2.md#sec-5-3).
+
+satp (the PTBR) holds a physical address, not a virtual one. In [Section 5.3](class-2.md#sec-5-3), satp = 0x8000000000087f33, so the table starts at physical address 0x87f33000. The MMU computes the row's position from that physical base and reads memory at a physical address directly, with no translation, so nothing loops. The frame number stored inside each entry is physical too. The rule: the OS writes only physical addresses into satp and into the table, and the hardware translates only the addresses the program itself uses. Next week, when the flat table becomes a tree, each level is reached the same way, by a physical address stored in the level above.
+
+### Q4. "Why is the code page's entry read three times per trip around the loop? And what decides which memory references are 'wanted' and which are 'overhead'?" {#sq-4}
+
+Where in the guide: [Section 6.1](class-2.md#sec-6-1), and [Extra 20](class-2.md#extra-20).
+
+A reference is wanted if the program's own instruction caused it: fetching the instruction from memory, or the load or store that instruction performs. A reference is overhead if it exists only so the hardware can read a page-table entry. The code page's entry is read three times because the loop body is three instructions, each instruction fetch is its own memory access, and without a TLB the hardware translates every access from scratch. It keeps no memory of the translation it did a moment ago, so it goes back to the table for the second instruction and again for the third, even though the answer is the same each time. Once the TLB holds the code page's translation, those three table reads become three hits and disappear.
+
+### Q5. "What exactly is a TLB and where does it sit? Why is it 'fully associative', and how can the hardware check every slot at once?" {#sq-5}
+
+Where in the guide: [Section 6.2](class-2.md#sec-6-2).
+
+A TLB is a small cache inside the MMU that stores recent translations, each one a VPN, the PFN it maps to, and the permission bits, so a hit skips the page-table read entirely. Fully associative means a translation may sit in any slot; there is no rule that VPN 7 must go in slot 7. Because of that, a lookup has to ask every slot. The hardware gives every slot its own small comparing circuit. The VPN being looked up is sent to all slots at the same time, each comparator checks its stored VPN against it in parallel, and the one that matches outputs its PFN. Memory searched by content this way is called content-addressable memory. It is fast, and it is also why a TLB stays small: a thousand slots means a thousand comparators, all drawing power and chip area at once.
+
+### Q6. "What is the difference between a TLB miss and a page fault? Both seem to be failures to access memory." {#sq-6}
+
+Where in the guide: end of [Section 6.3](class-2.md#sec-6-3); page faults in [Section 5.3](class-2.md#sec-5-3) and [Extra 18](class-2.md#extra-18).
+
+A TLB miss means the cache does not hold the translation. The hardware reads the entry from the page table in memory, puts it into the TLB, and retries the instruction. The program never finds out; the cost is one extra memory reference. A miss is not an error; it happens the first time any page is touched. A page fault means the page table itself says no: the entry's valid bit is 0, or the access is a kind the entry forbids, such as a write to a read-only page or a user access to a kernel-only page. The hardware stops the instruction and traps into the OS, which decides what to do: kill the process, as in [Section 5.3](class-2.md#sec-5-3), or, next week, fetch the page from disk and retry. A page fault is always preceded by a TLB miss, because the entry has to be read before it can be seen to be bad; but almost every miss ends in a hit on the retry, not in a fault.
+
+### Q7. "How does the TLB decide which translation to remove when it is full?" {#sq-7}
+
+Where in the guide: [Extra 23](class-2.md#extra-23), card 1.
+
+That is the replacement policy, built into the hardware. The two common choices are LRU, least recently used, which throws out the entry unused for the longest time and bets on temporal locality; and random, which is simpler to build and avoids a bad case of LRU: a loop that touches one more page than the TLB has slots makes LRU miss on every access, while random still hits some of the time.
+
+### Q8. "The context-switch part has too much happening at once: caching, address spaces, kernel and user tables, fences. It is hard to hold it all." {#sq-8}
+
+Where in the guide: [Extra 22](class-2.md#extra-22) first, then [Section 6.5](class-2.md#sec-6-5), then [Extra 21](class-2.md#extra-21).
+
+Take it in four layers, one at a time.
+
+Layer 1, the problem. There is one TLB. Process P1 has virtual page 10 in frame 100; process P2 has virtual page 10 in frame 170. When the OS switches from P1 to P2, the TLB still holds P1's entry. If P2 touches its page 10, the TLB may answer "frame 100", and P2 reads P1's memory.
+
+Layer 2, the two fixes. Fix 1: empty the TLB on every switch. Safe, but every process starts cold. Fix 2: stamp every TLB entry with a process number, the ASID, and only accept entries whose stamp matches the running process. Nothing is thrown away.
+
+Layer 3, what xv6 does. Fix 1. The instruction `sfence.vma zero, zero` next to every write of satp is the flush.
+
+Layer 4, an xv6 detail you can leave for a second reading. xv6 also has a page table for the kernel itself, and it switches to that table on every trap and back on every return. So xv6 flushes on every trip into and out of the kernel, not only when the process changes. Simple, and slow, and the reason real kernels use Fix 2.
+
+[Extra 22](class-2.md#extra-22) is layers 1 to 3. [Extra 21](class-2.md#extra-21) is layer 4.
+
+### Q9. "How does the TLB use the ASID during a lookup? Why does xv6 leave it at 0? What happens when the OS runs out of ASIDs?" {#sq-9}
+
+Where in the guide: [Extra 22](class-2.md#extra-22), [Section 6.5](class-2.md#sec-6-5), and the global bit in [Extra 23](class-2.md#extra-23).
+
+The lookup. With ASIDs, each TLB entry stores a pair, ASID and VPN, with its PFN. The comparators of Q5 compare both fields: the entry's VPN must equal the VPN being looked up, and the entry's ASID must equal the ASID of the running process, which the OS has written into satp. An entry with another process's ASID simply does not match. It is not deleted; it stays in the TLB for when that process runs again. One exception is the global bit G: an entry marked global matches regardless of ASID, which is how kernel pages shared by every process can use one entry.
+
+Why xv6 leaves it at 0. `MAKE_SATP` never sets bits 44 to 59, and that is a design choice. Using ASIDs means the kernel must hand out numbers, remember which process holds which, write the right one into satp on every switch, and flush selectively when a process exits. xv6 is a teaching kernel and does the simplest correct thing: every process has ASID 0, and the TLB is flushed on every switch.
+
+Running out. RISC-V reserves 16 bits in satp, so up to 65,536 ASIDs, though a particular chip may implement fewer. Linux keeps a generation counter. When the numbers are used up, it flushes the whole TLB once, starts a new generation, and hands the numbers out again from the beginning. So the fallback is Fix 1, applied once in a long while instead of on every switch.
+
+### Q10. "Why does accessing the same data in a different order cost so much more time? Is it really the TLB?" {#sq-10}
+
+Where in the guide: [Extra 24](class-2.md#extra-24).
+
+Two caches miss at once in the column walk. The TLB misses because each step moves 16 KB, to a new page, and one column visits 4096 pages, more than the roughly 2000 translations the TLB holds, so by the time the next column comes back the entries are gone. The data cache misses too. The processor's data cache holds recent 64-byte lines of memory. The row walk reads 16 integers out of each line it fetches; the column walk reads one integer per line and then jumps 16 KB, so every access fetches a fresh line, and a 16 KB stride keeps landing on the same few cache sets, which pushes lines out faster still. The `tlb2.c` experiment is built to isolate the TLB (its stride inside each page is chosen so the data cache does not interfere), and there a miss costs a factor of about five. The 15× of `matrix.c` is both effects together. The lesson is the same for both: walk memory in the order it is laid out.
+
+### Q11. "What do the attr letters in the info mem output mean? Why are a and d set by the hardware? Why do the heap pages have no a bit if the kernel zeroed them? Why does the guard page work just by missing the u bit?" {#sq-11}
+
+Where in the guide: [Section 5.3](class-2.md#sec-5-3), [Section 5.2](class-2.md#sec-5-2), and [Answer 14](#answers).
+
+The letters are the flag bits in the order r w x u g a d, one letter per bit that is 1 and a dash for each bit that is 0. There is no letter for the valid bit, because `info mem` prints only valid entries.
+
+a and d are set by the hardware because only the hardware sees every access. Telling the OS about each read and write would cost a trap per access. So the MMU sets a on the first read and d on the first write, and the OS reads the bits later, when it needs to choose a page to push out to disk (next week).
+
+The heap pages have no a bit because the a bit belongs to the entry, not the frame. The kernel's `memset` did write zeros into those frames, but through the kernel's own page table, which maps all of RAM. The process's three entries were never used for that write, so their a bits stayed 0. The first time the process itself touches a heap page, its entry gets the a bit.
+
+The guard page works because the hardware checks the u bit on every access a user program makes, in the same step where it checks the valid bit. A page without u is as untouchable for the program as a page with no entry at all, and the trap is the same trap: scause 13 for a load, 15 for a store. The only difference is that the guard page has a frame behind it, which an OS could save by leaving the entry invalid instead.
+
+### Q12. "The ten flag bits of a page-table entry do not line up with the hex digits." {#sq-12}
+
+Where in the guide: [Answer 13](#answers), and the macros in [Section 5.2](class-2.md#sec-5-2).
+
+They do not, because 10 is not a multiple of 4. In code, let the shifts do it: `PTE_FLAGS(pte)` is `pte & 0x3FF`, and `PTE2PA(pte)` is `(pte >> 10) << 12`. On paper, convert only the last three hex digits to binary (12 bits), take the low 10 as the flags, and carry the top 2 of those 12 into the frame number. Answer 13 walks it step by step. Writing 0x3FF out once as 11 1111 1111 helps; after that the pattern is familiar.
+
+### Q13. "A practical example of how the TLB handles consecutive memory accesses would help." {#sq-13}
+
+Where in the guide: [Section 6.4](class-2.md#sec-6-4), [Exercise 10](#exercises) and [Answer 10](#answers).
+
+[Section 6.4](class-2.md#sec-6-4) sets up ten array elements on 16-byte pages, Exercise 10 asks you to mark each access hit or miss, and Answer 10 walks all ten with a drawing. It is optional, but it is the shortest route to seeing why locality matters. Do it with a pencil; it takes ten minutes.

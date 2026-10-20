@@ -185,6 +185,31 @@ def rewrite_anchor_links(text, ids, this_page):
     return re.sub(r"\]\(#([A-Za-z0-9_-]+)\)", repl, text)
 
 
+FENCE = re.compile(r"^```\{([^}]*)\}\s*$")
+
+
+def fence_for_site(line):
+    """pandoc's fence attributes -> Material's.
+    ```{.c .numberLines startFrom="437" hl="438 440"}  ->  ```c linenums="437" hl_lines="2 4"
+    (hl_lines counts from the first line of the block; hl in the guide uses the file's own numbers).
+    ```{.text}  ->  ```text"""
+    m = FENCE.match(line)
+    if not m:
+        return line
+    attrs = m.group(1)
+    classes = re.findall(r"\.([A-Za-z0-9_-]+)", attrs)
+    kv = dict(re.findall(r'([A-Za-z]+)="([^"]*)"', attrs))
+    lang = next((c for c in classes if c != "numberLines"), "text")
+    parts = ["```" + lang]
+    start = int(kv.get("startFrom", "1"))
+    if "numberLines" in classes:
+        parts.append(f'linenums="{start}"')
+    if "hl" in kv:
+        rel = [str(int(n) - start + 1) for n in kv["hl"].split()]
+        parts.append('hl_lines="' + " ".join(rel) + '"')
+    return " ".join(parts)
+
+
 def badge_heading(level, text, hid):
     plain = text
     m = LABEL.search(text)
@@ -223,6 +248,8 @@ def convert_page(key, title, lines, ids, meta, week, legend):
     while i < len(lines):
         line = lines[i]
         if line.startswith("```"):
+            if not in_fence:
+                line = fence_for_site(line)
             in_fence = not in_fence
             out.append(("    " if in_listing else "") + line)
             i += 1

@@ -30,3 +30,10 @@
 .md-grid { max-width: 72rem; }
 .md-typeset strong { font-weight: 600; }
 .md-typeset .admonition.note, .md-typeset details.note { font-size: .74rem; }
+
+/* native code listings (10-19): the lead line above a block, the line-number gutter, highlighted lines */
+.md-typeset pre > code { font-size: .72rem; line-height: 1.45; }
+.md-typeset .highlight .linenos, .md-typeset .highlight [data-linenos]::before { color: var(--md-default-fg-color--lighter); }
+.md-typeset .highlight .hll { background-color: rgba(255, 213, 79, .25); }
+[data-md-color-scheme="slate"] .md-typeset .highlight .hll { background-color: rgba(255, 213, 79, .18); }
+.md-typeset figure img[src$=".svg"] { border: none; background: #fff; padding: .4rem; }

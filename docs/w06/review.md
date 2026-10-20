@@ -18,13 +18,13 @@ Try each one on paper before looking at the answers.
 
 7. The switch costs 1.5 µs on the Ubuntu machine. What share of the CPU is lost to switching with a 2 ms slice? With a 20 ms slice? Give both as percentages.
 
-8. Read the capture in Figure 8 (batch_fifo.out). If the shell had run C, A, B in that order, what would each job's turnaround time have been, and what would the average be?
+8. Read the capture batch_fifo.out in [Section 1.4](class-1.md#sec-1-4). If the shell had run C, A, B in that order, what would each job's turnaround time have been, and what would the average be?
 
 9. A 25 ms job enters a 3-queue MLFQ with 10 ms slices and the first version of the rules (3, 4a, 4b) while a long job sits on Q0. On which queue is it at time 5, at time 15, and when it finishes? When does it finish?
 
-10. In the trace of Figure 33 (the starvation trace), suppose a boost every 50 ms instead of 100. How much CPU would A get between 100 and 200?
+10. In the trace of Figure 24 (the starvation trace), suppose a boost every 50 ms instead of 100. How much CPU would A get between 100 and 200?
 
-11. Two jobs on one core, nice 0 and nice 5. Using the weight table in Figure 40, what share does each get? Check the table's own column.
+11. Two jobs on one core, nice 0 and nice 5. Using the weight table in [Section 7.2](class-2.md#sec-7-2), what share does each get? Check the table's own column.
 
 12. In your own words: why can no scheduling rule win both turnaround time and response time, and what does MLFQ do about it?
 
