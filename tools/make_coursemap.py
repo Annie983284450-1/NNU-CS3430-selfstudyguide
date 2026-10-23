@@ -1,6 +1,7 @@
 """Draw the clickable course map as inline SVG for the home page.
 
-Content map, not a calendar: root -> the three pieces -> weeks -> the two classes of each week.
+Content map, not a calendar: root -> the three pieces -> weeks -> the two classes of each week,
+and on the right the labs (added 10-23), each joined by teal lines to the theory classes it practices.
 Every node that has a page is an <a href>; weeks not yet on the site are drawn grey without a link.
 Dashed arrows carry the question that leads from one week to the next.
     python3 make_coursemap.py > docs/assets/coursemap.svg   (also written into docs/index.md by the caller)
@@ -65,17 +66,32 @@ PIECES = [
     ]),
 ]
 
+# The labs, right-hand column (10-23). Each lab: (title, subtitle, page or None if not on the site yet,
+# [(week key, class number 1 or 2), ...] = the theory classes it practices). A lab is drawn level with the
+# middle of its classes; labs not on the site are grey, like weeks not written yet.
+LABS = [
+    ("Lab 0 · setup", "build and boot xv6", None, [("w01", 1)]),
+    ("Lab 1 · util", "five programs on xv6", "labs/lab1/", [("w01", 2), ("w02", 1), ("w02", 2)]),
+    ("Lab 2 · syscall", "new system calls; a sandbox", "labs/lab2/", [("w02", 2), ("w03", 1), ("w03", 2), ("w04", 1)]),
+    ("Lab 3 · pgtbl", "page tables; superpages", None, [("w04", 2), ("w05", 1)]),
+    ("Lab 4 · lock", "locks inside the kernel", None, [("w08", 2)]),
+    ("Lab 5 · fs", "large files; symbolic links", None, [("w12", 2)]),
+]
+LAB_COLOR = "#00838f"
+
 INTRO = ("w01", "Week 1 · Introduction", "the three easy pieces", [
     ("What an OS is; a private CPU and a private memory", "1, 2", "w01/class-1/"),
     ("Concurrency and persistence: a lost update, a lost write", "2", "w01/class-2/")])
 
 # geometry (px)
 X_ROOT, X_PIECE, X_SUB, X_WEEK, X_CLASS = 12, 180, 352, 440, 680
-W_ROOT, W_PIECE, W_SUB, W_WEEK, W_CLASS = 150, 156, 72, 226, 448
+W_ROOT, W_PIECE, W_SUB, W_WEEK, W_CLASS = 150, 156, 72, 226, 410
+X_LAB, W_LAB, H_LAB, GAP_LAB = X_CLASS + W_CLASS + 56, 176, 40, 10
 H_CLASS, GAP_CLASS, GAP_WEEK, GAP_GROUP = 30, 5, 24, 30
 FONT = "Source Sans 3, Helvetica Neue, Arial, sans-serif"
 
 out = []
+class_pos = {}   # (week key, class number) -> (right edge x, middle y, on the site?)
 def esc(s): return html.escape(s, quote=True)
 def wrap(x1, y1, x2, y2, color="#9aa3b2", dash=False):
     mx = (x1 + x2) / 2
@@ -104,7 +120,8 @@ def draw_week(y, wk, color):
     live = any(c[2] for c in classes)
     node(X_WEEK, y, W_WEEK, h_week, title, sub, f"{key}/" if live else None, "#ffffff", color)
     cy = y
-    for ctitle, ch, href in classes:
+    for k, (ctitle, ch, href) in enumerate(classes, 1):
+        class_pos[(key, k)] = (X_CLASS + W_CLASS, cy + H_CLASS / 2, href is not None)
         label = f"{ctitle}"
         node(X_CLASS, cy, W_CLASS, H_CLASS, label, "", href, "#fbfcfe", color, bold=False, small=True)
         out.append(f'<text x="{X_CLASS+W_CLASS-8}" y="{cy+H_CLASS/2+4}" text-anchor="end" font-family="{FONT}" font-size="10" fill="{"#7a8291" if href else "#b0b6bf"}">OSTEP {esc(ch)}</text>')
@@ -132,7 +149,7 @@ for pname, psub, pcolor, subs in PIECES:
     y -= GAP_GROUP
     layout.append(("piece", (pname, psub, pcolor), py0, y - py0, sub_entries)); y += GAP_GROUP + 8
 H_TOTAL = y + 10
-W_TOTAL = X_CLASS + W_CLASS + 16
+W_TOTAL = X_LAB + W_LAB + 16
 
 # ---- draw
 root_y = H_TOTAL / 2 - 30
@@ -183,7 +200,27 @@ for a, b, label in ARROWS:
     ay, ah = week_box(a); by, bh = week_box(b)
     ym = (ay + ah + by) / 2
     out.append(f'<text x="{X_WEEK+W_WEEK/2}" y="{ym+3.5:.0f}" text-anchor="middle" font-family="{FONT}" font-size="9.5" font-style="italic" fill="#6b7482">\u2193 {esc(label)}</text>')
-svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W_TOTAL} {H_TOTAL:.0f}" class="cmap" role="img" aria-label="Course map: the three pieces of operating systems and the weeks under each, each node a link to its page">\n'
+# ---- the labs column: place each lab level with the middle of its classes, then push apart overlaps
+lab_rows = []
+for lt, lsub, lhref, links in LABS:
+    ys = [class_pos[l][1] for l in links]
+    lab_rows.append([sum(ys) / len(ys) - H_LAB / 2, lt, lsub, lhref, links])
+lab_rows.sort(key=lambda r: r[0])
+for i in range(1, len(lab_rows)):
+    lab_rows[i][0] = max(lab_rows[i][0], lab_rows[i - 1][0] + H_LAB + GAP_LAB)
+out.append(f'<text x="{X_LAB}" y="34" font-family="{FONT}" font-size="12" font-weight="700" letter-spacing=".06em" fill="{LAB_COLOR}">LABS</text>')
+out.append(f'<text x="{X_LAB + 38}" y="34" font-family="{FONT}" font-size="10" fill="#5b6675">practice on xv6</text>')
+for ly, lt, lsub, lhref, links in lab_rows:
+    for l in links:
+        cx, cy, _ = class_pos[l]
+        mx = (cx + X_LAB) / 2
+        live = lhref is not None
+        out.append(f'<path d="M{cx:.0f},{cy:.0f} C{mx:.0f},{cy:.0f} {mx:.0f},{ly + H_LAB / 2:.0f} {X_LAB},{ly + H_LAB / 2:.0f}" fill="none" '
+                   f'stroke="{LAB_COLOR if live else "#c9ced6"}" stroke-width="1.4" stroke-dasharray="4 3" opacity="{0.85 if live else 1}"/>')
+for ly, lt, lsub, lhref, links in lab_rows:
+    node(X_LAB, int(ly), W_LAB, H_LAB, lt, lsub, lhref, "#f2fafa", LAB_COLOR)
+
+svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W_TOTAL} {H_TOTAL:.0f}" class="cmap" role="img" aria-label="Course map: the three pieces of operating systems and the weeks under each, and the labs joined to the classes they practice; each node a link to its page">\n'
        f'<style>.cmap .cmap-link rect{{transition:filter .15s}} .cmap .cmap-link:hover rect{{stroke-width:2.4;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}} .cmap .cmap-link:hover text{{text-decoration:underline}}</style>\n'
        + f'<rect x="0" y="0" width="{W_TOTAL}" height="{H_TOTAL:.0f}" fill="#ffffff"/>\n' + "\n".join(out) + "\n</svg>")
 print(svg)

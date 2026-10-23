@@ -1,17 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1144 1366" class="cmap" role="img" aria-label="Course map: the three pieces of operating systems and the weeks under each, each node a link to its page">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1338 1366" class="cmap" role="img" aria-label="Course map: the three pieces of operating systems and the weeks under each, and the labs joined to the classes they practice; each node a link to its page" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo4MDVlM2Q0MC04MTRiLTQxNDQtODY4Mi1kYjU4N2NhZGNmYzIAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaEeVnRXC9cMl7ysbRBh+PkoAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDpmNDU4MDVkZi1hY2ZiLTRiZmUtODYzYS1mMjEwMzA1YmQzYjdscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoGSHp4oZgKRliCVg8kzYDZwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggu2ymdKt65cyZXfPvomDCUcGYtrLGtIUwRaE9k9QoW7ikZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaMJ0FuQmoNvXGF6PUUrlYYQAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIFTssXyJhW1yZwC65czU2VNU5qIwzv2NizY0pda5fLbnZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GQE/Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjgwNWUzZDQwLTgxNGItNDE0NC04NjgyLWRiNTg3Y2FkY2ZjMi9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjI5NmI0ODRhLTNmOWUtNDI0OS04MGVhLWVjZjQ0ZTU2NGMzZnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCC7bKZ0q3rlzJld8++iYMJRwZi2ssa0hTBFoT2T1ChbuKJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggBvx6tcXLrDkcnh/K+mcoCjpewkxl1hsi/wkBs47b/P6iY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggOaua7A3WUmd3KIKNPJnGeVPRdLWhv3E/BxpNLUFbNUh0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQF4ewIVezFJ9khdJz3gsTquWE1pPO7oHiKsCdf5fgqMTaLUpOfeZuGtX+1vZAVmjKoZHkDgfF20pm7cv1GAdZU0=</c2pa:manifest></metadata>
 <style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.4;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="1144" height="1366" fill="#ffffff"/>
+<rect x="0" y="0" width="1338" height="1366" fill="#ffffff"/>
 <path d="M162,683 C301,683 301,88 440,88" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <a href="w01/" class="cmap-link"><title>Week 1 · Introduction</title><rect x="440" y="56" width="226" height="65" rx="7" fill="#ffffff" stroke="#555e6b" stroke-width="1.4"/>
 <text x="451" y="71" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 1 · Introduction</text>
 <text x="451" y="85" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">the three easy pieces</text></a>
-<a href="w01/class-1/" class="cmap-link"><title>What an OS is; a private CPU and a private memory</title><rect x="680" y="56" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#555e6b" stroke-width="1.4"/>
+<a href="w01/class-1/" class="cmap-link"><title>What an OS is; a private CPU and a private memory</title><rect x="680" y="56" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#555e6b" stroke-width="1.4"/>
 <text x="691" y="75.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">What an OS is; a private CPU and a private memory</text></a>
-<text x="1120" y="75.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 1, 2</text>
+<text x="1082" y="75.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 1, 2</text>
 <path d="M666,88 C673,88 673,71 680,71" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<a href="w01/class-2/" class="cmap-link"><title>Concurrency and persistence: a lost update, a lost write</title><rect x="680" y="91" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#555e6b" stroke-width="1.4"/>
+<a href="w01/class-2/" class="cmap-link"><title>Concurrency and persistence: a lost update, a lost write</title><rect x="680" y="91" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#555e6b" stroke-width="1.4"/>
 <text x="691" y="110.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Concurrency and persistence: a lost update, a lost write</text></a>
-<text x="1120" y="110.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 2</text>
+<text x="1082" y="110.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 2</text>
 <path d="M666,88 C673,88 673,106 680,106" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M162,683 C171,683 171,409 180,409" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <rect x="180" y="387" width="156" height="44" rx="8" fill="#2f3e9e"/>
@@ -24,37 +24,37 @@
 <a href="w02/" class="cmap-link"><title>Week 2 · The process</title><rect x="440" y="151" width="226" height="65" rx="7" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="451" y="166" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 2 · The process</text>
 <text x="451" y="180" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">fork, exec, wait; staying in control</text></a>
-<a href="w02/class-1/" class="cmap-link"><title>What a process is, how it is made, how it runs a program</title><rect x="680" y="151" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w02/class-1/" class="cmap-link"><title>What a process is, how it is made, how it runs a program</title><rect x="680" y="151" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="170.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">What a process is, how it is made, how it runs a program</text></a>
-<text x="1120" y="170.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 4, 5</text>
+<text x="1082" y="170.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 4, 5</text>
 <path d="M666,184 C673,184 673,166 680,166" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<a href="w02/class-2/" class="cmap-link"><title>Limited direct execution: staying in control</title><rect x="680" y="186" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w02/class-2/" class="cmap-link"><title>Limited direct execution: staying in control</title><rect x="680" y="186" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="205.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Limited direct execution: staying in control</text></a>
-<text x="1120" y="205.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 6</text>
+<text x="1082" y="205.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 6</text>
 <path d="M666,184 C673,184 673,201 680,201" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M424,272 C432,272 432,272 440,272" fill="none" stroke="#2f3e9e" stroke-width="1.6"/>
 <a href="w06/" class="cmap-link"><title>Week 6 · Scheduling</title><rect x="440" y="240" width="226" height="65" rx="7" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="451" y="255" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 6 · Scheduling</text>
 <text x="451" y="269" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">who runs next, and for how long</text></a>
-<a href="w06/class-1/" class="cmap-link"><title>FIFO, SJF, STCF, round robin</title><rect x="680" y="240" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w06/class-1/" class="cmap-link"><title>FIFO, SJF, STCF, round robin</title><rect x="680" y="240" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="259.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">FIFO, SJF, STCF, round robin</text></a>
-<text x="1120" y="259.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 7</text>
+<text x="1082" y="259.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 7</text>
 <path d="M666,272 C673,272 673,255 680,255" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<a href="w06/class-2/" class="cmap-link"><title>The multi-level feedback queue</title><rect x="680" y="275" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w06/class-2/" class="cmap-link"><title>The multi-level feedback queue</title><rect x="680" y="275" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="294.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">The multi-level feedback queue</text></a>
-<text x="1120" y="294.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 8</text>
+<text x="1082" y="294.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 8</text>
 <path d="M666,272 C673,272 673,290 680,290" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M424,272 C432,272 432,362 440,362" fill="none" stroke="#2f3e9e" stroke-width="1.6"/>
 <a href="w07/" class="cmap-link"><title>Week 7 · Fair share, many CPUs</title><rect x="440" y="329" width="226" height="65" rx="7" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="451" y="344" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 7 · Fair share, many CPUs</text>
 <text x="451" y="358" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">proportional share; many CPUs</text></a>
-<a href="w07/class-1/#chapter-1" class="cmap-link"><title>Lottery and stride scheduling; Linux CFS</title><rect x="680" y="329" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w07/class-1/#chapter-1" class="cmap-link"><title>Lottery and stride scheduling; Linux CFS</title><rect x="680" y="329" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="348.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Lottery and stride scheduling; Linux CFS</text></a>
-<text x="1120" y="348.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 9</text>
+<text x="1082" y="348.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 9</text>
 <path d="M666,362 C673,362 673,344 680,344" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<a href="w07/class-1/#chapter-3" class="cmap-link"><title>Scheduling on more than one CPU</title><rect x="680" y="364" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w07/class-1/#chapter-3" class="cmap-link"><title>Scheduling on more than one CPU</title><rect x="680" y="364" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="383.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Scheduling on more than one CPU</text></a>
-<text x="1120" y="383.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 10</text>
+<text x="1082" y="383.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 10</text>
 <path d="M666,362 C673,362 673,379 680,379" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,409 C344,409 344,546 352,546" fill="none" stroke="#2f3e9e" stroke-width="1.6"/>
 <rect x="352" y="532" width="72" height="28" rx="14" fill="#fff" stroke="#2f3e9e" stroke-width="1.4"/>
@@ -63,37 +63,37 @@
 <a href="w03/" class="cmap-link"><title>Week 3 · Address spaces</title><rect x="440" y="424" width="226" height="65" rx="7" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="451" y="439" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 3 · Address spaces</text>
 <text x="451" y="453" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">the address space; malloc and free</text></a>
-<a href="w03/class-1/" class="cmap-link"><title>The address space, malloc and free</title><rect x="680" y="424" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w03/class-1/" class="cmap-link"><title>The address space, malloc and free</title><rect x="680" y="424" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="443.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">The address space, malloc and free</text></a>
-<text x="1120" y="443.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 13, 14</text>
+<text x="1082" y="443.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 13, 14</text>
 <path d="M666,456 C673,456 673,439 680,439" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<a href="w03/class-2/" class="cmap-link"><title>Address translation: base and bounds</title><rect x="680" y="459" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w03/class-2/" class="cmap-link"><title>Address translation: base and bounds</title><rect x="680" y="459" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="478.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Address translation: base and bounds</text></a>
-<text x="1120" y="478.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 15</text>
+<text x="1082" y="478.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 15</text>
 <path d="M666,456 C673,456 673,474 680,474" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M424,546 C432,546 432,546 440,546" fill="none" stroke="#2f3e9e" stroke-width="1.6"/>
 <a href="w04/" class="cmap-link"><title>Week 4 · Paging</title><rect x="440" y="513" width="226" height="65" rx="7" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="451" y="528" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 4 · Paging</text>
 <text x="451" y="542" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">chopping the address space into pieces</text></a>
-<a href="w04/class-1/" class="cmap-link"><title>Segments, and the holes they leave behind</title><rect x="680" y="513" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w04/class-1/" class="cmap-link"><title>Segments, and the holes they leave behind</title><rect x="680" y="513" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="532.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Segments, and the holes they leave behind</text></a>
-<text x="1120" y="532.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 16, 17</text>
+<text x="1082" y="532.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 16, 17</text>
 <path d="M666,546 C673,546 673,528 680,528" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<a href="w04/class-2/" class="cmap-link"><title>Pages, and the TLB that makes them affordable</title><rect x="680" y="548" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w04/class-2/" class="cmap-link"><title>Pages, and the TLB that makes them affordable</title><rect x="680" y="548" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="567.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Pages, and the TLB that makes them affordable</text></a>
-<text x="1120" y="567.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 18, 19</text>
+<text x="1082" y="567.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 18, 19</text>
 <path d="M666,546 C673,546 673,563 680,563" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M424,546 C432,546 432,634 440,634" fill="none" stroke="#2f3e9e" stroke-width="1.6"/>
 <a href="w05/" class="cmap-link"><title>Week 5 · Tables and swapping</title><rect x="440" y="602" width="226" height="65" rx="7" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="451" y="617" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 5 · Tables and swapping</text>
 <text x="451" y="631" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">page-table trees; swapping</text></a>
-<a href="w05/class-1/" class="cmap-link"><title>Multi-level page tables</title><rect x="680" y="602" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w05/class-1/" class="cmap-link"><title>Multi-level page tables</title><rect x="680" y="602" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="621.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Multi-level page tables</text></a>
-<text x="1120" y="621.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 20</text>
+<text x="1082" y="621.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 20</text>
 <path d="M666,634 C673,634 673,617 680,617" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<a href="w05/class-2/" class="cmap-link"><title>Swapping and page replacement</title><rect x="680" y="637" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<a href="w05/class-2/" class="cmap-link"><title>Swapping and page replacement</title><rect x="680" y="637" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
 <text x="691" y="656.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Swapping and page replacement</text></a>
-<text x="1120" y="656.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 21, 22</text>
+<text x="1082" y="656.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 21, 22</text>
 <path d="M666,634 C673,634 673,652 680,652" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M162,683 C171,683 171,826 180,826" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <rect x="180" y="804" width="156" height="44" rx="8" fill="#a0632a"/>
@@ -103,37 +103,37 @@
 <a href="w08/" class="cmap-link"><title>Week 8 · Threads and locks</title><rect x="440" y="705" width="226" height="65" rx="7" fill="#ffffff" stroke="#a0632a" stroke-width="1.4"/>
 <text x="451" y="720" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 8 · Threads and locks</text>
 <text x="451" y="734" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">one address space, many threads</text></a>
-<a href="w08/class-1/" class="cmap-link"><title>Threads and the thread API</title><rect x="680" y="705" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
+<a href="w08/class-1/" class="cmap-link"><title>Threads and the thread API</title><rect x="680" y="705" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
 <text x="691" y="724.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Threads and the thread API</text></a>
-<text x="1120" y="724.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 26, 27</text>
+<text x="1082" y="724.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 26, 27</text>
 <path d="M666,738 C673,738 673,720 680,720" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<a href="w08/class-2/" class="cmap-link"><title>Locks: building mutual exclusion</title><rect x="680" y="740" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
+<a href="w08/class-2/" class="cmap-link"><title>Locks: building mutual exclusion</title><rect x="680" y="740" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
 <text x="691" y="759.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Locks: building mutual exclusion</text></a>
-<text x="1120" y="759.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 28</text>
+<text x="1082" y="759.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 28</text>
 <path d="M666,738 C673,738 673,755 680,755" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,826 C388,826 388,826 440,826" fill="none" stroke="#a0632a" stroke-width="1.6"/>
 <g class="cmap-soon"><title>Week 9 · Coordination (coming later in the term)</title><rect x="440" y="794" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="451" y="809" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 9 · Coordination</text>
 <text x="451" y="823" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">condition variables; semaphores</text></g>
-<g class="cmap-soon"><title>Locked data structures; condition variables (coming later in the term)</title><rect x="680" y="794" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Locked data structures; condition variables (coming later in the term)</title><rect x="680" y="794" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="813.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Locked data structures; condition variables</text></g>
-<text x="1120" y="813.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 29, 30</text>
+<text x="1082" y="813.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 29, 30</text>
 <path d="M666,826 C673,826 673,809 680,809" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Semaphores (coming later in the term)</title><rect x="680" y="829" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Semaphores (coming later in the term)</title><rect x="680" y="829" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="848.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Semaphores</text></g>
-<text x="1120" y="848.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 31</text>
+<text x="1082" y="848.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 31</text>
 <path d="M666,826 C673,826 673,844 680,844" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,826 C388,826 388,916 440,916" fill="none" stroke="#a0632a" stroke-width="1.6"/>
 <g class="cmap-soon"><title>Week 10 · Concurrency bugs (coming later in the term)</title><rect x="440" y="883" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="451" y="898" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 10 · Concurrency bugs</text>
 <text x="451" y="912" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">deadlock and how to avoid it</text></g>
-<g class="cmap-soon"><title>Non-deadlock bugs; deadlock (coming later in the term)</title><rect x="680" y="883" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Non-deadlock bugs; deadlock (coming later in the term)</title><rect x="680" y="883" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="902.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Non-deadlock bugs; deadlock</text></g>
-<text x="1120" y="902.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 32</text>
+<text x="1082" y="902.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 32</text>
 <path d="M666,916 C673,916 673,898 680,898" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Event-based concurrency (coming later in the term)</title><rect x="680" y="918" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Event-based concurrency (coming later in the term)</title><rect x="680" y="918" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="937.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Event-based concurrency</text></g>
-<text x="1120" y="937.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 33</text>
+<text x="1082" y="937.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 33</text>
 <path d="M666,916 C673,916 673,933 680,933" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M162,683 C171,683 171,1152 180,1152" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <rect x="180" y="1130" width="156" height="44" rx="8" fill="#2a7a6b"/>
@@ -143,49 +143,49 @@
 <g class="cmap-soon"><title>Week 11 · Devices and disks (coming later in the term)</title><rect x="440" y="986" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="451" y="1001" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 11 · Devices and disks</text>
 <text x="451" y="1015" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">I/O devices; hard disk drives</text></g>
-<g class="cmap-soon"><title>I/O devices and drivers (coming later in the term)</title><rect x="680" y="986" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>I/O devices and drivers (coming later in the term)</title><rect x="680" y="986" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="1005.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">I/O devices and drivers</text></g>
-<text x="1120" y="1005.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 36</text>
+<text x="1082" y="1005.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 36</text>
 <path d="M666,1018 C673,1018 673,1001 680,1001" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Hard disk drives (coming later in the term)</title><rect x="680" y="1021" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Hard disk drives (coming later in the term)</title><rect x="680" y="1021" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="1040.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Hard disk drives</text></g>
-<text x="1120" y="1040.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 37</text>
+<text x="1082" y="1040.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 37</text>
 <path d="M666,1018 C673,1018 673,1036 680,1036" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,1152 C388,1152 388,1108 440,1108" fill="none" stroke="#2a7a6b" stroke-width="1.6"/>
 <g class="cmap-soon"><title>Week 12 · Files (coming later in the term)</title><rect x="440" y="1075" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="451" y="1090" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 12 · Files</text>
 <text x="451" y="1104" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">files, directories, inodes</text></g>
-<g class="cmap-soon"><title>Files and directories (coming later in the term)</title><rect x="680" y="1075" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Files and directories (coming later in the term)</title><rect x="680" y="1075" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="1094.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Files and directories</text></g>
-<text x="1120" y="1094.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 39</text>
+<text x="1082" y="1094.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 39</text>
 <path d="M666,1108 C673,1108 673,1090 680,1090" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>File-system implementation: inodes (coming later in the term)</title><rect x="680" y="1110" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>File-system implementation: inodes (coming later in the term)</title><rect x="680" y="1110" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="1129.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">File-system implementation: inodes</text></g>
-<text x="1120" y="1129.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 40</text>
+<text x="1082" y="1129.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 40</text>
 <path d="M666,1108 C673,1108 673,1125 680,1125" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,1152 C388,1152 388,1196 440,1196" fill="none" stroke="#2a7a6b" stroke-width="1.6"/>
 <g class="cmap-soon"><title>Week 13 · Fast and safe (coming later in the term)</title><rect x="440" y="1164" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="451" y="1179" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 13 · Fast and safe</text>
 <text x="451" y="1193" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">locality; crash consistency</text></g>
-<g class="cmap-soon"><title>The Fast File System (coming later in the term)</title><rect x="680" y="1164" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>The Fast File System (coming later in the term)</title><rect x="680" y="1164" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="1183.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">The Fast File System</text></g>
-<text x="1120" y="1183.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 41</text>
+<text x="1082" y="1183.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 41</text>
 <path d="M666,1196 C673,1196 673,1179 680,1179" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Crash consistency: fsck and journaling (coming later in the term)</title><rect x="680" y="1199" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Crash consistency: fsck and journaling (coming later in the term)</title><rect x="680" y="1199" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="1218.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Crash consistency: fsck and journaling</text></g>
-<text x="1120" y="1218.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 42</text>
+<text x="1082" y="1218.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 42</text>
 <path d="M666,1196 C673,1196 673,1214 680,1214" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,1152 C388,1152 388,1286 440,1286" fill="none" stroke="#2a7a6b" stroke-width="1.6"/>
 <g class="cmap-soon"><title>Week 14 · Logs and flash (coming later in the term)</title><rect x="440" y="1253" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="451" y="1268" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 14 · Logs and flash</text>
 <text x="451" y="1282" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">LFS; SSDs; data integrity</text></g>
-<g class="cmap-soon"><title>Log-structured file systems; flash SSDs (coming later in the term)</title><rect x="680" y="1253" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Log-structured file systems; flash SSDs (coming later in the term)</title><rect x="680" y="1253" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="1272.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Log-structured file systems; flash SSDs</text></g>
-<text x="1120" y="1272.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 43, 44</text>
+<text x="1082" y="1272.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 43, 44</text>
 <path d="M666,1286 C673,1286 673,1268 680,1268" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Data integrity and protection (coming later in the term)</title><rect x="680" y="1288" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<g class="cmap-soon"><title>Data integrity and protection (coming later in the term)</title><rect x="680" y="1288" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="691" y="1307.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Data integrity and protection</text></g>
-<text x="1120" y="1307.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 45</text>
+<text x="1082" y="1307.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 45</text>
 <path d="M666,1286 C673,1286 673,1303 680,1303" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <rect x="12" y="653" width="150" height="60" rx="10" fill="#1b2430"/>
 <text x="87.0" y="679" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Operating Systems</text>
@@ -196,4 +196,36 @@
 <text x="553.0" y="320" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-style="italic" fill="#6b7482">↓ fairness; more than one CPU</text>
 <text x="553.0" y="786" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-style="italic" fill="#6b7482">↓ waiting without spinning</text>
 <text x="553.0" y="874" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-style="italic" fill="#6b7482">↓ what goes wrong</text>
+<text x="1146" y="34" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".06em" fill="#00838f">LABS</text>
+<text x="1184" y="34" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">practice on xv6</text>
+<path d="M1090,71 C1118,71 1118,71 1146,71" fill="none" stroke="#c9ced6" stroke-width="1.4" stroke-dasharray="4 3" opacity="1"/>
+<path d="M1090,106 C1118,106 1118,158 1146,158" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,166 C1118,166 1118,158 1146,158" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,201 C1118,201 1118,158 1146,158" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,201 C1118,201 1118,410 1146,410" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,439 C1118,439 1118,410 1146,410" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,474 C1118,474 1118,410 1146,410" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,528 C1118,528 1118,410 1146,410" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,563 C1118,563 1118,590 1146,590" fill="none" stroke="#c9ced6" stroke-width="1.4" stroke-dasharray="4 3" opacity="1"/>
+<path d="M1090,617 C1118,617 1118,590 1146,590" fill="none" stroke="#c9ced6" stroke-width="1.4" stroke-dasharray="4 3" opacity="1"/>
+<path d="M1090,755 C1118,755 1118,755 1146,755" fill="none" stroke="#c9ced6" stroke-width="1.4" stroke-dasharray="4 3" opacity="1"/>
+<path d="M1090,1125 C1118,1125 1118,1125 1146,1125" fill="none" stroke="#c9ced6" stroke-width="1.4" stroke-dasharray="4 3" opacity="1"/>
+<g class="cmap-soon"><title>Lab 0 · setup (coming later in the term)</title><rect x="1146" y="51" width="176" height="40" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<text x="1157" y="66" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Lab 0 · setup</text>
+<text x="1157" y="80" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">build and boot xv6</text></g>
+<a href="labs/lab1/" class="cmap-link"><title>Lab 1 · util</title><rect x="1146" y="137" width="176" height="40" rx="7" fill="#f2fafa" stroke="#00838f" stroke-width="1.4"/>
+<text x="1157" y="152" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Lab 1 · util</text>
+<text x="1157" y="166" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">five programs on xv6</text></a>
+<a href="labs/lab2/" class="cmap-link"><title>Lab 2 · syscall</title><rect x="1146" y="390" width="176" height="40" rx="7" fill="#f2fafa" stroke="#00838f" stroke-width="1.4"/>
+<text x="1157" y="405" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Lab 2 · syscall</text>
+<text x="1157" y="419" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">new system calls; a sandbox</text></a>
+<g class="cmap-soon"><title>Lab 3 · pgtbl (coming later in the term)</title><rect x="1146" y="570" width="176" height="40" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<text x="1157" y="585" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Lab 3 · pgtbl</text>
+<text x="1157" y="599" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">page tables; superpages</text></g>
+<g class="cmap-soon"><title>Lab 4 · lock (coming later in the term)</title><rect x="1146" y="735" width="176" height="40" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<text x="1157" y="750" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Lab 4 · lock</text>
+<text x="1157" y="764" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">locks inside the kernel</text></g>
+<g class="cmap-soon"><title>Lab 5 · fs (coming later in the term)</title><rect x="1146" y="1105" width="176" height="40" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<text x="1157" y="1120" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Lab 5 · fs</text>
+<text x="1157" y="1134" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">large files; symbolic links</text></g>
 </svg>

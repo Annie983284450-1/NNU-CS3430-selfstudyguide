@@ -9,7 +9,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.sections
+    # navigation.sections removed 10-23: weeks fold in the sidebar, only the open week is expanded
     - navigation.indexes
     - navigation.top
     - navigation.footer
@@ -59,8 +59,62 @@ markdown_extensions:
 plugins:
   - search
 
+# Top tabs are the parts of the course, not single weeks, so the bar stays short as weeks are added:
+# Home, Introduction, Virtualization, Concurrency, Persistence (add when its first week exists), Labs.
+# Each week goes under its part; the left sidebar then lists the weeks of that part.
 nav:
   - Home: index.md
+  - "Introduction":
+      - "Week 1 · Introduction":
+          - Start here: w01/index.md
+          - "Class 1 · What an OS is": w01/class-1.md
+          - "Class 2 · Concurrency and persistence": w01/class-2.md
+          - Exercises and answers: w01/review.md
+          - "Appendix A · Hex, and the marks of C": w01/appendix.md
+  - "Virtualization":
+      - "Week 2 · The process":
+          - Start here: w02/index.md
+          - "Class 1 · What a process is": w02/class-1.md
+          - "Class 2 · Limited direct execution": w02/class-2.md
+          - Exercises and answers: w02/review.md
+          - "Appendix A · Hex, sizes, time, C": w02/appendix.md
+      - "Week 3 · Address spaces":
+          - Start here: w03/index.md
+          - "Class 1 · The address space, malloc and free": w03/class-1.md
+          - "Class 2 · Base and bounds": w03/class-2.md
+          - Exercises and answers: w03/review.md
+          - "Appendix A · Binary, hex, units": w03/appendix.md
+      - "Week 4 · Paging":
+          - Start here: w04/index.md
+          - "Class 1 · Segments and holes": w04/class-1.md
+          - "Class 2 · Pages and the TLB": w04/class-2.md
+          - Exercises and answers: w04/review.md
+          - "Q&A · Paging and the TLB": w04/qa.md
+          - "Appendix A · Bits and hex": w04/appendix.md
+      - "Week 5 · Tables and swapping":
+          - Start here: w05/index.md
+          - "Class 1 · Multi-level page tables": w05/class-1.md
+          - "Class 2 · Swapping and page replacement": w05/class-2.md
+          - Exercises and answers: w05/review.md
+          - "Appendix A · Bits and hex": w05/appendix.md
+      - "Week 6 · Scheduling":
+          - Start here: w06/index.md
+          - "Class 1 · FIFO, SJF, STCF, round robin": w06/class-1.md
+          - "Class 2 · Multi-level feedback queue": w06/class-2.md
+          - Exercises and answers: w06/review.md
+          - "Appendix A · Small arithmetic": w06/appendix.md
+      - "Week 7 · Fair share, many CPUs":
+          - Start here: w07/index.md
+          - "Class · Tickets, stride, CFS, many CPUs": w07/class-1.md
+          - Exercises and answers: w07/review.md
+          - "Appendix A · C, hex, shell": w07/appendix.md
+  - "Concurrency":
+      - "Week 8 · Threads and locks":
+          - Start here: w08/index.md
+          - "Class 1 · Threads, the race, the thread API": w08/class-1.md
+          - "Class 2 · How a lock is built": w08/class-2.md
+          - Exercises and answers: w08/review.md
+          - "Appendix A · Reading the C": w08/appendix.md
   - Labs:
       - Start here: labs/index.md
       - "Lab 1 · util":
@@ -84,51 +138,3 @@ nav:
           - "Step 5 · attack": labs/lab2/step-5.md
           - "Step 6 · blocked": labs/lab2/step-6.md
           - "Wrap up: the grader": labs/lab2/wrap-up.md
-  - "Week 1 · Introduction":
-      - Start here: w01/index.md
-      - "Class 1 · What an OS is": w01/class-1.md
-      - "Class 2 · Concurrency and persistence": w01/class-2.md
-      - Exercises and answers: w01/review.md
-      - "Appendix A · Hex, and the marks of C": w01/appendix.md
-  - "Week 2 · The process":
-      - Start here: w02/index.md
-      - "Class 1 · What a process is": w02/class-1.md
-      - "Class 2 · Limited direct execution": w02/class-2.md
-      - Exercises and answers: w02/review.md
-      - "Appendix A · Hex, sizes, time, C": w02/appendix.md
-  - "Week 3 · Address spaces":
-      - Start here: w03/index.md
-      - "Class 1 · The address space, malloc and free": w03/class-1.md
-      - "Class 2 · Base and bounds": w03/class-2.md
-      - Exercises and answers: w03/review.md
-      - "Appendix A · Binary, hex, units": w03/appendix.md
-  - "Week 4 · Paging":
-      - Start here: w04/index.md
-      - "Class 1 · Segments and holes": w04/class-1.md
-      - "Class 2 · Pages and the TLB": w04/class-2.md
-      - Exercises and answers: w04/review.md
-      - "Q&A · Paging and the TLB": w04/qa.md
-      - "Appendix A · Bits and hex": w04/appendix.md
-  - "Week 5 · Tables and swapping":
-      - Start here: w05/index.md
-      - "Class 1 · Multi-level page tables": w05/class-1.md
-      - "Class 2 · Swapping and page replacement": w05/class-2.md
-      - Exercises and answers: w05/review.md
-      - "Appendix A · Bits and hex": w05/appendix.md
-  - "Week 6 · Scheduling":
-      - Start here: w06/index.md
-      - "Class 1 · FIFO, SJF, STCF, round robin": w06/class-1.md
-      - "Class 2 · Multi-level feedback queue": w06/class-2.md
-      - Exercises and answers: w06/review.md
-      - "Appendix A · Small arithmetic": w06/appendix.md
-  - "Week 7 · Fair share, many CPUs":
-      - Start here: w07/index.md
-      - "Class · Tickets, stride, CFS, many CPUs": w07/class-1.md
-      - Exercises and answers: w07/review.md
-      - "Appendix A · C, hex, shell": w07/appendix.md
-  - "Week 8 · Threads and locks":
-      - Start here: w08/index.md
-      - "Class 1 · Threads, the race, the thread API": w08/class-1.md
-      - "Class 2 · How a lock is built": w08/class-2.md
-      - Exercises and answers: w08/review.md
-      - "Appendix A · Reading the C": w08/appendix.md
