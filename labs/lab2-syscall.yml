@@ -1,0 +1,263 @@
+# Website overlay for Lab 2 (syscall).
+# The lab text comes from LAB2_SESSION_MASTER_v2.md (COMP3430_labs_v2/labs/lab2-syscall-INSTRUCTOR/
+# instructor-notes/). See labs/lab1-util.yml for what each key means.
+
+id: lab2
+title: "Lab 2 · syscall: two new system calls, and a sandbox"
+nav_title: "Lab 2 · syscall"
+
+pages:
+  - {heading: "Before Step 0", file: before.md,  nav: "Before you start: the folder"}
+  - {heading: "Step 0.",       file: step-0.md,  nav: "Step 0 · Stop at syscall()"}
+  - {heading: "Step 1.",       file: step-1.md,  nav: "Step 1 · interpose"}
+  - {heading: "Step 2.",       file: step-2.md,  nav: "Step 2 · The reject check"}
+  - {heading: "Step 3.",       file: step-3.md,  nav: "Step 3 · fork carries the mask"}
+  - {heading: "Step 4.",       file: step-4.md,  nav: "Step 4 · The allowed path"}
+  - {heading: "Step 5.",       file: step-5.md,  nav: "Step 5 · attack"}
+  - {heading: "Step 6.",       file: step-6.md,  nav: "Step 6 · blocked"}
+  - {heading: "Wrap up",       file: wrap-up.md, nav: "Wrap up: the grader"}
+
+drop_sections:
+  - "Hand in"
+
+replace:
+  - old: |
+      This is the in-class version. It has the steps, the commands, the complete
+      standard answer for every step, and one Think question per step. You answer the
+      Think questions in your lab report, not here.
+    new: ""
+  - old: |-
+      This page is Lab 2, step by step: what we do together on the two Fridays, and
+      the two system calls you add to the kernel. Each step has the same shape:
+    new: |-
+      This is Lab 2, step by step: the two system calls you add to the kernel, one page
+      per step. Each step has the same shape:
+  - old: |-
+      4. The answer: the complete standard code for the step, so you can check yours line by line.
+      5. Think: one question. Its answer is not printed here. You write it in your lab report
+         (section 1.x.5: copy the question word for word, then answer in your own words).
+    new: |-
+      4. The answer: the complete standard code for the step, folded in a box. Try the step
+         first, then open the box and check yours line by line.
+      5. Connect to theory: where the run proves something from the theory classes, a box
+         links to that section of the self-study guide and says why the output confirms it.
+      6. Think: one question. Its answer is not printed here. Answer it in your own words.
+  - old: |
+      Session 1 (Fri Sep 25): Steps 0, 1, 2.
+      Session 2 (Fri Oct 2): Steps 3, 4, 5, 6.
+    new: ""
+  - old: "Everything on this page runs in"
+    new: "Everything in this lab runs in"
+  - old: |-
+      the folder you unzipped
+      from Canvas. It is a fresh copy
+    new: |-
+      the lab folder. It is a fresh copy
+  - old: "Every command block on this page is labeled"
+    new: "Every command block in this lab is labeled"
+  - old: |-
+      Where this connects to the lectures: the Week 2 lecture on limited direct
+      execution said
+    new: |-
+      Where this connects to the theory: the class on limited direct execution
+      ([Week 2, Chapter 4](w02/class-2.md#chapter-4)) said
+  - old: "In Lab 1, Step 1, you stopped"
+    new: "In [Lab 1, Step 1](labs/lab1/step-1.md), you stopped"
+  - old: "exactly as in Lab 1:"
+    new: "exactly as in [Lab 1](labs/lab1/before.md):"
+  - old: "Everything above the new lines is the Week 2 picture of `fork` in code"
+    new: "Everything above the new lines is the picture of `fork` from [Week 2, Extra 13](w02/class-1.md#extra-13), in code"
+  - old: |-
+      Take a screenshot of your
+      `Score` line for the report. While you work, run one test at a time:
+    new: |-
+      While you work, run
+      one test at a time:
+  # Correction (2026-10-23): ls is one fork from the sandboxed process (sandbox's child calls
+  # interpose, then execs sh; sh forks once to run ls). Fix in the next MASTER version.
+  - old: "in a process two forks away from the one that called"
+    new: "in a child of the sandboxed shell, one fork away from the process that called"
+  - old: "Write your answer in your lab report, section 1.x.5. Copy the question there word for word, then answer in your own words. The answer is not printed in this guide; it is shown and discussed in class."
+    new: "Answer it in your own words before you read on. The answer is not printed here."
+    count: 7
+
+  # Correction found while building the site (2026-10-23): syscall() after Step 2 is lines 133 to
+  # 154 (22 lines; gdb's line 142 = p->nblocked++ confirms the start). Fix in the next MASTER version.
+  - old: "after Step 2, complete (lines 133 to 155 of"
+    new: "after Step 2, complete (lines 133 to 154 of"
+
+theory:
+  - after: "this trap came from user mode, which is what `usertrap` checks on its line 42."
+    title: "two modes, one doorway, and the number in a7"
+    body: |
+      **What the theory says.** The CPU has two modes. A program in user mode asks for a
+      service by putting its number in a register and running `ecall`. The hardware
+      records the cause, switches to kernel mode and jumps to the handler address the
+      kernel gave it in advance ([Week 2, Sections 4.3 and 4.4](w02/class-2.md#sec-4-3)).
+      The hardware saves the program counter and the cause; the trampoline then saves
+      the program's registers into the trapframe
+      ([Week 2, Extra 23](w02/class-2.md#extra-23)).
+
+      **What this run showed.** The first stop was `init`, pid 1, with 15 in `a7`, which
+      is `SYS_open`. `bt` showed `usertrap` calling `syscall`, with the unnamed trampoline
+      frame below it. `sstatus` was `0x200000022`, with bit 8 clear.
+
+      **Why the run confirms the theory.** Bit 8 of `sstatus` is where the hardware
+      wrote down the mode it came from, and it says user mode. The kernel then read the service number from the copy
+      of `a7` that the trampoline saved, which is why the code, and gdb, read it as
+      `p->trapframe->a7`.
+
+  - after: "very first system call again, and the kernel never got past reading `a7`."
+    title: "an address with no translation is refused, and the hardware says why"
+    body: |
+      **What the theory says.** When a program uses an address it does not have, the
+      hardware refuses the access, records what went wrong, and hands control to the
+      operating system ([Week 3, Section 5.5](w03/class-2.md#sec-5-5); with page tables,
+      [Week 5, Section 4.3](w05/class-2.md#sec-4-3)). On RISC-V the record is `scause`
+      (why), `sepc` (which instruction) and `stval` (which address), and 0xd means a load
+      page fault ([Week 4, Extra 18](w04/class-2.md#extra-18) shows one from a user
+      program).
+
+      **What this run showed.** `scause=0xd`, `stval=0x0`, and a `sepc` that named the one
+      `lw` instruction compiled from your line of C.
+
+      **Why the run confirms the theory.** The hardware did exactly the three things the
+      theory lists: it refused, it recorded the cause and the address, and it handed
+      control to the kernel. What differs is who faulted. In the theory a user program
+      faults, and the kernel kills that program. Here the faulting code was the kernel
+      itself, so the trap went to `kerneltrap`, and there is nothing above the kernel to
+      clean up. So it panics.
+
+  - after: "string. The name is still `sandbox`: the child has not called `exec` yet."
+    title: "arguments travel in registers, and a string travels as an address"
+    body: |
+      **What the theory says.** The registers `a0` to `a7` carry a call's arguments
+      ([Week 2, Section 1.2](w02/class-1.md#sec-1-2)). For a system call the number goes
+      in `a7`, and on the way in the kernel saves all the registers into the trapframe
+      ([Week 2, Section 4.5](w02/class-2.md#sec-4-5)), so that is where it finds them. When an argument is an address in
+      the program's memory, the kernel must check it before reading through it
+      ([Week 3, Section 6.2](w03/class-2.md#sec-6-2) reads `fetchaddr`, which does this
+      for an 8-byte value). Everything the kernel knows about one process lives in that
+      process's `struct proc` ([Week 2, Section 1.4](w02/class-1.md#sec-1-4)).
+
+      **What this run showed.** `a7` was 22, your new number. `a0` was 32768, the mask,
+      a plain integer. `a1` was `0x3fd0`: not the string, but an address in `sandbox`'s
+      memory. `argstr` copied the string `"-"` from there into the kernel's buffer
+      `path`. Afterwards `myproc()->sysmask` held 32768.
+
+      **Why the run confirms the theory.** The integer arrived ready to use. The string
+      did not, because it never left the program's memory: only its address crossed in
+      a register. `argstr` is the check-then-copy step, and it returns -1 if the address
+      is not valid in that process. The mask then landed in this process's own
+      `struct proc`.
+
+  - after: "contain `xv6`."
+    title: "interposition: one place every system call passes through"
+    body: |
+      **What the theory says.** Interposition means sitting on a well-defined interface,
+      transforming what passes through it, and staying invisible
+      (here the transformation is a refusal)
+      ([Week 3, Extra 13](w03/class-2.md#extra-13)). Every system call enters the kernel
+      through the same trap and the same table lookup
+      ([Week 2, Section 4.4](w02/class-2.md#sec-4-4)), so the kernel has one spot where
+      it sees every request.
+
+      **What this run showed.** With `open` masked, `cat` printed its ordinary
+      `cannot open README`. `echo`, which never calls `open`, was untouched. With `exec`
+      masked, `grep` never started.
+
+      **Why the run confirms the theory.** Five lines in `syscall()` controlled three
+      unrelated programs, and none of them was changed. `cat` could not tell it was
+      sandboxed: it got -1 from `open`, the same answer it gets for a missing file. One
+      dispatcher and one check cover every program.
+
+  - after: "`sys_open` is never called. After `continue`"
+    title: "exec keeps the process record, so the mask stays"
+    body: |
+      **What the theory says.** `exec()` replaces a process's memory and keeps its
+      identity: the same pid, the same parent, the same open files, the same record in
+      the kernel ([Week 2, Extra 17](w02/class-1.md#extra-17)).
+
+      **What this run showed.** The process at the breakpoint was named `cat`, yet its
+      name field still ended in `ox`, left over from `sandbox`. Its `sysmask` was
+      `0x8000`, set while it was still `sandbox`.
+
+      **Why the run confirms the theory.** Both leftovers can only exist if `exec` reused
+      the same `struct proc`. The new name was written over the old one, and the field
+      `exec` never touches, the mask, came through unchanged.
+
+  - after: "and then your own shell prints its"
+    title: "fork copies the record, one field at a time"
+    body: |
+      **What the theory says.** `fork()` asks the kernel for a copy of the caller: its
+      memory, its registers, its open files ([Week 2, Section 2.2](w02/class-1.md#sec-2-2)).
+      In xv6 the copy is the function `kfork()`, which copies the parent's record field
+      by field ([Week 2, Extra 13](w02/class-1.md#extra-13)).
+
+      **What this run showed.** Before your two lines, `ls`, a child of the sandboxed
+      shell, listed the whole disk. After them, it printed
+      `ls: cannot open .`.
+
+      **Why the run confirms the theory.** A child inherits only the fields `kfork`
+      copies. Every other field keeps the fresh value `allocproc` gave it, so the child's
+      `sysmask` started at 0. A field added to `struct proc` later is not inherited until
+      someone writes the line that copies it. "A copy of the caller" is
+      a promise kept by code, one assignment per field.
+
+  - after: "`grep` opens it; with `-` (no path) it cannot."
+    title: "the dispatcher can read the call's own arguments"
+    body: |
+      **What the theory says.** On every trap, the program's registers are saved into the
+      trapframe before any C code in the kernel runs
+      ([Week 2, Extra 23](w02/class-2.md#extra-23)), and a call's arguments are in those
+      registers ([Week 2, Section 1.2](w02/class-1.md#sec-1-2)).
+
+      **What this run showed.** `interpose_reject` read argument 0 of whichever call was
+      being attempted, `open("README")` or `open("x")`, and let through only the name
+      stored in `syspath`.
+
+      **Why the run confirms the theory.** When `syscall()` runs, all of the call's
+      registers sit in the trapframe. So the checkpoint can see not only which call it is
+      (`a7`) but also its arguments: for `open` and `exec`, `a0` holds the address of the
+      pathname, and `argstr` copies the string in so it can be compared.
+
+  - after: "come back each time; `mySecret1` appears in both."
+    title: "protection needs the kernel to wipe pages between owners"
+    body: |
+      **What the theory says.** Protection is one of the three goals of memory
+      virtualization: no process may read another's memory
+      ([Week 3, Section 1.5](w03/class-1.md#sec-1-5)). The kernel hands out physical
+      pages with `kalloc` and takes them back with `kfree`, and a freed page simply goes
+      back on the free list for the next user. In a normal xv6, `kfree` and `kalloc` fill
+      each page with junk bytes (1 and 5) so that nobody's old data survives in it
+      ([Week 4, Section 3.3](w04/class-1.md#sec-3-3)), and every new user page is zeroed
+      before the program gets it, so a program sees only zeros
+      ([Week 4, Extra 12](w04/class-1.md#extra-12)).
+
+      **What this run showed.** With those fills compiled out, `attack` printed
+      `mySecret1`, a word that another process wrote before it exited.
+
+      **Why the run confirms the theory.** No page table was broken and no check was
+      skipped while `secret` was alive. The leak happened after it exited, through a
+      reused page. So isolation needs more than address translation: it also needs the
+      kernel to wipe a page between owners, which is the job of exactly the lines this
+      lab switched off.
+
+  - after: "`blockcount` itself, and it never starts."
+    title: "a system call's result comes back in a0"
+    body: |
+      **What the theory says.** The kernel stores a handler's return value in the saved
+      `a0` of the trapframe. On the way back it loads the saved registers into the CPU,
+      so the program finds the value in `a0`, where any function result goes
+      ([Week 2, Section 2.2](w02/class-1.md#sec-2-2) and
+      [Section 4.5](w02/class-2.md#sec-4-5)). Each process's bookkeeping lives in its own
+      `struct proc` ([Week 2, Section 1.4](w02/class-1.md#sec-1-4)).
+
+      **What this run showed.** `sys_blocked` is one line, `return myproc()->nblocked;`,
+      and `blockcount` printed `blocked 5` under the sandbox and `blocked 0` outside it.
+
+      **Why the run confirms the theory.** The kernel never wrote into `blockcount`'s
+      memory. `syscall()` put the handler's return value into `p->trapframe->a0`, and
+      the return path loaded it into the real `a0`. The child's 0 after `fork` uses the
+      second half of this path: `kfork` writes 0 into the child's saved `a0`, and the
+      same return path loads it into the real `a0`.

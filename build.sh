@@ -14,6 +14,22 @@ python3 tools/guide2site.py W04 "$SLIDES/W04/W04_Paging_SelfStudy.md"         "$
         --qa "$SLIDES/W04/W04_Paging_QA.md" "$SLIDES/W04/W04_Paging_QA_figs"
 python3 tools/guide2site.py W05 "$SLIDES/W05/W05_MultiLevelSwapping_SelfStudy.md" "$SLIDES/W05/W05_SelfStudy_figs"
 python3 tools/guide2site.py W06 "$SLIDES/W06/W06_Scheduling_SelfStudy.md"         "$SLIDES/W06/W06_SelfStudy_figs"
+python3 tools/guide2site.py W07 "$SLIDES/W07/W07_ProportionalShare_MultiCPU_SelfStudy.md" "$SLIDES/W07/W07_SelfStudy_figs"
+python3 tools/guide2site.py W08 "$SLIDES/W08/W08_ThreadsAndLocks_SelfStudy.md"     "$SLIDES/W08/W08_SelfStudy_figs"
+
+# Labs: one line per lab: overlay file, then the lab's session-guide MASTER. The lab folder
+# COMP3430_labs_v2 sits in a different place on different computers, so look in both.
+# If it is not found, the lab pages already in docs/labs/ are kept as they are.
+LABS=""
+for d in "../../COMP3430_labs_v2" "../../../../COMP3430_labs_v2"; do
+  [ -d "$d/labs" ] && LABS="$d/labs" && break
+done
+if [ -n "$LABS" ]; then
+  python3 tools/lab2site.py labs/lab1-util.yml    "$LABS/lab1-util-INSTRUCTOR/instructor-notes/LAB1_SESSION_MASTER_v6.md"
+  python3 tools/lab2site.py labs/lab2-syscall.yml "$LABS/lab2-syscall-INSTRUCTOR/instructor-notes/LAB2_SESSION_MASTER_v2.md"
+else
+  echo "COMP3430_labs_v2 not found next to the course folder: lab pages left as they are"
+fi
 
 if [ "${1:-}" = "serve" ]; then
   mkdocs serve

@@ -1,0 +1,240 @@
+# Website overlay for Lab 1 (util).
+# The lab text comes from LAB1_SESSION_MASTER_v6.md (COMP3430_labs_v2/labs/lab1-util-INSTRUCTOR/
+# instructor-notes/). This file holds only what the website adds or changes:
+#   replace        sentences that belong to one course run (dates, Canvas, the report). Each `old`
+#                  must occur exactly `count` times (default 1), or the build stops.
+#   drop_sections  headings removed with everything under them.
+#   theory         "Connect to theory" boxes, each placed after the paragraph or code block that
+#                  contains `after`. Links are written from the site root (w02/class-1.md#sec-1-2);
+#                  the converter makes them relative and checks every anchor.
+#   pages          one page per `## ` heading of the guide, with its short sidebar title.
+# The Think answers never reach the site: the converter drops every ANSWER block first.
+
+id: lab1
+title: "Lab 1 · util: programs, processes and bytes"
+nav_title: "Lab 1 · util"
+
+pages:
+  - {heading: "Before Step 0", file: before.md,  nav: "Before you start: one folder"}
+  - {heading: "Step 0.",       file: step-0.md,  nav: "Step 0 · Program and process"}
+  - {heading: "Step 1.",       file: step-1.md,  nav: "Step 1 · sleep"}
+  - {heading: "Step 2.",       file: step-2.md,  nav: "Step 2 · wf"}
+  - {heading: "Step 3.",       file: step-3.md,  nav: "Step 3 · memdump"}
+  - {heading: "Step 4.",       file: step-4.md,  nav: "Step 4 · find"}
+  - {heading: "Step 5.",       file: step-5.md,  nav: "Step 5 · find -exec"}
+  - {heading: "Wrap up",       file: wrap-up.md, nav: "Wrap up: the grader"}
+
+drop_sections:
+  - "Hand in"
+
+replace:
+  - old: |
+      This is the in-class version. It has the steps, the commands, and the questions.
+      It does not have the answers. Write your answers in the blank lines. At the end
+      of each step the instructor shows the answer on the screen, and you check your own.
+    new: ""
+  - old: |-
+      This page is Lab 1, step by step: what we do together on the two Fridays, and
+      the five programs you write. Each step has the same shape:
+    new: |-
+      This is Lab 1, step by step: the five programs you write, one page per step.
+      Each step has the same shape:
+  - old: |-
+      4. The answer: the complete standard code for the step, so you can check yours line by line.
+      5. Think: one question. Its answer is not printed here. You write it in your lab report
+         (section 1.x.5: copy the question word for word, then answer in your own words).
+    new: |-
+      4. The answer: the complete standard code for the step, folded in a box. Try the step
+         first, then open the box and check yours line by line.
+      5. Connect to theory: where the run proves something from the theory classes, a box
+         links to that section of the self-study guide and says why the output confirms it.
+      6. Think: one question. Its answer is not printed here. Answer it in your own words.
+  - old: |
+      Session 1 (Fri Sep 11): Steps 0, 1, 2.
+      Session 2 (Fri Sep 18): Steps 3, 4, 5.
+    new: ""
+  - old: "Everything on this page runs in"
+    new: "Everything in this lab runs in"
+  - old: "every command block on this page is"
+    new: "every command block in this lab is"
+  - old: |-
+      the folder you unzipped
+      from Canvas.
+    new: "the lab folder."
+  - old: |-
+      Where this connects to the lectures: the Tuesday lecture defined a process (memory,
+      registers, open files, one `struct proc`) and the three calls `fork`, `exec`,
+      `wait`. The Thursday lecture showed how a system call crosses from your program into
+      the kernel (number in `a7`, `ecall`, the table in `syscall.c`, result back in
+      `a0`). Every step below is one of those ideas, made visible with a command.
+    new: |-
+      Where this connects to the theory: the first class of the processes week defined a
+      process (memory, registers, open files, one `struct proc`;
+      [Week 2, Sections 1.2 to 1.4](w02/class-1.md#sec-1-2)) and the three calls `fork`,
+      `exec` and `wait` ([Week 2, Chapters 2 and 3](w02/class-1.md#chapter-2)). The second
+      class showed how a system call crosses from your program into the kernel (number in
+      `a7`, `ecall`, the table in `syscall.c`, result back in `a0`;
+      [Week 2, Chapter 4](w02/class-2.md#chapter-4)). Every step below is one of those
+      ideas, made visible with a command. Where a step proves one of them, a
+      "Connect to theory" box says which, and why.
+  - old: |-
+      The setup guide (Windows, Step 7) had you copy the zip into your Ubuntu home
+      folder `~` and unzip it there. That folder, `~/lab1-util-student`, is the only
+      copy that `make` reads.
+    new: |-
+      The lab folder belongs in your Ubuntu home folder `~`: copy the zip there and
+      unzip it there. That folder, `~/lab1-util-student`, is the only copy that `make`
+      reads.
+  - old: "Needs the WSL extension (setup guide, Step 8)."
+    new: "Needs VS Code's WSL extension."
+  - old: |-
+      works, but it is slow, and it is not the folder the setup guide told you to
+      use.
+    new: |-
+      works, but it is slow, and it is not the folder this guide uses.
+  - old: |-
+      That is the
+      Thursday lecture, and in a minute
+    new: |-
+      That is the
+      system call of the theory class, and in a minute
+  - old: "(the Tuesday lecture on processes)"
+    new: "([Week 2, Section 1.2](w02/class-1.md#sec-1-2))"
+  - old: "Say which you chose in your report.)"
+    new: "Either is fine.)"
+  - old: |
+      End of Session 1. Before Friday Sep 18: finish `sleep` and `wf` on your own,
+      and read Steps 3 and 4 below, so that the second Friday starts with the code
+      and not with the reading.
+    new: ""
+  - old: "Last Friday the kernel handed you 55 bytes"
+    new: "In Step 2 the kernel handed you 55 bytes"
+  - old: "// 's' and 'S' are yours to do after class:"
+    new: "// 's' and 'S' are yours to do on your own:"
+  - old: "wrote an hour ago."
+    new: "wrote in Step 3."
+  - old: "The Tuesday lecture said the shell is a loop of fork, exec, wait."
+    new: "The theory class said the shell is a loop of fork, exec, wait ([Week 2, Extra 20](w02/class-1.md#extra-20))."
+  - old: |-
+      Take a screenshot of your
+      `Score` line for the report. While you work, run one test at a time:
+    new: |-
+      While you
+      work, run one test at a time:
+  - old: "Write your answer in your lab report, section 1.x.5. Copy the question there word for word, then answer in your own words. The answer is not printed in this guide; it is shown and discussed in class."
+    new: "Answer it in your own words before you read on. The answer is not printed here."
+    count: 6
+
+  # Corrections found while building the site (2026-10-23). The Step 4 find.c listing has 75 lines,
+  # with main() on 66 to 75; the guide says 74. Fix these in the next MASTER version, and the build
+  # will stop here as a reminder to delete these three lines.
+  - old: "new file, 74 lines after Step 4"
+    new: "new file, 75 lines after Step 4"
+  - old: "after Step 4, complete (74 lines)"
+    new: "after Step 4, complete (75 lines)"
+  - old: "Lines 66 to 74: `main`"
+    new: "Lines 66 to 75: `main`"
+
+theory:
+  - after: "are not there yet, because you have not written them."
+    title: "a program is a file, a process is that file running"
+    body: |
+      **What the theory says.** A program is a file on disk, and a file on disk does
+      nothing. A process is a program running, with its own memory, registers and open
+      files ([Week 2, Section 1.2](w02/class-1.md#sec-1-2)). `exec()` does not create a
+      process. It loads a program from a file into the process that calls it
+      ([Week 2, Section 3.2](w02/class-1.md#sec-3-2)).
+
+      **What this run showed.** `ls` listed every program as an ordinary file on xv6's
+      disk, with an inode number and a size: `echo` is file 6, 34,104 bytes. `echo hello`
+      ran, because that file is there. `sleep 10` failed, because there is no file named
+      `sleep` yet.
+
+      **Why the run confirms the theory.** Typing a command name is not enough to get a
+      process. There has to be a file for `exec()` to load, and a missing file becomes no
+      process at all. The disk listing and the failed `sleep` show both sides of that:
+      programs sit on the disk as files, and only a file that is there can run.
+
+  - after: "19 to 29. That is the ten ticks you asked for."
+    title: "a system call is a number in a register and a trap"
+    body: |
+      **What the theory says.** A program cannot call the kernel like an ordinary
+      function. It puts a call number in a register and runs one trap instruction. The
+      hardware switches to kernel mode and jumps to the handler address the kernel gave
+      it in advance, and the kernel uses the number to pick the service
+      ([Week 2, Sections 4.3 to 4.5](w02/class-2.md#sec-4-3)). In xv6 that round trip
+      runs through six stations in four files
+      ([Week 2, Section 4.6](w02/class-2.md#sec-4-6)).
+
+      **What this run showed.** `bt` showed the chain: `usertrap` called `syscall`, which
+      called `sys_pause`, and below `usertrap` sat the trampoline, the frame with no
+      name. `a7` held 13, which is `SYS_pause`. `a0` held 10, and after `argint` the
+      kernel's own variable `n` was 10. `ticks` went from 19 to 29.
+
+      **Why the run confirms the theory.** Your program never named `sys_pause`. It only
+      put 13 in `a7`, and the kernel found the handler by looking 13 up in its table.
+      The argument crossed in a register too. And the clock that your program is not
+      allowed to touch did move: `ticks` is the kernel's clock, advanced by the timer
+      interrupt ([Week 2, Section 5.2](w02/class-2.md#sec-5-2)), and `sys_pause` waited
+      for ten of its ticks on your behalf.
+
+  - after: "bb 1"
+    title: "redirection happens between fork and exec"
+    body: |
+      **What the theory says.** Every process starts with descriptors 0, 1 and 2, and
+      `open()` always returns the lowest free descriptor. For `command > file` the shell
+      forks; the child closes descriptor 1 and opens the file, which therefore lands in
+      slot 1; then the child calls `exec()`, which keeps the table of open files as it is
+      ([Week 2, Section 3.4](w02/class-1.md#sec-3-4)).
+
+      **What this run showed.** `echo aa bb aa aa > t.txt` printed nothing on the screen,
+      yet `wf t.txt` found all four words in the file: `aa 3`, `bb 1`. `echo` writes with
+      `write(1, ...)` (Step 1, part A), and its 19 lines contain no `open` call.
+
+      **Why the run confirms the theory.** `echo` did what it always does: it wrote to
+      descriptor 1. The bytes reached `t.txt` because descriptor 1 had been pointed at
+      the file before `echo` started, in the gap between `fork()` and `exec()`. `exec()`
+      replaced the program and kept the table, so `echo` never knew. Your `wf` is the
+      witness that the bytes arrived.
+
+  - after: "program just read a directory. The size 64 in `ls d` is four entries of 16 bytes."
+    title: "a name lives in a directory, as an inode number and a name"
+    body: |
+      **What the theory says.** A file on disk has three pieces: a directory entry that
+      holds its name, an inode that the file system knows it by, and the data blocks
+      ([Week 1, Extra 8](w01/class-2.md#extra-8)). The name is not stored with the file.
+      A directory maps each name to an inode number.
+
+      **What this run showed.** `cat` read the directory `d` like any other file.
+      `memdump hS` decoded its first entry: the 2-byte number 30, then the name `.`, which
+      is the first line of `ls d`. The directory is 64 bytes long: four 16-byte entries for
+      four names.
+
+      **Why the run confirms the theory.** The raw bytes hold exactly the theory's
+      directory entry, an inode number beside a name, and nothing else. The size and the
+      type that `ls` prints are not in the directory. `ls` gets them by asking the kernel
+      with `stat`, which reads the inode.
+
+  - after: "and the shell's `wait` returns."
+    title: "fork makes a second process, exec keeps the pid, the parent waits"
+    body: |
+      **What the theory says.** `fork()` makes a copy of the caller and returns twice:
+      the child's pid to the parent, 0 to the child
+      ([Week 2, Section 2.2](w02/class-1.md#sec-2-2)). `exec()` keeps the process (same
+      pid, same parent, same open files) and replaces its memory and its program counter
+      with a new program
+      ([Week 2, Section 3.2](w02/class-1.md#sec-3-2); the kernel side is
+      [Week 2, Extra 17](w02/class-1.md#extra-17)). `wait()` blocks the parent until a
+      child has exited ([Week 2, Section 2.4](w02/class-1.md#sec-2-4)).
+
+      **What this run showed.** In the shell, pid 2, `kfork` returned 3. The shell then
+      entered `kwait`. Process 3 reached `kexec` still named `sh`, with parent 2 and the
+      argument list `echo`, `hello`, 0. After `kexec` returned, the same pid 3 was named
+      `echo`.
+
+      **Why the run confirms the theory.** Each claim is visible in the kernel's own
+      records. One call produced a second process, number 3. Its name changed from `sh`
+      to `echo` while its pid stayed 3: the same process with a new program (xv6 also
+      writes the new name into the record). The shell entered `kwait` before the child
+      reached `kexec`. Your `run_exec` below makes the same three calls
+      in the same order.

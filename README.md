@@ -67,6 +67,25 @@ It never touches the source `.md`. On the way to `docs/w0N/` it:
 
 The split and the link rewriting depend on the guide's heading conventions: `# ` for a class, `## ` with `{#extras-N}` for the deeper blocks, an id starting with `the` (`{#the}`, `{#the-week}`) or `{#exercises}` for the start of the tail, `{#appendix-a}` for the appendix. A guide that follows the structure rules in the self-study skill converts without changes.
 
+## The Labs tab (added 2026-10-23)
+
+The lab session guides are on the site too, under the **Labs** tab, one page per step. Their text still comes only from each lab's `LABn_SESSION_MASTER_vN.md` in `COMP3430_labs_v2/labs/labN-.../instructor-notes/`. Edit the MASTER, never the pages in `docs/labs/labN/`.
+
+| path | what it is | edit by hand? |
+|---|---|---|
+| `tools/lab2site.py` | converts one MASTER into `docs/labs/<lab>/` (overview, before, one page per step, wrap-up) | only to change the conversion rules |
+| `labs/lab1-util.yml`, `labs/lab2-syscall.yml` | one overlay per lab: the "Connect to theory" boxes, the sentences the public site changes, the page list | yes, this is where the boxes are written |
+| `docs/labs/index.md` | the Labs landing page | yes |
+| `docs/labs/lab1/`, `docs/labs/lab2/` | generated; rewritten on every build | never |
+
+What the converter does on the way: it makes the student copy (keeps STUDENT-ONLY, drops INSTRUCTOR-ONLY and every ANSWER block, so Think answers never reach the site); applies the overlay's `replace` list, where every old string must occur exactly as many times as stated, so a changed MASTER stops the build instead of being half-converted; drops "Hand in"; inserts each theory box after the paragraph or output it explains; folds every "The answer ..." section into a click-to-open box (the run instructions after it stay visible); turns each Think into a question box; links "Step N" to that step's page; numbers the lines of complete listings from the file's own line numbers; and checks that every link into the weekly guides lands on an existing heading.
+
+To move a lab to a new MASTER version: change the file name in its `build.sh` line, run `./build.sh`. If the build stops on a `replace` or `after` string, the MASTER's wording changed there; update that line of the overlay.
+
+To add a lab: copy `labs/lab2-syscall.yml` to a new overlay, set `id`, `title`, `pages` and the boxes, add a `build.sh` line and a nav block in `mkdocs.yml` (the converter prints it), and a row on `docs/labs/index.md`.
+
+`build.sh` looks for `COMP3430_labs_v2` both inside the course folder and at the OneDrive root, because it sits in different places on different computers. If it finds neither, it leaves `docs/labs/` as it is.
+
 ## Known limits
 
 - `mkdocs build --strict` fails on any broken internal link; that is on purpose, so a bad link is caught before it reaches students.

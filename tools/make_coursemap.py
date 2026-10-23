@@ -19,8 +19,8 @@ PIECES = [
                 ("FIFO, SJF, STCF, round robin", "7", "w06/class-1/"),
                 ("The multi-level feedback queue", "8", "w06/class-2/")]),
             ("w07", "Week 7 · Fair share, many CPUs", "proportional share; many CPUs", [
-                ("Lottery and stride scheduling; Linux CFS", "9", None),
-                ("Scheduling on more than one CPU", "10", None)]),
+                ("Lottery and stride scheduling; Linux CFS", "9", "w07/class-1/#chapter-1"),
+                ("Scheduling on more than one CPU", "10", "w07/class-1/#chapter-3")]),
         ]),
         ("memory", [
             ("w03", "Week 3 · Address spaces", "the address space; malloc and free", [
@@ -37,8 +37,8 @@ PIECES = [
     ("Concurrency", "many things at once, correctly", "#a0632a", [
         ("", [
             ("w08", "Week 8 · Threads and locks", "one address space, many threads", [
-                ("Threads and the thread API", "26, 27", None),
-                ("Locks: building mutual exclusion", "28", None)]),
+                ("Threads and the thread API", "26, 27", "w08/class-1/"),
+                ("Locks: building mutual exclusion", "28", "w08/class-2/")]),
             ("w09", "Week 9 · Coordination", "condition variables; semaphores", [
                 ("Locked data structures; condition variables", "29, 30", None),
                 ("Semaphores", "31", None)]),

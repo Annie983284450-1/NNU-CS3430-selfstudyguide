@@ -61,6 +61,29 @@ plugins:
 
 nav:
   - Home: index.md
+  - Labs:
+      - Start here: labs/index.md
+      - "Lab 1 · util":
+          - "Overview": labs/lab1/index.md
+          - "Before you start: one folder": labs/lab1/before.md
+          - "Step 0 · Program and process": labs/lab1/step-0.md
+          - "Step 1 · sleep": labs/lab1/step-1.md
+          - "Step 2 · wf": labs/lab1/step-2.md
+          - "Step 3 · memdump": labs/lab1/step-3.md
+          - "Step 4 · find": labs/lab1/step-4.md
+          - "Step 5 · find -exec": labs/lab1/step-5.md
+          - "Wrap up: the grader": labs/lab1/wrap-up.md
+      - "Lab 2 · syscall":
+          - "Overview": labs/lab2/index.md
+          - "Before you start: the folder": labs/lab2/before.md
+          - "Step 0 · Stop at syscall()": labs/lab2/step-0.md
+          - "Step 1 · interpose": labs/lab2/step-1.md
+          - "Step 2 · The reject check": labs/lab2/step-2.md
+          - "Step 3 · fork carries the mask": labs/lab2/step-3.md
+          - "Step 4 · The allowed path": labs/lab2/step-4.md
+          - "Step 5 · attack": labs/lab2/step-5.md
+          - "Step 6 · blocked": labs/lab2/step-6.md
+          - "Wrap up: the grader": labs/lab2/wrap-up.md
   - "Week 1 · Introduction":
       - Start here: w01/index.md
       - "Class 1 · What an OS is": w01/class-1.md
@@ -98,3 +121,14 @@ nav:
       - "Class 2 · Multi-level feedback queue": w06/class-2.md
       - Exercises and answers: w06/review.md
       - "Appendix A · Small arithmetic": w06/appendix.md
+  - "Week 7 · Fair share, many CPUs":
+      - Start here: w07/index.md
+      - "Class · Tickets, stride, CFS, many CPUs": w07/class-1.md
+      - Exercises and answers: w07/review.md
+      - "Appendix A · C, hex, shell": w07/appendix.md
+  - "Week 8 · Threads and locks":
+      - Start here: w08/index.md
+      - "Class 1 · Threads, the race, the thread API": w08/class-1.md
+      - "Class 2 · How a lock is built": w08/class-2.md
+      - Exercises and answers: w08/review.md
+      - "Appendix A · Reading the C": w08/appendix.md

@@ -45,16 +45,16 @@
 <text x="1120" y="294.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 8</text>
 <path d="M666,272 C673,272 673,290 680,290" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M424,272 C432,272 432,362 440,362" fill="none" stroke="#2f3e9e" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Week 7 · Fair share, many CPUs (coming later in the term)</title><rect x="440" y="329" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="451" y="344" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 7 · Fair share, many CPUs</text>
-<text x="451" y="358" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">proportional share; many CPUs</text></g>
-<g class="cmap-soon"><title>Lottery and stride scheduling; Linux CFS (coming later in the term)</title><rect x="680" y="329" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="348.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Lottery and stride scheduling; Linux CFS</text></g>
-<text x="1120" y="348.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 9</text>
+<a href="w07/" class="cmap-link"><title>Week 7 · Fair share, many CPUs</title><rect x="440" y="329" width="226" height="65" rx="7" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.4"/>
+<text x="451" y="344" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 7 · Fair share, many CPUs</text>
+<text x="451" y="358" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">proportional share; many CPUs</text></a>
+<a href="w07/class-1/#chapter-1" class="cmap-link"><title>Lottery and stride scheduling; Linux CFS</title><rect x="680" y="329" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<text x="691" y="348.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Lottery and stride scheduling; Linux CFS</text></a>
+<text x="1120" y="348.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 9</text>
 <path d="M666,362 C673,362 673,344 680,344" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Scheduling on more than one CPU (coming later in the term)</title><rect x="680" y="364" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="383.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Scheduling on more than one CPU</text></g>
-<text x="1120" y="383.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 10</text>
+<a href="w07/class-1/#chapter-3" class="cmap-link"><title>Scheduling on more than one CPU</title><rect x="680" y="364" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#2f3e9e" stroke-width="1.4"/>
+<text x="691" y="383.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Scheduling on more than one CPU</text></a>
+<text x="1120" y="383.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 10</text>
 <path d="M666,362 C673,362 673,379 680,379" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,409 C344,409 344,546 352,546" fill="none" stroke="#2f3e9e" stroke-width="1.6"/>
 <rect x="352" y="532" width="72" height="28" rx="14" fill="#fff" stroke="#2f3e9e" stroke-width="1.4"/>
@@ -100,16 +100,16 @@
 <text x="258.0" y="824" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="13" font-weight="700" fill="#fff">CONCURRENCY</text>
 <text x="258.0" y="838" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" fill="#e6e9f2">many things at once, correctly</text>
 <path d="M336,826 C388,826 388,738 440,738" fill="none" stroke="#a0632a" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Week 8 · Threads and locks (coming later in the term)</title><rect x="440" y="705" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="451" y="720" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 8 · Threads and locks</text>
-<text x="451" y="734" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">one address space, many threads</text></g>
-<g class="cmap-soon"><title>Threads and the thread API (coming later in the term)</title><rect x="680" y="705" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="724.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Threads and the thread API</text></g>
-<text x="1120" y="724.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 26, 27</text>
+<a href="w08/" class="cmap-link"><title>Week 8 · Threads and locks</title><rect x="440" y="705" width="226" height="65" rx="7" fill="#ffffff" stroke="#a0632a" stroke-width="1.4"/>
+<text x="451" y="720" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 8 · Threads and locks</text>
+<text x="451" y="734" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">one address space, many threads</text></a>
+<a href="w08/class-1/" class="cmap-link"><title>Threads and the thread API</title><rect x="680" y="705" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
+<text x="691" y="724.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Threads and the thread API</text></a>
+<text x="1120" y="724.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 26, 27</text>
 <path d="M666,738 C673,738 673,720 680,720" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Locks: building mutual exclusion (coming later in the term)</title><rect x="680" y="740" width="448" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="759.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Locks: building mutual exclusion</text></g>
-<text x="1120" y="759.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 28</text>
+<a href="w08/class-2/" class="cmap-link"><title>Locks: building mutual exclusion</title><rect x="680" y="740" width="448" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
+<text x="691" y="759.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Locks: building mutual exclusion</text></a>
+<text x="1120" y="759.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 28</text>
 <path d="M666,738 C673,738 673,755 680,755" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,826 C388,826 388,826 440,826" fill="none" stroke="#a0632a" stroke-width="1.6"/>
 <g class="cmap-soon"><title>Week 9 · Coordination (coming later in the term)</title><rect x="440" y="794" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
