@@ -301,8 +301,13 @@ def convert_page(fname, lines, title, step_files, out_path, problems):
                 body = lines[i + 1:end]
                 stop = next((k for k, l in enumerate(body) if l.startswith("Answer it in your own words")), None)
                 if stop is None:
-                    sys.exit(f"{fname}: a Think section without the answer-it-yourself line")
-                inner, tail = body[:stop + 1], body[stop + 1:]
+                    # guides without the report sentence (Lab 3): the question runs to the end of
+                    # the section; the box gets the standard closing line
+                    while body and body[-1].strip() in ("", "---"):
+                        body.pop()
+                    inner, tail = body + ["", "Answer it in your own words before you read on. The answer is not printed here."], []
+                else:
+                    inner, tail = body[:stop + 1], body[stop + 1:]
                 out += ['!!! question "Think"', ""]
                 for l in inner:
                     out.append(("    " + l) if l.strip() else "")

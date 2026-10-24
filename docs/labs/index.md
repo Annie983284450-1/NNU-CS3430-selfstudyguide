@@ -13,8 +13,9 @@ theory class described.
 |---|---|---|
 | [Lab 1 · util](lab1/index.md) | Five small xv6 programs: `sleep`, `wf`, `memdump`, `find` and `find -exec` | [Week 2, first class](../w02/class-1.md) (the process, `fork`, `exec`, `wait`) and [second class](../w02/class-2.md) (the system call) |
 | [Lab 2 · syscall](lab2/index.md) | Two new system calls, a sandbox inside the kernel's system-call dispatcher, and a program that reads memory another process left behind | [Week 2, second class](../w02/class-2.md) (traps and system calls), [Week 3](../w03/index.md) (address spaces), [Week 4, Section 3.3](../w04/class-1.md#sec-3-3) (the page allocator) |
+| [Lab 3 · pgtbl](lab3/index.md) | A page shared read-only with the kernel, a printer for the whole three-level page table, 2 MB superpages with their own allocator, and a system-call counter read without a trap | [Week 4, second class](../w04/class-2.md) (pages, page-table entries, the TLB), [Week 5, first class](../w05/class-1.md) (multi-level page tables, xv6's `walk`) |
 
-Do the labs in order. Lab 2 assumes the debugger skills from Lab 1.
+Do the labs in order. Lab 2 assumes the debugger skills from Lab 1, and Lab 3, though it starts from a fresh folder, reads `syscall()` the way Lab 2 taught.
 
 ## How a lab page is laid out
 
@@ -38,7 +39,7 @@ step has the same parts, in the same order:
 A computer running Ubuntu, Windows with WSL2 (Ubuntu inside Windows), or macOS, with the
 RISC-V cross compiler, `qemu-system-riscv64` to run xv6, and `gdb-multiarch` on Linux or
 `riscv64-elf-gdb` on macOS for the debugger steps. Each lab starts from its own folder
-(`lab1-util-student`, `lab2-syscall-student`): a fresh copy of the xv6 source with that
+(`lab1-util-student`, `lab2-syscall-student`, `lab3-pgtbl-student`): a fresh copy of the xv6 source with that
 lab's starter files.
 
 ## Where the labs come from

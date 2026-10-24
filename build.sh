@@ -27,6 +27,7 @@ done
 if [ -n "$LABS" ]; then
   python3 tools/lab2site.py labs/lab1-util.yml    "$LABS/lab1-util-INSTRUCTOR/instructor-notes/LAB1_SESSION_MASTER_v6.md"
   python3 tools/lab2site.py labs/lab2-syscall.yml "$LABS/lab2-syscall-INSTRUCTOR/instructor-notes/LAB2_SESSION_MASTER_v2.md"
+  python3 tools/lab2site.py labs/lab3-pgtbl.yml   "$LABS/lab3-pgtbl-INSTRUCTOR/instructor-notes/LAB3_SESSION_MASTER_v1.md"
 else
   echo "COMP3430_labs_v2 not found next to the course folder: lab pages left as they are"
 fi

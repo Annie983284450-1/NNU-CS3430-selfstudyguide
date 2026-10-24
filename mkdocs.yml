@@ -138,3 +138,15 @@ nav:
           - "Step 5 · attack": labs/lab2/step-5.md
           - "Step 6 · blocked": labs/lab2/step-6.md
           - "Wrap up: the grader": labs/lab2/wrap-up.md
+      - "Lab 3 · pgtbl":
+          - "Overview": labs/lab3/index.md
+          - "Before you start: the folder": labs/lab3/before.md
+          - "Step 0 · Read a page table": labs/lab3/step-0.md
+          - "Step 1 · The USYSCALL page": labs/lab3/step-1.md
+          - "Step 2 · vmprint": labs/lab3/step-2.md
+          - "Step 3 · A 2 MB pool": labs/lab3/step-3.md
+          - "Step 4 · Superpages": labs/lab3/step-4.md
+          - "Step 5 · Demotion": labs/lab3/step-5.md
+          - "Step 6 · A syscall counter": labs/lab3/step-6.md
+          - "Step 7 · The two text files": labs/lab3/step-7.md
+          - "Wrap up: the grader": labs/lab3/wrap-up.md

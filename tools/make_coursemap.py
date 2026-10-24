@@ -73,7 +73,7 @@ LABS = [
     ("Lab 0 · setup", "build and boot xv6", None, [("w01", 1)]),
     ("Lab 1 · util", "five programs on xv6", "labs/lab1/", [("w01", 2), ("w02", 1), ("w02", 2)]),
     ("Lab 2 · syscall", "new system calls; a sandbox", "labs/lab2/", [("w02", 2), ("w03", 1), ("w03", 2), ("w04", 1)]),
-    ("Lab 3 · pgtbl", "page tables; superpages", None, [("w04", 2), ("w05", 1)]),
+    ("Lab 3 · pgtbl", "page tables; superpages", "labs/lab3/", [("w04", 2), ("w05", 1)]),
     ("Lab 4 · lock", "locks inside the kernel", None, [("w08", 2)]),
     ("Lab 5 · fs", "large files; symbolic links", None, [("w12", 2)]),
 ]

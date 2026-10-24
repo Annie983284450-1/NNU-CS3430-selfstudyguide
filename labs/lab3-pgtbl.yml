@@ -1,0 +1,290 @@
+# Website overlay for Lab 3 (pgtbl).
+# The lab text comes from LAB3_SESSION_MASTER_v1.md (COMP3430_labs_v2/labs/lab3-pgtbl-INSTRUCTOR/
+# instructor-notes/). See labs/lab1-util.yml for what each key means.
+# Lab 3's Think sections have no "write it in your report" line; the converter closes each
+# Think box with the standard line itself.
+
+id: lab3
+title: "Lab 3 · pgtbl: read, print and reshape a page table"
+nav_title: "Lab 3 · pgtbl"
+
+pages:
+  - {heading: "Before Step 0", file: before.md,  nav: "Before you start: the folder"}
+  - {heading: "Step 0.",       file: step-0.md,  nav: "Step 0 · Read a page table"}
+  - {heading: "Step 1.",       file: step-1.md,  nav: "Step 1 · The USYSCALL page"}
+  - {heading: "Step 2.",       file: step-2.md,  nav: "Step 2 · vmprint"}
+  - {heading: "Step 3.",       file: step-3.md,  nav: "Step 3 · A 2 MB pool"}
+  - {heading: "Step 4.",       file: step-4.md,  nav: "Step 4 · Superpages"}
+  - {heading: "Step 5.",       file: step-5.md,  nav: "Step 5 · Demotion"}
+  - {heading: "Step 6.",       file: step-6.md,  nav: "Step 6 · A syscall counter"}
+  - {heading: "Step 7.",       file: step-7.md,  nav: "Step 7 · The two text files"}
+  - {heading: "Wrap up",       file: wrap-up.md, nav: "Wrap up: the grader"}
+
+drop_sections:
+  - "Hand in"
+
+replace:
+  - old: |
+      This is the in-class version. It has the steps, the commands, the complete
+      standard answer for every step, and one Think question per step. You answer the
+      Think questions in your lab report, not here.
+    new: ""
+  - old: |-
+      This page is Lab 3, step by step: what we do together on the three Fridays,
+      and the kernel code you add. Each step has the same shape:
+    new: |-
+      This is Lab 3, step by step: the kernel code you add, one page per step. Each step
+      has the same shape:
+  - old: |-
+      4. The answer: the complete standard code for the step, so you can check yours line by line.
+      5. Think: one question. Its answer is not printed here. You write it in your lab report
+         (section 1.x.5: copy the question word for word, then answer in your own words).
+    new: |-
+      4. The answer: the complete standard code for the step, folded in a box. Try the step
+         first, then open the box and check yours line by line.
+      5. Connect to theory: where the run proves something from the theory classes, a box
+         links to that section of the self-study guide and says why the output confirms it.
+      6. Think: one question. Its answer is not printed here. Answer it in your own words.
+  - old: "Lab 2 was about the path a system call takes into the kernel."
+    new: "[Lab 2](labs/lab2/index.md) was about the path a system call takes into the kernel."
+  - old: "two files you already met in lecture,"
+    new: "two files you already met in the theory classes,"
+  - old: |
+      Session 1 (Fri Oct 9): Steps 0, 1, 2.
+      Session 2 (Fri Oct 16): Steps 3, 4.
+      Session 3 (Fri Oct 23): Steps 5, 6, 7, and `make grade`.
+    new: ""
+  - old: "Everything on this page runs in"
+    new: "Everything in this lab runs in"
+  - old: |-
+      the folder you unzipped
+      from Canvas. It is a fresh copy
+    new: |-
+      the lab folder. It is a fresh copy
+  - old: "Every command block on this page is labeled"
+    new: "Every command block in this lab is labeled"
+  - old: |-
+      Where this connects to the lectures: Weeks 3 to 5 said that every address a
+      program uses is a virtual address,
+    new: |-
+      Where this connects to the theory: [Weeks 3](w03/index.md), [4](w04/index.md) and
+      [5](w05/index.md) said that every address a program uses is a virtual address,
+  - old: "exactly as in Labs 1 and 2:"
+    new: "exactly as in [Labs 1](labs/lab1/before.md) and [2](labs/lab2/before.md):"
+  - old: "In lecture a page-table entry was a box with a frame number and a few flag"
+    new: "In the theory class ([Week 4, Section 5.2](w04/class-2.md#sec-5-2)) a page-table entry was a box with a frame number and a few flag"
+  # Site only (2026-10-24): this sentence answers Step 1's Think question, and the site prints
+  # no Think answers. The MASTER keeps it for the in-class discussion.
+  - old: |-
+      `p->usyscall->pid = p->pid;` and `PTE_R | PTE_U`. Not `PTE_W`: the process
+      must never be able to write this page, or it could lie to itself about its
+      pid, and in Step 6 it could forge the system-call count.
+    new: |-
+      `p->usyscall->pid = p->pid;` and `PTE_R | PTE_U`.
+  - old: |-
+      Steps 0 and 2. The grader only checks that the file has text in it; the
+      answers are read and marked by hand.
+    new: |-
+      Steps 0, 1, 2 and 6. The grader only checks that the file has text in it.
+  - old: |-
+      `Score: 46/46` is the line to
+      screenshot. (This capture is from the student tree plus exactly the files on
+      this page; the instructor tree gives the same score.)
+    new: |-
+      `Score: 46/46` is the line to
+      look for. (This capture is from a fresh lab folder plus exactly the code in this lab.)
+  - old: |
+      The standard solution (the six kernel files above) is posted on Canvas with
+      this guide, as `lab3-pgtbl-solution.zip`. Dropped into a fresh
+      `lab3-pgtbl-student` folder, it scores 46/46.
+    new: ""
+  - old: "The next lab (lock, released Oct 30) stays in `kalloc.c` and"
+    new: "The lock lab stays in `kalloc.c` and"
+
+  # Site only (2026-10-24), from the review of the site pages:
+  # Step 0's page text answered its own Think question (why map the guard page).
+  - old: "0x3000        guard page                V R W      (no U: touching it traps)"
+    new: "0x3000        guard page                V R W      (no U)"
+  - old: |-
+      `0x7` is V R W with no U: the stack guard page, which the
+         kernel mapped and then took U away from, so a stack overflow traps instead
+         of silently overwriting data. `0xD7`
+    new: |-
+      `0x7` is V R W with no U: the stack guard page, mapped,
+         but not for the user. `0xD7`
+  # The "When it does not work" cases are instructor-only, so the reference dangles.
+  - old: "fails our grader (Case A below shows what that looks like)."
+    new: "fails our grader."
+  # walk() in this tree stops at a level-1 leaf (Before Step 0 says so); fix in the next MASTER.
+  - old: "(the ordinary `walk()` always goes to level 0)"
+    new: "(the ordinary `walk()` goes on to level 0 unless it meets a leaf)"
+  # The vDSO does not export performance counters; fix in the next MASTER.
+  - old: |-
+      This is how Linux exposes
+      performance counters and clock values through the vDSO: a kernel-maintained
+      number, read without a trap.
+    new: |-
+      This is the idea behind
+      Linux's vDSO: a kernel-maintained number, read without a trap.
+  - old: "Unzip, then look before you type."
+    new: "Open the lab folder, then look before you type."
+  - old: "(`time.txt does not contain a single integer`), and `Cannot read time.txt` if"
+    new: "(`time.txt does not contain a single integer`), and prints `Cannot read time.txt` if"
+
+theory:
+  - after: "The `pid=3` and `sepc` will differ on your machine."
+    title: "a page-table entry is a frame number plus permission bits"
+    body: |
+      **What the theory says.** One entry holds a frame number and, in its low bits,
+      the flags V, R, W, X, U, G, A and D. The hardware sets A when the page is first
+      used and D when it is first written
+      ([Week 4, Section 5.2](w04/class-2.md#sec-5-2)). Week 4 stopped a real xv6
+      process and printed its table with QEMU's `info mem`, which shows the same bits as
+      letters ([Week 4, Section 5.3](w04/class-2.md#sec-5-3)). An access through an
+      entry that is not valid traps ([Week 5, Section 4.3](w05/class-2.md#sec-4-3)).
+      On xv6 the kernel finds the cause in `scause` and the address in `stval`
+      ([Week 4, Extra 18](w04/class-2.md#extra-18)).
+
+      **What this run showed.** Page 0 had `perm 0x5B`, which decodes to V, R, X, U and
+      A. The entry at `0x3FFFFFD000` was `0x0`, and the first read of that address
+      ended in `scause 0xd` with `stval=0x3fffffd000`.
+
+      **Why the run confirms the theory.** In Week 4, `info mem` printed the code page
+      of a different program as `r-xu-a-`. That is four of the same bits, plus V, which
+      `info mem` leaves implied. So `pgtbltest` and `info mem` show the same kind of row:
+      a frame number above, permission bits below. The A bit is set, and no line of the
+      program wrote it. The fault is the other half of the picture. With no valid entry
+      there is no translation, and the hardware reports the exact address it could not
+      translate.
+
+  - after: "(a memory read), 64 times across 64 forked children, and they always agree."
+    title: "one frame, two mappings, two sets of permissions"
+    body: |
+      **What the theory says.** A system call is a full trip through the trap path. On
+      the Ubuntu machine one cost about 100 ns, about 85 times a plain function call
+      ([Week 2, Section 4.7](w02/class-2.md#sec-4-7)). One frame can appear in more than
+      one row: the trampoline sits in every process's table
+      ([Week 4, Section 5.3](w04/class-2.md#sec-5-3)), and Linux maps one copy of the
+      C library's code into many processes
+      ([Week 4, Extra 4](w04/class-1.md#extra-4)). Permissions live in the row, not in
+      the frame ([Week 4, Section 5.2](w04/class-2.md#sec-5-2)), so each row can give
+      different permissions.
+
+      **What this run showed.** The entry at `USYSCALL` is now `perm 0x13`: V, R and U.
+      `ugetpid()` and `getpid()` agreed in all 64 children.
+
+      **Why the run confirms the theory.** In the code, the kernel writes the frame
+      through `p->usyscall`, using its own page table, which maps physical memory above
+      the kernel's code read and write. The process reaches the same frame through the
+      row at `USYSCALL`, which says read only. Same bytes, two rows, two sets of
+      permissions. And `ugetpid()` in `user/ulib.c` is an ordinary load, so it skips the
+      trap path (about 100 ns per call on the Ubuntu machine) and still gets the right
+      pid.
+
+  - after: "will differ, but the pattern repeats on every run."
+    title: "a three-level tree that is only as big as what the program uses"
+    body: |
+      **What the theory says.** With 39-bit addresses and 4 KB pages there are 27 bits
+      of page number. Every level of the tree must be exactly one page of 512 entries,
+      so the 27 bits are cut into three slices of 9
+      ([Week 5, Section 3.1](w05/class-1.md#sec-3-1)), and the kernel walks the levels
+      with one loop ([Week 5, Section 3.3](w05/class-1.md#sec-3-3)). A piece of the tree
+      that would hold only invalid entries is never built, so the table costs space in
+      proportion to what the program uses
+      ([Week 5, Section 1.4](w05/class-1.md#sec-1-4)). The A and D bits are written by
+      the hardware. An OS that evicts pages reads them to choose a victim
+      ([Week 5, Sections 5.6](w05/class-2.md#sec-5-6) and
+      [5.7](w05/class-2.md#sec-5-7)); xv6 has no eviction, so it never does.
+
+      **What this run showed.** Two valid entries in the root, two tables at level 1, two
+      at level 0, and eight leaves. The deepest lines carry three `|- ` markers. The
+      data page's entry ended in `0x17` in the first print and in `0xd7` in the second.
+
+      **Why the run confirms the theory.** Three markers deep is three levels, as the
+      arithmetic predicted. Eight pages of memory cost five page-table pages, 20 KB, and
+      nothing at all was built for the huge empty middle of the address space. The two
+      extra bits in `0xd7` are bit 6 (A) and bit 7 (D). xv6 did not set them; the
+      processor did, when the program read and wrote its data page between the prints.
+
+  - after: "`87f` to `857` is what to look for.)"
+    title: "a fixed-size free list cannot hand out a bigger block"
+    body: |
+      **What the theory says.** When every unit has the same size, the allocator needs no
+      header, no search and no coalescing: a list of free units, take from the front,
+      push onto the front. That is `kalloc.c`
+      ([Week 4, Section 3.3](w04/class-1.md#sec-3-3), drawn in
+      [Week 4, Extra 12](w04/class-1.md#extra-12)). Merging two free neighbors gains
+      nothing when every request is one page, so `kfree` never does it.
+
+      **What this run showed.** After the new `kinit`, the pages `kalloc` handed out
+      moved from `0x87f...` down to `0x857...`.
+
+      **Why the run confirms the theory.** The list is a stack in the order pages were
+      freed. It keeps no record of which pages sit next to each other. So it can answer
+      only one request: "give me one page". It has no way to find 512 pages in a row.
+      The 2 MB blocks therefore get a list of their own, with the same push and pop and
+      a bigger unit. The moved addresses show how plain `kalloc` is. It hands out the
+      first entry of its list. That entry is now the top page under `SUPERBASE`, not the
+      top page under `PHYSTOP`.
+
+  - after: "exit status, and that is the `OK`. Your `pid` will differ."
+    title: "one big page, one entry"
+    body: |
+      **What the theory says.** Bigger pages mean fewer entries. But every page wastes
+      whatever part of it is not used (internal fragmentation). So systems keep 4 KB as
+      the normal size and offer big pages as an option. Their real purpose is the TLB:
+      one TLB entry for a 2 MB page covers 512 times as much memory as one for a 4 KB
+      page ([Week 5, Section 1.2](w05/class-1.md#sec-1-2); the TLB itself is
+      [Week 4, Section 6.2](w04/class-2.md#sec-6-2)).
+
+      **What this run showed.** `superpg_fork` found the same PTE for 512 consecutive
+      4 KB addresses inside one aligned 2 MB region, in the parent and again in the
+      forked child.
+
+      **Why the run confirms the theory.** 512 pages, one entry: a level-1 leaf maps the
+      whole region. That is one entry in the table, and on real hardware one TLB slot
+      for all of it. The waste the theory warns about is kept out by the condition in
+      `uvmalloc`. A superpage is used only when a whole aligned 2 MB chunk is wanted.
+      The rest of the request, such as the start of the heap below the first 2 MB
+      boundary, still gets 4 KB pages.
+
+  - after: "page at a time and checked each PTE went to 0."
+    title: "demotion grows the tree by one piece"
+    body: |
+      **What the theory says.** A multi-level table builds a lower piece only where it
+      is needed. An entry one level up either points to that piece or is invalid
+      ([Week 5, Sections 1.3](w05/class-1.md#sec-1-3) and
+      [1.4](w05/class-1.md#sec-1-4)). In Sv39 a level-1 entry has a third choice: it
+      can be a leaf (Step 4). And the end of a process's memory is simply its last valid
+      entry. Past it there is no translation, and a touch there traps
+      ([Week 4, Extra 18](w04/class-2.md#extra-18)).
+
+      **What this run showed.** After `superdemote`, the `'9'` in the part that was kept
+      survived the 4 KB free. The child that read the freed page died with
+      `scause 0xd`. Freeing the rest one page at a time left every PTE at 0.
+
+      **Why the run confirms the theory.** Demotion is the tree growing one piece. The
+      level-1 entry that was a leaf becomes a pointer to a new level-0 table. That table
+      is built only now, when it is needed, and its 512 entries map the same physical
+      bytes as before. The price is one more page of table and, on real hardware, the
+      one-slot TLB coverage. After that the region behaves like any memory in Week 4:
+      valid entries up to the new end, and a fault past it.
+
+  - after: "reads agree (reading is not a system call"
+    title: "one doorway, so one line counts every call"
+    body: |
+      **What the theory says.** Every system call enters the kernel through the same
+      trap and the same lookup in a table of handlers
+      ([Week 2, Section 4.4](w02/class-2.md#sec-4-4)). In xv6 that lookup is in
+      `syscall()` ([Week 2, Section 4.6](w02/class-2.md#sec-4-6)), the same function for
+      every call.
+
+      **What this run showed.** One `++` in `syscall()`, and `nsystest` saw the counter
+      rise by exactly 100 for 100 calls to `getpid()`. Two reads of the counter with
+      nothing in between gave the same number.
+
+      **Why the run confirms the theory.** The new line does not know which call was
+      made or which program made it, and it does not need to: every system call is
+      dispatched at the same spot. A load from the shared page is not a system call, so
+      it changes nothing. [Lab 2, Step 2](labs/lab2/step-2.md) put a decision at the
+      same spot; this step puts a counter there.
