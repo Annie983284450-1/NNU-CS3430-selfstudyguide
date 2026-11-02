@@ -115,6 +115,12 @@ nav:
           - "Class 2 · How a lock is built": w08/class-2.md
           - Exercises and answers: w08/review.md
           - "Appendix A · Reading the C": w08/appendix.md
+      - "Week 9 · Locked structures, waiting, semaphores":
+          - Start here: w09/index.md
+          - "Class 1 · Locks in structures; condition variables": w09/class-1.md
+          - "Class 2 · The bounded buffer; semaphores": w09/class-2.md
+          - Exercises and answers: w09/review.md
+          - "Appendix A · Reading the C": w09/appendix.md
   - Labs:
       - Start here: labs/index.md
       - "Lab 1 · util":

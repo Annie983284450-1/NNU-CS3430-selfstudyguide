@@ -40,9 +40,9 @@ PIECES = [
             ("w08", "Week 8 · Threads and locks", "one address space, many threads", [
                 ("Threads and the thread API", "26, 27", "w08/class-1/"),
                 ("Locks: building mutual exclusion", "28", "w08/class-2/")]),
-            ("w09", "Week 9 · Coordination", "condition variables; semaphores", [
-                ("Locked data structures; condition variables", "29, 30", None),
-                ("Semaphores", "31", None)]),
+            ("w09", "Week 9 · Locked structures, waiting", "condition variables; semaphores", [
+                ("Locks inside data structures; condition variables", "29, 30", "w09/class-1/"),
+                ("The bounded buffer; semaphores", "30, 31", "w09/class-2/")]),
             ("w10", "Week 10 · Concurrency bugs", "deadlock and how to avoid it", [
                 ("Non-deadlock bugs; deadlock", "32", None),
                 ("Event-based concurrency", "33", None)]),

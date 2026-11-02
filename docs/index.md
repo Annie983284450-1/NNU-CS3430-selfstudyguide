@@ -127,16 +127,16 @@ Click any box to open that page. Grey boxes are weeks and labs that are not on t
 <text x="1082" y="759.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 28</text>
 <path d="M666,738 C673,738 673,755 680,755" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,826 C388,826 388,826 440,826" fill="none" stroke="#a0632a" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Week 9 · Coordination (coming later in the term)</title><rect x="440" y="794" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="451" y="809" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 9 · Coordination</text>
-<text x="451" y="823" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">condition variables; semaphores</text></g>
-<g class="cmap-soon"><title>Locked data structures; condition variables (coming later in the term)</title><rect x="680" y="794" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="813.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Locked data structures; condition variables</text></g>
-<text x="1082" y="813.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 29, 30</text>
+<a href="w09/" class="cmap-link"><title>Week 9 · Locked structures, waiting</title><rect x="440" y="794" width="226" height="65" rx="7" fill="#ffffff" stroke="#a0632a" stroke-width="1.4"/>
+<text x="451" y="809" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 9 · Locked structures, waiting</text>
+<text x="451" y="823" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">condition variables; semaphores</text></a>
+<a href="w09/class-1/" class="cmap-link"><title>Locks inside data structures; condition variables</title><rect x="680" y="794" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
+<text x="691" y="813.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Locks inside data structures; condition variables</text></a>
+<text x="1082" y="813.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 29, 30</text>
 <path d="M666,826 C673,826 673,809 680,809" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Semaphores (coming later in the term)</title><rect x="680" y="829" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="848.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Semaphores</text></g>
-<text x="1082" y="848.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 31</text>
+<a href="w09/class-2/" class="cmap-link"><title>The bounded buffer; semaphores</title><rect x="680" y="829" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
+<text x="691" y="848.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">The bounded buffer; semaphores</text></a>
+<text x="1082" y="848.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 30, 31</text>
 <path d="M666,826 C673,826 673,844 680,844" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,826 C388,826 388,916 440,916" fill="none" stroke="#a0632a" stroke-width="1.6"/>
 <g class="cmap-soon"><title>Week 10 · Concurrency bugs (coming later in the term)</title><rect x="440" y="883" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
@@ -259,6 +259,7 @@ Click any box to open that page. Grey boxes are weeks and labs that are not on t
 - [Week 6 · Scheduling: which process runs next, and for how long](w06/index.md) (OSTEP 7, 8)
 - [Week 7 · Sharing the CPU: by share, and across many CPUs](w07/index.md) (OSTEP 9, 10)
 - [Week 8 · Threads and locks: when one program has two points of execution](w08/index.md) (OSTEP 26, 27, 28)
+- [Week 9 · Locks inside data structures, and waiting for something to happen](w09/index.md) (OSTEP 29, 30, 31)
 
 ## Labs
 
