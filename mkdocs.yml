@@ -120,6 +120,7 @@ nav:
           - "Class 1 · Locks in structures; condition variables": w09/class-1.md
           - "Class 2 · The bounded buffer; semaphores": w09/class-2.md
           - Exercises and answers: w09/review.md
+          - "Q&A · Locks and locked structures": w09/qa.md
           - "Appendix A · Reading the C": w09/appendix.md
   - Labs:
       - Start here: labs/index.md
