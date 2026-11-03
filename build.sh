@@ -25,6 +25,10 @@ python3 tools/guide2site.py W08 "$SLIDES/W08/W08_ThreadsAndLocks_SelfStudy.md"  
 python3 tools/guide2site.py W09 "$SLIDES/W09/W09_ConcurrentDS_CV_Semaphores_SelfStudy.md" "$SLIDES/W09/W09_SelfStudy_figs" \
         --qa "$SLIDES/W09/W09_Locks_QA.md" "$SLIDES/W09/W09_Locks_QA_figs"
 
+# A map at the top of every class page: its questions, and for each one why we ask it, the steps, how we know,
+# and what it settles. Drawn from the page's own headings, roadmap and summary, so it is redone after guide2site.
+python3 tools/make_classmaps.py
+
 # Labs: one line per lab: overlay file, then the lab's session-guide MASTER. The lab folder
 # COMP3430_labs_v2 sits in a different place on different computers, so look in both.
 # If it is not found, the lab pages already in docs/labs/ are kept as they are.
