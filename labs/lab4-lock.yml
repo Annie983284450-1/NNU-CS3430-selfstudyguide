@@ -1,0 +1,289 @@
+# Website overlay for Lab 4 (lock).
+# The lab text comes from LAB4_SESSION_MASTER.md (COMP3430_labs_v2/labs/lab4-lock-INSTRUCTOR/
+# instructor-notes/; the final guide, no version number). This file holds only what the website
+# adds or changes:
+#   replace        sentences that belong to one course run (the Fridays, Canvas, the lab report,
+#                  the screenshot) and the HTML guide's jump table, whose anchors do not exist once
+#                  the lab is split into pages (the sidebar does that job). Each `old` must occur
+#                  exactly `count` times (default 1), or the build stops.
+#   drop_sections  headings removed with everything under them.
+#   theory         "Connect to theory" boxes, each placed after the paragraph or code block that
+#                  contains `after`. Links are written from the site root (w08/class-1.md#sec-2-7);
+#                  the converter makes them relative and checks every anchor.
+#   pages          one page per `## ` heading of the guide, with its short sidebar title.
+# The Think answers never reach the site: the converter drops every ANSWER block first.
+# Lab 4's headings carry numbers ("1.5a The answer", "1.6 Think"); lab2site.py reads past them,
+# and folds the "Reading the answer" sections as well as the answers.
+
+id: lab4
+title: "Lab 4 · lock: per-CPU memory, and a reader-writer lock"
+nav_title: "Lab 4 · lock"
+
+pages:
+  - {heading: "Step 0.", file: step-0.md, nav: "Step 0 · Cores, and the starter"}
+  - {heading: "Step 1.", file: step-1.md, nav: "Step 1 · One free list per CPU"}
+  - {heading: "Step 2.", file: step-2.md, nav: "Step 2 · Steal a whole list"}
+  - {heading: "Step 3.", file: step-3.md, nav: "Step 3 · kmemsteals"}
+  - {heading: "Step 4.", file: step-4.md, nav: "Step 4 · A reader-writer lock"}
+  - {heading: "Step 5.", file: step-5.md, nav: "Step 5 · rwshared"}
+  - {heading: "Step 6.", file: step-6.md, nav: "Step 6 · time.txt and the grader"}
+
+drop_sections:
+  - "Hand in"
+
+replace:
+  - old: |
+      This is the in-class version. It has the steps, the commands, the complete
+      standard answer for every step, and one Think question per step. You answer the
+      Think questions in your lab report, not here.
+
+    new: ""
+  - old: |-
+      This page is Lab 4, step by step: what we do together on the two Fridays, and
+      the kernel code you add. Each step has the same shape:
+    new: |-
+      This is Lab 4, step by step: the kernel code you add, one page per step.
+      Each step has the same shape:
+  - old: |-
+      4. The answer: the complete standard code for the step, so you can check yours line by line.
+      5. Think: one question. Its answer is not printed here. You write it in your lab report
+         (section 1.x.5: copy the question word for word, then answer in your own words).
+    new: |-
+      4. The answer: the complete standard code for the step, folded in a box. Try the step
+         first, then open the box and check yours line by line.
+      5. Connect to theory: where the run proves something from the theory classes, a box
+         links to that section of the self-study guide and says why the output confirms it.
+      6. Think: one question. Its answer is not printed here. Answer it in your own words.
+  # The jump table of the HTML guide: its anchors (#s1-3 ...) are not on the site.
+  - old: |-
+      <a id="jump"></a>
+      Jump to any part of any step from here. Within a step the numbering is
+      always the same: `.1` why, `.2` the picture, `.3` the procedure (`.3a`, `.3b` for
+      its parts), `.4` you should see, `.5` the answer (`.5a`, `.5b`, ... and a
+      "reading the answer" section), `.6` think. So "2.3" always means Step 2's
+      procedure.
+
+      <table class="jump">
+      <tr><th>Step</th><th>Why</th><th>Picture</th><th>Procedure</th><th>You should see</th><th>Answer</th><th>Think</th></tr>
+      <tr><td><a href="#step-0">0 cores, starter</a></td><td><a href="#s0-1">0.1</a></td><td></td><td><a href="#s0-3">0.3</a></td><td><a href="#s0-4">0.4</a></td><td></td><td><a href="#s0-6">0.6</a></td></tr>
+      <tr><td><a href="#step-1">1 per-CPU lists</a></td><td><a href="#s1-1">1.1</a></td><td><a href="#s1-2">1.2</a></td><td><a href="#s1-3">1.3</a></td><td><a href="#s1-4">1.4</a></td><td><a href="#s1-5">1.5</a></td><td><a href="#s1-6">1.6</a></td></tr>
+      <tr><td><a href="#step-2">2 steal</a></td><td><a href="#s2-1">2.1</a></td><td><a href="#s2-2">2.2</a></td><td><a href="#s2-3">2.3</a></td><td><a href="#s2-4">2.4</a></td><td><a href="#s2-5">2.5</a></td><td><a href="#s2-6">2.6</a></td></tr>
+      <tr><td><a href="#step-3">3 kmemsteals</a></td><td><a href="#s3-1">3.1</a></td><td><a href="#s3-2">3.2</a></td><td><a href="#s3-3">3.3</a></td><td><a href="#s3-4">3.4</a></td><td><a href="#s3-5">3.5</a></td><td><a href="#s3-6">3.6</a></td></tr>
+      <tr><td><a href="#step-4">4 rwlock</a></td><td><a href="#s4-1">4.1</a></td><td><a href="#s4-2">4.2</a></td><td><a href="#s4-3">4.3</a></td><td><a href="#s4-4">4.4</a></td><td><a href="#s4-5">4.5</a></td><td><a href="#s4-6">4.6</a></td></tr>
+      <tr><td><a href="#step-5">5 rwshared</a></td><td><a href="#s5-1">5.1</a></td><td><a href="#s5-2">5.2</a></td><td><a href="#s5-3">5.3</a></td><td><a href="#s5-4">5.4</a></td><td><a href="#s5-5">5.5</a></td><td><a href="#s5-6">5.6</a></td></tr>
+      <tr><td><a href="#step-6">6 grade</a></td><td></td><td></td><td><a href="#s6-3">6.3</a></td><td><a href="#s6-4">6.4</a></td><td></td><td></td></tr>
+      </table>
+    new: |-
+      Within a step the numbering is always the same: `.1` why, `.2` the picture, `.3` the
+      procedure (`.3a`, `.3b` for its parts), `.4` you should see, `.5` the answer (`.5a`,
+      `.5b`, ... and a "reading the answer" section), `.6` think. So "2.3" always means
+      Step 2's procedure.
+  - old: 'every "You should see" block on this page says'
+    new: 'every "You should see" block in this lab says'
+  - old: |
+      Session 1 (Fri Oct 30): Steps 0, 1, 2, 3.
+      Session 2 (Fri Nov 6): Steps 4, 5, 6, and `make grade`.
+
+    new: ""
+  - old: |-
+      Everything on this page runs in `lab4-lock-student`, the folder you unzipped
+      from Canvas (this guide is posted next to the zip, not inside it). It is a fresh copy of xv6.
+    new: |-
+      Everything in this lab runs in `lab4-lock-student`, the lab folder. It is a fresh copy of xv6.
+  - old: "Every command block on this page is labeled"
+    new: "Every command block in this lab is labeled"
+  - old: |-
+      Where this connects to the lectures: Week 8 showed the `kalloc` pop race on
+      two CPUs (slides 19 and 20), the test-and-set instruction and xv6's
+      `acquire()` / `release()` built on it (slides 42 to 45), and what a lock
+      costs (slides 57 and 58). Week 9 gave the fix for a contended counter, keep a
+      copy per CPU and only occasionally touch the shared one (the approximate
+      counter, OSTEP 29.2, and "split what is shared", slide 29), and the
+      reader-writer lock (OSTEP 31.5). Week 7 showed per-CPU run queues with
+      migration (OSTEP 10.5), which is the same idea as stealing pages. Week 2's
+      timer interrupt is why `cpuid()` needs interrupts off.
+    new: |-
+      Where this connects to the theory: [Week 8](w08/index.md) showed the `kalloc` pop race
+      on two CPUs ([Section 2.7](w08/class-1.md#sec-2-7)), the test-and-set instruction and
+      xv6's `acquire()` / `release()` built on it ([Section 5.3](w08/class-2.md#sec-5-3)), and
+      what waiting for a lock costs ([Section 6.6](w08/class-2.md#sec-6-6)).
+      [Week 9](w09/index.md) gave the fix for a contended counter, keep a copy per CPU and only
+      occasionally touch the shared one (the approximate counter,
+      [Section 2.3](w09/class-1.md#sec-2-3), and "split what is shared",
+      [Section 2.13](w09/class-1.md#sec-2-13)), and the reader-writer lock
+      ([Section 6.5](w09/class-2.md#sec-6-5)). [Week 7](w07/index.md) showed per-CPU run queues
+      with migration ([Section 3.6](w07/class-1.md#sec-3-6)), which is the same idea as stealing
+      pages. Week 2's timer interrupt ([Section 5.2](w02/class-2.md#sec-5-2)) is why `cpuid()`
+      needs interrupts off.
+  - old: "| Every test on this page can pass on your laptop."
+    new: "| Every test in this lab can pass on your laptop."
+  - old: |-
+      not need a `4/4` line from any other machine. Your report shows your own
+      output, says which group your laptop is in, and explains in its Step 4 block
+      what the failing line means. The reader-writer lock is graded from that
+      explanation and from your Think answer, not from the test line. Laptops with
+    new: |-
+      not need a `4/4` line from any other machine. Step 4 explains what the
+      failing line means. Laptops with
+  - old: |-
+      Write down your starter `tot=` for `test1`. You compare against it in Step 1
+      and in your report.
+    new: |-
+      Write down your starter `tot=` for `test1`. You compare against it in Step 1.
+  - old: "(OSTEP chapter 32 calls this lock ordering; Week 10 covers it. This is your"
+    new: "(OSTEP chapter 32 calls this lock ordering. This is your"
+  - old: |-
+      machine is not. Group B and C: paste your own output in the report's Step 4
+      block, name the message that appeared, and say why it is a timing effect and
+      not a bug in your lock. That is all that is asked of you for this test.
+    new: |-
+      machine is not. Group B and C: the line that failed is a timing effect of the
+      hardware, not a bug in your lock.
+  - old: '<a class="up" href="#jump">&#8593; back to the step table</a>'
+    new: ""
+    count: 6
+  - old: "exactly the files on this page:"
+    new: "exactly the code in this lab:"
+  - old: |-
+      exactly the files on
+      this page:
+    new: |-
+      exactly the code in
+      this lab:
+  - old: |-
+      `Score: 110/110` is the line to
+      screenshot.
+    new: |-
+      `Score: 110/110` is the line to
+      look for.
+  - old: |-
+      Your screenshot is your own laptop's `make grade`, with the `FAIL` line
+      exactly as shown for your group above, and `Score: 80/110`. Nothing has to
+      be run anywhere else. In the report, paste your `lscpu` line, say which
+      group you are in, and in the Step 4 block explain the `rwlktest` output you
+      got: which message appeared, which stage it belongs to, and why two real
+      cores can miss a timing check that four real cores pass. The 30 points for
+      the reader-writer lock come from that explanation and from your Step 4 Think
+      answer, not from the test line.
+    new: |-
+      Your own laptop's `make grade` shows the `FAIL` line exactly as shown for
+      your group above, and `Score: 80/110`. Nothing has to be run anywhere else.
+      What is worth understanding is the `rwlktest` output you got: which message
+      appeared, which stage it belongs to, and why two real cores can miss a timing
+      check that four real cores pass.
+  - old: |-
+      sections of this page. Applied to a fresh `lab4-lock-student` folder, it
+      scores 110/110 on a 4-core machine; there is no separate solution download.
+    new: |-
+      sections of this lab's pages. Applied to a fresh `lab4-lock-student` folder, it
+      scores 110/110 on a 4-core machine.
+
+theory:
+  - after: "freed correctly, and the starter is correct, only slow."
+    title: "a correct lock can still be a slow one"
+    body: |
+      **What the theory says.** `kalloc()` pops a page off one shared free list and
+      `kfree()` pushes one on. Each is a read of the head and a write of the head, a
+      critical section, so xv6 puts one lock, `kmem.lock`, around both
+      ([Week 8, Section 2.7](w08/class-1.md#sec-2-7)). xv6's `acquire()` takes a lock by
+      repeating an atomic swap until it gets a 0; a CPU that keeps getting a 1 is spinning,
+      doing no work ([Week 8, Section 5.3](w08/class-2.md#sec-5-3)).
+
+      **What this run showed.** On the starter, `test1` said `FAIL`: the one `kmem` lock was
+      taken 433,058 times, and CPUs failed to get it 26,512 times on the 8-core desktop and
+      33,405,938 times on the 2-core machine.
+
+      **Why the run confirms the theory.** Each of those failed swaps is a CPU standing at
+      the one lock, doing no work, while another CPU pops or pushes a page. One lock around
+      one list makes all four CPUs take turns for every page. That waiting is the cost this
+      lab sets out to remove.
+
+  - after: "That is what Step 2 fixes."
+    title: "split what is shared, lock each part"
+    body: |
+      **What the theory says.** When every CPU wants one lock, the fix is to cut the shared
+      thing into parts, give each part its own lock, and pick the part by something the
+      thread already has, such as its CPU number
+      ([Week 9, Sections 2.3](w09/class-1.md#sec-2-3) and
+      [2.13](w09/class-1.md#sec-2-13)).
+
+      **What this run showed.** After Step 1, every `kmem` line says `#test-and-set 0`,
+      `tot= 0`, and `test1 OK`.
+
+      **Why the run confirms the theory.** `cpuid()` picks the part, so three children on
+      three CPUs each take only their own lock, and nobody waits: zero failed swaps, where
+      the starter had thousands or millions.
+
+  - after: "277,147 (`n - m` in the Step 0 capture)"
+    title: "per-CPU queues need work stealing"
+    body: |
+      **What the theory says.** With one queue per CPU, one queue can run dry while another
+      is still full: load imbalance. The fix is migration, and work stealing decides when:
+      a queue that is low takes work from a fuller one. Looking at other queues too often
+      brings back the very contention the split removed
+      ([Week 7, Section 3.6](w07/class-1.md#sec-3-6)).
+
+      **What this run showed.** After Step 2, `test2` allocated all 32,463 free pages and said
+      `OK`. After `test4`, `tot=` was 2,410, and that total counts every failed swap since
+      boot. The starter's `test4` alone, on the same machine, had 277,147.
+
+      **Why the run confirms the theory.** A free list per CPU is a run queue per CPU, with
+      pages in place of jobs. An empty list is an idle queue, and the steal is the migration.
+      Because a CPU steals only when its own list is empty, and then holds the other CPU's
+      lock just long enough to swap a pointer, the lists rarely meet: correctness came back
+      without bringing the contention back.
+
+  - after: "no running CPU ever refills"
+    title: "a system call is a number in a register"
+    body: |
+      **What the theory says.** A program names a kernel service by a number, never by an
+      address. The stub puts the number in `a7` and runs `ecall`, and the kernel's
+      `syscall()` looks the number up in its table of handlers
+      ([Week 2, Sections 4.4 to 4.6](w02/class-2.md#sec-4-4)).
+
+      **What this run showed.** Before `kalloctest`, `steals` printed `no steals`; after it,
+      `steals detected: 6153155`, a counter that lives in the kernel's `kmem` array.
+
+      **Why the run confirms the theory.** `steals` cannot read kernel memory. The only way
+      that number reached it is the route of the theory: the new stub loads 37 into `a7`, the
+      table entry turns 37 into `sys_kmemsteals`, and the result comes back in `a0`. Without
+      the table line the number has no handler, and without the `UPROGS` line there is no
+      program at all.
+
+  - after: "timing effect of the"
+    title: "the reader-writer lock, and a writer that cannot be starved"
+    body: |
+      **What the theory says.** Reading does not change the data, so readers need not wait
+      for each other. A reader-writer lock has two modes: any number of readers together, or
+      one writer alone ([Week 9, Sections 6.4](w09/class-2.md#sec-6-4) and
+      [6.5](w09/class-2.md#sec-6-5)). The simple version has a catch: a stream of readers can
+      keep the reader count above zero forever, and the writer starves. A fair version counts
+      waiting writers and holds new readers back for them
+      ([Week 9, Section 6.6](w09/class-2.md#sec-6-6)).
+
+      **What this run showed.** On four real cores `rwlktest` printed `4/4`: stages 2 and 3
+      took a million read locks concurrently; stage 5 checked that a reader arriving after a
+      waiting writer was held out, and stages 10 to 29 repeated that check with two writers;
+      stages 6 and 7 found no reader inside with a writer and no two writers together.
+
+      **Why the run confirms the theory.** The stages test the two modes one by one: readers
+      inside together, a writer alone. The `wwaiters` count in your lock is the fair
+      version's bookkeeping, and the priority stages pass because a waiting writer makes
+      new readers wait. Without it, stage 5 would report `reader sneaked ahead of waiting
+      writer`: the first step of the starvation the theory warns about, caught in the act.
+
+  - after: "because the stub `sys_rwget` always returned -1"
+    title: "a torn read is a race on two fields"
+    body: |
+      **What the theory says.** A critical section is a piece of code that touches shared
+      data and must run as if it were one step, with nobody else in the middle: that is
+      atomicity, and a lock provides it ([Week 8, Section 2.6](w08/class-1.md#sec-2-6)).
+
+      **What this run showed.** With `write_acquire` around `sys_rwset` and `read_acquire`
+      around `sys_rwget`, three readers made 60,000 calls between them while the parent made
+      20,000 writes, and no reader ever got -1: `rwshared: OK`.
+
+      **Why the run confirms the theory.** A write changes `val` and `chk` with two stores.
+      A reader that ran between them would see the two fields disagree and return -1. The
+      write lock keeps every reader out while the two stores happen, so as far as any
+      reader can tell the write is one step.

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 524" width="820" height="524" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="14">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/>
+    </marker>
+    <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2f855a"/>
+    </marker>
+  </defs>
+  <style>
+    .zone-u{fill:#e6f0fb;stroke:none}
+    .zone-k{fill:#fff1e6;stroke:none}
+    .zone-lbl{font-size:13px;font-weight:700;fill:#2b6cb0}
+    .zone-lbl-k{fill:#c05621}
+    .box{fill:#fff;stroke:#4a5568;stroke-width:1.5;rx:8}
+    .file{font-family:'SF Mono',ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;font-weight:700;fill:#1c2530}
+    .code{font-family:'SF Mono',ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;fill:#0b2942}
+    .lbl{fill:#4a5568;font-size:12px}
+    .arrow{stroke:#4a5568;stroke-width:1.8;fill:none;marker-end:url(#arr2)}
+    .ret{stroke:#2f855a;stroke-width:1.8;fill:none;marker-end:url(#arrb);stroke-dasharray:5 4}
+    .retlbl{fill:#2f855a;font-size:12px;font-weight:600}
+    .bound{stroke:#c53030;stroke-width:3}
+    .boundlbl{fill:#c53030;font-size:13px;font-weight:700}
+  </style>
+
+  <!-- zones -->
+  <rect class="zone-u" x="10" y="10" width="800" height="222" rx="10"/>
+  <text class="zone-lbl" x="24" y="32">USER SPACE  (your program and its small library)</text>
+  <rect class="zone-k" x="10" y="270" width="800" height="244" rx="10"/>
+  <text class="zone-lbl zone-lbl-k" x="224" y="292">KERNEL SPACE  (privileged: only the kernel can touch the screen, disk, other processes)</text>
+
+  <!-- user boxes -->
+  <rect class="box" x="24" y="46" width="430" height="50"/>
+  <text class="file" x="36" y="66">user/sysdemo.c</text>
+  <text class="code" x="36" y="86">n = write(1, "hi\n", 3);</text>
+  <text class="lbl" x="470" y="90">your program calls write() like any other function</text>
+
+  <path class="arrow" d="M204,96 L204,118"/>
+
+  <rect class="box" x="24" y="118" width="430" height="50"/>
+  <text class="file" x="36" y="138">user/user.h   (line 10)</text>
+  <text class="code" x="36" y="158">int write(int, const void*, int);</text>
+  <text class="lbl" x="470" y="138">the declaration your code</text>
+  <text class="lbl" x="470" y="156">was compiled against</text>
+
+  <path class="arrow" d="M204,168 L204,190"/>
+
+  <rect class="box" x="24" y="190" width="430" height="36"/>
+  <text class="file" x="36" y="206">user/usys.S   (generated from usys.pl)</text>
+  <text class="code" x="36" y="221">write:  li a7, SYS_write   ecall   ret</text>
+  <text class="lbl" x="470" y="206">a 3-instruction stub: put the call number</text>
+  <text class="lbl" x="470" y="222">(16) in register a7, then ECALL = trap down</text>
+
+  <!-- boundary -->
+  <line class="bound" x1="10" y1="251" x2="810" y2="251"/>
+  <rect x="300" y="240" width="230" height="22" fill="#fff" rx="6"/>
+  <text class="boundlbl" x="415" y="256" text-anchor="middle">user / kernel boundary (ecall)</text>
+  <path class="arrow" d="M204,226 L204,306"/>
+
+  <!-- kernel boxes -->
+  <rect class="box" x="24" y="306" width="430" height="36"/>
+  <text class="file" x="36" y="322">kernel/syscall.h   (line 17)</text>
+  <text class="code" x="36" y="337">#define SYS_write 16</text>
+  <text class="lbl" x="470" y="322">the number that was in a7</text>
+
+  <path class="arrow" d="M204,342 L204,364"/>
+
+  <rect class="box" x="24" y="364" width="430" height="54"/>
+  <text class="file" x="36" y="380">kernel/syscall.c   (lines 123, 141)</text>
+  <text class="code" x="36" y="396">[SYS_write] sys_write,     // table: number -> function</text>
+  <text class="code" x="36" y="412">a0 = syscalls[num]();      // call it, keep the result</text>
+  <text class="lbl" x="470" y="380">syscall() reads a7, looks the number</text>
+  <text class="lbl" x="470" y="396">up in a table, calls the function,</text>
+  <text class="lbl" x="470" y="412">stores its return value in a0</text>
+
+  <path class="arrow" d="M204,418 L204,440"/>
+
+  <rect class="box" x="24" y="440" width="430" height="58"/>
+  <text class="file" x="36" y="456">kernel/sysfile.c   (line 83)</text>
+  <text class="code" x="36" y="472">sys_write():  fd 99 is not open  -> return -1</text>
+  <text class="code" x="36" y="490">              fd 1 is open  -> filewrite() -> return 3</text>
+  <text class="lbl" x="470" y="456">the real work: fetch arguments,</text>
+  <text class="lbl" x="470" y="472">check the file descriptor, write,</text>
+  <text class="lbl" x="470" y="490">return the byte count</text>
+
+  <!-- return path -->
+  <path class="ret" d="M239,498 L239,506 L792,506 L792,60 L462,60"/>
+  <text class="retlbl" x="785" y="120" text-anchor="end">return value goes</text>
+  <text class="retlbl" x="785" y="136" text-anchor="end">back up in a0:</text>
+  <text class="retlbl" x="785" y="152" text-anchor="end">n = 3, or -1</text>
+</svg>

@@ -1,0 +1,396 @@
+# Website overlay for Lab 0 (setup).
+# The lab text comes from the setup guides in COMP3430_labs_v2/labs/setup/ (00_environment_setup.md,
+# 01_C_survival_guide.md, 02_using_the_autograder.md, 03_working_on_the_labs.md). Those files stay the
+# single source of truth and are never edited here. tools/setup2site.py joins them in the order of
+# `sources`, moves the headings of each file down by its `shift`, and then works like lab2site.py:
+#   overview       the overview page (site-only text; the setup README is about one course run).
+#   replace        sentences that belong to one course run (Week 1, Canvas, Piazza, the lab hour, a
+#                  date, the report) and a few fixes; each `old` must occur exactly `count` times
+#                  (default 1), or the build stops. Most of the rest turn em-dashes into plain
+#                  punctuation and move the headings so that each page starts at a `## ` heading.
+#   drop_sections  headings removed with everything under them.
+#   figures        each inline <figure><svg> of the source, in order, becomes figs/<file> plus a caption.
+#   theory         "Connect to theory" boxes (same format as the other labs).
+#   pages          one page per `## ` heading, with its short sidebar title.
+
+id: lab0
+title: "Lab 0 · setup: build and boot xv6"
+nav_title: "Lab 0 · setup"
+
+sources:
+  - {file: 00_environment_setup.md, shift: 0}
+  - {file: 03_working_on_the_labs.md, shift: 1}
+  - {file: 01_C_survival_guide.md, shift: 1}
+  - {file: 02_using_the_autograder.md, shift: 1}
+
+overview: |
+  Every lab runs xv6, the small teaching Unix that the weekly guides read their kernel code
+  from, on your own computer. xv6 is written for the RISC-V processor, and your computer
+  almost certainly has a different one (x86, or Apple silicon). So you need three tools:
+
+  - a **cross-compiler**, a compiler that runs on your computer but produces RISC-V code;
+  - **QEMU**, an emulator: a program that pretends to be a RISC-V computer, so xv6 can boot
+    inside it;
+  - **gdb**, the debugger, which can stop the emulated computer and show what the kernel is
+    doing.
+
+  This lab installs the three tools and checks that xv6 boots. Nothing in it is graded. If
+  there is time left, it then follows one system call from a small program into the kernel
+  and back, which is the idea Lab 1 and Lab 2 are built on.
+
+  ## The pages of this lab
+
+  | Page | What you do |
+  |---|---|
+  | [Install the tools](labs/lab0/install.md) | Install the compiler, the emulator and the debugger on Windows (through WSL2), macOS or Linux |
+  | [Get the code and boot xv6](labs/lab0/boot.md) | Unzip the xv6 source, run `make qemu`, and reach xv6's `$` prompt. Setup is done here |
+  | [One system call: `sysdemo`](labs/lab0/sysdemo.md) | Write a small program that makes three system calls, and follow one `write` through five files of the kernel |
+  | [Watch it under gdb](labs/lab0/gdb.md) | Optional: stop the kernel inside `sys_write` and read the registers your program left behind |
+  | [Wrap up: two shell facts](labs/lab0/wrap-up.md) | Why files you make inside xv6 disappear, and how small xv6 is |
+
+  ## The toolkit, for every lab
+
+  Three more pages are not steps of this lab. They are the reference you come back to in
+  every lab:
+
+  - [Working on the labs, and debugging xv6](labs/lab0/debugging.md): building and quitting,
+    print debugging, reading a panic, gdb, the QEMU monitor. Read it once now, and come back
+    to it the first time something breaks.
+  - [The C you need](labs/lab0/c-guide.md): the narrow slice of C these labs use. Read it
+    now if C is new to you.
+  - [The autograder](labs/lab0/grader.md): how to run `make grade`, which starts with Lab 1.
+
+  ## When setup is done
+
+  You are done when three things work on your own computer: `make qemu` boots xv6 to its `$`
+  prompt, the cross-compiler prints its version, and `qemu-system-riscv64` prints its
+  version. Have all three working before you start [Lab 1](labs/lab1/index.md), so that your
+  time there goes to the lab and not to installation.
+
+figures:
+  - file: write_path.svg
+    caption: "The road of one `write()` call: from your program in user space, through the
+      three-instruction stub and the `ecall` into the kernel, to the system-call table and
+      `sys_write`, and back with the result in register `a0`. The file names and line numbers
+      are those of the `xv6-setup-student` tree."
+
+pages:
+  - {heading: "Install the tools",        file: install.md,   nav: "Install the tools"}
+  - {heading: "Get the code and boot",    file: boot.md,      nav: "Get the code and boot xv6"}
+  - {heading: "One system call",          file: sysdemo.md,   nav: "One system call: sysdemo"}
+  - {heading: "Watch it happen",          file: gdb.md,       nav: "Watch it under gdb"}
+  - {heading: "Two shell facts",          file: wrap-up.md,   nav: "Wrap up: two shell facts"}
+  - {heading: "Working on the labs",      file: debugging.md, nav: "Toolkit · Working and debugging"}
+  - {heading: "A C survival guide",       file: c-guide.md,   nav: "Toolkit · The C you need"}
+  - {heading: "Running the autograder",   file: grader.md,    nav: "Toolkit · The autograder"}
+
+drop_sections:
+  - "Getting help — use Piazza"
+
+replace:
+  # ---------- 00_environment_setup.md: page headings ----------
+  - old: "# Setting up your machine for the xv6 kernel labs\n"
+    new: "## Install the tools\n"
+  - old: "## Windows (WSL2 + Ubuntu)\n"
+    new: "### Windows (WSL2 + Ubuntu)\n"
+  - old: "## macOS (Homebrew)\n"
+    new: "### macOS (Homebrew)\n"
+  - old: "## Linux (Ubuntu / Debian)\n"
+    new: "### Linux (Ubuntu / Debian)\n"
+  - old: "## Fallback for anyone: a throwaway Ubuntu VM (Multipass or VirtualBox)\n"
+    new: "### Fallback for anyone: a throwaway Ubuntu VM (Multipass or VirtualBox)\n"
+  - old: "## Getting the code\n"
+    new: "## Get the code and boot xv6\n\n### Getting the code\n"
+  - old: "## Checking your setup\n"
+    new: "### Checking your setup\n"
+  - old: "### Watch it happen: `sysdemo` under gdb (optional, after class)\n"
+    new: "## Watch it happen: `sysdemo` under gdb (optional)\n"
+  - old: "### Two shell things worth knowing before Lab 1\n"
+    new: "## Two shell facts worth knowing before Lab 1\n"
+  - old: |
+      ## Done early? One small program to try (nothing to submit)
+
+      If your setup works and there is time left, try the program below. It is not graded and
+      there is nothing to hand in. It is complete: type it in, build it, run it, and compare with
+    new: |
+      ## One system call: `sysdemo`
+
+      Once your setup works, try the program below. It is not graded. It is complete: type it
+      in, build it, run it, and compare with
+  - old: "### `sysdemo`: following one system call into the kernel\n\n"
+    new: ""
+
+  # ---------- 00: one course run (Week 1, Canvas, Piazza, lab hour, date) ----------
+  - old: |-
+      Pick the section for your operating system. When
+      you are done, jump to "Getting the code" and then "Checking your setup" further down.
+    new: |-
+      Pick the section for your operating system. When
+      you are done, go on to [Get the code and boot xv6](labs/lab0/boot.md).
+  - old: "can take 5 to 10 minutes on campus Wi-Fi."
+    new: "can take 5 to 10 minutes on a typical Wi-Fi connection."
+  - old: |-
+      (replace `<WindowsName>` with your Windows user name; this week the zip is `xv6-setup-student.zip`,
+      later the lab zips):
+    new: |-
+      (replace `<WindowsName>` with your Windows user name; for this setup the zip is
+      `xv6-setup-student.zip`, later it is each lab's zip):
+  - old: |-
+      - Anything else: post the exact error text on Piazza (copy the whole message, and say which
+        step you were on). Installation problems are handled on Piazza, not during the lab hour,
+        which is for xv6 itself.
+    new: |-
+      - Anything else: copy the whole error message and note which step you were on. Then
+        search for the message, or ask for help with both.
+  - old: "**For Week 1 (setup) you use `xv6-setup-student`**, posted on Canvas as `xv6-setup-student.zip`. It is the"
+    new: "**For this setup you use `xv6-setup-student`**, which comes as `xv6-setup-student.zip`. It is the"
+  - old: |-
+      **From Lab 1 on**, each lab is posted on Canvas as its own **zip** (for example `lab1-util-student.zip`).
+      Download the lab you are working on and unzip it. That gives you a folder with the lab's
+      starter code, its `GUIDE.md`, and its `RUBRIC.md`:
+    new: |-
+      **From Lab 1 on**, each lab comes as its own **zip** (for example `lab1-util-student.zip`).
+      Unzip the lab you are working on. That gives you a folder with the lab's starter code;
+      the lab's steps are on [this site](labs/index.md):
+  - old: "and you just unzip the next one when it is released."
+    new: "and you unzip the next one when you start it."
+  - old: |-
+      ## Setup lab: nothing to submit
+
+      The Week 1 **setup lab** has **no deliverable**. There is nothing to upload to Canvas and
+      nothing is graded. Its only purpose is to get your toolchain working before the graded labs
+      begin, and you are done when all three of these work on your own machine:
+    new: |-
+      ### When your setup is done
+
+      This setup has nothing to hand in, and nothing is graded. Its only purpose is to get your
+      tools working before the labs begin. You are done when all three of these work on your
+      own machine:
+  - old: |-
+      If any of the three does not work by the end of the lab hour, keep going at home and post
+      the exact error on Piazza; that is where installation problems get solved. Have it working before **Fri Sep 11**, when Lab 1 (`util`)
+      is released, so that you can spend that session on the lab itself and not on installation. You will not
+      use `make grade` this week; it belongs to the kernel labs and starts with Lab 1.
+    new: |-
+      If one of the three does not work, go back to the install section for your system and
+      its list of what can go wrong. Have all three working before you start Lab 1 (`util`), so
+      that your time there goes to the lab itself and not to installation. You will not use
+      `make grade` here; the grader belongs to the labs and starts with Lab 1.
+  - old: |-
+      This is the user/kernel boundary that the lecture
+      talks about, and you can follow the `write` call through it in five files:
+    new: |-
+      This is the user/kernel boundary of the theory classes, and you can follow the `write`
+      call through it in five files:
+  - old: "its C lines is possible, `add-symbol-file user/_sysdemo`, and is a topic for next week.)"
+    new: "its C lines is possible, `add-symbol-file user/_sysdemo`, but it is not needed here.)"
+  - old: "Next week's lab session goes through gdb properly; this is just a first look."
+    new: "Lab 1 uses gdb again, step by step; this is just a first look."
+
+  - old: "Everything above can be watched live with the debugger."
+    new: "Everything on [the previous page](labs/lab0/sysdemo.md) can be watched live with the debugger."
+  - old: "(already in the `apt-get` line above)"
+    new: "(already in the `apt-get` line of [Install the tools](labs/lab0/install.md))"
+  - old: "Read it against the figure above."
+    new: "Read it against the figure on [the previous page](labs/lab0/sysdemo.md)."
+
+  # ---------- 03_working_on_the_labs.md ----------
+  - old: "part of the point — you are learning to"
+    new: "part of the point: you are learning to"
+  - old: |-
+      These labs are conceptually short but detail-heavy. A task marked "moderate" might be only a
+      few dozen lines, but the wrong pointer or a forgotten `brelse` will cost you an hour. So:
+    new: |-
+      These labs are conceptually short but detail-heavy. A task can look small, and still the
+      wrong pointer or a forgotten `brelse` will cost you an hour. So:
+  - old: |-
+      - **Read the whole task before you type.** Each `GUIDE.md` tells you exactly which file and
+        function to change and what output to expect. The difficulty is meant to be in understanding
+        *why*, and in the report — not in guessing what to do.
+    new: |-
+      - **Read the whole step before you type.** Each lab's step pages tell you exactly which file
+        and function to change and what output to expect. The difficulty is meant to be in
+        understanding *why*, not in guessing what to do.
+  - old: |-
+      If you see `exec: fail` when you run a program you just wrote, you forgot to add it to
+      `UPROGS` in the `Makefile` — that is the number-one beginner mistake. See your lab's `GUIDE.md`.
+    new: |-
+      If the xv6 shell answers `exec <name> failed` when you run a program you just wrote, you
+      forgot to add it to `UPROGS` in the `Makefile`. That is the number-one beginner mistake.
+  - old: "(xv6's is a small version — it understands"
+    new: "(xv6's is a small version: it understands"
+  - old: "Read it carefully — it is telling you a lot:"
+    new: "Read it carefully. It is telling you a lot:"
+  - old: |-
+      assembly it compiled to, each line tagged with its address. When a trap prints an `sepc` (or
+      gdb stops at some address), search `kernel/kernel.asm` for that address to see exactly which C
+      line it is. Or ask the tools directly:
+
+      ```
+      $ addr2line -e kernel/kernel 0x0000000000001d34
+      ```
+
+      User programs get the same treatment: each program has a `user/<name>.asm` listing.
+    new: |-
+      assembly it compiled to, each line tagged with its address. When a kernel panic or gdb gives
+      you an address, search `kernel/kernel.asm` for that address to see exactly which C line it is.
+
+      The `usertrap()` message above is the other case. The fault happened in a user program (the
+      process with pid 3), so its `sepc` is an address inside that program, not inside the kernel.
+      Each user program has its own listing, `user/<name>.asm`, so search that file instead. Or
+      ask the tools directly, giving them the program's file (here, if the program was `find`):
+
+      ```
+      $ addr2line -e user/_find 0x0000000000001d34
+      ```
+
+      For a kernel address, give `kernel/kernel` instead of `user/_find`. (On macOS the tool is
+      called `riscv64-unknown-elf-addr2line`.)
+  - old: "file for safety — run this once, then try again:"
+    new: "file for safety. Run this once, then try again:"
+  - old: "to reach the panic — read it"
+    new: "to reach the panic. Read it"
+  - old: |-
+      or `FAIL` with a bit of the output it expected —
+      read the expected-vs-actual snippet;
+    new: |-
+      or `FAIL` with a bit of the output it expected.
+      Read the expected-vs-actual snippet;
+  - old: |-
+      ### When to ask for help — Piazza
+
+      These labs are meant to be challenging in the understanding, not in leaving you stuck for
+      hours. If you have used the techniques above and are still stuck for more than a little while —
+      a fault you cannot explain, a panic you cannot trace, a test you cannot make pass — **post on
+      Piazza** with the specific error and what you have already tried. You can ask any time and get
+      an answer any time, which makes it far more useful than waiting for the twice-a-week office
+      hours (still there for anything that needs a live screen-share). Posting a clear question is a
+      far better use of your time than staring at the bug alone.
+    new: |-
+      ### When to ask for help
+
+      These labs are meant to be challenging in the understanding, not in leaving you stuck for
+      hours. Sometimes you have used the techniques above and are still stuck: a fault you cannot
+      explain, a panic you cannot trace, a test you cannot make pass. Then ask for help, and give
+      the exact error and what you have already tried. A clear question is a far better use of
+      your time than staring at the bug alone.
+
+  # ---------- 01_C_survival_guide.md ----------
+  - old: "while you work — you will not need anything beyond what is here."
+    new: "while you work. You will not need anything beyond what is here."
+  - old: '"add a prototype in `user.h`" — that is'
+    new: '"add a prototype in `user.h`": that is'
+  - old: "- `make qemu` — build xv6 and run it."
+    new: "- `make qemu`: build xv6 and run it."
+  - old: "- `make grade` — build xv6 and run the automatic tests."
+    new: "- `make grade`: build xv6 and run the automatic tests."
+  - old: "length stored — code walks the array"
+    new: "length stored; code walks the array"
+  - old: "- `strlen(s)` — length"
+    new: "- `strlen(s)`: length"
+  - old: "- `strcmp(a, b)` — 0 if equal"
+    new: "- `strcmp(a, b)`: 0 if equal"
+  - old: "`safestrcpy(dst, src, n)` — copy a string."
+    new: "`safestrcpy(dst, src, n)`: copy a string."
+  - old: "`memset(dst, c, n)` — copy / fill raw bytes."
+    new: "`memset(dst, c, n)`: copy / fill raw bytes."
+  - old: "Bit masks (used by the sandbox lab):"
+    new: "Bit masks (used by the sandbox of Lab 2):"
+  - old: "stops the kernel — read the message;"
+    new: "stops the kernel. Read the message;"
+  - old: "is the bad address — often `0`"
+    new: "is the bad address, often `0`"
+
+  # ---------- 02_using_the_autograder.md ----------
+  - old: |-
+      This page
+      explains how to run it. What to submit for each lab is described separately on Canvas.
+    new: |-
+      This page
+      explains how to run it.
+  - old: "take the longest — that is normal."
+    new: "take the longest. That is normal."
+  - old: "It is worth one point and helps us calibrate the labs."
+    new: "The grader gives it one point."
+  - old: |-
+      ### A note on academic honesty
+
+      Public solutions to the original MIT labs exist online, and we assume you will see them.
+      Two things make copying pointless here. First, each lab has one or more tasks that are
+      **specific to this course** and are not in any public solution — the grader checks them,
+      so a pasted solution loses those points. Second, the report — with your own screenshots
+      and your own explanation of your own code — is where most of the grade is, and a copied
+      solution you cannot explain earns very little there. The intended difficulty of these labs
+      is in *understanding* the system and *writing up* what you did, not in typing the code.
+    new: |-
+      ### A note on public solutions
+
+      Public solutions to the original MIT labs exist online. Each lab here has one or more
+      tasks of its own that are not in any public solution, and the grader checks them. More to
+      the point, the difficulty of these labs is meant to be in *understanding* the system, not
+      in typing the code, and a pasted solution you cannot explain teaches you nothing.
+
+theory:
+  - after: "Lab 2 has you add a new entry to this table"
+    title: "the system call"
+    body: |
+      **What the theory says.** A program cannot touch the screen, the disk or another
+      program. It asks the kernel, through a system call: one trap instruction that raises
+      the privilege level and jumps to an entry the kernel chose in advance
+      ([Week 1, Section 1.4](w01/class-1.md#sec-1-4)). The program names the service by a
+      number, never by an address, and the kernel looks the number up in its own table
+      ([Week 2, Section 4.4](w02/class-2.md#sec-4-4)). In xv6 the round trip runs through
+      `usys.S`, the trampoline, `usertrap()` and `syscall()`
+      ([Week 2, Section 4.6](w02/class-2.md#sec-4-6)).
+
+      **What this run showed.** `write(1, "hi\n", 3)` printed `hi` and returned 3.
+      `write(99, "hi\n", 3)` printed nothing and returned -1. And, as the figure shows, the
+      stub in `user/usys.S` that `write` compiles to does only two things before `ret`: it
+      puts 16 in `a7` and runs `ecall`.
+
+      **Why the run confirms the theory.** Your program handed over a number and three
+      arguments, nothing more. The kernel's table turned 16 into `sys_write`, and
+      `sys_write` decided that 1 was a real open file of this process and that 99 was not a
+      valid file descriptor at all. Both decisions were made on the kernel's side of the
+      line, so the program could not skip them.
+
+  - after: "`3`. That 3 is on its way to your variable `n`."
+    title: "the trapframe holds the program's registers"
+    body: |
+      **What the theory says.** At the trap, before any C code of the kernel runs, the
+      kernel saves the program's registers into the process's trapframe. `syscall()` then
+      reads the call number from that saved copy (`p->trapframe->a7`), calls the handler,
+      and puts the result back in the saved `a0`, so the program finds it there when it
+      resumes ([Week 2, Sections 4.5 and 4.6](w02/class-2.md#sec-4-5)).
+
+      **What this run showed.** `bt` showed the chain `usertrap()`, then `syscall()`, then
+      `sys_write()`. In `myproc()->trapframe`, `a7` was 16 and `a0`, `a2` were 1 and 3, the
+      values your C code passed. `finish` stopped on line 141 of `kernel/syscall.c`, the
+      line that writes the handler's result into `p->trapframe->a0`, with the value 3.
+
+      **Why the run confirms the theory.** The breakpoint stopped the kernel inside
+      `sys_write`, long after your program's registers had been overwritten by kernel
+      code. Yet 16, 1 and 3 were still there, in the trapframe: the call number and the
+      two arguments, all in the saved copy the theory describes. Line 141 is where the
+      answer travels back.
+
+  - after: "Same value, two ways of reading"
+    title: "a file descriptor is a slot in the process's table"
+    body: |
+      **What the theory says.** A process is its memory, its registers and its open files.
+      The open files are a small table with one slot per open file, and the slot's number
+      is the file descriptor; slot 1 is standard output
+      ([Week 2, Section 1.2](w02/class-1.md#sec-1-2)). In xv6 that table is the `ofile`
+      field of `struct proc` ([Week 2, Section 1.4](w02/class-1.md#sec-1-4)).
+
+      **What this run showed.** `ofile[1]` held the address of a real `struct file`.
+      `ofile[3]` held 0, a null pointer. There is no slot 99 at all, and `write(99, ...)`
+      came back as -1.
+
+      **Why the run confirms the theory.** A file descriptor is not a name for a file; it
+      is only a position in this one process's table. xv6's table has 16 slots (`NOFILE`),
+      so before it looks at any slot the kernel checks that the number is between 0 and 15
+      (`argfd()` in `kernel/sysfile.c`, line 28). 99 fails that check: it is not a slot at
+      all. A number inside the table whose slot holds 0, like 3, is refused by the same line.
+      Both answers come from the per-process table the theory describes, not from anything
+      the program said.

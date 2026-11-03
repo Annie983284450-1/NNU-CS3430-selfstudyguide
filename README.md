@@ -73,10 +73,11 @@ The lab session guides are on the site too, under the **Labs** tab, one page per
 
 | path | what it is | edit by hand? |
 |---|---|---|
-| `tools/lab2site.py` | converts one MASTER into `docs/labs/<lab>/` (overview, before, one page per step, wrap-up) | only to change the conversion rules |
-| `labs/lab1-util.yml`, `labs/lab2-syscall.yml`, `labs/lab3-pgtbl.yml` | one overlay per lab: the "Connect to theory" boxes, the sentences the public site changes, the page list | yes, this is where the boxes are written |
+| `tools/lab2site.py` | converts one MASTER into `docs/labs/<lab>/` (overview, before, one page per step, wrap-up). Since 2026-11-02 it also reads numbered headings ("1.5a The answer", "1.6 Think", Lab 4 on) and folds "Reading the answer" sections | only to change the conversion rules |
+| `tools/setup2site.py` | Lab 0 only: joins the setup guides in `COMP3430_labs_v2/labs/setup/` (00, 03, 01, 02) and converts them with the same machinery; the inline write() figure becomes `docs/labs/lab0/figs/write_path.svg` | only to change the conversion rules |
+| `labs/lab0-setup.yml`, `labs/lab1-util.yml`, `labs/lab2-syscall.yml`, `labs/lab3-pgtbl.yml`, `labs/lab4-lock.yml` | one overlay per lab: the "Connect to theory" boxes, the sentences the public site changes, the page list | yes, this is where the boxes are written |
 | `docs/labs/index.md` | the Labs landing page | yes |
-| `docs/labs/lab1/`, `docs/labs/lab2/`, `docs/labs/lab3/` | generated; rewritten on every build | never |
+| `docs/labs/lab0/` to `docs/labs/lab4/` | generated; rewritten on every build | never |
 
 What the converter does on the way: it makes the student copy (keeps STUDENT-ONLY, drops INSTRUCTOR-ONLY and every ANSWER block, so Think answers never reach the site); applies the overlay's `replace` list, where every old string must occur exactly as many times as stated, so a changed MASTER stops the build instead of being half-converted; drops "Hand in"; inserts each theory box after the paragraph or output it explains; folds every "The answer ..." section into a click-to-open box (the run instructions after it stay visible); turns each Think into a question box; links "Step N" to that step's page; numbers the lines of complete listings from the file's own line numbers; and checks that every link into the weekly guides lands on an existing heading.
 

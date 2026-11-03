@@ -124,6 +124,16 @@ nav:
           - "Appendix A · Reading the C": w09/appendix.md
   - Labs:
       - Start here: labs/index.md
+      - "Lab 0 · setup":
+          - "Overview": labs/lab0/index.md
+          - "Install the tools": labs/lab0/install.md
+          - "Get the code and boot xv6": labs/lab0/boot.md
+          - "One system call: sysdemo": labs/lab0/sysdemo.md
+          - "Watch it under gdb": labs/lab0/gdb.md
+          - "Wrap up: two shell facts": labs/lab0/wrap-up.md
+          - "Toolkit · Working and debugging": labs/lab0/debugging.md
+          - "Toolkit · The C you need": labs/lab0/c-guide.md
+          - "Toolkit · The autograder": labs/lab0/grader.md
       - "Lab 1 · util":
           - "Overview": labs/lab1/index.md
           - "Before you start: one folder": labs/lab1/before.md
@@ -157,3 +167,12 @@ nav:
           - "Step 6 · A syscall counter": labs/lab3/step-6.md
           - "Step 7 · The two text files": labs/lab3/step-7.md
           - "Wrap up: the grader": labs/lab3/wrap-up.md
+      - "Lab 4 · lock":
+          - "Overview": labs/lab4/index.md
+          - "Step 0 · Cores, and the starter": labs/lab4/step-0.md
+          - "Step 1 · One free list per CPU": labs/lab4/step-1.md
+          - "Step 2 · Steal a whole list": labs/lab4/step-2.md
+          - "Step 3 · kmemsteals": labs/lab4/step-3.md
+          - "Step 4 · A reader-writer lock": labs/lab4/step-4.md
+          - "Step 5 · rwshared": labs/lab4/step-5.md
+          - "Step 6 · time.txt and the grader": labs/lab4/step-6.md

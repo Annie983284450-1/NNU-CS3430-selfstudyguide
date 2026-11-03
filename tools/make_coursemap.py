@@ -70,11 +70,11 @@ PIECES = [
 # [(week key, class number 1 or 2), ...] = the theory classes it practices). A lab is drawn level with the
 # middle of its classes; labs not on the site are grey, like weeks not written yet.
 LABS = [
-    ("Lab 0 · setup", "build and boot xv6", None, [("w01", 1)]),
+    ("Lab 0 · setup", "build and boot xv6", "labs/lab0/", [("w01", 1)]),
     ("Lab 1 · util", "five programs on xv6", "labs/lab1/", [("w01", 2), ("w02", 1), ("w02", 2)]),
     ("Lab 2 · syscall", "new system calls; a sandbox", "labs/lab2/", [("w02", 2), ("w03", 1), ("w03", 2), ("w04", 1)]),
     ("Lab 3 · pgtbl", "page tables; superpages", "labs/lab3/", [("w04", 2), ("w05", 1)]),
-    ("Lab 4 · lock", "locks inside the kernel", None, [("w08", 2)]),
+    ("Lab 4 · lock", "locks inside the kernel", "labs/lab4/", [("w08", 1), ("w08", 2), ("w09", 1), ("w09", 2)]),
     ("Lab 5 · fs", "large files; symbolic links", None, [("w12", 2)]),
 ]
 LAB_COLOR = "#00838f"

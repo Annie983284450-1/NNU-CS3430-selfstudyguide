@@ -213,7 +213,7 @@ Click any box to open that page. Grey boxes are weeks and labs that are not on t
 <text x="553.0" y="874" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-style="italic" fill="#6b7482">↓ what goes wrong</text>
 <text x="1146" y="34" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".06em" fill="#00838f">LABS</text>
 <text x="1184" y="34" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">practice on xv6</text>
-<path d="M1090,71 C1118,71 1118,71 1146,71" fill="none" stroke="#c9ced6" stroke-width="1.4" stroke-dasharray="4 3" opacity="1"/>
+<path d="M1090,71 C1118,71 1118,71 1146,71" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
 <path d="M1090,106 C1118,106 1118,158 1146,158" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
 <path d="M1090,166 C1118,166 1118,158 1146,158" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
 <path d="M1090,201 C1118,201 1118,158 1146,158" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
@@ -223,11 +223,14 @@ Click any box to open that page. Grey boxes are weeks and labs that are not on t
 <path d="M1090,528 C1118,528 1118,410 1146,410" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
 <path d="M1090,563 C1118,563 1118,590 1146,590" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
 <path d="M1090,617 C1118,617 1118,590 1146,590" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
-<path d="M1090,755 C1118,755 1118,755 1146,755" fill="none" stroke="#c9ced6" stroke-width="1.4" stroke-dasharray="4 3" opacity="1"/>
+<path d="M1090,720 C1118,720 1118,782 1146,782" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,755 C1118,755 1118,782 1146,782" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,809 C1118,809 1118,782 1146,782" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
+<path d="M1090,844 C1118,844 1118,782 1146,782" fill="none" stroke="#00838f" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.85"/>
 <path d="M1090,1125 C1118,1125 1118,1125 1146,1125" fill="none" stroke="#c9ced6" stroke-width="1.4" stroke-dasharray="4 3" opacity="1"/>
-<g class="cmap-soon"><title>Lab 0 · setup (coming later in the term)</title><rect x="1146" y="51" width="176" height="40" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="1157" y="66" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Lab 0 · setup</text>
-<text x="1157" y="80" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">build and boot xv6</text></g>
+<a href="labs/lab0/" class="cmap-link"><title>Lab 0 · setup</title><rect x="1146" y="51" width="176" height="40" rx="7" fill="#f2fafa" stroke="#00838f" stroke-width="1.4"/>
+<text x="1157" y="66" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Lab 0 · setup</text>
+<text x="1157" y="80" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">build and boot xv6</text></a>
 <a href="labs/lab1/" class="cmap-link"><title>Lab 1 · util</title><rect x="1146" y="137" width="176" height="40" rx="7" fill="#f2fafa" stroke="#00838f" stroke-width="1.4"/>
 <text x="1157" y="152" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Lab 1 · util</text>
 <text x="1157" y="166" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">five programs on xv6</text></a>
@@ -237,9 +240,9 @@ Click any box to open that page. Grey boxes are weeks and labs that are not on t
 <a href="labs/lab3/" class="cmap-link"><title>Lab 3 · pgtbl</title><rect x="1146" y="570" width="176" height="40" rx="7" fill="#f2fafa" stroke="#00838f" stroke-width="1.4"/>
 <text x="1157" y="585" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Lab 3 · pgtbl</text>
 <text x="1157" y="599" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">page tables; superpages</text></a>
-<g class="cmap-soon"><title>Lab 4 · lock (coming later in the term)</title><rect x="1146" y="735" width="176" height="40" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="1157" y="750" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Lab 4 · lock</text>
-<text x="1157" y="764" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">locks inside the kernel</text></g>
+<a href="labs/lab4/" class="cmap-link"><title>Lab 4 · lock</title><rect x="1146" y="762" width="176" height="40" rx="7" fill="#f2fafa" stroke="#00838f" stroke-width="1.4"/>
+<text x="1157" y="777" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Lab 4 · lock</text>
+<text x="1157" y="791" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">locks inside the kernel</text></a>
 <g class="cmap-soon"><title>Lab 5 · fs (coming later in the term)</title><rect x="1146" y="1105" width="176" height="40" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
 <text x="1157" y="1120" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Lab 5 · fs</text>
 <text x="1157" y="1134" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">large files; symbolic links</text></g>
@@ -265,9 +268,11 @@ Click any box to open that page. Grey boxes are weeks and labs that are not on t
 
 Follow-along steps on xv6 that run the ideas of the weeks above on a real kernel. Each step links back to the section of the weekly guide it proves.
 
+- [Lab 0 · setup: build and boot xv6](labs/lab0/index.md) (goes with Week 1)
 - [Lab 1 · util: programs, processes and bytes](labs/lab1/index.md) (goes with Week 2)
 - [Lab 2 · syscall: two new system calls, and a sandbox](labs/lab2/index.md) (goes with Weeks 2 to 4)
 - [Lab 3 · pgtbl: read, print and reshape a page table](labs/lab3/index.md) (goes with Weeks 4 and 5)
+- [Lab 4 · lock: per-CPU memory, and a reader-writer lock](labs/lab4/index.md) (goes with Weeks 8 and 9)
 
 ## How a week is laid out
 

@@ -61,6 +61,8 @@ def student(t):
     t = strip_block(t, "ANSWER")
     t = t.replace("<!-- BLANK -->\n", "").replace("<!-- BLANK -->", "")
     t = re.sub(r"^<!-- (FROM|CAP) [^>]*-->\n", "", t, flags=re.M)
+    # Lab 4 on: the HTML guide's fold markers; the site folds by heading instead
+    t = re.sub(r"^<!-- /?FOLD[^>]*-->\n", "", t, flags=re.M)
     return t
 
 
@@ -154,6 +156,7 @@ def split_pages(t, pages):
 
 # ---------- 6. per page ----------
 
+SUBNUM = re.compile(r"^\d+\.\d+[a-z]?\s+")
 STEP_REF = re.compile(r"(?<![\[\w/])\bStep ([0-9])\b(?![^\[]*\]\()")
 ROOT_LINK = re.compile(r"\]\(((?:w\d\d|labs)/[^)#\s]+)(#[A-Za-z0-9_-]+)?\)")
 FOLD_END = re.compile(r"^(Then:|Add `\$U/|Rebuild and run|Run the first grader|\*\*On Ubuntu|\*\*At the xv6|\*\*Terminal 1)")
@@ -264,7 +267,10 @@ def convert_page(fname, lines, title, step_files, out_path, problems):
                 continue                      # the MASTER's own title; replaced above
             if fname != "index.md":
                 level = max(1, level - 1)     # ## Step -> #, ### -> ##
-            if text.startswith("The answer"):
+            # Lab 4 on, headings carry a number ("1.5a The answer: ...", "1.6 Think"); the
+            # kind of section is read after it. "Reading the answer" is folded too.
+            core = SUBNUM.sub("", text)
+            if core.startswith("The answer") or core.startswith("Reading the answer"):
                 end = section_end(i, len(m.group(1)))
                 body = lines[i + 1:end]
                 # run instructions after the answer stay outside the fold
@@ -296,7 +302,7 @@ def convert_page(fname, lines, title, step_files, out_path, problems):
                 n = len(lines)
                 i += 1
                 continue
-            if text == "Think":
+            if core == "Think":
                 end = section_end(i, len(m.group(1)))
                 body = lines[i + 1:end]
                 stop = next((k for k, l in enumerate(body) if l.startswith("Answer it in your own words")), None)

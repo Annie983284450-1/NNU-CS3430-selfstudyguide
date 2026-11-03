@@ -33,9 +33,12 @@ for d in "../../COMP3430_labs_v2" "../../../../COMP3430_labs_v2"; do
   [ -d "$d/labs" ] && LABS="$d/labs" && break
 done
 if [ -n "$LABS" ]; then
+  # Lab 0 is several short setup guides, not one session MASTER, so it has its own converter
+  python3 tools/setup2site.py labs/lab0-setup.yml "$LABS/setup"
   python3 tools/lab2site.py labs/lab1-util.yml    "$LABS/lab1-util-INSTRUCTOR/instructor-notes/LAB1_SESSION_MASTER_v6.md"
   python3 tools/lab2site.py labs/lab2-syscall.yml "$LABS/lab2-syscall-INSTRUCTOR/instructor-notes/LAB2_SESSION_MASTER_v2.md"
   python3 tools/lab2site.py labs/lab3-pgtbl.yml   "$LABS/lab3-pgtbl-INSTRUCTOR/instructor-notes/LAB3_SESSION_MASTER_v1.md"
+  python3 tools/lab2site.py labs/lab4-lock.yml    "$LABS/lab4-lock-INSTRUCTOR/instructor-notes/LAB4_SESSION_MASTER.md"
 else
   echo "COMP3430_labs_v2 not found next to the course folder: lab pages left as they are"
 fi
