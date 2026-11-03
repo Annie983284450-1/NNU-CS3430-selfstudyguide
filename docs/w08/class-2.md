@@ -430,6 +430,13 @@ Notice what unlock does not do. It does not choose the next owner, and it tells 
 
 *Step 2 in one line:* why does the waiter get in after unlock? unlock stores 0 → the waiter's next swap reads that 0 → and leaves a 1: the waiter now owns the lock.
 
+
+<!-- anim:spinlock:start -->
+Step through the two traces yourself: the flag of Section 4.3, where both threads get in, and the test-and-set lock, where only the first swap gets the 0.
+
+<div class="anim" data-anim="spinlock" markdown="0"></div>
+<!-- anim:spinlock:end -->
+
 - What this part settled: in every order, exactly one thread gets the 0.
 - What it leaves open: nobody is served in order. That is the fairness problem of [Section 5.5](#sec-5-5). First, the real thing in xv6 and on Linux.
 
@@ -734,6 +741,13 @@ void unlock(lock_t *lock) {
 <figcaption markdown="1">Figure 5.5. Three arrivals. A arrives and takes ticket 0; the sign says 0, so A is in. B and C arrive and take tickets 1 and 2; the sign still says 0, so they spin. The lock's two integers: ticket = 3, turn = 0.</figcaption>
 </figure>
 
+<!-- anim:ticket:start -->
+Step through it yourself: three threads take numbers, and each unlock calls the next one.
+
+<div class="anim" data-anim="ticket" markdown="0"></div>
+<!-- anim:ticket:end -->
+
+
 In Figure 5.5, A arrives first and pulls ticket 0. The sign says 0, so A walks in. B and C arrive about the same time and pull 1 and 2. The sign still says 0, so both wait, each watching for its own number. After three arrivals the dispenser stands at 3 and the sign at 0. Three threads got three different numbers, in arrival order, and C already knows the most it can wait: C holds ticket 2, so at most 2 threads can be served before C, whatever the timing.
 
 *Step 1 in one line:* why can two threads never get the same ticket? fetch-and-add reads and bumps the counter in one step → no gap for a second thread to read the same value → each arrival gets its own number.
@@ -890,6 +904,13 @@ The story first. The lock has a flag (held or free), a queue of sleeping threads
 <figcaption markdown="1">Figure 6.3. After step 1: the lock is held by T1, the guard is free, and T2 sleeps on the queue of waiting threads.</figcaption>
 </figure>
 
+<!-- anim:queuelock:start -->
+Step through it yourself: T2 and T3 park, and unlock hands the lock straight to T2. The second tab is unlock with nobody waiting.
+
+<div class="anim" data-anim="queuelock" markdown="0"></div>
+<!-- anim:queuelock:end -->
+
+
 Figure 6.3 shows the result. Here is what the guard is for. The flag and the queue must be read and changed as one unit. Picture a thread arriving while the owner holds the lock. It looks at the flag, sees 1, and decides to join the queue. Before it has joined, the owner unlocks: it looks at the queue, finds it empty, and sets the flag to 0. Now the arriving thread, still acting on the 1 it saw, adds itself to the queue and goes to sleep. Nobody is coming to wake it: the owner already decided there was no one to wake. (A later thread that takes and releases the lock might wake it, by luck.) A wake-up that a sleeping thread needs and never gets is called a **lost wake-up**. [Section 6.4](#sec-6-4) meets a second way to lose one. The guard makes the flag and the queue change together: while the arriving thread holds it, from looking at the flag to joining the queue, the owner cannot get in to look at the queue. That is also why the lock does not simply use test-and-set on the flag and skip the guard. Looking at the flag and joining the queue would then be two separate steps, with exactly this gap between them. The guard is held only for those few instructions inside `lock()` and `unlock()`, never while the user's critical section runs. Spinning still exists, but only on the guard, and only for a few instructions.
 
 *Step 1 in one line:* why a guard? a thread can see flag = 1 and decide to queue, the owner then finds the queue empty and frees the lock, and the thread queues and sleeps: nobody is coming to wake it (a lost wake-up) → so the flag and the queue must change as one → so a guard, held for a few instructions, never for the section.
@@ -961,6 +982,13 @@ The state of the lock itself fits in one integer, the **lock word**, which the p
 ![Figure 6.6. One lock word, two threads, five moments. 1: T1 locks a free word, 0 → 1, one atomic instruction, no kernel. 2: T2 finds 1, writes 2 and calls futex_wait. 3: T1 unlocks, finds 2, stores 0 and calls futex_wake. 4: T2 wakes and takes the lock by writing 2. 5: T2 unlocks, finds 2, stores 0, and the wake call finds nobody asleep.](figs/lockword_walk.svg){width=100%}
 <figcaption markdown="1">Figure 6.6. One lock word, two threads, five moments. 1: T1 locks a free word, 0 → 1, one atomic instruction, no kernel. 2: T2 finds 1, writes 2 and calls futex_wait. 3: T1 unlocks, finds 2, stores 0 and calls futex_wake. 4: T2 wakes and takes the lock by writing 2. 5: T2 unlocks, finds 2, stores 0, and the wake call finds nobody asleep.</figcaption>
 </figure>
+
+<!-- anim:futex:start -->
+Step through the five moments yourself, and watch which ones enter the kernel.
+
+<div class="anim" data-anim="futex" markdown="0"></div>
+<!-- anim:futex:end -->
+
 
 Follow the integer through one contended lock and unlock (Figure 6.6).
 

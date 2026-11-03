@@ -29,7 +29,7 @@ python3 tools/guide2site.py W09 "$SLIDES/W09/W09_ConcurrentDS_CV_Semaphores_Self
 # and what it settles. Drawn from the page's own headings, roadmap and summary, so it is redone after guide2site.
 python3 tools/make_classmaps.py
 
-# The step-through animations (docs/assets/anim/), each put right after the figure of the section it animates.
+# The step-through animations (docs/assets/anim/), each put after the figure or at the end of the section it animates.
 python3 tools/make_anims.py
 
 # Labs: one line per lab: overlay file, then the lab's session-guide MASTER. The lab folder

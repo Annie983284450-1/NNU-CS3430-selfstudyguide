@@ -741,6 +741,13 @@ So there are two ways in:
 
 Either way the total comes out short, and different every run. This matters for the fix. Whatever we build must make the three instructions act as one on two cores, not only stop interrupts on one. A cure that only stopped interrupts would fix the one-CPU case and leave this one broken. Keep that in mind for the second class.
 
+
+<!-- anim:race:start -->
+Step through both races yourself: the one-CPU trace of Section 2.4, row by row, and the two-core run of this section.
+
+<div class="anim" data-anim="race" markdown="0"></div>
+<!-- anim:race:end -->
+
 - What this part settled: on two cores, adds are lost with no interrupt at all.
 - What it leaves open: a name for what we want, and how to get it. The next part names it.
 

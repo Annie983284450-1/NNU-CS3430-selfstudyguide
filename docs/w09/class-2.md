@@ -408,6 +408,13 @@ void *consumer(void *arg) {
 
 So there are two queues and two kinds of sleeper, and each side rings only the other side's bell. The producer's flow, with the `while`: lock; while `count == MAX`, wait on `empty`; `put(base + i)`; signal `fill` (a consumer); unlock; and a woken producer goes back to the test, not straight to `put()`. The consumer mirrors it.
 
+
+<!-- anim:prodcons:start -->
+Step through the three versions of Sections 4.3 to 4.6 yourself: the if that fails, the single queue where everyone sleeps, and the two queues that work.
+
+<div class="anim" data-anim="prodcons" markdown="0"></div>
+<!-- anim:prodcons:end -->
+
 - What this part settled: producers sleep on `empty` and signal `fill`; consumers sleep on `fill` and signal `empty`; and the check stays a `while`.
 - What it leaves open: why the buffer grew to `MAX` slots.
 
@@ -885,6 +892,13 @@ The parent ends after the child, in this run and in the second one the file hold
 
 Why does the order no longer matter? If the post comes first, the value holds the event until the wait arrives. If the wait comes first, it sleeps at −1 until the post. Both end at 0.
 
+
+<!-- anim:sema:start -->
+Step through both uses yourself: a semaphore that starts at 1 (Section 5.3), and one that starts at 0 (this section).
+
+<div class="anim" data-anim="sema" markdown="0"></div>
+<!-- anim:sema:end -->
+
 - What this part settled: started at 0, a semaphore makes one thread wait for another, in either order, with no variable and no lock of our own.
 - What it leaves open: why one counter can do both jobs, on one page.
 
@@ -1079,6 +1093,13 @@ Every item once, and 2.59 s against the 2.99 s of the condition-variable version
 </figure>
 
 Figure 6.1 is the design. Step 1 counted slots and items but left `put()` open to a race. Step 2 locked the whole step, and a sleeper took the lock down with it. Step 3 keeps the lock only around the two lines that touch the ring, and every item comes out once. The counting semaphores decide when, the binary one decides who, and the binary one must never be held while waiting. The producer's flow: `sem_wait(&empty)`: a free slot, or sleep holding nothing; `sem_wait(&mutex)`; `put()`: the two ring lines, one producer at a time; `sem_post(&mutex)`; `sem_post(&full)`: wake a consumer.
+
+
+<!-- anim:bbdeadlock:start -->
+Step through both versions yourself: the lock around everything of Section 6.2, and the lock only around put() and get().
+
+<div class="anim" data-anim="bbdeadlock" markdown="0"></div>
+<!-- anim:bbdeadlock:end -->
 
 - What this part settled: a thread sleeps on `empty` or `full` holding nothing; the mutex covers only the ring update; no sleeper ever holds it.
 - What it leaves open: one more structure, back from the first class: the list.

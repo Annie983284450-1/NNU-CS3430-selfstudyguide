@@ -43,7 +43,17 @@ extra_css:
 extra_javascript:
   - assets/extra.js
   # the animations: each scenario file first, then the engine that draws them (assets/anim/, tools/make_anims.py)
+  - assets/anim/race.js
+  - assets/anim/spinlock.js
+  - assets/anim/ticket.js
+  - assets/anim/queuelock.js
   - assets/anim/setpark.js
+  - assets/anim/futex.js
+  - assets/anim/approx.js
+  - assets/anim/join.js
+  - assets/anim/prodcons.js
+  - assets/anim/sema.js
+  - assets/anim/bbdeadlock.js
   - assets/anim/stepper.js
 
 markdown_extensions:

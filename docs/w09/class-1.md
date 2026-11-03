@@ -549,6 +549,13 @@ So the counter trades exactness for speed, and S is the knob. A small S keeps th
 
 Where is a count that lags acceptable? A statistics counter in a kernel (packets received, pages mapped) is read rarely and updated constantly; a total that is a little behind is fine there. A bank balance is not that kind of counter.
 
+
+<!-- anim:approx:start -->
+Step through the table of Section 2.3 yourself, one time row at a time, and then the get() of this section.
+
+<div class="anim" data-anim="approx" markdown="0"></div>
+<!-- anim:approx:end -->
+
 - What this part settled: `get()` returns G, which can be behind the truth by at most 4 × S.
 - What it leaves open: whether the three steps really made the counter fast. The next part measures it, and it does not go the way OSTEP says.
 
@@ -1143,6 +1150,13 @@ void thr_join() {
 The flow, with the lock dropped: parent: `done == 0`? yes; interrupted: the child runs; child: `done = 1`; signal: nobody asleep; the parent resumes: `wait()`: sleeps; nobody will ever signal again. This failure has a name: a **lost wake-up** is when the signal comes before the waiter is asleep, but the waiter still goes to sleep afterwards, so nobody is left to wake it. Shortcut 1 lost it the same way; shortcut 2 loses it through a gap.
 
 The rule both failures teach, and why the lock closes the gap. Keep the event in a variable (shortcut 1 dropped it). Hold the lock while you check it and call `wait()`, and while you change it and signal (shortcut 2 dropped it). Remove either piece, and the waiter can go to sleep after its signal has already come. With the lock held, the child cannot touch `done` between the parent's check and its sleep, because `wait()` releases the lock only as the parent falls asleep.
+
+
+<!-- anim:join:start -->
+Step through the four runs of Sections 3.6 to 3.9 yourself: the two orders that work, and the two shortcuts that fail.
+
+<div class="anim" data-anim="join" markdown="0"></div>
+<!-- anim:join:end -->
 
 - What this part settled: the lock must stay; without it the change and the signal land in the gap between the check and the sleep.
 - What it leaves open: nothing of the mechanism. One page puts the three pieces together.
