@@ -457,6 +457,13 @@ Now look at the state. The flag is 1, so the lock is held, and its owner is T2. 
 <figcaption markdown="1">Figure Q.12. The seven steps. The unpark in step 5 reaches T2 while it is still awake and does nothing; the park in step 7 then sleeps forever. Bottom: with setpark() between steps 2 and 3, the early unpark is recorded and the park returns at once.</figcaption>
 </figure>
 
+<!-- anim:setpark:start -->
+Step through the seven steps yourself, without `setpark()` and then with it.
+
+<div class="anim" data-anim="setpark" markdown="0"></div>
+<!-- anim:setpark:end -->
+
+
 **The fix.** Solaris adds a third call, `setpark()`, which T2 makes between steps 2 and 3. It means "I am about to park". If an `unpark()` arrives after `setpark()` and before `park()`, the system records it, and "the subsequent park returns immediately instead of sleeping". In step 5 the knock is now remembered; in step 7, T2's `park()` sees it and returns. T2 continues, as the owner of the lock.
 
 The guard cannot simply be kept until after `park()`. The book asks exactly this: "What would happen if the release of the guard lock came after the park(), and not before? Hint: something bad." T2 would fall asleep while holding the guard. T1's `unlock()` would then spin on line 27 forever, waiting for a guard that only a sleeping thread can release. On one CPU it would spin away every time slice it gets. That is why the guard has to be released before `park()`, and why the gap exists at all.

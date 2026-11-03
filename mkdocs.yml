@@ -39,8 +39,12 @@ theme:
 
 extra_css:
   - assets/extra.css
+  - assets/anim/stepper.css
 extra_javascript:
   - assets/extra.js
+  # the animations: each scenario file first, then the engine that draws them (assets/anim/, tools/make_anims.py)
+  - assets/anim/setpark.js
+  - assets/anim/stepper.js
 
 markdown_extensions:
   - attr_list

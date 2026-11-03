@@ -921,6 +921,13 @@ One trap remains. Look again at lines 20 to 22 of `lock()`: T2 writes its name o
 <figcaption markdown="1">Figure 6.5. T2 is on the queue and has released the guard, but has not reached park() yet: it is still awake. T1 unlocks right now.</figcaption>
 </figure>
 
+<!-- anim:setpark:start -->
+Step through it yourself: the seven steps without `setpark()`, and then the same timing with it.
+
+<div class="anim" data-anim="setpark" markdown="0"></div>
+<!-- anim:setpark:end -->
+
+
 T1 takes the guard, finds T2 on the queue, removes it and unparks it. But T2 is not asleep, so the unpark does nothing. Then T2 reaches `park()` and sleeps, and no wake-up is ever coming. The lock is T2's, and T2 is asleep forever. This is called the **wakeup/waiting race**: a wake-up that arrives before the sleep it was meant for is lost.
 
 Can the guard close this gap? No. `park()` has to be called with the guard released: a sleeper that kept the guard would leave every other thread, the owner included, spinning on it forever.
