@@ -352,11 +352,11 @@ Where to reread: OSTEP 28.8, 28.14 and 28.16; W08 [Section 6.6](class-2.md#sec-6
 
 **What is underneath.** You are right that the chapter never puts it in one place. It gives the ingredients in three different sections: the three cases of 28.8, the queue of 28.14, the two-phase lock of 28.16. Put together, the decision comes down to three questions, asked in order.
 
-1. **Must the waiter never sleep?** Code that runs with interrupts turned off, such as an interrupt handler or kernel code that has called `push_off()`, may not switch to another thread, and sleeping means switching. There the spin lock is the only option. That is why xv6's `acquire()` turns interrupts off and spins (W08 [Section 5.3](class-2.md#sec-5-3)).
+1. **Must the waiter never sleep?** Code that runs with interrupts turned off, such as an interrupt handler or kernel code that has called `push_off()`, may not switch to another thread, and sleeping means switching. There the spin lock is the only option. xv6's `acquire()` is such code: it turns interrupts off first (its comment says "disable interrupts to avoid deadlock": an interrupt handler on the same CPU could otherwise wait forever for the lock that CPU holds), so it has to spin (W08 [Section 5.3](class-2.md#sec-5-3)).
 2. **Can the holder stop running while it holds the lock?** It might wait for the disk, or there might be more threads than CPUs, or only one CPU. Then a waiter would spin while the holder cannot finish: use a sleeping lock.
 3. **Is the critical section a few instructions, and does each waiter have a CPU of its own?** Then the wait ends when the section ends, sooner than a sleep and wake-up could, and a spin lock is fine.
 
-If you are not sure, use a sleeping lock that may spin briefly first. In a user program that simply means `pthread_mutex_t`.
+If you are not sure, use a sleeping lock. In a user program that simply means `pthread_mutex_t`; glibc's version tries once in user space and sleeps in the kernel only if the lock is held (Q12, Rule 1).
 
 <figure markdown="1">
 ![Figure Q.13. The three questions as a flowchart, with an xv6 example for each answer, and the W08 measurement that backs it.](qa_figs/q13_choose.svg)
