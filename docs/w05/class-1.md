@@ -526,6 +526,13 @@ Callout 5, line 114: `return &pagetable[PX(0, va)]`. Not the frame: the address 
 
 One loop, because every level is the same shape: 512 entries, 9 bits of index, a valid bit and a frame number.
 
+
+<!-- anim:ptwalk:start -->
+Step through both walks yourself: the three reads of Section 2.4's example, and walk() going down xv6's three levels.
+
+<div class="anim" data-anim="ptwalk" markdown="0"></div>
+<!-- anim:ptwalk:end -->
+
 ### 3.4 <span class="lbl lbl-concept">Concept</span> The cost of a walk: memory reads per TLB miss {#sec-3-4 data-toc-label="3.4 [Concept] The cost of a walk: memory reads per TLB miss"}
 
 Figure 3.9 draws the loop as memory: three pages and three reads.

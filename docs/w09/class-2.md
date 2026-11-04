@@ -719,6 +719,13 @@ wakeup(void *chan)
 
 The flow of `sleep()`, with `wakeup()` in the middle: `sleep(chan, lk)`: acquire `p->lock`; release `lk`; `p->chan = chan`, state `SLEEPING`; `sched()`: the scheduler runs and releases `p->lock`; `wakeup(chan)` takes `p->lock`, sets the state to `RUNNABLE`, releases; the scheduler takes `p->lock` and switches back; release `p->lock`, acquire `lk`, return.
 
+
+<!-- anim:xv6sleep:start -->
+Step through it yourself: a reader sleeps on an empty pipe, a write wakes every sleeper on that address, and each one checks again.
+
+<div class="anim" data-anim="xv6sleep" markdown="0"></div>
+<!-- anim:xv6sleep:end -->
+
 - What this part settled: `sleep()` is `wait()` with the gap closed by taking the process's own lock first; `wakeup()` wakes every sleeper on the address, so the `while` is mandatory.
 - What it leaves open: nothing in this question. The checkpoint is next.
 
@@ -997,6 +1004,13 @@ About 33,000 items were never consumed, and about 33,000 were consumed more than
 1. two semaphores that count: `empty` counts free slots, `full` counts items (this part);
 2. a binary semaphore around the whole step: both sides wait forever;
 3. the binary semaphore only around `put()` and `get()`: it works.
+
+
+<!-- anim:twoprod:start -->
+Step through the table yourself, one action at a time: two producers write slot 3, and slot 4 is skipped.
+
+<div class="anim" data-anim="twoprod" markdown="0"></div>
+<!-- anim:twoprod:end -->
 
 - What this part settled: counting semaphores give the two waits for free, but two producers can both be inside `put()`.
 - What it leaves open: where the lock goes. The obvious place turns out to be wrong.

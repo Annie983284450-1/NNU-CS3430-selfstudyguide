@@ -43,6 +43,18 @@ extra_css:
 extra_javascript:
   - assets/extra.js
   # the animations: each scenario file first, then the engine that draws them (assets/anim/, tools/make_anims.py)
+  - assets/anim/syscall.js
+  - assets/anim/swtch.js
+  - assets/anim/translate.js
+  - assets/anim/tlb.js
+  - assets/anim/ptwalk.js
+  - assets/anim/lazyalloc.js
+  - assets/anim/belady.js
+  - assets/anim/rr.js
+  - assets/anim/mlfq.js
+  - assets/anim/lottery.js
+  - assets/anim/stride.js
+  - assets/anim/kallocrace.js
   - assets/anim/race.js
   - assets/anim/spinlock.js
   - assets/anim/ticket.js
@@ -52,7 +64,9 @@ extra_javascript:
   - assets/anim/approx.js
   - assets/anim/join.js
   - assets/anim/prodcons.js
+  - assets/anim/xv6sleep.js
   - assets/anim/sema.js
+  - assets/anim/twoprod.js
   - assets/anim/bbdeadlock.js
   - assets/anim/stepper.js
 

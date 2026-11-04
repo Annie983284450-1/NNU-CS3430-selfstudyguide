@@ -231,6 +231,13 @@ First, **split, do not subtract**. Segments needed "address minus where the segm
 
 Three verbs, then: split, look up, glue. Every translation in this guide is those three verbs. The bar at the bottom of the slide puts the three designs side by side: base and bounds, one add; segments, subtract, compare, add; paging, split, look up, glue. (The segments' "subtract" is the meaning of the offset; [Section 1.5](class-1.md#sec-1-5) showed the hardware does it with a mask. What paging removes for good is the compare against a size and the add.) The look-up is the new cost, because the table is somewhere in memory, and that cost is the rest of the class.
 
+
+<!-- anim:translate:start -->
+Step through the translation of address 21 yourself: split, look up, glue.
+
+<div class="anim" data-anim="translate" markdown="0"></div>
+<!-- anim:translate:end -->
+
 ### 4.4 <span class="lbl lbl-check">Your turn</span> Translating 50, 63 and 64 {#sec-4-4 data-toc-label="4.4 [Your turn] Translating 50, 63 and 64"}
 
 The three steps of the previous section are easy to follow when someone else does them; the way to own them is to do them on a different address. Before you read further, translate three more addresses in the same 64-byte address space, with the same page table (0 → 3, 1 → 7, 2 → 5, 3 → 2). Figure 4.9 is the deck's exercise, with the steps left blank.
@@ -566,6 +573,13 @@ Circle 3, lines 10 to 16, the **miss path**. The TLB did not have it. Now do wha
 Check this with the loop of [Section 6.1](#sec-6-1): which of the eight references would hit, once the TLB has warmed up? After the very first trip, both the code page's and the array page's translations are in the TLB. So the four table reads become TLB hits and cost no memory reference, and the loop is back to four memory references per trip, the four the program meant to make. A hit costs what memory costs without any virtualization; a miss costs one table read. Everything depends on how often each happens: the whole game is the hit rate.
 
 One distinction to keep straight, because the two are easy to confuse. A **TLB miss** is not an error: the hardware reads the entry from the table, fills the TLB, retries, and the program never knows; the cost is one extra memory reference. A **page fault** is the table itself saying no, a valid bit of 0 or a forbidden kind of access, and the hardware traps into the OS. A fault is always preceded by a miss, since the entry has to be read before it can be found bad, but almost every miss ends in a hit on the retry, not in a fault.
+
+
+<!-- anim:tlb:start -->
+Step through the algorithm yourself, once for a hit and once for a miss.
+
+<div class="anim" data-anim="tlb" markdown="0"></div>
+<!-- anim:tlb:end -->
 
 ### 6.4 <span class="lbl lbl-check">Your turn</span> Hit or miss: ten array elements on sixteen-byte pages {#sec-6-4 data-toc-label="6.4 [Your turn] Hit or miss: ten array elements on sixteen-byte pages"}
 

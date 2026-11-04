@@ -320,6 +320,13 @@ Figure 1.7 is the same 400 tickets with the running total marked under the strip
 
 The six real slices of Figure 1.5 came from this same algorithm, run by the simulator with **seed** 4. A seed is the starting number for the random draws: the same seed gives the same draws again, so anyone can repeat the run exactly.
 
+
+<!-- anim:lottery:start -->
+Step through the ticket walk yourself, for the draw of Section 1.3 and the six draws of Figure 1.5.
+
+<div class="anim" data-anim="lottery" markdown="0"></div>
+<!-- anim:lottery:end -->
+
 - What this part settled: the whole lottery scheduler is one random number and one walk down a list.
 - What it leaves open: how well it keeps the promise. Being cheap is not the same as being right, and the next part measures how wrong a short run can be.
 
@@ -453,6 +460,13 @@ Figure 1.12 is the lap as a row of slices: A, B, C, C, C, A, C, C. A **cycle** (
 Count the blocks in each column of Figure 1.11: A ran 2 turns, B ran 1, C ran 5. The tickets were 100, 50 and 250. Divide the tickets by 50 and they read 2, 1 and 5. So the turns are in exactly the ticket ratio. Here is the argument. A lap is over when the three counters meet again, at 200. To climb from 0 to 200 a job needs 200 divided by its step turns: 2 for A, 1 for B, 5 for C. That is the ticket ratio, the same in every lap, and no luck is involved. The next lap looks exactly the same.
 
 Stride is exact, so you might expect nobody to choose the lottery any more. The lottery survives because stride keeps a counter for every job, and a job that arrives in the middle has none. Give the newcomer a counter of 0, and it sits at the bottom for a long time, taking turn after turn while the others wait, until it catches up. There is a fix (start it at the lowest counter in the queue, [Exercise 9](review.md#exercises)), but it is one more rule, applied right at every arrival and every time a job wakes up. (A job **sleeps** while it waits for something, such as a key press or data from the disk, which is **I/O**, input or output; it **wakes up** when that arrives.) The lottery has no such state. A new job brings its tickets and is in the very next draw.
+
+
+<!-- anim:stride:start -->
+Step through one stride cycle yourself, turn by turn.
+
+<div class="anim" data-anim="stride" markdown="0"></div>
+<!-- anim:stride:end -->
 
 - What this part settled: stride gives each job exactly its ticket share in every cycle.
 - What it leaves open: a newcomer's counter. And two questions nobody has asked yet: who hands out the tickets, and how a scheduler finds the lowest counter among thousands of jobs.

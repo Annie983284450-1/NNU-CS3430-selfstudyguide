@@ -59,3 +59,13 @@ cross). Class `anim-pop` pops an element in, `anim-new` fades it in, `anim-pulse
 4. **Readable.** The scene is about 330 px wide on the page: keep text at 10 px or more in viewBox units of a 360-wide
    box, avoid overlaps (labels at fixed spots near the field they belong to), and give each step one main arrow.
 5. **Two tabs when the page compares two runs** (without/with a fix, order 1/order 2).
+6. **No answer before the question.** When a process is a "Your turn" exercise, the animation of its answer goes on the
+   review page after that answer (`make_anims.py` mode `after:**Answer N**`), never in the section that asks it.
+7. **Where nothing is on the page, nothing is drawn.** If a section gives no step-by-step trace, build steps only from the
+   sentences it states, and say in the captions what is a replay of an earlier trace.
+
+## Checks
+
+`python3 tools/make_anims.py` places every animation (and reports what it could not place).
+`node tools/codecheck.js` checks that every numbered code line appears on a page where the animation sits.
+`node tools/srccheck.js <folder with xv6 kernel files>` checks xv6 listings shown only as figure images against the source.

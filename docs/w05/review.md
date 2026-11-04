@@ -46,6 +46,13 @@ Do these with a pencil, and with the figures of the parts they name beside you. 
 <figcaption markdown="1">Figure R.2. The deck's answer to Exercise 4: both FIFO traces, 3 hits and 9 misses with 3 frames against 2 hits and 10 misses with 4. From slide 56, following the aside in textbook section 22.3.</figcaption>
 </figure>
 
+<!-- anim:belady:start -->
+Step through both FIFO runs yourself, one reference at a time, with 3 frames and with 4.
+
+<div class="anim" data-anim="belady" markdown="0"></div>
+<!-- anim:belady:end -->
+
+
 <figure markdown="1">
 ![Figure R.3. The deck's cards for Exercise 4: the anomaly named, why LRU never shows it (the stack property), and what to look at in the 4-frame trace. From slide 56, following the aside in textbook section 22.3.](figs/belady_cards.png){width=48%}
 <figcaption markdown="1">Figure R.3. The deck's cards for Exercise 4: the anomaly named, why LRU never shows it (the stack property), and what to look at in the 4-frame trace. From slide 56, following the aside in textbook section 22.3.</figcaption>

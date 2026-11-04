@@ -300,6 +300,13 @@ Keep three numbers apart. `lock->ticket` is the dispenser: the next number to ha
 <figcaption markdown="1">Figure Q.8. The ticket dispenser and the "now serving" sign. B holds ticket 1, and turn is 1, so B is inside; C holds 2 and waits. Taking a ticket does not give you the lock; the match does.</figcaption>
 </figure>
 
+<!-- anim:ticket:start -->
+Step through it yourself: three threads take numbers, and each unlock calls the next one.
+
+<div class="anim" data-anim="ticket" markdown="0"></div>
+<!-- anim:ticket:end -->
+
+
 ## 5. Sleeping instead of spinning {#t5}
 
 !!! abstract "Recap"
@@ -416,6 +423,13 @@ The guard is needed because the flag and the queue must change together. Suppose
 <figcaption markdown="1">Figure Q.11. Top: the guard is held for a few instructions inside lock() and unlock(); the flag for the whole critical section. Middle: the hand-off; the flag stays 1, and T2 wakes up already owning the lock. Bottom: what would go wrong if T2 had to take the lock itself.</figcaption>
 </figure>
 
+<!-- anim:queuelock:start -->
+Step through the guard, the queue and the hand-off yourself.
+
+<div class="anim" data-anim="queuelock" markdown="0"></div>
+<!-- anim:queuelock:end -->
+
+
 **Why the flag stays at 1.** In Figure 28.9 the woken thread does not try again: it returns from `park()` and simply leaves `lock()` as the owner. So if `unlock()` set the flag to 0 instead, a newcomer could find the 0 and walk in too, and two threads would be inside. The only repair would be to make T2 try again, and that is what the book says it cannot do where it wakes up: it "does not hold the guard at that point in the code and thus cannot even try to set the flag to 1". To try, it would have to go back to line 14 and take the guard. In that time a newcomer, T4, could arrive, find the flag at 0, and take the lock first, and T2 would go back to sleep after having waited longest. Leaving the flag at 1 passes ownership in the same instant T1 decides, so nobody can slip in, and the queue order is kept.
 
 Linux makes the other choice, and W08 [Section 6.5](https://annie983284450-1.github.io/NNU-CS3430-selfstudyguide/w08/class-2/#sec-6-5) shows the price: its mutex stores 0 and wakes a thread that then tries again, which is faster when the woken thread would take a while to get a CPU, but no longer first come, first served.
@@ -501,6 +515,13 @@ Figure Q.13 shows three real systems side by side.
 ![Figure Q.13. Three real ways to close the gap. Solaris remembers an early wake-up. Linux re-checks the lock word inside the kernel before sleeping. xv6 takes the process's own lock before it releases the caller's lock, so no wake-up can land in between.](qa_figs/q10_three_fixes.svg)
 <figcaption markdown="1">Figure Q.13. Three real ways to close the gap. Solaris remembers an early wake-up. Linux re-checks the lock word inside the kernel before sleeping. xv6 takes the process's own lock before it releases the caller's lock, so no wake-up can land in between.</figcaption>
 </figure>
+
+<!-- anim:futex:start -->
+Step through Linux's version yourself. In moment 2, futex_wait sleeps only if the word still says 2, so a wake-up that came first is not lost.
+
+<div class="anim" data-anim="futex" markdown="0"></div>
+<!-- anim:futex:end -->
+
 
 **Solaris: remember it.** That is `setpark()`, from Q9.
 
@@ -795,6 +816,13 @@ Figure Q.19 puts both on one chart, from the sweep in W09 [Extra 1](class-1.md#e
 ![Figure Q.19. The S sweep measured in W09 Extra 1. The time falls fast up to S = 32 and then barely moves, while the worst lag, 4 × S, keeps growing. Below each bar: the trips to the global lock, and the worst lag.](qa_figs/q15_s_tradeoff.svg)
 <figcaption markdown="1">Figure Q.19. The S sweep measured in W09 [Extra 1](class-1.md#extra-1). The time falls fast up to S = 32 and then barely moves, while the worst lag, 4 × S, keeps growing. Below each bar: the trips to the global lock, and the worst lag.</figcaption>
 </figure>
+
+<!-- anim:approx:start -->
+Step through the table yourself with S = 5, and watch how far G falls behind the true total.
+
+<div class="anim" data-anim="approx" markdown="0"></div>
+<!-- anim:approx:end -->
+
 
 Read the two rows under the bars together. From S = 1 to S = 32, the time falls from 0.157 s to 0.0065 s, about 24 times faster (0.157 / 0.0065 ≈ 24), while the worst lag grows only from 4 to 128. From S = 32 to S = 1024, the time hardly moves (0.0065 s to 0.0055 s), while the worst lag grows 32 times, from 128 to 4,096. Past the knee, raising S buys almost no speed and keeps costing accuracy.
 

@@ -283,6 +283,13 @@ Station 5, `kernel/trap.c`, `prepare_return()`: it sets the two registers that `
 
 The blue bar sums up the round trip: user, then `ecall`, then kernel, do the work, then `sret`, then user. The two assembly stations, 1 and 2/6, exist for one reason: the C handler needs saved registers and a kernel stack before it can run, and the trampoline sets them up on the way in and tears them down on the way out. And this is the moment when the `trapframe` field of `struct proc`, from [Section 1.4](class-1.md#sec-1-4), is written and read.
 
+
+<!-- anim:syscall:start -->
+Step through the six stations yourself: one call to fork(), from the program into the kernel and back, with the registers each station changes.
+
+<div class="anim" data-anim="syscall" markdown="0"></div>
+<!-- anim:syscall:end -->
+
 ### 4.7 <span class="lbl lbl-machine">Real machine</span> What a system call costs {#sec-4-7 data-toc-label="4.7 [Real machine] What a system call costs"}
 
 All six stations of [Section 4.6](#sec-4-6) run on every system call, and none of them does the program's actual work. So a system call must cost more than an ordinary function call, which is just a jump and a return inside the program. How much more matters, because programs make system calls constantly. The only way to know is to measure, and the measurement needs a fair comparison.
@@ -453,6 +460,13 @@ What it saves is `struct context`, Figure 6.5, from `kernel/proc.h`: `ra`, `sp`,
 The cards of Figure 6.6 answer two questions. Why only 14 registers, when a trap saved 31? Because `swtch` runs inside the kernel and is called like an ordinary C function. The rules every C function follows divide the registers into two kinds. **Caller-saved** registers are ones a function may freely overwrite, so a caller that still needs their values must save them on its stack before the call; C's compiler does that automatically. **Callee-saved** registers are ones a function promises to leave as it found them. So at the moment `swtch` is called, the caller-saved values are already safe on the stack, and `swtch` only needs to save the callee-saved ones: `ra`, `sp` and `s0` to `s11`. B's own caller-saved values are on B's stack, put there by B's code before B called `swtch` the last time; once `sp` points at B's stack, they are back within reach. `ra` is in the list for one more reason: it holds the place in the kernel that `swtch` will return to, and that place is different for A and for B, so it must be saved and swapped with the rest. A trap, in contrast, can land between any two instructions of a program that made no such preparations, so it must save everything.
 
 And the third card: swapping `sp` is the point of no return. Line 26 of the file, `ld sp, 8(a1)`, loads the new stack pointer. Before it, the kernel stands on A's kernel stack; after it, on B's. Then `ret` jumps to B's saved return address: `swtch` was called by A's kernel code, and it returns into B's (in xv6 the two ends are A and the scheduler, then the scheduler and B; [Extra 26](#extra-26)). Swapping the stack is what switches the process. Twenty-nine instructions, no magic. You will not edit this file, but you can now follow it line by line.
+
+
+<!-- anim:swtch:start -->
+Step through swtch.S yourself: A's registers go out to A's context, B's come in from B's, and ret lands in B.
+
+<div class="anim" data-anim="swtch" markdown="0"></div>
+<!-- anim:swtch:end -->
 
 ### 6.4 <span class="lbl lbl-machine">Real machine</span> What a context switch costs {#sec-6-4 data-toc-label="6.4 [Real machine] What a context switch costs"}
 

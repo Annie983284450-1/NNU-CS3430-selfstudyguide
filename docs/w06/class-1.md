@@ -542,6 +542,13 @@ $
 
 With two children the console (the text screen of the xv6 machine) reads A2 B3 A4 B5 A6 B7 and so on: A had tick 2, B had tick 3, A had tick 4; strictly alternating, one tick each. With three children: A15 B16 C17 A18 B19 C20, a turn each, in array order, around and around. Each red arrow in Figure 3.4 is one timer interrupt: `usertrap` sees `which_dev == 2`, calls `yield()`, and the scheduler loop moves to the next RUNNABLE slot. A tick is about a tenth of a second, so each turn is a slice of 0.1 s. One detail at the end of the first line, B12 B13: each child counts its 10 ticks from the moment it started; A was forked first and began counting a tick or two earlier than B, so A's window closed first, and B's last prints, B12 and B13, came after A had exited, with the CPU to itself; the loop simply finds that only one slot is ready.
 
+
+<!-- anim:rr:start -->
+Step through it yourself: xv6's loop handing the CPU from A to B one tick at a time, and Figure 3.2's three jobs, one slice at a time.
+
+<div class="anim" data-anim="rr" markdown="0"></div>
+<!-- anim:rr:end -->
+
 - What this part settled: round robin is not a drawing; it is about 30 lines of your own kernel (23 in the loop, 9 in yield, 2 in the trap handler), and the console shows the turns.
 - What it leaves open: the same rule on a full Linux machine, which is next.
 

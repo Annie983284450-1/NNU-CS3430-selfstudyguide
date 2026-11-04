@@ -228,6 +228,13 @@ Now a different pair: A has 175 ms of work, and B arrives at 50 with 25 ms of wo
 
 So MLFQ approximates SJF without an oracle (something that could tell the future): assume every job is short, give it the top, and let the long ones prove otherwise by sinking; meanwhile the jobs that keep waiting stay at the top because they never use their allotment.
 
+
+<!-- anim:mlfq:start -->
+Step through both examples yourself, with the rule in force marked at each step.
+
+<div class="anim" data-anim="mlfq" markdown="0"></div>
+<!-- anim:mlfq:end -->
+
 ### 5.5 <span class="lbl lbl-machine">Real machine</span> Interactive wake-up latency on Linux {#sec-5-5 data-toc-label="5.5 [Real machine] Interactive wake-up latency on Linux"}
 
 The same experiment as the xv6 one of [Section 5.1](#sec-5-1), on Linux, with milliseconds instead of ticks.

@@ -75,6 +75,13 @@ Do these on paper, with the figures of the sections they name beside you. Write 
 <figcaption markdown="1">Figure R.3. The ten accesses: miss, hit, hit, miss, hit, hit, hit, miss, hit, hit. Seven hits out of ten. From slide 60.</figcaption>
 </figure>
 
+<!-- anim:tlb10:start -->
+Step through the ten accesses yourself, with the TLB filling as it goes.
+
+<div class="anim" data-anim="tlb10" markdown="0"></div>
+<!-- anim:tlb10:end -->
+
+
 (a) With 32-byte pages each page holds eight integers, and pages start at multiples of 32: 0, 32, 64, 96, 128. Address 100 is in the page that starts at 96 (96 = 3 × 32), at offset 100 − 96 = 4, so `a[0]` to `a[6]` fit in that page (offsets 4 to 28; `a[6]` ends at offset 31, the page's last byte), and `a[7]` (at address 128) to `a[9]` are on the next page. Two misses, eight hits: 80%. Bigger pages mean fewer misses, because more neighbors share one translation: spatial locality. (b) On a second run, pages 6, 7 and 8 are all still in the TLB. Ten hits: 100%. That is temporal locality: what was used a moment ago is used again. (c) A TLB helps most a program that keeps touching the same pages, or nearby addresses, for a while: loops over arrays, code that runs in a small region. A program that jumps to a new page on every access gets no help, as the column-order matrix of [Extra 24](class-2.md#extra-24) showed. Figure R.4 is the deck's three cards on the same points.
 
 <figure markdown="1">

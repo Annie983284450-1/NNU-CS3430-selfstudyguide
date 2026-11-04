@@ -177,6 +177,13 @@ A page fault means the page table itself says no. Either the row's valid bit is 
 <figcaption markdown="1">Figure Q.11. A TLB miss is handled by the hardware and ends in a retry that hits. A page fault is the table saying no, and ends in a trap to the OS.</figcaption>
 </figure>
 
+<!-- anim:tlb:start -->
+Step through a hit and a miss yourself. In the Miss tab, lines 13 and 15 check the row: if either check failed, the hardware would raise an exception instead of filling the TLB, which is the second case above.
+
+<div class="anim" data-anim="tlb" markdown="0"></div>
+<!-- anim:tlb:end -->
+
+
 The two are related in one way: a page fault always starts with a TLB miss, because the row has to be read before it can be found bad. But almost every miss ends with a hit on the retry, not with a fault. Miss: slow but fine. Fault: the OS has to step in.
 
 ## D. Context switches and ASIDs {#d}
@@ -244,6 +251,13 @@ Here is the example from the guide, worked all the way through. An array of ten 
 ![Figure Q.15. Ten array reads on 16-byte pages. The first access to each page misses; the rest hit. 3 misses, 7 hits, 70%.](qa_figs/q13_hitmiss.svg)
 <figcaption markdown="1">Figure Q.15. Ten array reads on 16-byte pages. The first access to each page misses; the rest hit. 3 misses, 7 hits, 70%.</figcaption>
 </figure>
+
+<!-- anim:tlb10:start -->
+Step through the ten accesses yourself, with the TLB filling as it goes.
+
+<div class="anim" data-anim="tlb10" markdown="0"></div>
+<!-- anim:tlb10:end -->
+
 
 `a[0]`: page 6 is not in the TLB, miss, and page 6's row goes in. `a[1]`, `a[2]`: page 6, hit, hit. `a[3]`: page 7, miss. `a[4]`, `a[5]`, `a[6]`: hit, hit, hit. `a[7]`: page 8, miss. `a[8]`, `a[9]`: hit, hit. Three misses, one per page, and seven hits: 7 / 10 = 70%. That is spatial locality at work. The elements are next to each other, so most of them share a page with the one before, and only the first element on each page pays.
 
