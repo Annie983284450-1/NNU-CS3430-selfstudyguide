@@ -85,22 +85,49 @@
     var next = el("button", "anim-btn", "Next ▶"); next.type = "button";
     var reset = el("button", "anim-btn anim-reset", "↺ Start over"); reset.type = "button";
     var dots = el("div", "anim-dots");
-    [prev, play, next, dots, reset].forEach(function (x) { bar.appendChild(x); });
+    // Playback speed, like a video player: 1x is the scenario's own interval, 2x (the default) half of it.
+    var speedBox = el("div", "anim-speed");
+    speedBox.setAttribute("role", "group");
+    speedBox.setAttribute("aria-label", "Playback speed");
+    speedBox.appendChild(el("span", "anim-speed-label", "Speed"));
+    SPEEDS.forEach(function (x) {
+      var b = el("button", "anim-speed-btn" + (x === speedNow() ? " on" : ""), x + "\u00d7");
+      b.type = "button";
+      b.dataset.speed = x;
+      b.title = "Play at " + x + "\u00d7: about " + Math.round(base() / x / 100) / 10 + " s per step";
+      b.setAttribute("aria-pressed", x === speedNow() ? "true" : "false");
+      b.onclick = function () { setSpeed(x); };
+      speedBox.appendChild(b);
+    });
+    [prev, play, next, dots, speedBox, reset].forEach(function (x) { bar.appendChild(x); });
     root.appendChild(bar);
-    root.appendChild(el("div", "anim-hint", "Use the buttons, or click here and press ← and →."));
+    root.appendChild(el("div", "anim-hint", "Use the buttons, or click here and press ← and →. Speed sets how fast Play moves."));
     root.tabIndex = 0;
 
     function V() { return A.variants.filter(function (v) { return v.key === variant; })[0]; }
-    function stop() { if (timer) { clearInterval(timer); timer = null; play.innerHTML = "▶ Play"; } }
+    function base() { return A.interval || 4000; }
+    function stop() { if (timer) { clearTimeout(timer); timer = null; play.innerHTML = "▶ Play"; root.classList.remove("anim-playing"); } }
+    // One step per tick; each tick reads the current speed, so a change of speed takes effect at the next step.
+    function tick() {
+      timer = setTimeout(function () {
+        if (step >= V().steps.length - 1) { stop(); return; }
+        go(step + 1);
+        if (step >= V().steps.length - 1) { stop(); return; }
+        tick();
+      }, base() / speedNow());
+    }
     function go(n) { step = Math.max(0, Math.min(V().steps.length - 1, n)); draw(); }
     prev.onclick = function () { stop(); go(step - 1); };
     next.onclick = function () { stop(); go(step + 1); };
     reset.onclick = function () { stop(); go(0); };
     play.onclick = function () {
       if (timer) { stop(); return; }
-      if (step >= V().steps.length - 1) go(0);
+      // Move at once, so the click is answered, then one step per interval until the last step.
+      if (step >= V().steps.length - 1) go(0); else go(step + 1);
       play.innerHTML = "❚❚ Pause";
-      timer = setInterval(function () { if (step >= V().steps.length - 1) { stop(); return; } go(step + 1); }, A.interval || 4000);
+      root.classList.add("anim-playing");
+      timer = true;
+      if (step >= V().steps.length - 1) stop(); else tick();
     };
     root.addEventListener("keydown", function (e) {
       if (e.key === "ArrowRight") { stop(); go(step + 1); e.preventDefault(); }
@@ -210,6 +237,19 @@
   }
 
   function init() { document.querySelectorAll("div.anim[data-anim]").forEach(build); }
+  // The speed is shared by every animation on the page and remembered in this browser (a convenience only).
+  var SPEEDS = [1, 1.5, 2, 3], speed = 2;
+  try { var saved = parseFloat(localStorage.getItem("osAnimSpeed")); if (SPEEDS.indexOf(saved) >= 0) speed = saved; } catch (e) {}
+  function speedNow() { return speed; }
+  function setSpeed(x) {
+    speed = x;
+    try { localStorage.setItem("osAnimSpeed", String(x)); } catch (e) {}
+    Array.prototype.forEach.call(document.querySelectorAll(".anim-speed-btn"), function (b) {
+      var on = parseFloat(b.dataset.speed) === x;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
   window.OS_ANIM_INIT = init;   // a scenario file loaded after this one calls it, so the order of the files never matters
   if (typeof document$ !== "undefined") document$.subscribe(init);
   else if (document.readyState !== "loading") init();

@@ -49,7 +49,16 @@
 .anim-btn:hover:not(:disabled) { border-color: var(--md-accent-fg-color); color: var(--md-accent-fg-color); }
 .anim-btn:disabled { opacity: .4; cursor: default; }
 .anim-play { font-weight: 700; }
+.anim-playing .anim-play { border-color: var(--md-primary-fg-color); color: var(--md-primary-fg-color); }
+.anim-playing .anim-dot.on { animation: anim-pulse 1.4s ease-in-out infinite; }
 .anim-reset { margin-left: auto; }
+.anim-speed { display: inline-flex; align-items: center; border: 1px solid var(--md-default-fg-color--lighter); border-radius: 5px; overflow: hidden; margin-left: .3rem; }
+.anim-speed-label { font-size: .64rem; padding: .2rem .45rem; color: var(--md-default-fg-color--light); border-right: 1px solid var(--md-default-fg-color--lightest); }
+.anim-speed-label::before { content: "\23F1\FE0E"; margin-right: .25em; }
+.anim-speed-btn { border: 0; background: transparent; color: var(--md-default-fg-color); padding: .2rem .45rem; cursor: pointer; font-size: .68rem; font-variant-numeric: tabular-nums; }
+.anim-speed-btn + .anim-speed-btn { border-left: 1px solid var(--md-default-fg-color--lightest); }
+.anim-speed-btn:hover { color: var(--md-accent-fg-color); }
+.anim-speed-btn.on { background: var(--md-primary-fg-color); color: #fff; font-weight: 700; }
 .anim-dots { display: flex; gap: .25rem; margin: 0 .4rem; }
 .anim-dot { width: .7rem; height: .7rem; border-radius: 50%; border: 1px solid var(--md-default-fg-color--lighter); background: transparent; padding: 0; cursor: pointer; }
 .anim-dot.done { background: var(--md-default-fg-color--lighter); }

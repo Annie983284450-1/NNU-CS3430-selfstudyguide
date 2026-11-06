@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+:root{--md-default-fg-color:rgba(0,0,0,.87);--md-default-fg-color--light:rgba(0,0,0,.54);--md-default-fg-color--lighter:rgba(0,0,0,.32);
+--md-default-fg-color--lightest:rgba(0,0,0,.07);--md-default-bg-color:#fff;--md-code-bg-color:#f5f5f5;--md-primary-fg-color:#4051b5;
+--md-accent-fg-color:#526cfe;--md-code-font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace;--md-text-font-family:"Roboto",-apple-system,Helvetica,Arial,sans-serif}
+body{font-family:var(--md-text-font-family);font-size:20px;margin:0;padding:12px;width:820px;background:#fff}
+</style>
+<link rel="stylesheet" href="../../docs/assets/anim/stepper.css">
+<script src="../../docs/assets/anim/stepper.js"></script>
+<script>
+var a=new URLSearchParams(location.search).get('a');
+document.write('<script src="../../docs/assets/anim/'+(new URLSearchParams(location.search).get('f')||a)+'.js"><\/script>');
+</script>
+</head><body><div class="anim" id="A"></div>
+<script>document.getElementById('A').dataset.anim=a; window.OS_ANIM_INIT();</script>
+</body></html>

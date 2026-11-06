@@ -44,8 +44,8 @@ PIECES = [
                 ("Locks inside data structures; condition variables", "29, 30", "w09/class-1/"),
                 ("The bounded buffer; semaphores", "30, 31", "w09/class-2/")]),
             ("w10", "Week 10 · Concurrency bugs", "deadlock and how to avoid it", [
-                ("Non-deadlock bugs; deadlock", "32", None),
-                ("Event-based concurrency", "33", None)]),
+                ("Bug patterns; what a deadlock needs", "32", "w10/class-1/"),
+                ("Preventing deadlock; event-based concurrency", "32, 33", None)]),
         ]),
     ]),
     ("Persistence", "data that survives power loss", "#2a7a6b", [

@@ -68,6 +68,8 @@ extra_javascript:
   - assets/anim/sema.js
   - assets/anim/twoprod.js
   - assets/anim/bbdeadlock.js
+  - assets/anim/covering.js
+  - assets/anim/philosophers.js
   - assets/anim/stepper.js
 
 markdown_extensions:
@@ -142,14 +144,20 @@ nav:
           - "Class 1 · Threads, the race, the thread API": w08/class-1.md
           - "Class 2 · How a lock is built": w08/class-2.md
           - Exercises and answers: w08/review.md
+          - "Q&A · How a lock is built": w08/qa.md
           - "Appendix A · Reading the C": w08/appendix.md
       - "Week 9 · Locked structures, waiting, semaphores":
           - Start here: w09/index.md
           - "Class 1 · Locks in structures; condition variables": w09/class-1.md
           - "Class 2 · The bounded buffer; semaphores": w09/class-2.md
           - Exercises and answers: w09/review.md
-          - "Q&A · Locks and locked structures": w09/qa.md
+          - "Q&A · Locked structures, condition variables and semaphores": w09/qa.md
           - "Appendix A · Reading the C": w09/appendix.md
+      - "Week 10 · Concurrency bugs and deadlock":
+          - Start here: w10/index.md
+          - "Class 1 · Bug patterns; what a deadlock needs": w10/class-1.md
+          - Exercises and answers: w10/review.md
+          - "Appendix A · Reading the C": w10/appendix.md
   - Labs:
       - Start here: labs/index.md
       - "Lab 0 · setup":

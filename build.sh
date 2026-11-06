@@ -21,9 +21,11 @@ python3 tools/guide2site.py W04 "$SLIDES/W04/W04_Paging_SelfStudy.md"         "$
 python3 tools/guide2site.py W05 "$SLIDES/W05/W05_MultiLevelSwapping_SelfStudy.md" "$SLIDES/W05/W05_SelfStudy_figs"
 python3 tools/guide2site.py W06 "$SLIDES/W06/W06_Scheduling_SelfStudy.md"         "$SLIDES/W06/W06_SelfStudy_figs"
 python3 tools/guide2site.py W07 "$SLIDES/W07/W07_ProportionalShare_MultiCPU_SelfStudy.md" "$SLIDES/W07/W07_SelfStudy_figs"
-python3 tools/guide2site.py W08 "$SLIDES/W08/W08_ThreadsAndLocks_SelfStudy.md"     "$SLIDES/W08/W08_SelfStudy_figs"
+python3 tools/guide2site.py W08 "$SLIDES/W08/W08_ThreadsAndLocks_SelfStudy.md"     "$SLIDES/W08/W08_SelfStudy_figs" \
+        --qa "$SLIDES/W08/W08_Locks_QA.md" "$SLIDES/W08/W08_Locks_QA_figs"
 python3 tools/guide2site.py W09 "$SLIDES/W09/W09_ConcurrentDS_CV_Semaphores_SelfStudy.md" "$SLIDES/W09/W09_SelfStudy_figs" \
-        --qa "$SLIDES/W09/W09_Locks_QA.md" "$SLIDES/W09/W09_Locks_QA_figs"
+        --qa "$SLIDES/W09/W09_ConcurrentDS_CV_Sem_QA.md" "$SLIDES/W09/W09_ConcurrentDS_CV_Sem_QA_figs"
+python3 tools/guide2site.py W10 "$SLIDES/W10/W10_ConcurrencyBugs_Deadlock_SelfStudy.md" "$SLIDES/W10/W10_SelfStudy_figs"
 
 # A map at the top of every class page: its questions, and for each one why we ask it, the steps, how we know,
 # and what it settles. Drawn from the page's own headings, roadmap and summary, so it is redone after guide2site.

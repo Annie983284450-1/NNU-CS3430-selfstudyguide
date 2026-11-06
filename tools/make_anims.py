@@ -79,20 +79,27 @@ ANIMS = [
     ("w09/class-2.md", "sec-6-3", "bbdeadlock", "end",
      "Step through both versions yourself: the lock around everything of Section 6.2, and the lock only around put() and get()."),
     # Q&A pages: an answer that explains the same process gets the same animation, right after its figure.
+    # Each Q&A page sits on the week whose guide teaches its chapter: w08/qa.md chapter 28, w09/qa.md chapters 29 to 31.
     ("w04/qa.md", "q9", "tlb", "fig",
      "Step through a hit and a miss yourself. In the Miss tab, lines 13 and 15 check the row: if either check failed, the hardware would raise an exception instead of filling the TLB, which is the second case above."),
     ("w04/qa.md", "q12", "tlb10", "fig",
      "Step through the ten accesses yourself, with the TLB filling as it goes."),
-    ("w09/qa.md", "f3", "ticket", "fig",
+    ("w08/qa.md", "f3", "ticket", "fig",
      "Step through it yourself: three threads take numbers, and each unlock calls the next one."),
-    ("w09/qa.md", "q6", "queuelock", "fig",
+    ("w08/qa.md", "q6", "queuelock", "fig",
      "Step through the guard, the queue and the hand-off yourself."),
-    ("w09/qa.md", "q9", "setpark", "fig",
+    ("w08/qa.md", "q9", "setpark", "fig",
      "Step through the seven steps yourself, without `setpark()` and then with it."),
-    ("w09/qa.md", "q10", "futex", "fig",
+    ("w08/qa.md", "q10", "futex", "fig",
      "Step through Linux's version yourself. In moment 2, futex_wait sleeps only if the word still says 2, so a wake-up that came first is not lost."),
     ("w09/qa.md", "q15", "approx", "fig",
      "Step through the table yourself with S = 5, and watch how far G falls behind the true total."),
+    ("w09/qa.md", "q20", "prodcons", "after:**The animation.**",
+     "Step through the first tab yourself: OSTEP Figure 30.9, one row at a time, with at most one thread running at each step. Tc1 is woken at step 5 and runs only at step 12. The other two tabs are the while version and the two-queue version of W09 Sections 4.5 and 4.6."),
+    ("w09/qa.md", "q21", "covering", "after:The animation below steps",
+     "Step through both tabs yourself: the same three threads, first with signal() on line 22, then with broadcast()."),
+    ("w09/qa.md", "q22", "philosophers", "after:1. Philosophers 0, 1, 2 and 3 take",
+     "Step through both tabs yourself: the same timing, first with everyone taking the left fork first, then with philosopher 4 taking fork 0 first."),
 ]
 
 CLOSERS = re.compile(r"^(- What this part settled|\*The argument in one line:\*)")

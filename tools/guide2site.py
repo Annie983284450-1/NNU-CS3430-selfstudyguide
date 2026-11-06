@@ -93,8 +93,11 @@ def split_pages(lines):
                 cur_key, cur_title = f"class-{class_n}", text
             elif level == "##" and hid and hid.startswith("extras"):
                 seen_extras = True
-            elif (level == "##" and seen_extras and not tail_started
+            elif (level == "##" and (seen_extras or class_n > 0) and not tail_started
                   and hid and (hid.startswith("the") or hid == "exercises")):
+                # the tail starts at the first `the-...`/`exercises` heading after a class has begun
+                # (11-04: a week with no Extras block, such as W10 with its optional slides left out,
+                # still gets its review page; every earlier week has Extras, so its split is unchanged)
                 flush()
                 tail_started = True
                 cur_key, cur_title = "review", "Exercises and answers"

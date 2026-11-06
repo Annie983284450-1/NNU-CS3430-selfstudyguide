@@ -10,7 +10,8 @@ animates; `mkdocs.yml` loads the file. `setpark.js` is the reference example: re
 ```js
 window.OS_ANIMS.NAME = {
   title: "short title of the animation",
-  interval: 4200,                       // ms per step when Play runs
+  interval: 4200,                       // ms per step at speed 1x; the reader's Speed control (1x, 1.5x, 2x, 3x,
+                                        // default 2x, shared by the page and remembered) divides it
   threads: ["T1", "T2"],                // names that get a color
   colors: { T1: "#1f6f8b", T2: "#b5651d" },
   code: [ { n: 13, text: "void lock(lock_t *m) {" }, ... ],   // the code beside the picture

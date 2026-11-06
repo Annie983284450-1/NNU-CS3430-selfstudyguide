@@ -139,16 +139,16 @@ Click any box to open that page. Grey boxes are weeks and labs that are not on t
 <text x="1082" y="848.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 30, 31</text>
 <path d="M666,826 C673,826 673,844 680,844" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,826 C388,826 388,916 440,916" fill="none" stroke="#a0632a" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Week 10 · Concurrency bugs (coming later in the term)</title><rect x="440" y="883" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="451" y="898" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8a919c">Week 10 · Concurrency bugs</text>
-<text x="451" y="912" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#a3a9b3">deadlock and how to avoid it</text></g>
-<g class="cmap-soon"><title>Non-deadlock bugs; deadlock (coming later in the term)</title><rect x="680" y="883" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="902.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Non-deadlock bugs; deadlock</text></g>
-<text x="1082" y="902.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 32</text>
+<a href="w10/" class="cmap-link"><title>Week 10 · Concurrency bugs</title><rect x="440" y="883" width="226" height="65" rx="7" fill="#ffffff" stroke="#a0632a" stroke-width="1.4"/>
+<text x="451" y="898" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Week 10 · Concurrency bugs</text>
+<text x="451" y="912" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">deadlock and how to avoid it</text></a>
+<a href="w10/class-1/" class="cmap-link"><title>Bug patterns; what a deadlock needs</title><rect x="680" y="883" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#a0632a" stroke-width="1.4"/>
+<text x="691" y="902.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Bug patterns; what a deadlock needs</text></a>
+<text x="1082" y="902.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 32</text>
 <path d="M666,916 C673,916 673,898 680,898" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Event-based concurrency (coming later in the term)</title><rect x="680" y="918" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="937.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Event-based concurrency</text></g>
-<text x="1082" y="937.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 33</text>
+<g class="cmap-soon"><title>Preventing deadlock; event-based concurrency (coming later in the term)</title><rect x="680" y="918" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
+<text x="691" y="937.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Preventing deadlock; event-based concurrency</text></g>
+<text x="1082" y="937.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 32, 33</text>
 <path d="M666,916 C673,916 673,933 680,933" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M162,683 C171,683 171,1152 180,1152" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <rect x="180" y="1130" width="156" height="44" rx="8" fill="#2a7a6b"/>
@@ -263,6 +263,7 @@ Click any box to open that page. Grey boxes are weeks and labs that are not on t
 - [Week 7 · Sharing the CPU: by share, and across many CPUs](w07/index.md) (OSTEP 9, 10)
 - [Week 8 · Threads and locks: when one program has two points of execution](w08/index.md) (OSTEP 26, 27, 28)
 - [Week 9 · Locks inside data structures, and waiting for something to happen](w09/index.md) (OSTEP 29, 30, 31)
+- [Week 10 · Concurrency bugs: the two common patterns, and deadlock](w10/index.md) (OSTEP 32)
 
 ## Labs
 
