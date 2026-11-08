@@ -217,7 +217,7 @@ OSTEP gives three reasons for drawing at random at all.
 
 - Strange corner cases rarely trip it up. A rule that follows a fixed pattern can be fooled by a workload that happens to match the pattern; a random draw is much harder to fool. (Its weak spot is a different one, short jobs, in [Section 1.5](#sec-1-5).)
 - It needs almost no bookkeeping: one ticket count per job, and the total.
-- The draw itself is fast: one random number per decision. (Finding who holds the number is a walk down the list of jobs, [Section 1.3](#sec-1-3); its cost is the subject of [Exercise 10](review.md#exercises).)
+- The draw itself is fast: one random number per decision. (Finding who holds the number is a walk down the list of jobs, [Section 1.3](#sec-1-3); its cost is the subject of [Exercise 10](review.md#exercise-10).)
 
 - What this part settled: a ticket count is a share, and a random draw per slice delivers it on average.
 - What it leaves open: how the scheduler finds out who holds the drawn number when there are many jobs. The next part does it by hand.
@@ -459,7 +459,7 @@ Figure 1.12 is the lap as a row of slices: A, B, C, C, C, A, C, C. A **cycle** (
 
 Count the blocks in each column of Figure 1.11: A ran 2 turns, B ran 1, C ran 5. The tickets were 100, 50 and 250. Divide the tickets by 50 and they read 2, 1 and 5. So the turns are in exactly the ticket ratio. Here is the argument. A lap is over when the three counters meet again, at 200. To climb from 0 to 200 a job needs 200 divided by its step turns: 2 for A, 1 for B, 5 for C. That is the ticket ratio, the same in every lap, and no luck is involved. The next lap looks exactly the same.
 
-Stride is exact, so you might expect nobody to choose the lottery any more. The lottery survives because stride keeps a counter for every job, and a job that arrives in the middle has none. Give the newcomer a counter of 0, and it sits at the bottom for a long time, taking turn after turn while the others wait, until it catches up. There is a fix (start it at the lowest counter in the queue, [Exercise 9](review.md#exercises)), but it is one more rule, applied right at every arrival and every time a job wakes up. (A job **sleeps** while it waits for something, such as a key press or data from the disk, which is **I/O**, input or output; it **wakes up** when that arrives.) The lottery has no such state. A new job brings its tickets and is in the very next draw.
+Stride is exact, so you might expect nobody to choose the lottery any more. The lottery survives because stride keeps a counter for every job, and a job that arrives in the middle has none. Give the newcomer a counter of 0, and it sits at the bottom for a long time, taking turn after turn while the others wait, until it catches up. There is a fix (start it at the lowest counter in the queue, [Exercise 9](review.md#exercise-9)), but it is one more rule, applied right at every arrival and every time a job wakes up. (A job **sleeps** while it waits for something, such as a key press or data from the disk, which is **I/O**, input or output; it **wakes up** when that arrives.) The lottery has no such state. A new job brings its tickets and is in the very next draw.
 
 
 <!-- anim:stride:start -->
@@ -1225,7 +1225,7 @@ Each row is a different goal, and no single scheduler wins them all at once.
 
 ## Going deeper (optional) {#extras-1}
 
-The seven Extras below go deeper on questions the class already answered. None of them is needed for what comes next, except that [Exercise 9](review.md#exercises) uses the sleeper rule of [Extra 4](#extra-4); read the ones that interest you.
+The seven Extras below go deeper on questions the class already answered. None of them is needed for what comes next, except that [Exercise 9](review.md#exercise-9) uses the sleeper rule of [Extra 4](#extra-4); read the ones that interest you.
 
 ### Extra 1 <span class="lbl lbl-deeper">Deeper, Q3</span> Linux: a queue per CPU plus a balancer {#extra-1 data-toc-label="Extra 1 [Deeper, Q3] Linux: a queue per CPU plus a balancer"}
 

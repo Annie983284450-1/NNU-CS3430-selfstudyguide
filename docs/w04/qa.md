@@ -46,7 +46,7 @@ Real machines work the same way, only wider. On xv6's RISC-V, a virtual address 
 
 ### Q3. "I'm still building speed at converting between hex and binary and at regrouping bits, such as decoding the PTE 0x21fcd85b in Exercise 8, where 10 flag bits don't line up with the hex digits." {#q3 data-toc-label="Q3. Decoding the entry `0x21fcd85b` when 10 flag bits do not line up with hex digits"}
 
-Where to reread: [Answer 13](review.md#answers) (this was [Exercise 8](review.md#exercises) in the earlier edition), and the macros in [Section 5.2](class-2.md#sec-5-2).
+Where to reread: [Answer 13](review.md#answer-13) (this was [Exercise 8](review.md#exercise-8) in the earlier edition), and the macros in [Section 5.2](class-2.md#sec-5-2).
 
 They do not line up, and that is the whole difficulty: 10 is not a multiple of 4, so the cut between "flags" and "frame number" falls in the middle of a hex digit. Two ways to handle it.
 
@@ -69,7 +69,7 @@ It helps to memorize two masks once. 0x3FF is ten 1s. 0xFFF is twelve 1s, the of
 
 ### Q4. "I couldn't tell what the attr column (r-xu-a-, rw-----, and so on) meant. I'm still unsure why a and d are set by the hardware, why the heap pages have no a bit even though the kernel zeroed them, and why the guard page works just by missing the u bit." {#q4 data-toc-label="Q4. What the `attr` letters mean, why `a` and `d` are hardware-set, why the heap pages have no `a`, and why the guard page works without `u`"}
 
-Where to reread: [Section 5.3](class-2.md#sec-5-3), [Section 5.2](class-2.md#sec-5-2), and [Answer 14](review.md#answers).
+Where to reread: [Section 5.3](class-2.md#sec-5-3), [Section 5.2](class-2.md#sec-5-2), and [Answer 14](review.md#answer-14).
 
 Four questions in one, so four answers.
 
@@ -243,7 +243,7 @@ One exception is the global bit, G, in the row. A slot marked global matches wha
 
 ### Q12. "A practical example showing how the TLB handles consecutive memory accesses would help me better understand why memory access patterns matter for program performance." {#q12 data-toc-label="Q12. A practical example of the TLB on consecutive accesses"}
 
-Where to reread: [Section 6.4](class-2.md#sec-6-4), [Exercise 10](review.md#exercises) and [Answer 10](review.md#answers).
+Where to reread: [Section 6.4](class-2.md#sec-6-4), [Exercise 10](review.md#exercise-10) and [Answer 10](review.md#answer-10).
 
 Here is the example from the guide, worked all the way through. An array of ten 4-byte integers starts at virtual address 100 on a machine with 16-byte pages and an empty TLB. 100 in binary is 0110 0100: VPN 6, offset 4. So `a[0]` is byte 4 of page 6; `a[1]` and `a[2]` fill the rest of page 6; `a[3]` to `a[6]` fill page 7; `a[7]` to `a[9]` are on page 8. A loop reads them in order.
 

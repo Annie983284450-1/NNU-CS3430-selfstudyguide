@@ -27,6 +27,10 @@ python3 tools/guide2site.py W09 "$SLIDES/W09/W09_ConcurrentDS_CV_Semaphores_Self
         --qa "$SLIDES/W09/W09_ConcurrentDS_CV_Sem_QA.md" "$SLIDES/W09/W09_ConcurrentDS_CV_Sem_QA_figs"
 python3 tools/guide2site.py W10 "$SLIDES/W10/W10_ConcurrencyBugs_Deadlock_SelfStudy.md" "$SLIDES/W10/W10_SelfStudy_figs"
 
+# Each week's answers fold under their exercises (guide2site does this as it writes a review page; this redoes
+# any page that still has a separate Answers block, and retargets "Answer N" links).
+python3 tools/fold_answers.py
+
 # A map at the top of every class page: its questions, and for each one why we ask it, the steps, how we know,
 # and what it settles. Drawn from the page's own headings, roadmap and summary, so it is redone after guide2site.
 python3 tools/make_classmaps.py

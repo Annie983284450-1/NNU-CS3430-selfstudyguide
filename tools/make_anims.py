@@ -5,6 +5,8 @@ Each entry: the page, the id of the section, the animation's name, where it goes
   "end": at the end of that section, before its "What this part settled" lines. Used when the animation follows a
          process told across several sections; the id is the last of them, so the reader has read all the parts first.
   "after:TEXT": after the paragraph (and the figure right below it, if any) that starts with TEXT, inside that section.
+  On a review page an answer sits in a <details> block under `### Exercise N {#exercise-N}` (fold_answers.py), so an
+  animation that belongs to an answer uses section exercise-N and mode "end": it lands just before </details>.
          Used on the review page, where an animation belongs to one answer, not to a heading.
 Idempotent: everything between the marker comments is replaced on every run. Run after guide2site.py (build.sh does),
 because guide2site rewrites the pages.
@@ -26,7 +28,7 @@ ANIMS = [
      "Step through the translation of address 21 yourself: split, look up, glue."),
     ("w04/class-2.md", "sec-6-3", "tlb", "end",
      "Step through the algorithm yourself, once for a hit and once for a miss."),
-    ("w04/review.md", "answers", "tlb10", "after:**[Answer 10]",
+    ("w04/review.md", "exercise-10", "tlb10", "end",
      "Step through the ten accesses yourself, with the TLB filling as it goes."),
     # Week 5, class 1
     ("w05/class-1.md", "sec-3-3", "ptwalk", "end",
@@ -34,7 +36,7 @@ ANIMS = [
     # Week 5, class 2 and review
     ("w05/class-2.md", "sec-4-7", "lazyalloc", "end",
      "Step through the run yourself: a touch inside the heap that vmfault() fixes, and a touch beyond sz that kills the process."),
-    ("w05/review.md", "answers", "belady", "after:**Answer 4.**",
+    ("w05/review.md", "exercise-4", "belady", "end",
      "Step through both FIFO runs yourself, one reference at a time, with 3 frames and with 4."),
     # Week 6
     ("w06/class-1.md", "sec-3-4", "rr", "end",
@@ -102,7 +104,7 @@ ANIMS = [
      "Step through both tabs yourself: the same timing, first with everyone taking the left fork first, then with philosopher 4 taking fork 0 first."),
 ]
 
-CLOSERS = re.compile(r"^(- What this part settled|\*The argument in one line:\*)")
+CLOSERS = re.compile(r"^(- What this part settled|\*The argument in one line:\*|</details>)")
 
 
 def main():

@@ -1159,7 +1159,7 @@ main: done with both (counter = 20000000)
 real	0m1.298s
 ```
 
-Without the lock: 0.057 s, and wrong. With the lock: 1.298 s, about 1.30 s, and right. The ratio is 1.30 / 0.057 = 23, so in this pair of runs the right answer cost 23 times the time, for 20,000,000 lock calls. (A second pair of runs in the same file gives 31 times; [Exercise 6](review.md#exercises) reads it.) Check it the other way: 0.057 × 23 = 1.31, close to 1.30.
+Without the lock: 0.057 s, and wrong. With the lock: 1.298 s, about 1.30 s, and right. The ratio is 1.30 / 0.057 = 23, so in this pair of runs the right answer cost 23 times the time, for 20,000,000 lock calls. (A second pair of runs in the same file gives 31 times; [Exercise 6](review.md#exercise-6) reads it.) Check it the other way: 0.057 × 23 = 1.31, close to 1.30.
 
 Why so much? There are three plain reasons.
 

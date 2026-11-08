@@ -99,3 +99,12 @@
 }
 .md-typeset .admonition.theory, .md-typeset .admonition.question, .md-typeset details.success { font-size: .76rem; }
 .md-typeset details.success > summary { font-weight: 600; }
+
+/* Exercises and answers: the answer folds under its exercise (fold_answers.py). Same size as the
+   question text, a thin line to the left so the reader sees where the answer ends. */
+.md-typeset details.answer { font-size: inherit; margin: .6em 0 1.4em; }
+.md-typeset details.answer > summary { font-weight: 600; }
+.md-typeset details.answer[open] > summary .hint { display: none; }
+.md-typeset details.answer > summary .hint { font-weight: 400; color: var(--md-default-fg-color--light); margin-left: .5em; }
+.md-typeset .answers-toggle { margin: .4em 0 1.2em; }
+.md-typeset .answers-toggle .md-button { font-size: .7rem; padding: .3em .9em; }

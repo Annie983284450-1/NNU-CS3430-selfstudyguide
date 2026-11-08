@@ -1000,7 +1000,7 @@ Follow the integer through one contended lock and unlock (Figure 6.6).
 
 **The never-sleeping branch of moment 2.** In moment 2, if T2's swap hands back 0 instead of 1, the lock was freed between T2's first try and its swap. T2 now holds the lock, with the word at 2, and goes straight into its critical section without sleeping.
 
-**The lock word's rules, in one place.** [Exercise 13](review.md#exercises) uses them.
+**The lock word's rules, in one place.** [Exercise 13](review.md#exercise-13) uses them.
 
 - **Lock:** one compare-and-swap 0 → 1; if it succeeds, the lock is yours. If not and the word already says 2, call `futex_wait`. Otherwise swap in 2: if the swap returns 0, the lock is yours and you do not sleep; if not, call `futex_wait`. After any wake-up, go back to the swap-in-2 step. If `futex_wait` returns at once because the word is no longer 2, go back to the swap-in-2 step too.
 - **Unlock:** one swap that puts 0 in and returns the old value; if the old value was 2, call `futex_wake` to wake one sleeper.

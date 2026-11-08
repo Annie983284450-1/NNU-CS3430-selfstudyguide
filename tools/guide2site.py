@@ -24,6 +24,7 @@ What it changes on the way (and why):
      block into a collapsible box.
 """
 import re
+import fold_answers
 import shutil
 import sys
 from pathlib import Path
@@ -134,10 +135,12 @@ def ref_target(kind, num, ids):
         hid = f"chapter-{num}"
     elif kind == "Appendix":
         hid = f"appendix-{num.lower()}"
-    elif kind == "Answer":
-        hid = "answers"
-    elif kind == "Exercise":
-        hid = "exercises"
+    elif kind in ("Answer", "Exercise"):
+        # fold_answers.py gives the review page one `### Exercise N {#exercise-N}` per exercise and puts the
+        # answer in a <details id="answer-N"> under it, so a numbered reference lands on that exercise.
+        hid = f"{kind.lower()}-{num}"
+        if "exercises" in ids and num.isdigit():
+            ids.setdefault(hid, ids["exercises"])
     else:
         return None
     return hid if hid in ids else None
@@ -429,6 +432,10 @@ def main():
         if qa and key == "review":
             plines = drop_block(plines, "student-questions")
         text = convert_page(key, title, plines, ids, meta, week, None)
+        if key == "review":
+            text, n_folded = fold_answers.fold(text)
+            if n_folded:
+                print(f"{wk}/review.md: {n_folded} answers folded under their exercises")
         (outdir / f"{key}.md").write_text(text, encoding="utf-8")
         print(f"{wk}/{key}.md  {len(plines)} lines  ({title or meta.get('title')})")
     print(f"{len(ids)} anchors, {sum(1 for _ in (outdir / 'figs').iterdir())} figures")

@@ -58,12 +58,13 @@ One-time setup on GitHub (about five minutes):
 
 It never touches the source `.md`. On the way to `docs/w0N/` it:
 
-- splits the one long file into five pages: `index.md` (front matter, "Where this guide comes from", the label legend, Part 0), `class-1.md`, `class-2.md` (each `# <class>` heading starts a page), `review.md` (the week-in-N-sentences, Exercises, Answers) and `appendix.md`;
+- splits the one long file into five pages: `index.md` (front matter, "Where this guide comes from", the label legend, Part 0), `class-1.md`, `class-2.md` (each `# <class>` heading starts a page), `review.md` (the week-in-N-sentences, then each exercise with its answer folded under it) and `appendix.md`;
 - drops the hand-made `## Contents` list, because the sidebar and the right-hand table of contents replace it, but keeps the legend paragraph;
 - rewrites every `(#id)` link to `(<page>.md#id)` so cross-links survive the split, and turns plain-text references such as "Section 3.5", "Sections 3.1 and 3.2", "Extra 4", "Extras 1 to 5", "Chapter 2", "Appendix A" into links (only when the target heading exists);
 - wraps every standalone image in `<figure>` with a visible caption (pandoc shows the alt text as a caption; Python-Markdown does not, so the converter adds it);
 - turns the `[Problem]`, `[Concept]`, ... labels in headings into colored badges, and keeps the plain text for the tables of contents through `data-toc-label`;
 - folds each "The program behind Figures ... (you can skip this listing)" block into a collapsible box.
+- folds each answer under its exercise on `review.md` (`tools/fold_answers.py`, called by the converter and again by `build.sh`): one `### Exercise N {#exercise-N}` heading per exercise, the question, then the answer in a closed box `<details class="success answer" id="answer-N">` that opens on a click. The `## Answers` block of the guide disappears on the site; a link to `#answer-N` opens that box, and a "Show all answers" button sits under the Exercises heading (`docs/assets/extra.js`, styles in `docs/assets/extra.css`). Figures and animations inside an answer stay inside its box.
 
 The split and the link rewriting depend on the guide's heading conventions: `# ` for a class, `## ` with `{#extras-N}` for the deeper blocks, an id starting with `the` (`{#the}`, `{#the-week}`) or `{#exercises}` for the start of the tail, `{#appendix-a}` for the appendix. A guide that follows the structure rules in the self-study skill converts without changes.
 
