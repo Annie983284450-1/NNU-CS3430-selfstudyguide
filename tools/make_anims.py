@@ -80,6 +80,18 @@ ANIMS = [
      "Step through the table yourself, one action at a time: two producers write slot 3, and slot 4 is skipped."),
     ("w09/class-2.md", "sec-6-3", "bbdeadlock", "end",
      "Step through both versions yourself: the lock around everything of Section 6.2, and the lock only around put() and get()."),
+    # Week 10, class 2
+    ("w10/class-2.md", "sec-4-2", "vector10", "end",
+     "Step through the hang yourself: the same line 24 takes a different first lock in each thread, and the circle closes at line 25."),
+    ("w10/class-2.md", "sec-5-4", "trylock10", "end",
+     "Step through attempt 3 yourself: the moment that hung the last program, with trylock in place of the second lock."),
+    ("w10/class-2.md", "extra-5", "casinsert10", "end",
+     "Step through the two inserts yourself: thread 2 swaps first, thread 1's swap fails, and thread 1 looks again."),
+    # Week 11, class 1
+    ("w11/class-1.md", "sec-1-5", "w11uart", "end",
+     "Step through it yourself: one call of uartputc_sync(), asking, asking again, and writing."),
+    ("w11/class-1.md", "sec-2-5", "w11disk", "end",
+     "Step through it yourself: the request side and the interrupt side of one disk read, in the order they happen."),
     # Q&A pages: an answer that explains the same process gets the same animation, right after its figure.
     # Each Q&A page sits on the week whose guide teaches its chapter: w08/qa.md chapter 28, w09/qa.md chapters 29 to 31.
     ("w04/qa.md", "q9", "tlb", "fig",

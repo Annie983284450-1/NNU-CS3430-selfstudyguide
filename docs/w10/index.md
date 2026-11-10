@@ -1,4 +1,4 @@
-# Concurrency bugs: the two common patterns, and deadlock
+# Concurrency bugs and deadlock: the two common patterns, four ways to prevent a deadlock, and a server without threads
 
 *Self-study guide · COMP3430 Operating Systems*
 
@@ -9,6 +9,8 @@ This guide follows *Operating Systems: Three Easy Pieces* (OSTEP) by Remzi H. Ar
 Read with this week:
 
 - [OSTEP chapter 32. Common Concurrency Problems](https://pages.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf)
+- [OSTEP chapter 33. Event-based Concurrency (Advanced)](https://pages.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf)
+- [OSTEP chapter 34. Summary Dialogue on Concurrency](https://pages.cs.wisc.edu/~remzi/OSTEP/threads-dialogue.pdf)
 
 ## Part 0. Where we are, and what this week stands on {#part-0}
 
@@ -72,7 +74,7 @@ The guide prints **captures**: what was typed and what the programs printed, sav
 
 Every capture this week comes from a Linux virtual machine. A **virtual machine**, or **VM**, is a computer simulated by software on another computer. Strictly, the name Linux belongs to the kernel; a packaged version of Linux adds the shell and the other programs around that kernel. This one runs Ubuntu 22.04, one such packaged version, and its kernel is Linux 6.8. So 22.04 is the version of the package, and 6.8 the version of the kernel. It runs on an ARM processor (the processor family in phones and in Apple's recent Macs) with 4 CPUs. This guide calls it the 4-CPU Linux VM. It is the same machine as last week's captures. The software that runs the VM runs its 4 CPUs on the real processor cores of the computer underneath (a **core** is one CPU inside a processor chip). That computer has more than 4 cores, so all 4 of the VM's CPUs can be running at the same moment, each on its own real core. That is why the 4 CPUs matter: up to four threads of one program can truly run at the same moment, one on each CPU. The programs were compiled with gcc, the C compiler, version 11.4.
 
-Times are not used this week: the numbers that matter are counts (how many runs crashed) and exit statuses. Some of last week's captures below print a time as well, because they were taken that way. Two of those times, 21.66 and 2.99 seconds, get a word where they appear; the others are only part of the captures as they were taken. One unit appears: a **microsecond** is a millionth of a second, so 100,000 microseconds is 100,000 / 1,000,000 = 0.1 s.
+Times are not used in the first class: the numbers that matter are counts (how many runs crashed) and exit statuses. The second class times a few runs, and says each time how far one run can be trusted. Some of last week's captures below print a time as well, because they were taken that way. Two of those times, 21.66 and 2.99 seconds, get a word where they appear; the others are only part of the captures as they were taken. One unit appears: a **microsecond** is a millionth of a second, so 100,000 microseconds is 100,000 / 1,000,000 = 0.1 s.
 
 #### What the last two weeks built, and what this week uses
 

@@ -70,6 +70,9 @@ extra_javascript:
   - assets/anim/bbdeadlock.js
   - assets/anim/covering.js
   - assets/anim/philosophers.js
+  - assets/anim/w10c2.js
+  - assets/anim/w11uart.js
+  - assets/anim/w11disk.js
   - assets/anim/stepper.js
 
 markdown_extensions:
@@ -156,8 +159,15 @@ nav:
       - "Week 10 · Concurrency bugs and deadlock":
           - Start here: w10/index.md
           - "Class 1 · Bug patterns; what a deadlock needs": w10/class-1.md
+          - "Class 2 · Preventing deadlock; events without threads": w10/class-2.md
           - Exercises and answers: w10/review.md
           - "Appendix A · Reading the C": w10/appendix.md
+  - "Persistence":
+      - "Week 11 · I/O devices and hard disk drives":
+          - Start here: w11/index.md
+          - "Class 1 · Talking to devices; interrupts, DMA, drivers": w11/class-1.md
+          - Exercises and answers: w11/review.md
+          - "Appendix A · The program behind the Linux captures": w11/appendix.md
   - Labs:
       - Start here: labs/index.md
       - "Lab 0 · setup":

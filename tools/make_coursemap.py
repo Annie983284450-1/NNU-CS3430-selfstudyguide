@@ -45,13 +45,13 @@ PIECES = [
                 ("The bounded buffer; semaphores", "30, 31", "w09/class-2/")]),
             ("w10", "Week 10 · Concurrency bugs", "deadlock and how to avoid it", [
                 ("Bug patterns; what a deadlock needs", "32", "w10/class-1/"),
-                ("Preventing deadlock; event-based concurrency", "32, 33", None)]),
+                ("Preventing deadlock; event-based concurrency", "32, 33", "w10/class-2/")]),
         ]),
     ]),
     ("Persistence", "data that survives power loss", "#2a7a6b", [
         ("", [
             ("w11", "Week 11 · Devices and disks", "I/O devices; hard disk drives", [
-                ("I/O devices and drivers", "36", None),
+                ("I/O devices and drivers", "36", "w11/class-1/"),
                 ("Hard disk drives", "37", None)]),
             ("w12", "Week 12 · Files", "files, directories, inodes", [
                 ("Files and directories", "39", None),

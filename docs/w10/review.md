@@ -13,6 +13,19 @@
 9. Two threads that take two locks in opposite orders can each hold the lock the other wants; one run hung in round 1 until `timeout` killed it with exit status 124. A second run, looked at with `ps`, showed all three threads asleep in the same futex call at 0.0% CPU. Reading the code, not the rows, says that the two workers wait for a mutex and `main` waits in `pthread_join()`.
 10. Drawn as holds and wants, a deadlock is a cycle, and it needs four conditions at once (mutual exclusion, hold-and-wait, no preemption, circular wait), so a fix only has to make one of them fail. Last week's moved line did that for the buffer's ring: the thread that holds the mutex never waits now, so the one hold-and-wait link that closed the ring is gone. A producer still keeps its item while it waits for the mutex, but that wait always ends. The next class takes the conditions one at a time and tries a fix for each.
 
+## The second class in ten points {#the-second}
+
+1. A two-lock deadlock looks easy to avoid, since one fixed order fixes it, yet real programs keep deadlocking, for two reasons: parts of big systems need each other, and interfaces hide their locks.
+2. `vector_add(dst, src)`, Java's `AddAll()` in C, locks its first argument and then its second, so the lock order is the argument order; two callers that pass the same two vectors in opposite orders take the same locks in opposite orders without writing a lock call.
+3. That version hung in all 3 runs (exit status 124 from `timeout`); with thread 2's call changed to the same order, all 3 runs finished in under a second.
+4. A deadlock needs all four conditions at once, so breaking any one prevents it; each break has a price.
+5. Attempt 1 breaks circular wait with one fixed order, here the lower address first: going round a circle, someone would have to ask for an earlier lock while holding a later one, and nobody does. The price is a convention every programmer must follow. It is the one used in practice.
+6. Attempt 2 breaks hold-and-wait by collecting every lock in one step guarded by a global `prevention` lock, so no two threads can each hold part of their locks. The price is knowing every lock in advance, which encapsulation hides, and running less at once.
+7. Attempt 3 breaks no preemption from the inside: with trylock, a thread that finds its second lock busy gives its first lock back and starts over. It never hung in 5 runs, but thread 1 averaged half a restart per call or more (0.94 in the first run); in the worst case two threads can back off in step forever, which is livelock.
+8. Attempt 4 breaks mutual exclusion: compare-and-swap updates a shared pointer only if it still holds the value the thread saw, so no lock is ever held. The price is retries and code that is hard to write; with no protection at all, the same insert lost about half of 400,000 nodes, and with compare-and-swap it lost none.
+9. When prevention cannot be relied on, a system can avoid deadlock by scheduling, if it knows every task's locks in advance (embedded systems), or let deadlocks happen, find the circle and recover (databases such as PostgreSQL).
+10. An event loop serves many clients with one thread: one handler at a time, so no locks are needed and the program picks its own order, as long as no handler ever blocks; one handler that slept 3 seconds made an unrelated client wait 2.60 seconds.
+
 ## Exercises {#exercises}
 <!-- answers folded under their exercises -->
 
@@ -184,5 +197,123 @@ In your own words, explain to a friend why 1,000 passing runs of `ordering.c` di
 <summary>Answer 12 <span class="hint">click to show</span></summary>
 
 One possible answer. Nothing in `ordering.c` says that the store must happen before the read; the program just hopes it does. Which one comes first depends on timing: how quickly the new thread starts on another CPU against how quickly the creating thread reaches its next line. On that machine, as printed, the store always won, so 1,000 runs passed; adding one short loop before the store, with no change to the logic, made the read win and every run crash. So the passing runs only showed that the timing had been kind. `ordering_fixed.c` does not depend on timing: the reader checks a flag under a lock and sleeps until the writer has stored, set the flag and signaled. If the reader is early, it waits; if it is late, it finds the flag already set. Either way the read comes after the store, and 200 runs with the slow store had no crash.
+
+</details>
+
+### Exercise 13 {#exercise-13}
+
+A program has a function `copy_settings(dst, src)` that, like `vector_add()`, locks `dst` and then `src`. Thread 1 calls `copy_settings(&home, &work)` in a loop, and thread 2 calls `copy_settings(&work, &home)` in a loop. Can the locks inside be taken in opposite orders? What changes if thread 2 calls `copy_settings(&home, &work)` instead? ([Section 4.2](class-2.md#sec-4-2) and [Section 4.3](class-2.md#sec-4-3))
+
+<details class="success answer" id="answer-13" markdown="1">
+<summary>Answer 13 <span class="hint">click to show</span></summary>
+
+Yes. Inside `copy_settings()`, thread 1 locks `home` first and then `work`, while thread 2 locks `work` first and then `home`: the same two locks in opposite orders, exactly as with `vector_add(&v1, &v2)` and `vector_add(&v2, &v1)` in [Section 4.2](class-2.md#sec-4-2). If each thread gets its first lock before the other asks for its second, each waits for the other, and the program hangs. If thread 2 calls `copy_settings(&home, &work)` instead, both threads lock `home` first. Nobody can hold `work` without first holding `home`, so whoever gets `home` also finds `work` free, so no circle can form; that is the variant of [Section 4.3](class-2.md#sec-4-3), which finished every run.
+
+</details>
+
+### Exercise 14 {#exercise-14}
+
+For each of the four prevention attempts, name the condition it breaks, say in one line how it breaks it, and give its price. Then say which one is used in practice, and why. ([Section 5.2](class-2.md#sec-5-2) to [Section 5.7](class-2.md#sec-5-7))
+
+<details class="success answer" id="answer-14" markdown="1">
+<summary>Answer 14 <span class="hint">click to show</span></summary>
+
+| attempt | condition broken | how | price |
+|---|---|---|---|
+| 1 | circular wait | every thread takes its locks in one fixed order (here: lower address first) | a convention every programmer must know and follow |
+| 2 | hold-and-wait | all locks taken in one step, guarded by a global `prevention` lock | every lock must be known in advance; less runs at once |
+| 3 | no preemption | trylock the second lock; if busy, give the first back and start over | retries, and possible livelock |
+| 4 | mutual exclusion | no lock: update with one atomic instruction (compare-and-swap, retrying if it fails; or an atomic add) | retries and possible livelock with compare-and-swap; a weaker promise for the vector; code that is hard to write |
+
+Lock ordering is the everyday choice for code that takes several locks. It changes only the order of the lock calls, and each of the others adds a cost of its own: knowing every lock first, retries, or a weaker promise (`vector_nolock` let another thread see a vector half added).
+
+</details>
+
+### Exercise 15 {#exercise-15}
+
+What are the differences in attitudes of deadlock prevention, avoidance, and detect and recover? Then say which attitude fits each of these systems, and why: (a) an operating system kernel whose developers all follow one written lock order; (b) the controller of a washing machine, whose four tasks and their locks are fixed when it is built, written by teams that cannot agree on one lock order; (c) a shared database, where users' queries take locks in whatever order the queries need, nobody knows in advance which locks a query will take, deadlocks are rare, and a query can simply be run again. ([Section 6.1](class-2.md#sec-6-1) to [Section 6.4](class-2.md#sec-6-4))
+
+<details class="success answer" id="answer-15" markdown="1">
+<summary>Answer 15 <span class="hint">click to show</span></summary>
+
+Prevention changes the code so that one of the four conditions can never hold, and so deadlock is impossible. Avoidance leaves the code alone; it uses advance knowledge of which locks every thread will take, and schedules the threads so that no circle can form. Detect and recover accepts that a deadlock may happen; it looks for the circle now and then, and, when it finds one, restarts the system or, in a database, aborts one transaction. Put by when each acts: prevention when the code is written, avoidance when threads are scheduled, detection after a deadlock has happened. The three systems, with the questions of [Section 6.4](class-2.md#sec-6-4): (a) prevention, because every piece of code can agree on one order, so the first question already says yes; this is the Linux kernel's choice. (b) Avoidance. The teams cannot agree on one lock order, so the first question says no. But the controller knows every task and every lock before it starts, so the second question says yes; this is the kind of system OSTEP names for avoidance. (c) Detect and recover, because the users' queries cannot be made to follow one order and nobody knows their locks in advance; a deadlock is rare, and aborting one query is cheap, as PostgreSQL does.
+
+</details>
+
+### Exercise 16 {#exercise-16}
+
+Which of the four deadlock conditions does deadlock avoidance by scheduling attempt to remove? Why is this impractical (in a general-purpose system)? ([Section 6.2](class-2.md#sec-6-2))
+
+<details class="success answer" id="answer-16" markdown="1">
+<summary>Answer 16 <span class="hint">click to show</span></summary>
+
+Circular wait. The threads that could form a circle are never allowed to overlap, so the circle never forms. It is impractical for two reasons. The scheduler must know in advance every task and every lock each task will take, which a general-purpose OS never knows. And it gives up concurrency: threads that could have run at the same time are made to wait, as T1, T2 and T3 do in Figure 6.2.
+
+</details>
+
+### Exercise 17 {#exercise-17}
+
+Explain why an event loop needs no locks. Then use the numbers of [Extra 2](class-2.md#extra-2): if A's handler had slept 5 seconds instead of 3, at what time would B's reply have come, and how long would B have waited? ([Section 7.2](class-2.md#sec-7-2) and [Extra 2](class-2.md#extra-2))
+
+<details class="success answer" id="answer-17" markdown="1">
+<summary>Answer 17 <span class="hint">click to show</span></summary>
+
+An event loop is one thread, and it runs one handler at a time, to its end. No other thread exists to run in the middle of a handler, so no two handlers ever touch the same data at the same moment, and there is nothing for a lock to protect. With a 5-second sleep: A sent its line at 01.07 (seconds after 20:05), so A's handler would finish at 01.07 + 5 = 06.07, and the loop would read B's line only then. B sent at 01.47, so B's reply would come at about 06.07, after 06.07 − 01.47 = 4.60 seconds of waiting. Check: 01.47 + 4.60 = 06.07.
+
+</details>
+
+### Exercise 18 {#exercise-18}
+
+Three vectors `a`, `b` and `c`, and three threads. Thread 1 calls `vector_add(&a, &b)`, thread 2 `vector_add(&b, &c)`, and thread 3 `vector_add(&c, &a)`, each in a loop. (a) With the `vector_add()` of `vector_deadlock.c`, write which lock each thread takes first and second, and the walk of [Section 3.4](class-1.md#sec-3-4) for the moment when each thread holds its first lock. Is it a deadlock? (b) With the `vector_add()` of `vector_order.c`, and `a` lower in memory than `b`, and `b` lower than `c`, which lock does each thread take first? Can the circle still form? ([Section 4.2](class-2.md#sec-4-2) and [Section 5.2](class-2.md#sec-5-2))
+
+<details class="success answer" id="answer-18" markdown="1">
+<summary>Answer 18 <span class="hint">click to show</span></summary>
+
+With `vector_deadlock.c`, each call locks its first argument and then its second. Thread 1 takes `a`, then `b`; thread 2 takes `b`, then `c`; thread 3 takes `c`, then `a`. Suppose each thread holds its first lock. The walk from thread 1, drawn in Figure R.1: thread 1 → lock `b` → thread 2 → lock `c` → thread 3 → lock `a` → thread 1. Read: thread 1 wants `b`, held by thread 2; thread 2 wants `c`, held by thread 3; thread 3 wants `a`, held by thread 1. The walk comes back to thread 1, so it is a circle, and a deadlock: three threads, as in [Exercise 10](#exercise-10), not two. (a)
+
+<figure markdown="1">
+![Figure R.1. Exercise 18 (a): each thread holds its first lock (solid arrow) and waits for its second (dashed arrow); the arrows go all the way round, so it is a deadlock.](figs/c2_ans_three.svg){width=55%}
+<figcaption markdown="1">Figure R.1. [Exercise 18](#exercise-18) (a): each thread holds its first lock (solid arrow) and waits for its second (dashed arrow); the arrows go all the way round, so it is a deadlock.</figcaption>
+</figure>
+
+(b) With `vector_order.c`, each call locks the lower of its two vectors first. Thread 1 takes `a`, then `b`. Thread 2 takes `b`, then `c`. Thread 3's arguments are `c` and `a`, and `a` is lower, so thread 3 takes `a` first, then `c`. Now no thread ever holds a later lock while asking for an earlier one. Try the worst moment: thread 1 holds `a` and wants `b`; thread 2 holds `b` and wants `c`; thread 3 wants `a`, so it holds nothing yet. The walk from thread 1 goes to thread 2, which wants `c`, and `c` is free, so the walk ends: thread 2 gets `c`, finishes, and unlocks. No circle can form.
+
+</details>
+
+### Exercise 19 {#exercise-19}
+
+The third run in `W10_demos/vector_trylock.out` printed `retries: thread 1 548691, thread 2 280583`, with 1,000,000 calls per thread, and exit status 0. How many restarts per call did each thread make, on average? How many times did the two threads start over in all? Was this run in livelock? Say why. ([Section 5.5](class-2.md#sec-5-5))
+
+<details class="success answer" id="answer-19" markdown="1">
+<summary>Answer 19 <span class="hint">click to show</span></summary>
+
+Thread 1 made 548,691 / 1,000,000 = 0.55 restarts per call on average, a little more than half a restart per call. Thread 2 made 280,583 / 1,000,000 = 0.28. (One call can restart several times, so these are averages, not shares of calls.) In all: 548,691 + 280,583 = 829,274 restarts. Check the other way: 829,274 − 280,583 = 548,691. It was not livelock. Livelock means no progress, and this run made progress: each thread finished all 1,000,000 of its calls, the run printed its one done line, and exited with status 0. The threads collided often, which cost time, but every collision ended with one of them getting both locks.
+
+</details>
+
+### Exercise 20 {#exercise-20}
+
+Avoidance on 2 CPUs. T1 takes L1 and L2. T2 takes only L2. T3 takes L1 and L2. T4 takes no locks. Which pairs of threads must never overlap? Give one schedule, as in Figure 6.1, that cannot deadlock. ([Section 6.2](class-2.md#sec-6-2))
+
+<details class="success answer" id="answer-20" markdown="1">
+<summary>Answer 20 <span class="hint">click to show</span></summary>
+
+T1 and T3 both take L1 and L2, so they must never overlap: one must run to the end before the other starts. T2 takes only L2, so it may overlap anyone: a thread holding one lock cannot complete a circle. T4 takes no locks. One schedule, drawn in Figure R.2: CPU 1 runs T1 and then T3; CPU 2 runs T2 and then T4. T1 and T3 never overlap, and T2 overlaps T1, which is safe. (Other schedules work too, as long as T1 and T3 never overlap.)
+
+<figure markdown="1">
+![Figure R.2. Exercise 20: one schedule that cannot deadlock. T1 and T3, the two threads that take both locks, run one after the other; T2 and T4 run beside them. Box lengths are drawn equal.](figs/c2_ans_sched.svg){width=48%}
+<figcaption markdown="1">Figure R.2. [Exercise 20](#exercise-20): one schedule that cannot deadlock. T1 and T3, the two threads that take both locks, run one after the other; T2 and T4 run beside them. Box lengths are drawn equal.</figcaption>
+</figure>
+
+</details>
+
+### Exercise 21 {#exercise-21}
+
+In your own words, explain to a friend why lock ordering prevents deadlock, why it is the fix used in practice, and the one thing it cannot protect against. ([Section 5.2](class-2.md#sec-5-2), [Section 5.7](class-2.md#sec-5-7) and [Section 6.1](class-2.md#sec-6-1))
+
+<details class="success answer" id="answer-21" markdown="1">
+<summary>Answer 21 <span class="hint">click to show</span></summary>
+
+One possible answer. A deadlock is a circle of threads, each waiting for a lock that the next one holds. If you go round such a circle you come back to where you started, so somewhere on it a thread must hold a lock that comes later in the order while it asks for one that comes earlier. If every thread takes its locks in one agreed order, nobody ever asks backward like that, so the circle can never close. It is the fix used in practice because it costs almost nothing: the rest of the code stays as it was, and it adds no lock, no retry and no new way to fail beyond the rule itself. What it cannot protect against is a programmer who does not follow the order: one routine that takes two locks the other way round brings the deadlock back, which is why systems like Linux write their lock orders down and check them with a tool.
 
 </details>
