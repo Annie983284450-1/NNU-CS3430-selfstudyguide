@@ -400,6 +400,9 @@ def convert_qa(qa_path, qa_figs, ids, outdir):
             out.append('<figcaption markdown="1">' + link_prose_refs(cap, ids, this_page) + "</figcaption>")
             out.append("</figure>")
             continue
+        if FENCE.match(line):          # a numbered listing keeps its line numbers on the site, as in the class pages
+            out.append(fence_for_site(line))
+            continue
         text = re.sub(r"\bFigure (\d+)(?!\d)(?!\.\d)", r"Figure Q.\1", line)
         out.append(link_prose_refs(rewrite_anchor_links(text, ids, this_page), ids, this_page))
     cleaned = []

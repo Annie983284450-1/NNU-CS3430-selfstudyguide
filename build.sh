@@ -25,7 +25,8 @@ python3 tools/guide2site.py W08 "$SLIDES/W08/W08_ThreadsAndLocks_SelfStudy.md"  
         --qa "$SLIDES/W08/W08_Locks_QA.md" "$SLIDES/W08/W08_Locks_QA_figs"
 python3 tools/guide2site.py W09 "$SLIDES/W09/W09_ConcurrentDS_CV_Semaphores_SelfStudy.md" "$SLIDES/W09/W09_SelfStudy_figs" \
         --qa "$SLIDES/W09/W09_ConcurrentDS_CV_Sem_QA.md" "$SLIDES/W09/W09_ConcurrentDS_CV_Sem_QA_figs"
-python3 tools/guide2site.py W10 "$SLIDES/W10/W10_ConcurrencyBugs_Deadlock_SelfStudy.md" "$SLIDES/W10/W10_SelfStudy_figs"
+python3 tools/guide2site.py W10 "$SLIDES/W10/W10_ConcurrencyBugs_Deadlock_SelfStudy.md" "$SLIDES/W10/W10_SelfStudy_figs" \
+        --qa "$SLIDES/W10/W10_ConcurrencyBugs_Events_QA.md" "$SLIDES/W10/W10_ConcurrencyBugs_Events_QA_figs"
 python3 tools/guide2site.py W11 "$SLIDES/W11/W11_IODevices_Disks_SelfStudy.md" "$SLIDES/W11/W11_SelfStudy_figs"
 
 # Each week's answers fold under their exercises (guide2site does this as it writes a review page; this redoes

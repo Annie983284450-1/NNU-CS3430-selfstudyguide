@@ -71,6 +71,7 @@ extra_javascript:
   - assets/anim/covering.js
   - assets/anim/philosophers.js
   - assets/anim/w10c2.js
+  - assets/anim/w10qa.js
   - assets/anim/w11uart.js
   - assets/anim/w11disk.js
   - assets/anim/stepper.js
@@ -161,6 +162,7 @@ nav:
           - "Class 1 · Bug patterns; what a deadlock needs": w10/class-1.md
           - "Class 2 · Preventing deadlock; events without threads": w10/class-2.md
           - Exercises and answers: w10/review.md
+          - "Q&A · Lock ordering, select() and event servers": w10/qa.md
           - "Appendix A · Reading the C": w10/appendix.md
   - "Persistence":
       - "Week 11 · I/O devices and hard disk drives":

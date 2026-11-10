@@ -93,7 +93,8 @@ ANIMS = [
     ("w11/class-1.md", "sec-2-5", "w11disk", "end",
      "Step through it yourself: the request side and the interrupt side of one disk read, in the order they happen."),
     # Q&A pages: an answer that explains the same process gets the same animation, right after its figure.
-    # Each Q&A page sits on the week whose guide teaches its chapter: w08/qa.md chapter 28, w09/qa.md chapters 29 to 31.
+    # Each Q&A page sits on the week whose guide teaches its chapter: w08/qa.md chapter 28, w09/qa.md chapters 29 to 31,
+    # w10/qa.md chapters 32 and 33 (its three animations are in w10qa.js).
     ("w04/qa.md", "q9", "tlb", "fig",
      "Step through a hit and a miss yourself. In the Miss tab, lines 13 and 15 check the row: if either check failed, the hardware would raise an exception instead of filling the TLB, which is the second case above."),
     ("w04/qa.md", "q12", "tlb10", "fig",
@@ -114,6 +115,12 @@ ANIMS = [
      "Step through both tabs yourself: the same three threads, first with signal() on line 22, then with broadcast()."),
     ("w09/qa.md", "q22", "philosophers", "after:1. Philosophers 0, 1, 2 and 3 take",
      "Step through both tabs yourself: the same timing, first with everyone taking the left fork first, then with philosopher 4 taking fork 0 first."),
+    ("w10/qa.md", "q1", "samelock10", "after:**The animation.**",
+     "Step through both tabs yourself: the call with the same lock twice on the book's eight lines, and then on the version with the third branch."),
+    ("w10/qa.md", "q2", "selectpass10", "after:**The animation.**",
+     "Step through one pass yourself, and watch the count of descriptors touched."),
+    ("w10/qa.md", "q3", "contin10", "after:**The animation.**",
+     "Step through both tabs yourself: the thread, whose stack keeps sd, and the event handler, which has to store it."),
 ]
 
 CLOSERS = re.compile(r"^(- What this part settled|\*The argument in one line:\*|</details>)")
