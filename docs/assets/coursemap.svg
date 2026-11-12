@@ -147,9 +147,9 @@
 <text x="691" y="1005.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">I/O devices and drivers</text></a>
 <text x="1082" y="1005.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 36</text>
 <path d="M666,1018 C673,1018 673,1001 680,1001" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
-<g class="cmap-soon"><title>Hard disk drives (coming later in the term)</title><rect x="680" y="1021" width="410" height="30" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>
-<text x="691" y="1040.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#8a919c">Hard disk drives</text></g>
-<text x="1082" y="1040.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#b0b6bf">OSTEP 37</text>
+<a href="w11/class-2/" class="cmap-link"><title>Hard disk drives</title><rect x="680" y="1021" width="410" height="30" rx="7" fill="#fbfcfe" stroke="#2a7a6b" stroke-width="1.4"/>
+<text x="691" y="1040.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" fill="#1b2430">Hard disk drives</text></a>
+<text x="1082" y="1040.0" text-anchor="end" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#7a8291">OSTEP 37</text>
 <path d="M666,1018 C673,1018 673,1036 680,1036" fill="none" stroke="#9aa3b2" stroke-width="1.6"/>
 <path d="M336,1152 C388,1152 388,1108 440,1108" fill="none" stroke="#2a7a6b" stroke-width="1.6"/>
 <g class="cmap-soon"><title>Week 12 · Files (coming later in the term)</title><rect x="440" y="1075" width="226" height="65" rx="7" fill="#f3f4f6" stroke="#c9ced6" stroke-width="1.4"/>

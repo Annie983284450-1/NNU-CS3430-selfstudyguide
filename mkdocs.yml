@@ -74,6 +74,8 @@ extra_javascript:
   - assets/anim/w10qa.js
   - assets/anim/w11uart.js
   - assets/anim/w11disk.js
+  - assets/anim/w11seek.js
+  - assets/anim/w11sptf.js
   - assets/anim/stepper.js
 
 markdown_extensions:
@@ -168,6 +170,7 @@ nav:
       - "Week 11 · I/O devices and hard disk drives":
           - Start here: w11/index.md
           - "Class 1 · Talking to devices; interrupts, DMA, drivers": w11/class-1.md
+          - "Class 2 · Hard disk drives: the interface, the cost, the order": w11/class-2.md
           - Exercises and answers: w11/review.md
           - "Appendix A · The program behind the Linux captures": w11/appendix.md
   - Labs:

@@ -13,21 +13,21 @@ done
 [ -n "$SLIDES" ] || { echo "Slides folder not found (looked in Theory/Slides and ../Slides)"; exit 1; }
 
 # One line per week: week  guide.md  figures folder. Add a line for each new week.
-python3 tools/guide2site.py W01 "$SLIDES/W01/W01_Intro_SelfStudy.md"          "$SLIDES/W01/W01_SelfStudy_figs"
-python3 tools/guide2site.py W02 "$SLIDES/W02/W02_Processes_SelfStudy.md"      "$SLIDES/W02/W02_SelfStudy_figs"
-python3 tools/guide2site.py W03 "$SLIDES/W03/W03_AddressSpaces_SelfStudy.md"  "$SLIDES/W03/W03_SelfStudy_figs"
-python3 tools/guide2site.py W04 "$SLIDES/W04/W04_Paging_SelfStudy.md"         "$SLIDES/W04/W04_SelfStudy_figs" \
-        --qa "$SLIDES/W04/W04_Paging_QA.md" "$SLIDES/W04/W04_Paging_QA_figs"
-python3 tools/guide2site.py W05 "$SLIDES/W05/W05_MultiLevelSwapping_SelfStudy.md" "$SLIDES/W05/W05_SelfStudy_figs"
-python3 tools/guide2site.py W06 "$SLIDES/W06/W06_Scheduling_SelfStudy.md"         "$SLIDES/W06/W06_SelfStudy_figs"
-python3 tools/guide2site.py W07 "$SLIDES/W07/W07_ProportionalShare_MultiCPU_SelfStudy.md" "$SLIDES/W07/W07_SelfStudy_figs"
-python3 tools/guide2site.py W08 "$SLIDES/W08/W08_ThreadsAndLocks_SelfStudy.md"     "$SLIDES/W08/W08_SelfStudy_figs" \
-        --qa "$SLIDES/W08/W08_Locks_QA.md" "$SLIDES/W08/W08_Locks_QA_figs"
-python3 tools/guide2site.py W09 "$SLIDES/W09/W09_ConcurrentDS_CV_Semaphores_SelfStudy.md" "$SLIDES/W09/W09_SelfStudy_figs" \
-        --qa "$SLIDES/W09/W09_ConcurrentDS_CV_Sem_QA.md" "$SLIDES/W09/W09_ConcurrentDS_CV_Sem_QA_figs"
-python3 tools/guide2site.py W10 "$SLIDES/W10/W10_ConcurrencyBugs_Deadlock_SelfStudy.md" "$SLIDES/W10/W10_SelfStudy_figs" \
-        --qa "$SLIDES/W10/W10_ConcurrencyBugs_Events_QA.md" "$SLIDES/W10/W10_ConcurrencyBugs_Events_QA_figs"
-python3 tools/guide2site.py W11 "$SLIDES/W11/W11_IODevices_Disks_SelfStudy.md" "$SLIDES/W11/W11_SelfStudy_figs"
+python3 tools/guide2site.py W01 "$SLIDES/W01/Self-study guide/W01_Intro_SelfStudy.md"          "$SLIDES/W01/Self-study guide/W01_SelfStudy_figs"
+python3 tools/guide2site.py W02 "$SLIDES/W02/Self-study guide/W02_Processes_SelfStudy.md"      "$SLIDES/W02/Self-study guide/W02_SelfStudy_figs"
+python3 tools/guide2site.py W03 "$SLIDES/W03/Self-study guide/W03_AddressSpaces_SelfStudy.md"  "$SLIDES/W03/Self-study guide/W03_SelfStudy_figs"
+python3 tools/guide2site.py W04 "$SLIDES/W04/Self-study guide/W04_Paging_SelfStudy.md"         "$SLIDES/W04/Self-study guide/W04_SelfStudy_figs" \
+        --qa "$SLIDES/W04/Q&A/W04_Paging_QA.md" "$SLIDES/W04/Q&A/W04_Paging_QA_figs"
+python3 tools/guide2site.py W05 "$SLIDES/W05/Self-study guide/W05_MultiLevelSwapping_SelfStudy.md" "$SLIDES/W05/Self-study guide/W05_SelfStudy_figs"
+python3 tools/guide2site.py W06 "$SLIDES/W06/Self-study guide/W06_Scheduling_SelfStudy.md"         "$SLIDES/W06/Self-study guide/W06_SelfStudy_figs"
+python3 tools/guide2site.py W07 "$SLIDES/W07/Self-study guide/W07_ProportionalShare_MultiCPU_SelfStudy.md" "$SLIDES/W07/Self-study guide/W07_SelfStudy_figs"
+python3 tools/guide2site.py W08 "$SLIDES/W08/Self-study guide/W08_ThreadsAndLocks_SelfStudy.md"     "$SLIDES/W08/Self-study guide/W08_SelfStudy_figs" \
+        --qa "$SLIDES/W08/Q&A/W08_Locks_QA.md" "$SLIDES/W08/Q&A/W08_Locks_QA_figs"
+python3 tools/guide2site.py W09 "$SLIDES/W09/Self-study guide/W09_ConcurrentDS_CV_Semaphores_SelfStudy.md" "$SLIDES/W09/Self-study guide/W09_SelfStudy_figs" \
+        --qa "$SLIDES/W09/Q&A/W09_ConcurrentDS_CV_Sem_QA.md" "$SLIDES/W09/Q&A/W09_ConcurrentDS_CV_Sem_QA_figs"
+python3 tools/guide2site.py W10 "$SLIDES/W10/Self-study guide/W10_ConcurrencyBugs_Deadlock_SelfStudy.md" "$SLIDES/W10/Self-study guide/W10_SelfStudy_figs" \
+        --qa "$SLIDES/W10/Q&A/W10_ConcurrencyBugs_Events_QA.md" "$SLIDES/W10/Q&A/W10_ConcurrencyBugs_Events_QA_figs"
+python3 tools/guide2site.py W11 "$SLIDES/W11/Self-study guide/W11_IODevices_Disks_SelfStudy.md" "$SLIDES/W11/Self-study guide/W11_SelfStudy_figs"
 
 # Each week's answers fold under their exercises (guide2site does this as it writes a review page; this redoes
 # any page that still has a separate Answers block, and retargets "Answer N" links).

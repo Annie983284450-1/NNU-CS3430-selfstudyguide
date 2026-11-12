@@ -52,7 +52,7 @@ PIECES = [
         ("", [
             ("w11", "Week 11 · Devices and disks", "I/O devices; hard disk drives", [
                 ("I/O devices and drivers", "36", "w11/class-1/"),
-                ("Hard disk drives", "37", None)]),
+                ("Hard disk drives", "37", "w11/class-2/")]),
             ("w12", "Week 12 · Files", "files, directories, inodes", [
                 ("Files and directories", "39", None),
                 ("File-system implementation: inodes", "40", None)]),

@@ -92,6 +92,11 @@ ANIMS = [
      "Step through it yourself: one call of uartputc_sync(), asking, asking again, and writing."),
     ("w11/class-1.md", "sec-2-5", "w11disk", "end",
      "Step through it yourself: the request side and the interrupt side of one disk read, in the order they happen."),
+    # Week 11, class 2
+    ("w11/class-2.md", "sec-4-6", "w11seek", "end",
+     "Step through the two requests yourself: the platter turns to scale, and the table fills in one part at a time."),
+    ("w11/class-2.md", "sec-6-7", "w11sptf", "end",
+     "Step through both runs yourself: the slow arm, which goes to sector 16 first, and the fast arm, which goes to sector 8 first."),
     # Q&A pages: an answer that explains the same process gets the same animation, right after its figure.
     # Each Q&A page sits on the week whose guide teaches its chapter: w08/qa.md chapter 28, w09/qa.md chapters 29 to 31,
     # w10/qa.md chapters 32 and 33 (its three animations are in w10qa.js).

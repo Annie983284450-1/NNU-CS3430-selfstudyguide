@@ -2,7 +2,7 @@
 
 ## The program diskio.c (you can skip this listing)
 
-Extras [2](class-1.md#extra-2) and [4](class-1.md#extra-4) show what this program printed on the Linux VM. Here is all of it, from `W11_demos/diskio.c`. In plain words: it opens a file for reading with O_DIRECT, so that each read goes to the disk. It reads a given number of blocks of 4,096 bytes, either in order (`seq`) or at random places (`rand`). It measures the time that passed and the CPU time it used, and asks the kernel how many times the process gave up the CPU by waiting, which is its count of sleeps. Then it prints all of that.
+Extras [2](class-1.md#extra-2) and [4](class-1.md#extra-4) of the first class, and [Section 5.4](class-2.md#sec-5-4) and [Extra 13](class-2.md#extra-13) of the second class, show what this program printed on the Linux VM. Here is all of it, from `W11_demos/diskio.c`. In plain words: it opens a file for reading with O_DIRECT, so that each read goes to the disk. It reads a given number of blocks of 4,096 bytes (or of another size, if a fourth word on the command line gives one), either in order (`seq`) or at random places (`rand`). It measures the time that passed and the CPU time it used, and asks the kernel how many times the process gave up the CPU by waiting, which is its count of sleeps. Then it prints all of that.
 
 ```c linenums="1" hl_lines="26 41 47 52"
 // diskio.c: read a file straight from the disk, one request at a time.
