@@ -1,26 +1,74 @@
+/* An @import only works before every other rule, so it stays on line 1. It loads the sans face for headings and UI. */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 /* COMP3430 self-study site: section labels, figures, reading width */
+
+/* ---------- 11-13 design tokens (DESIGN.md, "ink on paper"). Rules below use these names, not raw values. ---------- */
 :root {
-  --lbl-problem: #b23a48; --lbl-concept: #1f6f8b; --lbl-example: #5b7a2a;
-  --lbl-kernel: #6b4fa0; --lbl-machine: #a0632a; --lbl-check: #2a7a6b;
-  --lbl-roadmap: #555; --lbl-summary: #555; --lbl-deeper: #7a7a7a;
+  /* ink and paper */
+  --ink-1: #1b2430; --ink-2: #5b6675; --ink-3: #7a8291;
+  --line-strong: #9aa3b2; --line: #d9dde4; --surface: #f3f4f6; --paper: #ffffff;
+  /* primary: one color for links, the chapter rule and selected controls */
+  --primary: #2f3e9e; --primary-text: #2f3e9e; --primary-hover: #1f3864;
+  /* accent: "this just changed"; a tint behind text, never text */
+  --mark: #e8b23a; --mark-tint: rgba(232, 178, 58, .25);
+  /* section kinds: fixed meanings, white text on each */
+  --k-problem: #b23a48; --k-concept: #1f6f8b; --k-example: #5b7a2a; --k-kernel: #6b4fa0;
+  --k-machine: #a0632a; --k-check: #2a7a6b; --k-meta: #555555; --k-deeper: #6b6b6b;
+  /* status text */
+  --good: #2a7a6b; --bad: #b23a48; --warn: #a0632a;
+  /* type, shape, measure */
+  --font-ui: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+  --r-1: 4px; --r-2: 6px; --r-pill: 999px;
+  --measure: 36em;
+}
+[data-md-color-scheme="slate"] {
+  --ink-1: #e6e9ef; --ink-2: #a9b1bd; --ink-3: #7f8896;
+  --line-strong: #4a5361; --line: #2e3541; --surface: #1f242d; --paper: #171b22;
+  --primary: #3d4fc4; --primary-text: #9aa8f0; --primary-hover: #c3ccf7;
+  --mark-tint: rgba(232, 178, 58, .18);
+  --good: #6fcab8; --bad: #ee8f9a; --warn: #e0a66f;
+}
+/* hand the tokens to Material (mkdocs.yml sets primary and accent to "custom") */
+[data-md-color-scheme="default"], [data-md-color-scheme="slate"] {
+  --md-primary-fg-color: var(--primary);
+  --md-primary-fg-color--light: var(--primary);
+  --md-primary-fg-color--dark: var(--primary-hover);
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: rgba(255, 255, 255, .7);
+  --md-accent-fg-color: var(--primary-hover);
+  --md-accent-fg-color--transparent: rgba(47, 62, 158, .1);
+  --md-typeset-a-color: var(--primary-text);
+  --md-default-bg-color: var(--paper);
+  --md-default-fg-color: var(--ink-1);
+  --md-default-fg-color--light: var(--ink-2);
+  --md-default-fg-color--lighter: var(--line-strong);
+  --md-default-fg-color--lightest: var(--line);
+  --md-code-bg-color: var(--surface);
+  --md-code-fg-color: var(--ink-1);
+  --md-footer-bg-color: var(--paper);
+  --md-footer-bg-color--dark: var(--paper);
+  --md-footer-fg-color: var(--ink-1);
+  --md-footer-fg-color--light: var(--ink-2);
+  --md-footer-fg-color--lighter: var(--ink-2);
 }
 .lbl {
-  display: inline-block; font-size: 0.62em; font-weight: 600; letter-spacing: .03em;
-  text-transform: uppercase; color: #fff; border-radius: 4px; padding: .15em .5em;
+  display: inline-block; font-size: 0.62em; font-weight: 600; letter-spacing: .04em;
+  text-transform: uppercase; color: #fff; border-radius: var(--r-1); padding: .15em .5em;
   margin-right: .4em; vertical-align: middle; line-height: 1.4;
 }
-.lbl-problem { background: var(--lbl-problem); }
-.lbl-concept { background: var(--lbl-concept); }
-.lbl-example { background: var(--lbl-example); }
-.lbl-kernel  { background: var(--lbl-kernel); }
-.lbl-machine { background: var(--lbl-machine); }
-.lbl-check   { background: var(--lbl-check); }
-.lbl-roadmap, .lbl-summary { background: var(--lbl-roadmap); }
-.lbl-deeper  { background: var(--lbl-deeper); }
+.lbl-problem { background: var(--k-problem); }
+.lbl-concept { background: var(--k-concept); }
+.lbl-example { background: var(--k-example); }
+.lbl-kernel  { background: var(--k-kernel); }
+.lbl-machine { background: var(--k-machine); }
+.lbl-check   { background: var(--k-check); }
+.lbl-roadmap, .lbl-summary { background: var(--k-meta); }
+.lbl-deeper  { background: var(--k-deeper); }
 
-.md-typeset figure { margin: 1.2em auto; text-align: center; }
-.md-typeset figure img { max-width: 100%; height: auto; border: 1px solid rgba(0,0,0,.08); border-radius: 4px; }
-.md-typeset figcaption { font-size: .78rem; color: var(--md-default-fg-color--light); max-width: 48rem; margin: .5em auto 0; text-align: left; }
+.md-typeset figure { margin: 1.2em 0; text-align: left; }
+.md-typeset figure img { max-width: 100%; height: auto; margin-left: 0; margin-right: 0; border: 1px solid var(--line); border-radius: var(--r-1); }
+.md-typeset figcaption { font-family: var(--font-ui); font-size: .68rem; line-height: 1.45; color: var(--ink-2); max-width: 40rem; margin: .5em 0 0; text-align: left; font-style: normal; }
+.md-typeset figcaption em { font-style: normal; }
 [data-md-color-scheme="slate"] .md-typeset figure img { background: #fff; }
 
 .md-typeset { font-size: .82rem; line-height: 1.65; }
@@ -33,17 +81,15 @@
 
 /* native code listings (10-19): the lead line above a block, the line-number gutter, highlighted lines */
 .md-typeset pre > code { font-size: .72rem; line-height: 1.45; }
-.md-typeset .highlight .linenos, .md-typeset .highlight [data-linenos]::before { color: var(--md-default-fg-color--lighter); }
-.md-typeset .highlight .hll { background-color: rgba(255, 213, 79, .25); }
-[data-md-color-scheme="slate"] .md-typeset .highlight .hll { background-color: rgba(255, 213, 79, .18); }
+.md-typeset .highlight .linenos, .md-typeset .highlight [data-linenos]::before { color: var(--line-strong); }
+.md-typeset .highlight .hll { background-color: var(--mark-tint); }
 .md-typeset figure img[src$=".svg"] { border: none; background: #fff; padding: .4rem; }
 
 /* ---------- 10-20 design pass: hierarchy, navigation, contents ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@500;600;700&display=swap');
 
 /* headings in a sans face, body stays serif, so structure and prose read differently */
 .md-typeset h1, .md-typeset h2, .md-typeset h3, .md-typeset h4 {
-  font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif; font-weight: 600;
+  font-family: var(--font-ui); font-weight: 600;
   color: var(--md-default-fg-color); letter-spacing: -.01em;
 }
 .md-typeset h1 { font-size: 1.9em; font-weight: 700; margin-bottom: .6em; }
@@ -59,16 +105,15 @@
 .md-typeset h2 .lbl { font-size: .55em; }
 
 /* emphasis in the body: bold terms a shade darker than the text */
-.md-typeset strong { color: #1a1a1a; }
-[data-md-color-scheme="slate"] .md-typeset strong { color: #fff; }
+.md-typeset strong { color: var(--ink-1); }
 
 /* right-hand contents: chapters bold and dark, sections lighter and indented, kind badges inline */
 .md-nav--secondary .md-nav__title { font-weight: 700; color: var(--md-default-fg-color); }
 .md-nav--secondary > .md-nav__list > .md-nav__item > .md-nav__link {
-  font-weight: 700; color: var(--md-default-fg-color); margin-top: .6em; font-size: .68rem; }
+  font-weight: 700; color: var(--md-default-fg-color); margin-top: .6em; font-size: .72rem; }
 .md-nav--secondary .md-nav__item .md-nav__item .md-nav__link {
-  font-weight: 400; color: var(--md-default-fg-color--light); font-size: .64rem; padding-left: .2rem; }
-.md-nav--secondary .md-nav__link--active { color: var(--md-accent-fg-color) !important; font-weight: 600; }
+  font-weight: 400; color: var(--md-default-fg-color--light); font-size: .68rem; padding-left: .2rem; }
+.md-nav--secondary .md-nav__link--active { color: var(--primary-text) !important; font-weight: 600; }
 .md-nav--secondary .lbl { font-size: .55rem; padding: .05em .35em; margin-right: .3em; vertical-align: 1px; }
 
 /* left sidebar: week title bold, current page highlighted */
@@ -77,24 +122,22 @@
 .md-nav--primary .md-nav__link--active { font-weight: 600; }
 
 /* top tabs: a little heavier so the weeks read as a menu */
-.md-tabs__link { font-weight: 600; opacity: .85; font-size: .7rem; }
-.md-tabs__link--active, .md-tabs__link:hover { opacity: 1; }
 .md-nav--secondary .md-nav__link { display: block; }
 .md-nav--secondary .toc-num { color: var(--md-default-fg-color--light); font-weight: 600; margin-right: .25em; }
 
 /* course map on the home page: let it use the full content width */
 .cmap-wrap { margin: 1rem 0 .5rem; }
-.cmap-wrap svg { width: 100%; height: auto; display: block; border: 1px solid rgba(0,0,0,.08); border-radius: 6px; }
+.cmap-wrap svg { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: var(--r-2); }
 .md-content__inner { margin-bottom: 2rem; }
 
 /* ---------- 10-23 lab pages: the "Connect to theory" box, and readable box text ---------- */
 :root {
   --md-admonition-icon--theory: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1m0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5z"/></svg>');
 }
-.md-typeset .admonition.theory, .md-typeset details.theory { border-color: #00838f; }
-.md-typeset .theory > .admonition-title, .md-typeset .theory > summary { background-color: rgba(0, 131, 143, .1); }
+.md-typeset .admonition.theory, .md-typeset details.theory { border-color: var(--k-concept); }
+.md-typeset .theory > .admonition-title, .md-typeset .theory > summary { background-color: rgba(31, 111, 139, .1); }
 .md-typeset .theory > .admonition-title::before, .md-typeset .theory > summary::before {
-  background-color: #00838f;
+  background-color: var(--k-concept);
   -webkit-mask-image: var(--md-admonition-icon--theory); mask-image: var(--md-admonition-icon--theory);
 }
 .md-typeset .admonition.theory, .md-typeset .admonition.question, .md-typeset details.success { font-size: .76rem; }
@@ -108,3 +151,66 @@
 .md-typeset details.answer > summary .hint { font-weight: 400; color: var(--md-default-fg-color--light); margin-left: .5em; }
 .md-typeset .answers-toggle { margin: .4em 0 1.2em; }
 .md-typeset .answers-toggle .md-button { font-size: .7rem; padding: .3em .9em; }
+
+/* ---------- 11-13 design pass (DESIGN.md): quiet chrome, sans for structure, prose measure ---------- */
+
+/* serif is for reading; everything that is structure is set in the sans face */
+.md-header, .md-tabs, .md-nav, .md-footer, .md-search, .md-top, .lbl,
+.md-typeset .admonition-title, .md-typeset summary, .md-typeset .md-button,
+.md-typeset table:not([class]) th { font-family: var(--font-ui); }
+
+/* header and tabs: paper, ink text, a hairline instead of a shadow */
+.md-header, .md-tabs { background-color: var(--paper); color: var(--ink-1); }
+.md-header, .md-header--shadow { box-shadow: none; border-bottom: 1px solid var(--line); }
+.md-header__topic { font-weight: 600; }
+.md-tabs__item { height: 2.2rem; }
+.md-tabs__link { display: flex; align-items: center; height: 100%; margin-top: 0;
+  color: var(--ink-2); opacity: 1; font-weight: 600; font-size: .72rem; }
+.md-tabs__link:hover { color: var(--ink-1); }
+.md-tabs__item--active .md-tabs__link { color: var(--ink-1); box-shadow: inset 0 -2px 0 var(--primary); }
+@media screen and (min-width: 60em) {
+  .md-search__input, .md-search__input:hover { background-color: var(--surface); color: var(--ink-1); border-radius: var(--r-2); }
+  .md-search__input::placeholder { color: var(--ink-2); }
+  .md-search__input + .md-search__icon { color: var(--ink-2); }
+}
+
+/* sidebars */
+.md-nav { font-size: .72rem; }
+.md-nav--primary .md-nav__link--active, .md-nav--primary .md-nav__item .md-nav__link--active { color: var(--primary-text); }
+.md-typeset a:hover { color: var(--primary-hover); text-decoration: underline; }
+.md-typeset a:focus-visible, .md-nav__link:focus-visible, .md-tabs__link:focus-visible { outline: 2px solid var(--primary-text); outline-offset: 2px; }
+
+/* prose holds a readable line (about 78 characters); figures, maps, code, tables and animations keep the full column */
+.md-typeset > :is(p, ul, ol, blockquote),
+.md-typeset :is(details, .admonition) > :is(p:not(.admonition-title), ul, ol, blockquote) { max-width: var(--measure); }
+
+/* maps: the SVGs name their font without quotes ("Source Sans 3"), which browsers reject because of the bare 3,
+   so the text fell back to the serif. Set it here until the generators quote the name. */
+.cmap text { font-family: var(--font-ui); }
+
+/* boxes: a hairline border with a colored left edge, no shadow; one radius */
+.md-typeset .admonition, .md-typeset details { box-shadow: none; border-radius: var(--r-2); }
+.md-typeset pre > code { border-radius: var(--r-2); }
+.md-typeset code { border-radius: var(--r-1); }
+.md-typeset .md-button { border-radius: var(--r-2); border-width: 1px; border-color: var(--line-strong); color: var(--ink-1); font-weight: 600; }
+.md-typeset .md-button:hover, .md-typeset .md-button:focus { background-color: transparent; border-color: var(--primary-text); color: var(--primary-text); }
+
+/* each box type has one job and one color from the tokens (title tint, icon and fold arrow follow the border) */
+.md-typeset :is(.admonition, details):is(.success, .question) { border-color: var(--k-check); }
+.md-typeset :is(.success, .question) > :is(.admonition-title, summary) { background-color: rgba(42, 122, 107, .1); }
+.md-typeset :is(.success, .question) > :is(.admonition-title, summary)::before,
+.md-typeset :is(.success, .question) > summary::after { background-color: var(--k-check); }
+.md-typeset :is(.admonition, details).abstract { border-color: var(--primary); }
+.md-typeset .abstract > :is(.admonition-title, summary) { background-color: rgba(47, 62, 158, .08); }
+.md-typeset .abstract > :is(.admonition-title, summary)::before,
+.md-typeset .abstract > summary::after { background-color: var(--primary-text); }
+.md-typeset :is(.admonition, details).note { border-color: var(--line-strong); }
+.md-typeset .note > :is(.admonition-title, summary) { background-color: var(--surface); }
+.md-typeset .note > :is(.admonition-title, summary)::before,
+.md-typeset .note > summary::after { background-color: var(--ink-2); }
+.md-typeset .theory > summary::after { background-color: var(--k-concept); }
+
+/* footer: paper with a hairline above */
+.md-footer { border-top: 1px solid var(--line); }
+.md-footer-meta { background-color: var(--paper); }
+.md-footer__link:hover { color: var(--primary-text); opacity: 1; }
