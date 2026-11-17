@@ -25,8 +25,8 @@ A few words first, so the map can be read. A computer runs **programs**: lists o
 #### The course map
 
 <figure markdown="1">
-![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open. From slide 2.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open. From slide 2.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open.](figs/coursemap.png){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open.</figcaption>
 </figure>
 
 An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had the processor and the memory to itself. The second is **concurrency**: many things happen at the same time without breaking each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1.
@@ -38,8 +38,8 @@ The table in the lower half of Figure 0.1 reads like a chain. Each row is one st
 #### Last week, first class: the address space, and malloc
 
 <figure markdown="1">
-![Figure 0.2. Last week's first class, drawn: one process's address space, the memory API, and the three goals every memory design is scored on. From slide 3.](figs/lastweek_c1.png){width=90%}
-<figcaption markdown="1">Figure 0.2. Last week's first class, drawn: one process's address space, the memory API, and the three goals every memory design is scored on. From slide 3.</figcaption>
+![Figure 0.2. Last week's first class, drawn: one process's address space, the memory API, and the three goals every memory design is scored on.](figs/lastweek_c1.png){width=90%}
+<figcaption markdown="1">Figure 0.2. Last week's first class, drawn: one process's address space, the memory API, and the three goals every memory design is scored on.</figcaption>
 </figure>
 
 Last week's first class asked what memory looks like to a running program. The answer was the **address space**: the set of addresses a process may use, numbered from 0, private to that process. Box 1 of Figure 0.2 draws a small one, 16 KB. It holds three things. The **code** is the program's instructions, which also live in memory. The **heap** is memory the program asks for while it runs, for data whose size it only learns then. The **stack** holds the working data of the program's **functions** (a function is a named piece of a program that other parts can call; each call needs a little memory for its own values, and gets it on the stack). Between the heap and the stack there is free space, so that both can grow. In this drawing address 0 is at the top and addresses increase downward. So on the page the heap grows downward, which is toward larger addresses, and the stack grows upward, which is toward smaller addresses. Because "up" and "down" depend on how a picture is drawn, the rest of this guide always says the direction in addresses: the heap grows toward larger addresses, and the stack grows toward smaller ones. The two grow toward each other, into the free middle.
@@ -53,8 +53,8 @@ The text under box 2 is two facts we measured. The kernel keeps its own list of 
 Box 3 is the scorecard. Every memory design is judged on three goals: **transparency** (the program never notices that it is being translated), **efficiency** (translation costs almost nothing per access), and **protection** (no process can reach another process's memory, or the kernel's).
 
 <figure markdown="1">
-![Figure 0.3. What last week's first class settled, and what it left open. From slide 3.](figs/lastweek_c1_cards.png){width=58%}
-<figcaption markdown="1">Figure 0.3. What last week's first class settled, and what it left open. From slide 3.</figcaption>
+![Figure 0.3. What last week's first class settled, and what it left open.](figs/lastweek_c1_cards.png){width=58%}
+<figcaption markdown="1">Figure 0.3. What last week's first class settled, and what it left open.</figcaption>
 </figure>
 
 Settled: every process has a private address space, and every address it sees is virtual. Left open: how the hardware makes that private map true on every load and store (a **load** is an instruction that reads a value from memory, a **store** one that writes a value to memory), at almost no cost, without the program noticing. That was last week's second class.
@@ -62,8 +62,8 @@ Settled: every process has a private address space, and every address it sees is
 #### Last week, second class: base and bounds, and its flaw
 
 <figure markdown="1">
-![Figure 0.4. Last week's second class, drawn: base and bounds in the MMU, and the one complaint about it. From slide 4.](figs/lastweek_c2.png){width=87%}
-<figcaption markdown="1">Figure 0.4. Last week's second class, drawn: base and bounds in the MMU, and the one complaint about it. From slide 4.</figcaption>
+![Figure 0.4. Last week's second class, drawn: base and bounds in the MMU, and the one complaint about it.](figs/lastweek_c2.png){width=87%}
+<figcaption markdown="1">Figure 0.4. Last week's second class, drawn: base and bounds in the MMU, and the one complaint about it.</figcaption>
 </figure>
 
 The second class gave the first mechanism. The **MMU** (memory management unit) is the part of the processor that translates addresses. For **base and bounds** it holds two registers per process: the **base**, where the process's memory starts in the chips, and the **bounds**, how big it is. Follow the one access drawn in box 1 of Figure 0.4. The program asks for virtual address 15 KB. The hardware first checks that 15 KB is below the bound, 16 KB, then adds the base, 32 KB, and lands at physical 15 + 32 = 47 KB. Doing this add and this check on every access, while the program runs, is called **dynamic relocation**.
@@ -73,8 +73,8 @@ When the check fails, the hardware raises an **exception**: it stops the program
 Box 2 is the complaint. The whole address space moves as one block, so the free middle between heap and stack sits inside that block in physical memory, taking real RAM while holding nothing. Waste inside a piece that was handed out whole is called **internal fragmentation**. And in our own numbers it is worse than waste. The address space measured on the Ubuntu machine was 128 TiB, and the machine has 7.8 GiB. 128 TiB is 128 × 1024 = 131,072 GiB. Linux reports the machine's RAM as 8,225,104 KB, which is 8,225,104 ÷ 1,048,576 = 7.844 GiB (a GiB is 1024 × 1024 = 1,048,576 KB). And 131,072 ÷ 7.844 is about 16,710. Check it the other way: 16,710 × 7.844 is about 131,073 GiB. One base and one bound cannot even load that process.
 
 <figure markdown="1">
-![Figure 0.5. What last week's second class settled, and what it left open. From slide 4.](figs/lastweek_c2_cards.png){width=58%}
-<figcaption markdown="1">Figure 0.5. What last week's second class settled, and what it left open. From slide 4.</figcaption>
+![Figure 0.5. What last week's second class settled, and what it left open.](figs/lastweek_c2_cards.png){width=58%}
+<figcaption markdown="1">Figure 0.5. What last week's second class settled, and what it left open.</figcaption>
 </figure>
 
 Settled: translation on every access, with one add and one compare in hardware, passing transparency, efficiency and protection. Left open: one pair of registers for the whole address space is too coarse. The process has to move in pieces. That is where this week starts.
@@ -82,8 +82,8 @@ Settled: translation on every access, with one add and one compare in hardware, 
 #### Last week's words, in one place
 
 <figure markdown="1">
-![Figure 0.6. Last week's words, each in one sentence, with the textbook section that defines it. From slide 5.](figs/lastweek_words.png){width=100%}
-<figcaption markdown="1">Figure 0.6. Last week's words, each in one sentence, with the textbook section that defines it. From slide 5.</figcaption>
+![Figure 0.6. Last week's words, each in one sentence, with the textbook section that defines it.](figs/lastweek_words.png){width=100%}
+<figcaption markdown="1">Figure 0.6. Last week's words, each in one sentence, with the textbook section that defines it.</figcaption>
 </figure>
 
 Figure 0.6 is the list from the slides. The left column is the first class and the right column the second; the section numbers in brackets are the textbook's. Two of the words come back this week in a new form. The free list returns as the central data structure of the first class. And internal fragmentation, waste inside a piece, gets a sibling: external fragmentation, waste between pieces, which [Section 2.1](class-1.md#sec-2-1) defines.

@@ -214,3 +214,23 @@
 .md-footer { border-top: 1px solid var(--line); }
 .md-footer-meta { background-color: var(--paper); }
 .md-footer__link:hover { color: var(--primary-text); opacity: 1; }
+
+
+/* ---------- 11-17 boxes made from the guides' own text (checkpoints, cruxes, a class's questions) ----------
+   guide2site turns "> **Settled.** ..." etc. into these. One text size for all of them. */
+.md-typeset .admonition:is(.settled, .open, .able, .crux, .roadmap) { font-size: .76rem; }
+.md-typeset .admonition.settled { border-color: var(--k-check); }
+.md-typeset .settled > .admonition-title { background-color: rgba(42, 122, 107, .1); }
+.md-typeset .settled > .admonition-title::before { background-color: var(--k-check); -webkit-mask-image: var(--md-admonition-icon--success); mask-image: var(--md-admonition-icon--success); }
+.md-typeset .admonition.open { border-color: var(--k-machine); }
+.md-typeset .open > .admonition-title { background-color: rgba(160, 99, 42, .1); }
+.md-typeset .open > .admonition-title::before { background-color: var(--k-machine); -webkit-mask-image: var(--md-admonition-icon--question); mask-image: var(--md-admonition-icon--question); }
+.md-typeset .admonition.able { border-color: var(--primary); }
+.md-typeset .able > .admonition-title { background-color: rgba(47, 62, 158, .08); }
+.md-typeset .able > .admonition-title::before { background-color: var(--primary); -webkit-mask-image: var(--md-admonition-icon--abstract); mask-image: var(--md-admonition-icon--abstract); }
+.md-typeset .admonition.crux { border-color: var(--k-problem); }
+.md-typeset .crux > .admonition-title { background-color: rgba(178, 58, 72, .08); }
+.md-typeset .crux > .admonition-title::before { background-color: var(--k-problem); -webkit-mask-image: var(--md-admonition-icon--quote); mask-image: var(--md-admonition-icon--quote); }
+.md-typeset .admonition.roadmap { border-color: var(--k-meta); }
+.md-typeset .roadmap > .admonition-title { background-color: var(--surface); }
+.md-typeset .roadmap > .admonition-title::before { background-color: var(--k-meta); -webkit-mask-image: var(--md-admonition-icon--abstract); mask-image: var(--md-admonition-icon--abstract); }

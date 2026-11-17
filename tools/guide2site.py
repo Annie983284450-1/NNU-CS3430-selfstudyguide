@@ -239,6 +239,59 @@ def badge_heading(level, text, hid):
     return f"{level} {text}{attr}"
 
 
+# A blockquote whose paragraphs open with a bold label becomes boxes on the site (the guide .md keeps
+# the plain blockquote, which reads fine in the Canvas HTML too). Checkpoints: Settled / Still open /
+# You should now be able to. Cruxes: "The crux: ...". A bold line alone over a list: a titled box.
+CALLOUT_KINDS = [
+    (re.compile(r"^Settled\.?$"), "settled"),
+    (re.compile(r"^(Left|Still) open\b.*\.$"), "open"),
+    (re.compile(r"^You should now be able to$"), "able"),
+    (re.compile(r"^The crux\b.*"), "crux"),
+]
+
+
+def callout_quote(group):
+    """group: consecutive '>' lines. Returns site lines, or None to leave the blockquote alone."""
+    body = [g[1:].lstrip() if g.startswith("> ") else g[1:] for g in group]
+    paras, cur = [], []
+    for b in body:
+        if b.strip() == "":
+            if cur:
+                paras.append(cur); cur = []
+        else:
+            cur.append(b)
+    if cur:
+        paras.append(cur)
+    out = []
+    k = 0
+    while k < len(paras):
+        para = paras[k]
+        m = re.match(r"^\*\*(.+?)\*\*\s*(.*)$", para[0])
+        if not m:
+            return None
+        label, rest = m.group(1).strip(), m.group(2)
+        if not rest and len(para) == 1 and k + 1 < len(paras):
+            # a bold title alone, with the next paragraph (e.g. a list) as its body
+            out.append(f'!!! roadmap "{label}"')
+            out.append("")
+            out += ["    " + l for l in paras[k + 1]]
+            out.append("")
+            k += 2
+            continue
+        kind = next((kd for rx, kd in CALLOUT_KINDS if rx.match(label)), None)
+        if kind is None:
+            return None
+        title = label.rstrip(".")
+        if kind == "able" and rest:
+            rest = rest[0].upper() + rest[1:]
+        out.append(f'!!! {kind} "{title}"')
+        out.append("")
+        out += ["    " + l for l in ([rest] if rest else []) + para[1:]]
+        out.append("")
+        k += 1
+    return out
+
+
 def convert_page(key, title, lines, ids, meta, week, legend):
     this_page = f"{key}.md"
     out = []
@@ -335,6 +388,20 @@ def convert_page(key, title, lines, ids, meta, week, legend):
             out.append(pre + "</figure>")
             i += 1
             continue
+
+        if line.startswith("> **") and not in_listing:
+            j = i
+            while j < len(lines) and lines[j].startswith(">"):
+                j += 1
+            boxes = callout_quote(lines[i:j])
+            if boxes is not None:
+                if out and out[-1].strip():
+                    out.append("")
+                for b in boxes:
+                    b = link_prose_refs(rewrite_anchor_links(b, ids, this_page), ids, this_page)
+                    out.append(b)
+                i = j
+                continue
 
         text = rewrite_anchor_links(line, ids, this_page)
         text = link_prose_refs(text, ids, this_page)
@@ -444,6 +511,25 @@ def main():
     print(f"{len(ids)} anchors, {sum(1 for _ in (outdir / 'figs').iterdir())} figures")
     if qa:
         convert_qa(qa[0], qa[1], ids, outdir)
+    check_no_slide_refs(wk, outdir)
+
+
+# The site must stand on its own, without the lecture decks: no page may point at a slide.
+# Numbered references ("slide 15", "From slide 6") stop the build for every week. Weeks listed in
+# NO_DECK_WORDS (their figures redrawn, their prose rewritten) also may not say "slide", "deck" or "PowerPoint".
+SLIDE_NUM = re.compile(r"\bslides?\s+\d+", re.I)
+DECK_WORD = re.compile(r"\b(slides?|decks?|deck's|PowerPoint)\b(?! (right|left|up|down|every|over|toward|into|along))", re.I)
+NO_DECK_WORDS = {"w05", "w06", "w07", "w08", "w09", "w10", "w11"}
+
+
+def check_no_slide_refs(wk, outdir):
+    bad = []
+    for page in sorted(outdir.glob("*.md")):
+        for n, line in enumerate(page.read_text(encoding="utf-8").splitlines(), 1):
+            if SLIDE_NUM.search(line) or (wk in NO_DECK_WORDS and DECK_WORD.search(line)):
+                bad.append(f"  {page.name}:{n}: {line.strip()[:140]}")
+    if bad:
+        sys.exit(f"{wk}: the site must not refer to slides; fix the guide master:\n" + "\n".join(bad))
 
 
 def drop_block(plines, hid):

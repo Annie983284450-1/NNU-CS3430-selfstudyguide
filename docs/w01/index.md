@@ -21,8 +21,8 @@ This part does two jobs before the new material starts. It shows where this week
 A week of material makes sense only if you know which question it answers and what comes after it. So the first picture is the whole course.
 
 <figure markdown="1">
-![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask. From slide 2.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask. From slide 2.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask.](figs/coursemap.png){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask.</figcaption>
 </figure>
 
 An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own processor and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1. The textbook calls them the three easy pieces, and the title of this guide is the title of the week's deck.

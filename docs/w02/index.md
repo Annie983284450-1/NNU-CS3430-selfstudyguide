@@ -22,8 +22,8 @@ A few words first, so the map can be read. A **program** is a file of instructio
 ### The course map {#part-0-map}
 
 <figure markdown="1">
-![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the fourteen weeks with this one marked, and the question each step left open. From slide 2.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the fourteen weeks with this one marked, and the question each step left open. From slide 2.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the fourteen weeks with this one marked, and the question each step left open.](figs/coursemap.png){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the fourteen weeks with this one marked, and the question each step left open.</figcaption>
 </figure>
 
 An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own CPU and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1.
@@ -35,8 +35,8 @@ The lower half of Figure 0.1 is the reason the weeks come in this order: each on
 ### The first week, first class: one machine made to look like many {#part-0-c1}
 
 <figure markdown="1">
-![Figure 0.2. The first class of the first week, drawn: four copies of one program on one CPU, two programs at the same address, and the three things the OS is. From slide 3.](figs/w1_class1.png){width=89%}
-<figcaption markdown="1">Figure 0.2. The first class of the first week, drawn: four copies of one program on one CPU, two programs at the same address, and the three things the OS is. From slide 3.</figcaption>
+![Figure 0.2. The first class of the first week, drawn: four copies of one program on one CPU, two programs at the same address, and the three things the OS is.](figs/w1_class1.png){width=89%}
+<figcaption markdown="1">Figure 0.2. The first class of the first week, drawn: four copies of one program on one CPU, two programs at the same address, and the three things the OS is.</figcaption>
 </figure>
 
 The first class of the course had one question: what an operating system is for. The answer came as two demos and three words, and Figure 0.2 is all of it.
@@ -48,8 +48,8 @@ The second demo was `mem.c`, which asks for a few bytes of memory, prints their 
 Then came three words for what the OS is. It is an **illusionist**: it makes one machine look like many. It is a **library**: it answers requests, the system calls such as open, read, write and fork. And it is a **referee**: it shares the machine out and protects each program from the others. Under the illusion, in xv6, every running program is one record in the kernel's memory, a C `struct` named `struct proc`. (A **struct** is a C record: a group of named fields kept together, like one row of a table with a name for each column.) It was only glanced at then. This week it becomes the definition of a process.
 
 <figure markdown="1">
-![Figure 0.3. What the first class settled, and what it left open. From slide 3.](figs/w1_class1_cards.png){width=54%}
-<figcaption markdown="1">Figure 0.3. What the first class settled, and what it left open. From slide 3.</figcaption>
+![Figure 0.3. What the first class settled, and what it left open.](figs/w1_class1_cards.png){width=54%}
+<figcaption markdown="1">Figure 0.3. What the first class settled, and what it left open.</figcaption>
 </figure>
 
 Figure 0.3 is the two cards beside the drawing. Settled: the illusions are real, and behind each virtual CPU there is a process. Left open, first: what one of those virtual CPUs actually is. A struct was seen, but not what the OS must keep to stop a program and start it again later. Left open, second: how a program asks the OS for anything, and how the OS takes the real CPU back from a program that never stops. Both are this week.
@@ -115,8 +115,8 @@ Figure 0.3 is the two cards beside the drawing. Settled: the illusions are real,
 ### The first week, second class: two threads, one counter, and fsync {#part-0-c2}
 
 <figure markdown="1">
-![Figure 0.4. The second class of the first week, drawn: counter++ as three instructions and the lost increments, a write that returns before the disk has the bytes, and the three cruxes. From slide 4.](figs/w1_class2.png){width=90%}
-<figcaption markdown="1">Figure 0.4. The second class of the first week, drawn: counter++ as three instructions and the lost increments, a write that returns before the disk has the bytes, and the three cruxes. From slide 4.</figcaption>
+![Figure 0.4. The second class of the first week, drawn: counter++ as three instructions and the lost increments, a write that returns before the disk has the bytes, and the three cruxes.](figs/w1_class2.png){width=90%}
+<figcaption markdown="1">Figure 0.4. The second class of the first week, drawn: counter++ as three instructions and the lost increments, a write that returns before the disk has the bytes, and the three cruxes.</figcaption>
 </figure>
 
 The second class took the other two jobs, and each came with a surprise. Figure 0.4 draws both.
@@ -128,8 +128,8 @@ The second surprise was about files. When the system call `write()` returns, the
 Then the three **cruxes**, the textbook's word for the central question a chapter is built around: how to make one machine look like many, how to build correct concurrent programs, how to keep data safe when the power goes. Three pieces, three cruxes, in that order through the term.
 
 <figure markdown="1">
-![Figure 0.5. What the second class settled, and what it left open. From slide 4.](figs/w1_class2_cards.png){width=54%}
-<figcaption markdown="1">Figure 0.5. What the second class settled, and what it left open. From slide 4.</figcaption>
+![Figure 0.5. What the second class settled, and what it left open.](figs/w1_class2_cards.png){width=54%}
+<figcaption markdown="1">Figure 0.5. What the second class settled, and what it left open.</figcaption>
 </figure>
 
 Figure 0.5: settled, the three surprises and the three cruxes. Left open: piece 1 in detail. The first week said what the OS does; it did not say how. The first how is the process: what it is made of, how one is created, and how the OS stays in control of it. That is this week.
@@ -137,8 +137,8 @@ Figure 0.5: settled, the three surprises and the three cruxes. Left open: piece 
 ### The first week's words, in one place {#part-0-words}
 
 <figure markdown="1">
-![Figure 0.6. The first week's words, each in one sentence, with the textbook section where each is defined. From slide 5.](figs/w1_words.png){width=100%}
-<figcaption markdown="1">Figure 0.6. The first week's words, each in one sentence, with the textbook section where each is defined. From slide 5.</figcaption>
+![Figure 0.6. The first week's words, each in one sentence, with the textbook section where each is defined.](figs/w1_words.png){width=100%}
+<figcaption markdown="1">Figure 0.6. The first week's words, each in one sentence, with the textbook section where each is defined.</figcaption>
 </figure>
 
 Figure 0.6 is the list from the slides. Most of it was defined above; the rest is here. A **pid** is the number the kernel gives each process (a process's parent's pid is its **PPID**; the next sentence says what a parent is). **ps** is the command that lists the running processes with their pids. A process is made by another process, called its **parent**; the new one is the **child**. **Mechanism** and **policy** are a pair: a mechanism is how a thing is done (the switch from one process to another), a policy is which choice is made (which process to switch to). **xv6** is the small teaching kernel read all term; **QEMU** is the program that runs it as a pretend RISC-V computer on your own machine. **strace** is a Linux tool that prints every system call a program makes, with its arguments and its result. These are the words the rest of this guide builds on. Some later parts repeat a definition as a reminder; the meaning never changes.

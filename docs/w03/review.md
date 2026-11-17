@@ -7,14 +7,14 @@ Several programs have to share one memory, because swapping a whole memory to di
 The deck's last deeper slide says the same week in four lines, one for the abstraction, the interface, the mechanism and the flaw. It is Figure R.1, and it is a good test: each line should now unfold into a paragraph you could write yourself.
 
 <figure markdown="1">
-![Figure R.1. The week in four lines: the abstraction, the API, the mechanism, and the flaw that drives what comes next. From slide 73.](figs/fourlines.png){width=100%}
-<figcaption markdown="1">Figure R.1. The week in four lines: the abstraction, the API, the mechanism, and the flaw that drives what comes next. From slide 73.</figcaption>
+![Figure R.1. The week in four lines: the abstraction, the API, the mechanism, and the flaw that drives what comes next.](figs/fourlines.png){width=100%}
+<figcaption markdown="1">Figure R.1. The week in four lines: the abstraction, the API, the mechanism, and the flaw that drives what comes next.</figcaption>
 </figure>
 
 ## Exercises {#exercises}
 <!-- answers folded under their exercises -->
 
-Do these with a pencil, and with the figures of the sections they name beside you. The answers follow, worked in full. Try each one before you look. Most exercises use only the core sections. Four also use optional extras, so read those first (about ten minutes each): Exercise 4 uses the valgrind messages of [Extra 11](class-1.md#extra-11), Exercise 5 uses [Extra 9](class-1.md#extra-9), Exercise 6 uses Extras [5](class-1.md#extra-5) and [7](class-1.md#extra-7), and Exercise 10 uses [Extra 16](class-2.md#extra-16).
+Do these with a pencil, and with the figures of the sections they name beside you. The answers follow, worked in full. Try each one before you look. Most exercises use only the core sections. Four also use optional extras, so read those first (about ten minutes each): [Exercise 4](#exercise-4) uses the valgrind messages of [Extra 11](class-1.md#extra-11), [Exercise 5](#exercise-5) uses [Extra 9](class-1.md#extra-9), [Exercise 6](#exercise-6) uses Extras [5](class-1.md#extra-5) and [7](class-1.md#extra-7), and [Exercise 10](#exercise-10) uses [Extra 16](class-2.md#extra-16).
 
 ### Exercise 1 {#exercise-1}
 
@@ -85,8 +85,8 @@ The question of [Extra 9](class-1.md#extra-9) (Figure E9.1): `x` points at 40 by
 It prints 8 and 40. Figure R.2 is the deck's reveal. `sizeof` is worked out by the compiler from what it knows about the name. `x` is a pointer, so `sizeof(x)` is the size of a pointer, which is the size of an address on the Ubuntu machine: 8 bytes, because, as [Section 1.4](class-1.md#sec-1-4) said, the Ubuntu machine keeps every address in 64 bits, which is 8 bytes, even though only 48 of those bits are used. The 40 bytes it points at appear nowhere, because the 10 passed to `malloc` is only known when the program runs. `arr` is an array the compiler declared, so it knows its size: 10 × 4 = 40. The practical rule: never use `sizeof` on a pointer from `malloc` to get the block's size; keep the length in a separate variable.
 
 <figure markdown="1">
-![Figure R.2. The deck's reveal for Exercise 5: sizeof(x) = 8 and sizeof(arr) = 40, and why. From slide 39.](figs/sz_a.png){width=100%}
-<figcaption markdown="1">Figure R.2. The deck's reveal for Exercise 5: sizeof(x) = 8 and sizeof(arr) = 40, and why. From slide 39.</figcaption>
+![Figure R.2. The deck's reveal for Exercise 5: sizeof(x) = 8 and sizeof(arr) = 40, and why.](figs/sz_a.png){width=100%}
+<figcaption markdown="1">Figure R.2. The deck's reveal for [Exercise 5](#exercise-5): sizeof(x) = 8 and sizeof(arr) = 40, and why.</figcaption>
 </figure>
 
 </details>
@@ -134,8 +134,8 @@ The deck's translation drill (Figure 5.13). Set A, our program, base 32 KB, boun
 Write every number in bytes: 32 KB = 32,768, 16 KB = 16,384, 15 KB = 15,360, 4 KB = 4,096, 1 KB = 1,024. Set A: 128 < 16,384, so 128 + 32,768 = 32,896. 15,360 < 16,384, so 15,360 + 32,768 = 48,128. 132 + 32,768 = 32,900. The store of `x` goes to the same 48,128 as the load, because it is the same variable. Set B: 0 < 4,096, so 0 + 16,384 = 16,384. 1,024 + 16,384 = 17,408. 3,000 < 4,096, so 3,000 + 16,384 = 19,384. 4,400 is not below 4,096, so the check fails, no physical address is formed, and the hardware raises an exception: a fault. That is the odd one out. Figure R.3 is the deck's answer slide. Two checks: the load and store of set A agree, and 19,384 comes out right only if KB means 1024 (with 1000 you would get 19,000).
 
 <figure markdown="1">
-![Figure R.3. The deck's answers to Exercise 9, written as sums: set A all inside its bound, set B ending in a fault at 4400. From slide 60.](figs/answers.png){width=100%}
-<figcaption markdown="1">Figure R.3. The deck's answers to Exercise 9, written as sums: set A all inside its bound, set B ending in a fault at 4400. From slide 60.</figcaption>
+![Figure R.3. The deck's answers to Exercise 9, written as sums: set A all inside its bound, set B ending in a fault at 4400.](figs/answers.png){width=100%}
+<figcaption markdown="1">Figure R.3. The deck's answers to [Exercise 9](#exercise-9), written as sums: set A all inside its bound, set B ending in a fault at 4400.</figcaption>
 </figure>
 
 </details>
@@ -153,7 +153,7 @@ Base 20 KB = 20,480 and bounds 8 KB = 8,192. Virtual 0: 0 < 8,192, so 20,480. 2 
 
 ### Exercise 11 {#exercise-11}
 
-The two official discussion questions of the deck (slide 72). First: imagine an OS that knows where in physical memory a process's heap region begins, and tries to translate a heap pointer by adding that number to it. Why can't the OS just add the heap's physical base address to a heap pointer in order to translate it? Second: why must "change the base or bounds register" be a privileged instruction?
+Two discussion questions. First: imagine an OS that knows where in physical memory a process's heap region begins, and tries to translate a heap pointer by adding that number to it. Why can't the OS just add the heap's physical base address to a heap pointer in order to translate it? Second: why must "change the base or bounds register" be a privileged instruction?
 
 <details class="success answer" id="answer-11" markdown="1">
 <summary>Answer 11 <span class="hint">click to show</span></summary>
@@ -161,8 +161,8 @@ The two official discussion questions of the deck (slide 72). First: imagine an 
 Figure R.4 is the deck's slide with its answers. First: because the heap pointer is already a virtual address. It is a distance along the program's own ruler, counted from the start of the address space, not from physical 0. Translation adds one base, the address space's own, after checking the distance against the bound. Take the process of Figure 5.1, placed at base 32 KB. Under base and bounds the whole space moves as one block, so its heap, which starts at virtual 2 KB, starts physically at 32 KB + 2 KB = 34 KB. A heap pointer such as virtual 3 KB already counts from the start of the whole address space, not from the start of the heap. The right translation is 32 KB + 3 KB = 35 KB. Adding the heap's physical start instead gives 34 KB + 3 KB = 37 KB: the 2 KB from 0 to the heap is counted twice, and the access lands in the wrong place. And the process never sees, and never needs, any physical base. Second: because those two registers are the protection. A process that could rewrite its own bounds would give itself all of physical memory and read everyone else's data. So only the kernel may set them, at every context switch, and a user-mode attempt traps. Protection that the protected party can edit is not protection.
 
 <figure markdown="1">
-![Figure R.4. The deck's two official discussion questions, with their answers. From slide 72.](figs/dq.png){width=100%}
-<figcaption markdown="1">Figure R.4. The deck's two official discussion questions, with their answers. From slide 72.</figcaption>
+![Figure R.4. The deck's two official discussion questions, with their answers.](figs/dq.png){width=100%}
+<figcaption markdown="1">Figure R.4. The deck's two official discussion questions, with their answers.</figcaption>
 </figure>
 
 </details>

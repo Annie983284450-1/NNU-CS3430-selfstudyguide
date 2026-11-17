@@ -181,8 +181,8 @@ As in the first class, each arrow → in such a line means "and so", and a bar `
 The driver is only the middle layer of three. Figure 4.1 shows all three, and how one read passes through them.
 
 <figure markdown="1">
-![Figure 4.1. The path of one read. The file system asks for block 1 with bread(). The disk driver, virtio_disk_rw(), turns block 1 into 2 sectors. The disk finds the data and copies it into memory, and an interrupt reports that it is done. From slide 3, following textbook section 36.7.](figs/c2_read_path.svg){width=62%}
-<figcaption markdown="1">Figure 4.1. The path of one read. The file system asks for block 1 with bread(). The disk driver, virtio_disk_rw(), turns block 1 into 2 sectors. The disk finds the data and copies it into memory, and an interrupt reports that it is done. From slide 3, following textbook section 36.7.</figcaption>
+![Figure 4.1. The path of one read. The file system asks for block 1 with bread(). The disk driver, virtio_disk_rw(), turns block 1 into 2 sectors. The disk finds the data and copies it into memory, and an interrupt reports that it is done. Following textbook section 36.7.](figs/c2_read_path.svg){width=62%}
+<figcaption markdown="1">Figure 4.1. The path of one read. The file system asks for block 1 with bread(). The disk driver, virtio_disk_rw(), turns block 1 into 2 sectors. The disk finds the data and copies it into memory, and an interrupt reports that it is done. Following textbook section 36.7.</figcaption>
 </figure>
 
 A read starts at the top. The file system sees the disk as a row of numbered pieces called **blocks**. In xv6 a block is 1,024 bytes, and the function `bread()` reads one block by its number. The driver turns the block number into the disk's own unit, the **sector**, which is 512 bytes. One block is 1,024 / 512 = 2 sectors, so block 1 starts at sector 1 × 2 = 2 and covers sectors 2 and 3. (Check: block 0 is sectors 0 and 1, so block 1 must begin at sector 2.) Then the disk finds the data and puts a copy in memory, and the interrupt travels back up.
@@ -224,8 +224,8 @@ What we have is small. At line 245 of the driver, one line writes a sector numbe
 `buf0` is the request the driver is filling in, and `sector` is the number it computed from the block number. The driver hands this over, and the disk does the rest. Figure 4.2 is the whole conversation.
 
 <figure markdown="1">
-![Figure 4.2. What we have: the driver hands the disk a sector number. From slide 5.](figs/c2_driver_asks.svg){width=42%}
-<figcaption markdown="1">Figure 4.2. What we have: the driver hands the disk a sector number. From slide 5.</figcaption>
+![Figure 4.2. What we have: the driver hands the disk a sector number.](figs/c2_driver_asks.svg){width=42%}
+<figcaption markdown="1">Figure 4.2. What we have: the driver hands the disk a sector number.</figcaption>
 </figure>
 
 Where it breaks is one layer up. A file system will soon store files on this disk, and it has to plan. Here is a plan that can go wrong. A file system usually writes 4 KB at a time. That is 4,096 bytes, and 4,096 / 512 = 8 sectors. (Check: 8 × 512 = 4,096.) Suppose the power fails after 3 of the 8 sectors are written. Now 3 sectors hold new data and 5 hold old data. Is the disk allowed to leave things that way? The file system cannot plan until it knows what one request promises, and what it costs.
@@ -249,8 +249,8 @@ Keep the power-failure case in mind. The next section answers it.
 We need to know what the disk promises. Start from the outside, because the outside is very simple. The outside of a device, meaning the requests it accepts and what it promises about them, is called its **interface**. Figure 4.3 is everything the operating system sees.
 
 <figure markdown="1">
-![Figure 4.3. The disk as the OS sees it: n sectors, numbered from 0 to n − 1. Each box is one sector of 512 bytes. From slide 6, following textbook section 37.1.](figs/c2_sector_row.svg){width=62%}
-<figcaption markdown="1">Figure 4.3. The disk as the OS sees it: n sectors, numbered from 0 to n − 1. Each box is one sector of 512 bytes. From slide 6, following textbook section 37.1.</figcaption>
+![Figure 4.3. The disk as the OS sees it: n sectors, numbered from 0 to n − 1. Each box is one sector of 512 bytes. Following textbook section 37.1.](figs/c2_sector_row.svg){width=62%}
+<figcaption markdown="1">Figure 4.3. The disk as the OS sees it: n sectors, numbered from 0 to n − 1. Each box is one sector of 512 bytes. Following textbook section 37.1.</figcaption>
 </figure>
 
 The promise has two parts.
@@ -260,8 +260,8 @@ The promise has two parts.
 **Part two: only a one-sector write is all or nothing.** The drive guarantees one thing about a write. A write of a single sector is **atomic**, which means it happens completely or not at all. A write of several sectors has no such promise. Figure 4.4 is the answer to the power-failure case.
 
 <figure markdown="1">
-![Figure 4.4. A write of 4 KB is 8 sectors: 4,096 / 512 = 8. The power failed after 3 sectors. The write is torn: part new, part old. From slide 6, following textbook section 37.1.](figs/c2_torn_write.svg){width=62%}
-<figcaption markdown="1">Figure 4.4. A write of 4 KB is 8 sectors: 4,096 / 512 = 8. The power failed after 3 sectors. The write is torn: part new, part old. From slide 6, following textbook section 37.1.</figcaption>
+![Figure 4.4. A write of 4 KB is 8 sectors: 4,096 / 512 = 8. The power failed after 3 sectors. The write is torn: part new, part old. Following textbook section 37.1.](figs/c2_torn_write.svg){width=62%}
+<figcaption markdown="1">Figure 4.4. A write of 4 KB is 8 sectors: 4,096 / 512 = 8. The power failed after 3 sectors. The write is torn: part new, part old. Following textbook section 37.1.</figcaption>
 </figure>
 
 A 4 KB write is 8 separate sectors, and the power can fail between any two of them. Then some sectors are new and some are still old. That is called a **torn write**. So the answer to the question of [Section 4.1](#sec-4-1) is yes: the disk is allowed to leave 3 new sectors and 5 old ones. A file system has to be built to survive that, and a later class shows how. The textbook states this promise for hard disk drives, so this guide claims it only for them.
@@ -285,8 +285,8 @@ A note on a loose word. People use **block** in two ways: for one sector, or for
 Near is fast and far is slow, and nobody promised it. To see why, we need the parts of the machine. There are only a few, and every cost in the rest of this class comes from them. Figure 4.5 is the inside of a drive, seen from above.
 
 <figure markdown="1">
-![Figure 4.5. One surface with a single track of 12 sectors, numbered 0 to 11. The platter turns counter-clockwise around the spindle. From slide 7, which redraws OSTEP Figure 37.1.](figs/c2_one_track.svg){width=40%}
-<figcaption markdown="1">Figure 4.5. One surface with a single track of 12 sectors, numbered 0 to 11. The platter turns counter-clockwise around the spindle. From slide 7, which redraws OSTEP Figure 37.1.</figcaption>
+![Figure 4.5. One surface with a single track of 12 sectors, numbered 0 to 11. The platter turns counter-clockwise around the spindle. Redrawn from OSTEP Figure 37.1.](figs/c2_one_track.svg){width=40%}
+<figcaption markdown="1">Figure 4.5. One surface with a single track of 12 sectors, numbered 0 to 11. The platter turns counter-clockwise around the spindle. Redrawn from OSTEP Figure 37.1.</figcaption>
 </figure>
 
 - **The platter.** The data lives on a hard, round plate with a magnetic coating. The plate is a **platter**. The coating keeps its bits when the power is off, and that is why a disk can hold data that lasts. A drive may have one platter or several. Each platter has two sides, and each side is called a **surface**.
@@ -305,8 +305,8 @@ We have a spinning ring of sectors, and we want to read one of them. The platter
 The part is the **disk head**. It reads and writes the surface, and it sits at the end of the **disk arm**, right above the surface. There is one head for each surface. Figure 4.6 shows it over sector 6.
 
 <figure markdown="1">
-![Figure 4.6. Left: the head is over sector 6, and a request arrives for sector 0, on the other side of the ring. The orange arc is the part of the platter that must pass under the head first: half a turn. Right: half a turn later, sector 0 is under the head. From slide 8, which redraws OSTEP Figure 37.2.](figs/c2_rot_delay.svg){width=70%}
-<figcaption markdown="1">Figure 4.6. Left: the head is over sector 6, and a request arrives for sector 0, on the other side of the ring. The orange arc is the part of the platter that must pass under the head first: half a turn. Right: half a turn later, sector 0 is under the head. From slide 8, which redraws OSTEP Figure 37.2.</figcaption>
+![Figure 4.6. Left: the head is over sector 6, and a request arrives for sector 0, on the other side of the ring. The orange arc is the part of the platter that must pass under the head first: half a turn. Right: half a turn later, sector 0 is under the head. Redrawn from OSTEP Figure 37.2.](figs/c2_rot_delay.svg){width=70%}
+<figcaption markdown="1">Figure 4.6. Left: the head is over sector 6, and a request arrives for sector 0, on the other side of the ring. The orange arc is the part of the platter that must pass under the head first: half a turn. Right: half a turn later, sector 0 is under the head. Redrawn from OSTEP Figure 37.2.</figcaption>
 </figure>
 
 Now a request comes in for sector 0, which is on the other side of the ring. The head cannot travel around the ring to get it. The only thing the drive can do is wait while the platter turns. Half a turn later, sector 0 arrives under the head and can be read. This waiting has a name: the **rotational delay**. It is the wait for the wanted sector to spin under the head.
@@ -333,8 +333,8 @@ One track is not realistic. A real surface has thousands of tracks, and the head
 Figure 4.7 is a disk with three tracks. The outer track holds sectors 0 to 11, the middle track holds 12 to 23, and the inner track holds 24 to 35. On this disk the tracks line up: every sector of the middle track sits exactly beside a sector of the outer track, and its number is 12 higher. The inner track's numbers are 24 higher than the outer track's. For example, sector 6 on the outer track, sector 18 on the middle track and sector 30 on the inner track are side by side. On the left, the head is over the inner track, at sector 30, and the request is for sector 11, which is on the outer track.
 
 <figure markdown="1">
-![Figure 4.7. Left: before. The head is on the inner track and sector 11 is wanted. The blue arrow is the seek to the outer track; the dashed arc is the part of the platter that passes the head meanwhile, about 3 sectors. Right: after the seek. The head is on the outer track, in the middle of sector 9; the orange arc is the remaining rotation, 1.5 sectors, before sector 11 begins. From slide 9, which redraws OSTEP Figure 37.3.](figs/c2_seek_three_tracks.svg){width=82%}
-<figcaption markdown="1">Figure 4.7. Left: before. The head is on the inner track and sector 11 is wanted. The blue arrow is the seek to the outer track; the dashed arc is the part of the platter that passes the head meanwhile, about 3 sectors. Right: after the seek. The head is on the outer track, in the middle of sector 9; the orange arc is the remaining rotation, 1.5 sectors, before sector 11 begins. From slide 9, which redraws OSTEP Figure 37.3.</figcaption>
+![Figure 4.7. Left: before. The head is on the inner track and sector 11 is wanted. The blue arrow is the seek to the outer track; the dashed arc is the part of the platter that passes the head meanwhile, about 3 sectors. Right: after the seek. The head is on the outer track, in the middle of sector 9; the orange arc is the remaining rotation, 1.5 sectors, before sector 11 begins. Redrawn from OSTEP Figure 37.3.](figs/c2_seek_three_tracks.svg){width=82%}
+<figcaption markdown="1">Figure 4.7. Left: before. The head is on the inner track and sector 11 is wanted. The blue arrow is the seek to the outer track; the dashed arc is the part of the platter that passes the head meanwhile, about 3 sectors. Right: after the seek. The head is on the outer track, in the middle of sector 9; the orange arc is the remaining rotation, 1.5 sectors, before sector 11 begins. Redrawn from OSTEP Figure 37.3.</figcaption>
 </figure>
 
 Three things happen, in order.
@@ -388,8 +388,8 @@ Every one of these numbers can be worked out by hand from the four design facts.
 **The first request: sector 10.**
 
 <figure markdown="1">
-![Figure 4.8. The start. The head is on the outer track, in the middle of sector 6. Sectors 10 and 18 are waiting. The orange arc is the wait for the start of sector 10: 15 + 3 × 30 = 105 units. From slide 10.](figs/c2_sim_wait10.svg){width=52%}
-<figcaption markdown="1">Figure 4.8. The start. The head is on the outer track, in the middle of sector 6. Sectors 10 and 18 are waiting. The orange arc is the wait for the start of sector 10: 15 + 3 × 30 = 105 units. From slide 10.</figcaption>
+![Figure 4.8. The start. The head is on the outer track, in the middle of sector 6. Sectors 10 and 18 are waiting. The orange arc is the wait for the start of sector 10: 15 + 3 × 30 = 105 units.](figs/c2_sim_wait10.svg){width=52%}
+<figcaption markdown="1">Figure 4.8. The start. The head is on the outer track, in the middle of sector 6. Sectors 10 and 18 are waiting. The orange arc is the wait for the start of sector 10: 15 + 3 × 30 = 105 units.</figcaption>
 </figure>
 
 - Seek: sector 10 is on the outer track, where the head already is. The arm does not move. Seek = 0.
@@ -400,8 +400,8 @@ Every one of these numbers can be worked out by hand from the four design facts.
 **The second request: sector 18.**
 
 <figure markdown="1">
-![Figure 4.9. Sector 10 has been read, and the head is at its end. Sector 18 is on the middle track. The blue arrow is the seek, 40 units; the dashed arc is the part of the platter that passes the head during those 40 units. From slide 12.](figs/c2_sim_seek.svg){width=52%}
-<figcaption markdown="1">Figure 4.9. Sector 10 has been read, and the head is at its end. Sector 18 is on the middle track. The blue arrow is the seek, 40 units; the dashed arc is the part of the platter that passes the head during those 40 units. From slide 12.</figcaption>
+![Figure 4.9. Sector 10 has been read, and the head is at its end. Sector 18 is on the middle track. The blue arrow is the seek, 40 units; the dashed arc is the part of the platter that passes the head during those 40 units.](figs/c2_sim_seek.svg){width=52%}
+<figcaption markdown="1">Figure 4.9. Sector 10 has been read, and the head is at its end. Sector 18 is on the middle track. The blue arrow is the seek, 40 units; the dashed arc is the part of the platter that passes the head during those 40 units.</figcaption>
 </figure>
 
 - Seek: sector 18 is on the middle track, one track inward. One track costs 40 units. Seek = 40.
@@ -410,15 +410,15 @@ Every one of these numbers can be worked out by hand from the four design facts.
 Which sector of the middle track is the head in now? On the outer track, the sector after 11 is sector 0, so the head would be 10 units into sector 0. The middle track's sector beside sector 0 is 0 + 12 = 12. So the head has landed 10 units into sector 12, as Figure 4.10 shows.
 
 <figure markdown="1">
-![Figure 4.10. After the seek. The head is on the middle track, 10 units into sector 12 (the small blue mark). The orange arc is the wait for sector 18: 6 × 30 − 10 = 170 units. From slide 13.](figs/c2_sim_land.svg){width=62%}
-<figcaption markdown="1">Figure 4.10. After the seek. The head is on the middle track, 10 units into sector 12 (the small blue mark). The orange arc is the wait for sector 18: 6 × 30 − 10 = 170 units. From slide 13.</figcaption>
+![Figure 4.10. After the seek. The head is on the middle track, 10 units into sector 12 (the small blue mark). The orange arc is the wait for sector 18: 6 × 30 − 10 = 170 units.](figs/c2_sim_land.svg){width=62%}
+<figcaption markdown="1">Figure 4.10. After the seek. The head is on the middle track, 10 units into sector 12 (the small blue mark). The orange arc is the wait for sector 18: 6 × 30 − 10 = 170 units.</figcaption>
 </figure>
 
 - Rotate: sector 18 begins 6 sectors after sector 12 begins, because 18 − 12 = 6. Six sectors are 6 × 30 = 180 units. But the head is already 10 units into sector 12, so 10 of the 180 have gone by. The wait is 180 − 10 = 170 units.
 
 <figure markdown="1">
-![Figure 4.11. After 170 units the head is on the border where sector 18 begins. The green arc is the transfer: sector 18 passes under the head in 30 units. From slide 14.](figs/c2_sim_read18.svg){width=52%}
-<figcaption markdown="1">Figure 4.11. After 170 units the head is on the border where sector 18 begins. The green arc is the transfer: sector 18 passes under the head in 30 units. From slide 14.</figcaption>
+![Figure 4.11. After 170 units the head is on the border where sector 18 begins. The green arc is the transfer: sector 18 passes under the head in 30 units.](figs/c2_sim_read18.svg){width=52%}
+<figcaption markdown="1">Figure 4.11. After 170 units the head is on the border where sector 18 begins. The green arc is the transfer: sector 18 passes under the head in 30 units.</figcaption>
 </figure>
 
 - Transfer: 30 units, as before.
@@ -454,15 +454,15 @@ Before reading on, make sure you can do this without looking back: say what the 
 What we have is the model of [Chapter 4](#chapter-4): one request costs a seek, a rotation and a transfer, as Figure 5.1 shows. But so far the three parts are only names.
 
 <figure markdown="1">
-![Figure 5.1. What we have: the time of one request has three parts, and no real drive's numbers yet. From slide 17.](figs/c2_three_parts.svg){width=42%}
-<figcaption markdown="1">Figure 5.1. What we have: the time of one request has three parts, and no real drive's numbers yet. From slide 17.</figcaption>
+![Figure 5.1. What we have: the time of one request has three parts, and no real drive's numbers yet.](figs/c2_three_parts.svg){width=42%}
+<figcaption markdown="1">Figure 5.1. What we have: the time of one request has three parts, and no real drive's numbers yet.</figcaption>
 </figure>
 
 Where it breaks is the first time we compare two programs. Figure 5.2 shows two ways of using a disk.
 
 <figure markdown="1">
-![Figure 5.2. Two ways of using a disk. Case 1: small reads at random places, with the arm jumping between them. Case 2: one long run, read in order. From slide 17, following textbook section 37.4.](figs/c2_random_vs_run.svg){width=46%}
-<figcaption markdown="1">Figure 5.2. Two ways of using a disk. Case 1: small reads at random places, with the arm jumping between them. Case 2: one long run, read in order. From slide 17, following textbook section 37.4.</figcaption>
+![Figure 5.2. Two ways of using a disk. Case 1: small reads at random places, with the arm jumping between them. Case 2: one long run, read in order. Following textbook section 37.4.](figs/c2_random_vs_run.svg){width=46%}
+<figcaption markdown="1">Figure 5.2. Two ways of using a disk. Case 1: small reads at random places, with the arm jumping between them. Case 2: one long run, read in order. Following textbook section 37.4.</figcaption>
 </figure>
 
 - **Case 1.** A database, a program that stores a large number of records and looks them up, reads small pieces of 4 KB from places all over the disk. The arm jumps for every piece.
@@ -540,8 +540,8 @@ The Barracuda, the same way: 100 / 105 = 0.95 seconds, about 950 ms, and a rate 
 Figure 5.3 puts both cases on both drives side by side. The bars are drawn to scale. The bars for the random reads are so short that they are only thin lines.
 
 <figure markdown="1">
-![Figure 5.3. Megabytes per second for the two cases on the two drives (the numbers of OSTEP Figure 37.6). Cheetah: 0.66 at random, 125 in order. Barracuda: 0.31 at random, 105 in order. Bar lengths are to scale. From slide 19.](figs/c2_rate_bars.svg){width=62%}
-<figcaption markdown="1">Figure 5.3. Megabytes per second for the two cases on the two drives (the numbers of OSTEP Figure 37.6). Cheetah: 0.66 at random, 125 in order. Barracuda: 0.31 at random, 105 in order. Bar lengths are to scale. From slide 19.</figcaption>
+![Figure 5.3. Megabytes per second for the two cases on the two drives (the numbers of OSTEP Figure 37.6). Cheetah: 0.66 at random, 125 in order. Barracuda: 0.31 at random, 105 in order. Bar lengths are to scale.](figs/c2_rate_bars.svg){width=62%}
+<figcaption markdown="1">Figure 5.3. Megabytes per second for the two cases on the two drives (the numbers of OSTEP Figure 37.6). Cheetah: 0.66 at random, 125 in order. Barracuda: 0.31 at random, 105 in order. Bar lengths are to scale.</figcaption>
 </figure>
 
 How big is the gap?
@@ -642,8 +642,8 @@ What we have is a cost for one request: a seek, a rotation and a transfer. But a
 The simplest thing to do with a queue is to serve it in the order the requests arrived. Here is a case where that goes badly. It uses the three-track disk again: outer track 0 to 11, middle track 12 to 23, inner track 24 to 35. The head is on the inner track and has just read sector 30. Two requests are waiting. The request for sector 2 arrived first, and the request for sector 21 arrived second. Figure 6.1 shows them.
 
 <figure markdown="1">
-![Figure 6.1. Where arrival order breaks. The head has just read sector 30 on the inner track. Sector 2, on the outer track, was asked for first; sector 21, on the middle track, second. In arrival order the arm crosses the whole disk, then comes back. From slide 22.](figs/c2_arrival_order.svg){width=34%}
-<figcaption markdown="1">Figure 6.1. Where arrival order breaks. The head has just read sector 30 on the inner track. Sector 2, on the outer track, was asked for first; sector 21, on the middle track, second. In arrival order the arm crosses the whole disk, then comes back. From slide 22.</figcaption>
+![Figure 6.1. Where arrival order breaks. The head has just read sector 30 on the inner track. Sector 2, on the outer track, was asked for first; sector 21, on the middle track, second. In arrival order the arm crosses the whole disk, then comes back.](figs/c2_arrival_order.svg){width=34%}
+<figcaption markdown="1">Figure 6.1. Where arrival order breaks. The head has just read sector 30 on the inner track. Sector 2, on the outer track, was asked for first; sector 21, on the middle track, second. In arrival order the arm crosses the whole disk, then comes back.</figcaption>
 </figure>
 
 Sector 2 is on the outer track, two tracks away. Sector 21 is on the middle track, one track away. In arrival order the arm goes all the way out for sector 2 and then has to come back for sector 21. That is 2 + 1 = 3 tracks of travel. The other order, 21 and then 2, needs 1 + 1 = 2 tracks, and the arm never turns around.
@@ -664,8 +664,8 @@ We need a rule that picks a cheap request. A seek costs more the farther the arm
 In our example, sector 21 is one track away and sector 2 is two tracks away. SSTF serves 21 first and then 2. Figure 6.2 shows how far each request is from the head, counted in the simulator's time units.
 
 <figure markdown="1">
-![Figure 6.2. The head has just finished sector 30 on the inner track; sectors 21 and 2 wait. The inner arc: sector 21 arrives in 60 units, 40 of seek and 20 of waiting. The outer arc: sector 2 arrives in 210 units, 80 of seek and 130 of waiting. From slide 23, which redraws OSTEP Figure 37.7.](figs/c2_sstf.svg){width=58%}
-<figcaption markdown="1">Figure 6.2. The head has just finished sector 30 on the inner track; sectors 21 and 2 wait. The inner arc: sector 21 arrives in 60 units, 40 of seek and 20 of waiting. The outer arc: sector 2 arrives in 210 units, 80 of seek and 130 of waiting. From slide 23, which redraws OSTEP Figure 37.7.</figcaption>
+![Figure 6.2. The head has just finished sector 30 on the inner track; sectors 21 and 2 wait. The inner arc: sector 21 arrives in 60 units, 40 of seek and 20 of waiting. The outer arc: sector 2 arrives in 210 units, 80 of seek and 130 of waiting. Redrawn from OSTEP Figure 37.7.](figs/c2_sstf.svg){width=58%}
+<figcaption markdown="1">Figure 6.2. The head has just finished sector 30 on the inner track; sectors 21 and 2 wait. The inner arc: sector 21 arrives in 60 units, 40 of seek and 20 of waiting. The outer arc: sector 2 arrives in 210 units, 80 of seek and 130 of waiting. Redrawn from OSTEP Figure 37.7.</figcaption>
 </figure>
 
 Read the two arcs this way. The head is at the end of sector 30, which is where sector 31 begins. The tracks line up ([Section 4.6](#sec-4-6)), so that same place is where sector 31 − 12 = 19 begins on the middle track and where sector 31 − 24 = 7 begins on the outer track.
@@ -719,8 +719,8 @@ What we have is SSTF, which always picks the request on the nearest track. It wo
 Where it breaks: imagine that requests for the inner track keep arriving, one after another. The head is already on the inner track, so each new request is on the nearest track, zero tracks away. The request for sector 2, on the outer track, is never the nearest one. So the disk never gets to it, however long it waits. Figure 6.3 shows the situation.
 
 <figure markdown="1">
-![Figure 6.3. Where nearest first breaks. Requests for the inner track (25, 29, 33) keep arriving. The request for sector 2, in red on the outer track, is never the nearest, so it is never served. From slide 24.](figs/c2_starve.svg){width=34%}
-<figcaption markdown="1">Figure 6.3. Where nearest first breaks. Requests for the inner track (25, 29, 33) keep arriving. The request for sector 2, in red on the outer track, is never the nearest, so it is never served. From slide 24.</figcaption>
+![Figure 6.3. Where nearest first breaks. Requests for the inner track (25, 29, 33) keep arriving. The request for sector 2, in red on the outer track, is never the nearest, so it is never served.](figs/c2_starve.svg){width=34%}
+<figcaption markdown="1">Figure 6.3. Where nearest first breaks. Requests for the inner track (25, 29, 33) keep arriving. The request for sector 2, in red on the outer track, is never the nearest, so it is never served.</figcaption>
 </figure>
 
 This problem has a name from CPU scheduling. **Starvation** is a request or a job that waits forever because others always go first.
@@ -739,8 +739,8 @@ We need a rule that serves nearby requests together and still reaches every trac
 The disk head can do the same. Figure 6.4 shows it in three pictures, read left to right.
 
 <figure markdown="1">
-![Figure 6.4. The elevator on the three-track disk. Picture 1: sweep 1 goes outward; the head serves 29, then 16, then 2, as it reaches each track. Picture 2: 25 and 33 arrive for the inner track; the head does not turn back. Picture 3: at the edge the head turns around, and sweep 2 serves 25 and 33. Yellow: waiting. Green: served. Orange: arrived during sweep 1. The platter is drawn at the same angle in all three pictures, because this rule chooses by track only. From slide 25, following textbook section 37.5.](figs/c2_scan.svg){width=100%}
-<figcaption markdown="1">Figure 6.4. The elevator on the three-track disk. Picture 1: sweep 1 goes outward; the head serves 29, then 16, then 2, as it reaches each track. Picture 2: 25 and 33 arrive for the inner track; the head does not turn back. Picture 3: at the edge the head turns around, and sweep 2 serves 25 and 33. Yellow: waiting. Green: served. Orange: arrived during sweep 1. The platter is drawn at the same angle in all three pictures, because this rule chooses by track only. From slide 25, following textbook section 37.5.</figcaption>
+![Figure 6.4. The elevator on the three-track disk. Picture 1: sweep 1 goes outward; the head serves 29, then 16, then 2, as it reaches each track. Picture 2: 25 and 33 arrive for the inner track; the head does not turn back. Picture 3: at the edge the head turns around, and sweep 2 serves 25 and 33. Yellow: waiting. Green: served. Orange: arrived during sweep 1. The platter is drawn at the same angle in all three pictures, because this rule chooses by track only. Following textbook section 37.5.](figs/c2_scan.svg){width=100%}
+<figcaption markdown="1">Figure 6.4. The elevator on the three-track disk. Picture 1: sweep 1 goes outward; the head serves 29, then 16, then 2, as it reaches each track. Picture 2: 25 and 33 arrive for the inner track; the head does not turn back. Picture 3: at the edge the head turns around, and sweep 2 serves 25 and 33. Yellow: waiting. Green: served. Orange: arrived during sweep 1. The platter is drawn at the same angle in all three pictures, because this rule chooses by track only. Following textbook section 37.5.</figcaption>
 </figure>
 
 - **Picture 1.** The head starts on the inner track, and three requests are waiting, one on each track: 29 on the inner track, 16 on the middle track, 2 on the outer track. The head moves outward and serves each request when it reaches that request's track. So the order is 29, then 16, then 2.
@@ -770,8 +770,8 @@ What we have is two rules, SSTF (the nearest track) and SCAN (the next track on 
 Where it breaks: a request does not only need the arm on its track. It also has to wait for the spin, and [Chapter 4](#chapter-4) showed that the wait can be the larger part. Look at the case in Figure 6.5. The head has just read sector 30 on the inner track. Two requests are waiting: sector 16 on the middle track, one track away, and sector 8 on the outer track, two tracks away.
 
 <figure markdown="1">
-![Figure 6.5. Where track-only rules break. The head has just read sector 30. Sector 16 is one track away, but it has already passed the head. Sector 8 is two tracks away, and about to arrive. From slide 26, following OSTEP Figure 37.8.](figs/c2_spin_blind.svg){width=34%}
-<figcaption markdown="1">Figure 6.5. Where track-only rules break. The head has just read sector 30. Sector 16 is one track away, but it has already passed the head. Sector 8 is two tracks away, and about to arrive. From slide 26, following OSTEP Figure 37.8.</figcaption>
+![Figure 6.5. Where track-only rules break. The head has just read sector 30. Sector 16 is one track away, but it has already passed the head. Sector 8 is two tracks away, and about to arrive. Following OSTEP Figure 37.8.](figs/c2_spin_blind.svg){width=34%}
+<figcaption markdown="1">Figure 6.5. Where track-only rules break. The head has just read sector 30. Sector 16 is one track away, but it has already passed the head. Sector 8 is two tracks away, and about to arrive. Following OSTEP Figure 37.8.</figcaption>
 </figure>
 
 A track-only rule picks 16 and looks no further. But sector 16 has already gone past the head, so it needs most of a turn to come around again. Sector 8 is farther away in tracks, but it is about to arrive. A rule that looks only at tracks cannot see that difference, so it cannot tell which of the two is really cheaper.
@@ -831,8 +831,8 @@ Both runs start from the same position. The head has just read sector 30 on the 
 **The slow arm: 40 units a track.**
 
 <figure markdown="1">
-![Figure 6.6. The slow arm, at the start. Sector 8 arrives in 30 units, but this arm needs 80 units to reach its track. Sector 16 comes around in 270 units. From slide 28.](figs/c2_slow_start.svg){width=62%}
-<figcaption markdown="1">Figure 6.6. The slow arm, at the start. Sector 8 arrives in 30 units, but this arm needs 80 units to reach its track. Sector 16 comes around in 270 units. From slide 28.</figcaption>
+![Figure 6.6. The slow arm, at the start. Sector 8 arrives in 30 units, but this arm needs 80 units to reach its track. Sector 16 comes around in 270 units.](figs/c2_slow_start.svg){width=62%}
+<figcaption markdown="1">Figure 6.6. The slow arm, at the start. Sector 8 arrives in 30 units, but this arm needs 80 units to reach its track. Sector 16 comes around in 270 units.</figcaption>
 </figure>
 
 Sector 8 is close in angle, but it is two tracks away. This arm needs 2 × 40 = 80 units to get there, and sector 8 arrives in 30. The arm will miss it. Sector 16 is one track away, 40 units of seek, and it needs 270 units to come around. The arm has plenty of time. So the drive goes to sector 16 first. From `sim_30_16_8.out`, the two requests that count:
@@ -846,8 +846,8 @@ Block:   8  Seek: 40  Rotate: 50  Transfer: 30  Total: 120
 - Sector 16: the seek takes 40 units. Sector 16 arrives after 270 units, and 40 of them were spent seeking, so the wait is 270 − 40 = 230. With the transfer: 40 + 230 + 30 = 300.
 
 <figure markdown="1">
-![Figure 6.7. The slow arm, after sector 16 is read. The head is on the middle track. Sector 8 arrives in 90 units: 40 of seek and 50 of waiting. From slide 29.](figs/c2_slow_step1.svg){width=52%}
-<figcaption markdown="1">Figure 6.7. The slow arm, after sector 16 is read. The head is on the middle track. Sector 8 arrives in 90 units: 40 of seek and 50 of waiting. From slide 29.</figcaption>
+![Figure 6.7. The slow arm, after sector 16 is read. The head is on the middle track. Sector 8 arrives in 90 units: 40 of seek and 50 of waiting.](figs/c2_slow_step1.svg){width=52%}
+<figcaption markdown="1">Figure 6.7. The slow arm, after sector 16 is read. The head is on the middle track. Sector 8 arrives in 90 units: 40 of seek and 50 of waiting.</figcaption>
 </figure>
 
 - Sector 8: the head is now at the end of sector 16, which is where sector 17 begins. On the outer track that is where sector 17 − 12 = 5 begins. Sector 8 begins 3 sectors later (5, 6, 7), which is 3 × 30 = 90 units away. The seek takes 40 of them, so the wait is 90 − 40 = 50. With the transfer: 40 + 50 + 30 = 120.
@@ -858,8 +858,8 @@ What if the slow arm had gone to sector 8 first? It needs 80 units to get there,
 **The fast arm: 10 units a track.**
 
 <figure markdown="1">
-![Figure 6.8. The fast arm, at the start. The same disk and the same two requests. Sector 8 still arrives in 30 units, and this arm needs only 20 units to reach its track. From slide 31.](figs/c2_fast_start.svg){width=62%}
-<figcaption markdown="1">Figure 6.8. The fast arm, at the start. The same disk and the same two requests. Sector 8 still arrives in 30 units, and this arm needs only 20 units to reach its track. From slide 31.</figcaption>
+![Figure 6.8. The fast arm, at the start. The same disk and the same two requests. Sector 8 still arrives in 30 units, and this arm needs only 20 units to reach its track.](figs/c2_fast_start.svg){width=62%}
+<figcaption markdown="1">Figure 6.8. The fast arm, at the start. The same disk and the same two requests. Sector 8 still arrives in 30 units, and this arm needs only 20 units to reach its track.</figcaption>
 </figure>
 
 Everything is the same, except that the arm now crosses a track in 10 units. Two tracks take 2 × 10 = 20 units. Sector 8 arrives in 30. This time the arm gets there first. So the drive goes to sector 8 first. From `sim_30_8_16_S4.out`, the two requests that count:
@@ -871,15 +871,15 @@ Block:  16  Seek: 10  Rotate:200  Transfer: 30  Total: 240
 ```
 
 <figure markdown="1">
-![Figure 6.9. The fast arm, after 20 units. The arm is on the outer track, and sector 8 is still 10 units away. From slide 32.](figs/c2_fast_step1.svg){width=52%}
-<figcaption markdown="1">Figure 6.9. The fast arm, after 20 units. The arm is on the outer track, and sector 8 is still 10 units away. From slide 32.</figcaption>
+![Figure 6.9. The fast arm, after 20 units. The arm is on the outer track, and sector 8 is still 10 units away.](figs/c2_fast_step1.svg){width=52%}
+<figcaption markdown="1">Figure 6.9. The fast arm, after 20 units. The arm is on the outer track, and sector 8 is still 10 units away.</figcaption>
 </figure>
 
 - Sector 8: the seek takes 20 units. Sector 8 arrives after 30, so the head waits 30 − 20 = 10 units. With the transfer: 20 + 10 + 30 = 60.
 
 <figure markdown="1">
-![Figure 6.10. The fast arm, after sector 8 is read. Sector 16 arrives in 210 units: 10 of seek and 200 of waiting. From slide 33.](figs/c2_fast_step2.svg){width=58%}
-<figcaption markdown="1">Figure 6.10. The fast arm, after sector 8 is read. Sector 16 arrives in 210 units: 10 of seek and 200 of waiting. From slide 33.</figcaption>
+![Figure 6.10. The fast arm, after sector 8 is read. Sector 16 arrives in 210 units: 10 of seek and 200 of waiting.](figs/c2_fast_step2.svg){width=58%}
+<figcaption markdown="1">Figure 6.10. The fast arm, after sector 8 is read. Sector 16 arrives in 210 units: 10 of seek and 200 of waiting.</figcaption>
 </figure>
 
 - Sector 16: the head is at the end of sector 8, which is where sector 9 begins. On the middle track that is where sector 9 + 12 = 21 begins. Count to sector 16: 21, 22, 23, 12, 13, 14, 15. That is 7 sectors, 7 × 30 = 210 units away. The seek back takes 10, so the wait is 210 − 10 = 200. With the transfer: 10 + 200 + 30 = 240.
@@ -902,8 +902,8 @@ Step through both runs yourself: the slow arm, which goes to sector 16 first, an
 SPTF needs the head's exact position, and only the drive knows it. So who does the scheduling in a real system? In old systems the operating system did all of it: it looked at the waiting requests, picked the best one, and sent it to the disk. Today the work is shared, as Figure 6.11 shows.
 
 <figure markdown="1">
-![Figure 6.11. Who schedules. The OS picks a few requests and merges adjacent ones. The drive orders them by SPTF with the exact head position. Below: three requests arrive, for blocks 33, then 8, then 34; blocks 33 and 34 are joined, and two requests reach the disk. From slide 35, following textbook section 37.5.](figs/c2_who_schedules.svg){width=62%}
-<figcaption markdown="1">Figure 6.11. Who schedules. The OS picks a few requests and merges adjacent ones. The drive orders them by SPTF with the exact head position. Below: three requests arrive, for blocks 33, then 8, then 34; blocks 33 and 34 are joined, and two requests reach the disk. From slide 35, following textbook section 37.5.</figcaption>
+![Figure 6.11. Who schedules. The OS picks a few requests and merges adjacent ones. The drive orders them by SPTF with the exact head position. Below: three requests arrive, for blocks 33, then 8, then 34; blocks 33 and 34 are joined, and two requests reach the disk. Following textbook section 37.5.](figs/c2_who_schedules.svg){width=62%}
+<figcaption markdown="1">Figure 6.11. Who schedules. The OS picks a few requests and merges adjacent ones. The drive orders them by SPTF with the exact head position. Below: three requests arrive, for blocks 33, then 8, then 34; blocks 33 and 34 are joined, and two requests reach the disk. Following textbook section 37.5.</figcaption>
 </figure>
 
 - **The operating system** hands the drive a few requests at a time. The textbook's example is 16 requests. (That 16 is a count of requests, not a sector number.)
@@ -975,8 +975,8 @@ And the size of a block is set in `kernel/fs.h`:
 So `BSIZE / 512` is 1,024 / 512 = 2 sectors for each block, and block 1 begins at sector 1 × 2 = 2. It covers sectors 2 and 3, as Figure E9.1 shows. Try another: block 7 begins at sector 7 × 2 = 14 and covers sectors 14 and 15.
 
 <figure markdown="1">
-![Figure E9.1. Sectors on the disk, numbered from 0. Block 1 of xv6 is sectors 2 and 3. From slide 39.](figs/c2_block_to_sectors.svg){width=62%}
-<figcaption markdown="1">Figure E9.1. Sectors on the disk, numbered from 0. Block 1 of xv6 is sectors 2 and 3. From slide 39.</figcaption>
+![Figure E9.1. Sectors on the disk, numbered from 0. Block 1 of xv6 is sectors 2 and 3.](figs/c2_block_to_sectors.svg){width=62%}
+<figcaption markdown="1">Figure E9.1. Sectors on the disk, numbered from 0. Block 1 of xv6 is sectors 2 and 3.</figcaption>
 </figure>
 
 The two words are easy to mix up. A block is the file system's unit, and a sector is the disk's.
@@ -990,8 +990,8 @@ On the disks drawn so far, the tracks line up: sector 12 begins exactly where se
 So real drives shift each track by a few sectors against its neighbor. That shift is the **track skew**. Figure E10.1 shows a skew of 2 sectors.
 
 <figure markdown="1">
-![Figure E10.1. Track skew of 2 sectors. Sector 12 starts 2 sectors after sector 11 ends, and each track starts 2 sectors later than the one outside it. The orange arc is the 2 sectors that pass while the arm moves to the next track. From slide 40, which redraws OSTEP Figure 37.4.](figs/c2_skew.svg){width=52%}
-<figcaption markdown="1">Figure E10.1. Track skew of 2 sectors. Sector 12 starts 2 sectors after sector 11 ends, and each track starts 2 sectors later than the one outside it. The orange arc is the 2 sectors that pass while the arm moves to the next track. From slide 40, which redraws OSTEP Figure 37.4.</figcaption>
+![Figure E10.1. Track skew of 2 sectors. Sector 12 starts 2 sectors after sector 11 ends, and each track starts 2 sectors later than the one outside it. The orange arc is the 2 sectors that pass while the arm moves to the next track. Redrawn from OSTEP Figure 37.4.](figs/c2_skew.svg){width=52%}
+<figcaption markdown="1">Figure E10.1. Track skew of 2 sectors. Sector 12 starts 2 sectors after sector 11 ends, and each track starts 2 sectors later than the one outside it. The orange arc is the 2 sectors that pass while the arm moves to the next track. Redrawn from OSTEP Figure 37.4.</figcaption>
 </figure>
 
 With the skew, 2 sectors pass under the head while the arm changes track, and sector 12 arrives just as the head is ready.
@@ -1058,8 +1058,8 @@ Two refinements of the elevator of [Section 6.4](#sec-6-4).
 **Fair sweeps.** [Section 6.4](#sec-6-4) said that plain SCAN favors the middle tracks and that C-SCAN is fairer. Figure E14.1 counts it, on a disk with 5 tracks numbered 1 (outer) to 5 (inner). Each box is one step of the head, and the number in it is the track the head visits.
 
 <figure markdown="1">
-![Figure E14.1. Top: SCAN, back and forth. The head visits tracks 1 2 3 4 5 4 3 2 1 2 3. Track 3 gets a visit every 4 steps; track 1 waits 8 steps. Bottom: C-SCAN, one way only. The head visits 1 2 3 4 5 1 2 3 4 5 1, and every track gets a visit every 5 steps. From slide 44, following textbook section 37.5.](figs/c2_scan_vs_cscan.svg){width=62%}
-<figcaption markdown="1">Figure E14.1. Top: SCAN, back and forth. The head visits tracks 1 2 3 4 5 4 3 2 1 2 3. Track 3 gets a visit every 4 steps; track 1 waits 8 steps. Bottom: C-SCAN, one way only. The head visits 1 2 3 4 5 1 2 3 4 5 1, and every track gets a visit every 5 steps. From slide 44, following textbook section 37.5.</figcaption>
+![Figure E14.1. Top: SCAN, back and forth. The head visits tracks 1 2 3 4 5 4 3 2 1 2 3. Track 3 gets a visit every 4 steps; track 1 waits 8 steps. Bottom: C-SCAN, one way only. The head visits 1 2 3 4 5 1 2 3 4 5 1, and every track gets a visit every 5 steps. Following textbook section 37.5.](figs/c2_scan_vs_cscan.svg){width=62%}
+<figcaption markdown="1">Figure E14.1. Top: SCAN, back and forth. The head visits tracks 1 2 3 4 5 4 3 2 1 2 3. Track 3 gets a visit every 4 steps; track 1 waits 8 steps. Bottom: C-SCAN, one way only. The head visits 1 2 3 4 5 1 2 3 4 5 1, and every track gets a visit every 5 steps. Following textbook section 37.5.</figcaption>
 </figure>
 
 - SCAN: track 3, the middle one, is visited at steps 3, 7 and 11, so every 4 steps. Track 1 is visited at steps 1 and 9, so it waits 8 steps.

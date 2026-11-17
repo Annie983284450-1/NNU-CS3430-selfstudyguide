@@ -74,8 +74,8 @@ The deck's exercise from [Section 4.4](class-2.md#sec-4-4). In the 64-byte addre
 50 in six bits is 110010 (32 + 16 + 2). Split: the top two bits, 11, are page 3; the bottom four, 0010, are offset 2. Look up: the table says page 3 is in frame 2, which is 010 in three bits. Glue: 010 followed by 0010 is 0100010 = 32 + 2 = 34. Check: frame 2 starts at 2 × 16 = 32, and byte 2 of it is 34. Figure R.1 draws it.
 
 <figure markdown="1">
-![Figure R.1. Virtual address 50: page 3, offset 2, frame 2, physical address 34. From slide 49.](figs/answers50.png){width=72%}
-<figcaption markdown="1">Figure R.1. Virtual address 50: page 3, offset 2, frame 2, physical address 34. From slide 49.</figcaption>
+![Figure R.1. Virtual address 50: page 3, offset 2, frame 2, physical address 34.](figs/answers50.png){width=72%}
+<figcaption markdown="1">Figure R.1. Virtual address 50: page 3, offset 2, frame 2, physical address 34.</figcaption>
 </figure>
 
 </details>
@@ -90,8 +90,8 @@ Same address space and table: translate virtual address 63.
 63 is 111111. Split: 11 = page 3, 1111 = offset 15. Look up: page 3 is in frame 2 = 010. Glue: 0101111 = 32 + 8 + 4 + 2 + 1 = 47. Check: 2 × 16 + 15 = 47. The last byte of the address space is the last byte of frame 2. Figure R.2 draws it, together with [Exercise 8](#exercise-8).
 
 <figure markdown="1">
-![Figure R.2. Virtual address 63 translates to 47; virtual address 64 needs a seventh bit, and there is no page 4. From slide 49.](figs/answers63_64.png){width=73%}
-<figcaption markdown="1">Figure R.2. Virtual address 63 translates to 47; virtual address 64 needs a seventh bit, and there is no page 4. From slide 49.</figcaption>
+![Figure R.2. Virtual address 63 translates to 47; virtual address 64 needs a seventh bit, and there is no page 4.](figs/answers63_64.png){width=73%}
+<figcaption markdown="1">Figure R.2. Virtual address 63 translates to 47; virtual address 64 needs a seventh bit, and there is no page 4.</figcaption>
 </figure>
 
 </details>
@@ -128,15 +128,15 @@ The deck's exercise from [Section 6.4](class-2.md#sec-6-4). The array of OSTEP F
 Figure R.3 shows the ten accesses. `a[0]` is on page 6, which is not in the TLB: miss, and page 6's translation goes in. `a[1]` and `a[2]` are also on page 6: hit, hit. `a[3]` is on page 7: miss. `a[4]`, `a[5]`, `a[6]`: hit, hit, hit. `a[7]` is on page 8: miss. `a[8]`, `a[9]`: hit, hit. Three misses, seven hits: a hit rate of 70%.
 
 <figure markdown="1">
-![Figure R.3. The ten accesses: miss, hit, hit, miss, hit, hit, hit, miss, hit, hit. Seven hits out of ten. From slide 60.](figs/hitmiss_a.png){width=100%}
-<figcaption markdown="1">Figure R.3. The ten accesses: miss, hit, hit, miss, hit, hit, hit, miss, hit, hit. Seven hits out of ten. From slide 60.</figcaption>
+![Figure R.3. The ten accesses: miss, hit, hit, miss, hit, hit, hit, miss, hit, hit. Seven hits out of ten.](figs/hitmiss_a.png){width=100%}
+<figcaption markdown="1">Figure R.3. The ten accesses: miss, hit, hit, miss, hit, hit, hit, miss, hit, hit. Seven hits out of ten.</figcaption>
 </figure>
 
 (a) With 32-byte pages each page holds eight integers, and pages start at multiples of 32: 0, 32, 64, 96, 128. Address 100 is in the page that starts at 96 (96 = 3 × 32), at offset 100 − 96 = 4, so `a[0]` to `a[6]` fit in that page (offsets 4 to 28; `a[6]` ends at offset 31, the page's last byte), and `a[7]` (at address 128) to `a[9]` are on the next page. Two misses, eight hits: 80%. Bigger pages mean fewer misses, because more neighbors share one translation: spatial locality. (b) On a second run, pages 6, 7 and 8 are all still in the TLB. Ten hits: 100%. That is temporal locality: what was used a moment ago is used again. (c) A TLB helps most a program that keeps touching the same pages, or nearby addresses, for a while: loops over arrays, code that runs in a small region. A program that jumps to a new page on every access gets no help, as the column-order matrix of [Extra 24](class-2.md#extra-24) showed. Figure R.4 is the deck's three cards on the same points.
 
 <figure markdown="1">
-![Figure R.4. Spatial locality, page size, and temporal locality, the three lessons of the reveal. From slide 60, following textbook section 19.2.](figs/locality_cards.png){width=100%}
-<figcaption markdown="1">Figure R.4. Spatial locality, page size, and temporal locality, the three lessons of the reveal. From slide 60, following textbook section 19.2.</figcaption>
+![Figure R.4. Spatial locality, page size, and temporal locality, the three lessons of the reveal. Following textbook section 19.2.](figs/locality_cards.png){width=100%}
+<figcaption markdown="1">Figure R.4. Spatial locality, page size, and temporal locality, the three lessons of the reveal. Following textbook section 19.2.</figcaption>
 </figure>
 
 

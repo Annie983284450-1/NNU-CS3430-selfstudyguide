@@ -22,38 +22,48 @@ A few words first, so the map can be read. The **operating system** (the **OS**)
 #### The course map
 
 <figure markdown="1">
-![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each week left open. From slide 2.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each week left open. From slide 2.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, and the weeks, with this one marked.](figs/coursemap.svg){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, and the weeks, with this one marked.</figcaption>
 </figure>
 
 An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own processor and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1.
 
 The second row of Figure 0.1 cuts the course into five blocks. Virtualization takes the first three. Block 1 is the processor from the process's point of view (the first two weeks). Block 2 is memory, marked in red: the third, fourth and fifth weeks. Block 3 goes back to the processor to ask which program should run next. Block 4 is concurrency, and block 5 is files and devices. This week is the fifth, the cell marked "we are here", and the last week of memory.
 
-The lower half of Figure 0.1 is the reason the weeks come in this order: each one answered the question the one before it left open. A process needed a way to ask the OS for things, so the course built system calls and traps. A **system call** is a program's request to the OS. A **trap** is the processor stopping a program and handing control to the OS, which is how a system call reaches it. Then a process needed memory of its own, so the course built the **address space**: a private memory for each process, numbered from 0, so that no process can see or damage another's. The addresses a process uses are **virtual addresses**; the real positions in RAM are **physical addresses**; and turning one into the other on every access is called **address translation**. The first way to translate was **base and bounds**: the processor adds one number (the base) to every address and checks it against another (the bound). That left one complaint, and the paging week answered it. The paging week in turn left two questions open, and this week answers both.
+The weeks come in this order for a reason: each one answered the question the one before it left open.
+
+| Week | Step | What it gave | What it left open |
+|---|---|---|---|
+| 1 | the process | a running program with its own view of the machine | how does a program get the OS to do anything for it? |
+| 2 | limited direct execution | the program runs on the real CPU; a trap, a system call or a timer hands control back | the program also needs memory: how is it shared without programs seeing each other? |
+| 3 | the address space | a private memory numbered from 0, translated by base and bounds | one block per program wastes its empty middle |
+| 4 | segments, then pages and a TLB | pieces instead of one block; fixed-size pieces end the holes; a cache makes lookups fast | the table is too big, and we assumed every page is in memory |
+| **5** | **this week: both open questions** | the table becomes a tree that stores only the parts in use; then a page can live on disk, the hardware raises a page fault, and the OS chooses which page to throw out | after this, memory is done |
+
+A process needed a way to ask the OS for things, so the course built system calls and traps. A **system call** is a program's request to the OS. A **trap** is the processor stopping a program and handing control to the OS, which is how a system call reaches it. Then a process needed memory of its own, so the course built the **address space**: a private memory for each process, numbered from 0, so that no process can see or damage another's. The addresses a process uses are **virtual addresses**; the real positions in RAM are **physical addresses**; and turning one into the other on every access is called **address translation**. The first way to translate was **base and bounds**: the processor adds one number (the base) to every address and checks it against another (the bound). That left one complaint, and the paging week answered it. The paging week in turn left two questions open, and this week answers both.
 
 #### The paging week, first class: segments, holes, and fixed sizes
 
 The complaint about base and bounds was simple. A process's address space has its code at the bottom, a stack at the top (the stack is defined in the next paragraph), and a large empty middle. Base and bounds has only one base and one bound per process, so it can only place the address space as one unbroken block, and the empty middle takes real RAM while holding nothing.
 
 <figure markdown="1">
-![Figure 0.2. The first class of the paging week, drawn: segments placed separately, the holes they leave, the heap's free list, and the lesson (each is defined in the text below). From slide 3, following textbook chapters 16 and 17.](figs/w4_class1.png){width=100%}
-<figcaption markdown="1">Figure 0.2. The first class of the paging week, drawn: segments placed separately, the holes they leave, the heap's free list, and the lesson (each is defined in the text below). From slide 3, following textbook chapters 16 and 17.</figcaption>
+![Figure 0.2. The first class of the paging week, drawn: segments placed separately, the holes they leave, and the heap's free list (each is defined in the text below). Following textbook chapters 16 and 17.](figs/w4_class1.svg){width=100%}
+<figcaption markdown="1">Figure 0.2. The first class of the paging week, drawn: segments placed separately, the holes they leave, and the heap's free list (each is defined in the text below). Following textbook chapters 16 and 17.</figcaption>
 </figure>
 
 The first fix was **segments**. A **segment** is a contiguous portion of the address space (one unbroken stretch of addresses) of a particular length, such as the code, the heap or the stack; the textbook's example has those three. The **heap** is the memory a program asks for while it runs, and the **stack** holds the data of its function calls (a **function** is a named piece of a program that other parts can run). Each segment gets its own base and its own size, so each one is placed in physical memory on its own, and the empty middle is not placed at all. On the left of Figure 0.2, a 16 KB address space has code at 0 to 2 KB, heap at 4 to 7 KB and stack at 14 to 16 KB. The three segments land at 32 KB, 34 KB and 28 KB of physical memory, and the unused parts of the address space, 2 to 4 KB and the 7 KB gap between heap and stack (14 − 7 = 7), cost nothing. Two words came with segments. A **segmentation fault** is the trap the hardware raises when a program uses an address outside every segment it owns. **Protection bits** say whether a segment may be read, written or executed (run as code); a forbidden access traps to the OS.
 
-Segments fixed the empty middle and created a new problem, shown in the middle of Figure 0.2. Segments come in different sizes, so as they come and go, free memory breaks into little holes between them. In the drawing 24 KB is free, in three holes of 8 KB each (3 × 8 = 24), yet a request for a 20 KB segment fails, because no single hole is 20 KB. This is **external fragmentation**: free space chopped into pieces of different sizes, so that a request fails even though the total free space would be enough. "External" means the waste is between the pieces handed out.
+Segments fixed the empty middle and created a new problem, shown on the right of Figure 0.2. Segments come in different sizes, so as they come and go, free memory breaks into little holes between them. In the drawing 24 KB is free, in three holes of 8 KB each (3 × 8 = 24), yet a request for a 20 KB segment fails, because no single hole is 20 KB. This is **external fragmentation**: free space chopped into pieces of different sizes, so that a request fails even though the total free space would be enough. "External" means the waste is between the pieces handed out.
 
-The memory allocator inside a program (the code behind `malloc`, which hands out pieces of the heap) has the same problem, and the second half of that class studied it. It keeps a **free list**, a list of the ranges of memory not currently in use, stored inside the free space itself. To hand out a small piece it **splits** a free chunk in two; when a piece comes back it **coalesces** it, merging it with free neighbors into one bigger chunk. In the small heap at the bottom of Figure 0.2, 2.3 bytes are free but in two separate pieces of 10, so a request for 15 bytes still fails. The opposite kind of waste got a name too: **internal fragmentation** is unused space inside a piece that was handed out bigger than what was asked for.
+The memory allocator inside a program (the code behind `malloc`, which hands out pieces of the heap) has the same problem, and the second half of that class studied it. It keeps a **free list**, a list of the ranges of memory not currently in use, stored inside the free space itself. To hand out a small piece it **splits** a free chunk in two; when a piece comes back it **coalesces** it, merging it with free neighbors into one bigger chunk. In the small heap at the bottom right of Figure 0.2, 20 bytes are free but in two separate pieces of 10, so a request for 15 bytes still fails. The opposite kind of waste got a name too: **internal fragmentation** is unused space inside a piece that was handed out bigger than what was asked for.
 
-The lesson, on the right of Figure 0.2, is the reason the second class exists. Holes do not come from segments; they come from handing out pieces of different sizes, and every fix that keeps variable sizes only moves the waste around. The textbook's advice is to never allocate memory in variable-sized chunks at all. So: cut memory into equal pieces.
+The lesson is the reason the second class exists. Holes do not come from segments; they come from handing out pieces of different sizes, and every fix that keeps variable sizes only moves the waste around. The tip in textbook section 16.6 says the only real solution is to never allocate memory in variable-sized chunks at all. xv6 already works that way: its allocator, `kalloc`, hands out whole 4096-byte pages and never needs to split, coalesce or search for a fit. So: cut memory into equal pieces.
 
 #### The paging week, second class: pages, the page table, and the TLB
 
 <figure markdown="1">
-![Figure 0.3. The second class of the paging week, drawn: one address translated through a page table, one entry of that table and the two problems it brings, and the TLB, a cache that speeds translation up (each is defined in the text below). From slide 4, following textbook chapters 18 and 19.](figs/w4_class2.png){width=100%}
-<figcaption markdown="1">Figure 0.3. The second class of the paging week, drawn: one address translated through a page table, one entry of that table and the two problems it brings, and the TLB, a cache that speeds translation up (each is defined in the text below). From slide 4, following textbook chapters 18 and 19.</figcaption>
+![Figure 0.3. The second class of the paging week, drawn: one address translated through a page table, one entry of that table, and the TLB, a cache that speeds translation up (each is defined in the text below). Following textbook chapters 18 and 19.](figs/w4_class2.svg){width=100%}
+<figcaption markdown="1">Figure 0.3. The second class of the paging week, drawn: one address translated through a page table, one entry of that table, and the TLB, a cache that speeds translation up (each is defined in the text below). Following textbook chapters 18 and 19.</figcaption>
 </figure>
 
 Cutting memory into equal pieces is called **paging**. A **page** is a fixed-size unit of the address space. A **page frame** (or just **frame**) is a fixed-size slot of physical memory, exactly as big as a page, that can hold one page. Because every page fits every frame, any page can go into any free frame, and holes cannot form.
@@ -66,16 +76,29 @@ The middle of Figure 0.3 is one PTE. Besides the frame number it holds status bi
 
 The paging week fixed the slow problem with hardware, on the right of Figure 0.3. The **TLB** (translation-lookaside buffer) is a small, very fast cache of recent translations, kept inside the processor's **MMU** (memory management unit, the hardware that translates every address). A **cache** is any small, fast memory that keeps copies of things used recently, so the next use is quick. A **TLB hit** means the translation is already in the TLB and is used at once, without touching the page table. A **TLB miss** means it is not, so the page table is read, the translation is put into the TLB, and the access is tried again. In the example, a program reads ten 4-byte numbers that sit next to each other in memory, starting at address 100, with 16-byte pages. The numbers sit at addresses 100, 104, 108, and so on up to 136 (100 + 9 × 4 = 136). Page 6 covers addresses 96 to 111 (6 × 16 = 96), so it holds the first 3 numbers; page 7 covers 112 to 127 and holds the next 4; page 8 covers 128 to 143 and holds the last 3. Only the first touch of each page misses: miss, hit, hit, miss, hit, hit, hit, miss, hit, hit, which is 7 hits out of 10, 70 percent.
 
-The TLB works because programs have **locality**. **Temporal locality** means something used recently is likely to be used again soon, like the instructions of a loop. **Spatial locality** means something near what was just used is likely to be used soon, like the next element of an array. Locality comes back next class, as the reason one replacement rule beats another.
+The TLB works because programs have **locality**. **Temporal locality** means something used recently is likely to be used again soon, like the instructions of a loop. **Spatial locality** means something near what was just used is likely to be used soon, like the next element of an array. Locality comes back in the second class of this week, as the reason one replacement rule beats another.
 
 #### Last week's words, in one place
 
-<figure markdown="1">
-![Figure 0.4. Last week's words, each in one sentence. From slide 5.](figs/w4_words.png){width=100%}
-<figcaption markdown="1">Figure 0.4. Last week's words, each in one sentence. From slide 5.</figcaption>
-</figure>
+These are the words the rest of this guide builds on, each with the textbook section where it is defined. Some later parts repeat a definition as a reminder; the meaning never changes.
 
-Figure 0.4 is the list from the slides, with the textbook section where each word is defined. These are the words the rest of this guide builds on. Some later parts repeat a definition as a reminder; the meaning never changes.
+| Word | Meaning |
+|---|---|
+| **segment** | a contiguous portion of the address space of a particular length, such as the code, the heap or the stack; each gets its own base and size (§16.1) |
+| **segmentation fault** | the trap raised when a program addresses memory outside every segment it owns |
+| **protection bits** | bits that say whether a segment or page may be read, written or executed; a forbidden access traps to the OS |
+| **external fragmentation** | free space chopped into little pieces of different sizes, so a request fails although the total free space is enough (§17) |
+| **internal fragmentation** | unasked-for space inside a chunk handed out bigger than requested (§17.1) |
+| **free list** | a list of the ranges of memory not currently in use, kept inside the free space itself (§15.4, §17.2) |
+| **splitting / coalescing** | cut a free chunk in two to satisfy a smaller request / merge neighboring free chunks when one is freed (§17.2) |
+| **page / page frame** | a fixed-sized unit of the address space / a fixed-sized slot of physical memory that holds one page (§18) |
+| **page table** | a per-process data structure that stores the address translation of each virtual page (§18.1) |
+| **PTE** | page table entry: one row of the page table, the frame number plus status bits |
+| **VPN, offset, PFN** | the virtual page number (top bits of a virtual address), the byte within the page (low bits), and the physical frame number the VPN maps to |
+| **valid bit** | says whether a translation exists; touching an invalid page traps to the OS, which usually ends the process (§18.3) |
+| **TLB** | translation-lookaside buffer: a hardware cache of popular virtual-to-physical translations inside the MMU (§19) |
+| **TLB hit / miss** | the translation is in the TLB and used at once / it is not, so the hardware or OS reads the PTE and inserts it |
+| **temporal / spatial locality** | what was used recently is likely used again soon / what is near something used is likely used soon (§19.2) |
 
 #### What the paging week settled, and what it left open
 

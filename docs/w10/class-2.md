@@ -823,7 +823,7 @@ OSTEP closes its part on concurrency with three pieces of advice, which are a go
 
 ## Going deeper, second class (optional) {#extras-2}
 
-These extras follow the deeper slides of the second class. Read them if you want to see the event loop in real code, or the lock-free insert run step by step. Nothing in the class depends on them; [Exercise 17](review.md#exercise-17) and the last of the ten points use one measurement from [Extra 2](#extra-2).
+These extras go deeper into the second class. Read them if you want to see the event loop in real code, or the lock-free insert run step by step. Nothing in the class depends on them; [Exercise 17](review.md#exercise-17) and the last of the ten points use one measurement from [Extra 2](#extra-2).
 
 ### Extra 1 <span class="lbl lbl-deeper">Deeper, Q4</span> select(): ask the kernel which clients have something waiting {#extra-1 data-toc-label="Extra 1 [Deeper, Q4] select(): ask the kernel which clients have something waiting"}
 

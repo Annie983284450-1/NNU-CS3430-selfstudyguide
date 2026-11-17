@@ -22,8 +22,8 @@ A few words first, so the map can be read. A **program** is a file of instructio
 #### The course map {#h-the-course-map}
 
 <figure markdown="1">
-![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open. From slide 2.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open. From slide 2.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open.](figs/coursemap.png){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open.</figcaption>
 </figure>
 
 An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own processor and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1.
@@ -35,8 +35,8 @@ The lower half of Figure 0.1 is the reason the weeks come in this order: each st
 #### The processes week, first class: one struct, three calls {#h-the-processes-week-first-class-one-struct-three-ca}
 
 <figure markdown="1">
-![Figure 0.2. The first class of the processes week, drawn: the process as one record with three parts, and the three calls that make and control one. From slide 3.](figs/w2_class1.png){width=90%}
-<figcaption markdown="1">Figure 0.2. The first class of the processes week, drawn: the process as one record with three parts, and the three calls that make and control one. From slide 3.</figcaption>
+![Figure 0.2. The first class of the processes week, drawn: the process as one record with three parts, and the three calls that make and control one.](figs/w2_class1.png){width=90%}
+<figcaption markdown="1">Figure 0.2. The first class of the processes week, drawn: the process as one record with three parts, and the three calls that make and control one.</figcaption>
 </figure>
 
 A running program can touch exactly three things, and the kernel keeps all three in one record, with a state. In the C language, which operating systems are written in, a record that bundles several named fields together is called a **struct**. xv6's record for a process is `struct proc` (read "struct proc"; the kernel keeps 64 of them in a row, one slot per process; 64 is `NPROC` in xv6's `kernel/param.h`, the most processes xv6 allows at once, a design choice). The three parts are on the left of Figure 0.2. Part 1 is the process's memory, drawn as a strip that begins at address 0. It holds the **code** (the instructions) and the **data** (the variables that exist for the whole run). It also holds the **heap** (memory the program asks for while it runs; this week says much more about it) and the **stack** (the memory of its function calls; a **function** is a named piece of a program that other parts can run). Part 2 is its registers. The **pc**, the program counter, holds the address of the next instruction to run. The **sp**, the stack pointer, holds the address of the top of the stack. The RISC-V processor of the labs has 32 general registers, numbered x0 to x31, and x0 always reads as zero, so 31 of them hold real values; the sp is one of those 31. The pc is a separate register, outside the 32. (Both are design facts of the processor.) So a process has 31 registers plus the pc worth saving, 32 values in all, and that is what xv6 saves when the process enters the kernel (the next drawing calls that entry a trap). Part 3 is its open files, numbered 0, 1 and 2 for input, output and errors. The **state** says whether the process is running right now, could run, or is waiting.
@@ -48,8 +48,8 @@ Settled by that class: what a process is made of, and the three calls. Left open
 #### The processes week, second class: two modes, a timer, and the switch {#h-the-processes-week-second-class-two-modes-a-timer-}
 
 <figure markdown="1">
-![Figure 0.3. The second class of the processes week, drawn: the two CPU modes with the trap between them, the timer tick, and the context switch. From slide 4.](figs/w2_class2.png){width=91%}
-<figcaption markdown="1">Figure 0.3. The second class of the processes week, drawn: the two CPU modes with the trap between them, the timer tick, and the context switch. From slide 4.</figcaption>
+![Figure 0.3. The second class of the processes week, drawn: the two CPU modes with the trap between them, the timer tick, and the context switch.](figs/w2_class2.png){width=91%}
+<figcaption markdown="1">Figure 0.3. The second class of the processes week, drawn: the two CPU modes with the trap between them, the timer tick, and the context switch.</figcaption>
 </figure>
 
 The second class answered how the OS stays in control while a program runs at full speed. The answer has a name, **limited direct execution**: run the program on the real CPU, at full speed, and let the hardware hand the CPU back to the kernel at a few key moments. Three pieces of hardware do the handing back, and Figure 0.3 draws them.
@@ -65,8 +65,8 @@ Here is the loose end, in the yellow box at the bottom of Figure 0.3. A load or 
 #### Last week's words, in one place {#h-last-week-s-words-in-one-place}
 
 <figure markdown="1">
-![Figure 0.4. The processes week's words, each in one sentence, with the textbook section where each is defined. From slide 5.](figs/w2_words.png){width=100%}
-<figcaption markdown="1">Figure 0.4. The processes week's words, each in one sentence, with the textbook section where each is defined. From slide 5.</figcaption>
+![Figure 0.4. The processes week's words, each in one sentence, with the textbook section where each is defined.](figs/w2_words.png){width=100%}
+<figcaption markdown="1">Figure 0.4. The processes week's words, each in one sentence, with the textbook section where each is defined.</figcaption>
 </figure>
 
 Figure 0.4 is the list from the slides. These are the words the rest of this guide builds on. One more from the right column: **mechanism** is how a thing is done (the switch), and **policy** is which choice is made (which process to run next, a question for later in the course). Some later parts repeat a definition as a reminder; the meaning never changes.

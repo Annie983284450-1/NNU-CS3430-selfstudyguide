@@ -11,16 +11,16 @@ Do these with a pencil, and with the figures of the parts they name beside you. 
 
 ### Exercise 1 {#exercise-1}
 
-With the tables of Figure 2.6 (OSTEP Figure 20.5, 64-byte pages, 4-byte entries), translate the virtual address 0x014A. Split it into the three fields, read the directory entry, read the page table entry, append the offset, and write the physical address in hex. Say how many memory reads it took.
+With the tables of Figure 2.4 (OSTEP Figure 20.5, 64-byte pages, 4-byte entries), translate the virtual address 0x014A. Split it into the three fields, read the directory entry, read the page table entry, append the offset, and write the physical address in hex. Say how many memory reads it took.
 
 <details class="success answer" id="answer-1" markdown="1">
 <summary>Answer 1 <span class="hint">click to show</span></summary>
 
-0x014A in binary: 0 = 0000, 1 = 0001, 4 = 0100, A = 1010, so 0000 0001 0100 1010; drop the two leading zeros for the 14-bit address: 00 0001 0100 1010. Split: PDIndex = 0000 = 0, PTIndex = 0101 = 5, offset = 001010 = 8 + 2 = 10. Check the VPN: the top 8 bits are 0000 0101 = 5, so the address is 10 bytes into VPN 5, which is a heap page. Read 1: directory entry 0 is valid, PFN 100, so the page of the table for VPNs 0 to 15 is in frame 100. Read 2: row 5 of frame 100 is valid, PFN 59, `rw-`; so VPN 5 lives in frame 59. Read 3: (59 << 6) + 10. By bits: 59 = 11 1011; append six zeros: 11 1011 000000; add 1010: 11 1011 001010; regroup in fours from the right: 1110 1100 1010 = 0xECA. By multiplication: 59 × 64 = 3776, plus 10 = 3786; 3786 ÷ 16 = 236 remainder 10 (A), 236 ÷ 16 = 14 remainder 12 (C), 14 ÷ 16 = 0 remainder 14 (E): 0xECA, written 0x0ECA as a 14-bit value. Three memory reads: the directory entry, the page table entry, the data. Figure R.1 is the deck's answer slide. The three wrong candidates. 0x0DCA goes to frame 101, the page the directory did not point at, and takes the frame of its stack row, 55: (55 << 6) + 10. (Row 5 of frame 101 is in fact invalid; this answer mixes up the two pages of the table.) 0x190A uses the directory's frame number 100 as if it were the data frame, (100 << 6) + 10, one read too few. "An exception" claims VPN 5 is unused, but the heap is VPNs 4 and 5.
+0x014A in binary: 0 = 0000, 1 = 0001, 4 = 0100, A = 1010, so 0000 0001 0100 1010; drop the two leading zeros for the 14-bit address: 00 0001 0100 1010. Split: PDIndex = 0000 = 0, PTIndex = 0101 = 5, offset = 001010 = 8 + 2 = 10. Check the VPN: the top 8 bits are 0000 0101 = 5, so the address is 10 bytes into VPN 5, which is a heap page. Read 1: directory entry 0 is valid, PFN 100, so the page of the table for VPNs 0 to 15 is in frame 100. Read 2: row 5 of frame 100 is valid, PFN 59, `rw-`; so VPN 5 lives in frame 59. Read 3: (59 << 6) + 10. By bits: 59 = 11 1011; append six zeros: 11 1011 000000; add 1010: 11 1011 001010; regroup in fours from the right: 1110 1100 1010 = 0xECA. By multiplication: 59 × 64 = 3776, plus 10 = 3786; 3786 ÷ 16 = 236 remainder 10 (A), 236 ÷ 16 = 14 remainder 12 (C), 14 ÷ 16 = 0 remainder 14 (E): 0xECA, written 0x0ECA as a 14-bit value. Three memory reads: the directory entry, the page table entry, the data. Figure R.1 draws Answers 1 and 2. The three wrong candidates. 0x0DCA goes to frame 101, the page the directory did not point at, and takes the frame of its stack row, 55: (55 << 6) + 10. (Row 5 of frame 101 is in fact invalid; this answer mixes up the two pages of the table.) 0x190A uses the directory's frame number 100 as if it were the data frame, (100 << 6) + 10, one read too few. "An exception" claims VPN 5 is unused, but the heap is VPNs 4 and 5.
 
 <figure markdown="1">
-![Figure R.1. The deck's answers to Exercises 1 and 2: 0x014A translates to 0x0ECA in three reads; 0x0200 fails at read 2 with an invalid entry. From slide 20.](figs/yourturn_a.png){width=100%}
-<figcaption markdown="1">Figure R.1. The deck's answers to Exercises 1 and 2: 0x014A translates to 0x0ECA in three reads; 0x0200 fails at read 2 with an invalid entry. From slide 20.</figcaption>
+![Figure R.1. Answers to Exercises 1 and 2: 0x014A translates to 0x0ECA in three reads; 0x0200 fails at read 2 with an invalid entry.](figs/yourturn_a.svg){width=96%}
+<figcaption markdown="1">Figure R.1. Answers to Exercises 1 and 2: 0x014A translates to 0x0ECA in three reads; 0x0200 fails at read 2 with an invalid entry.</figcaption>
 </figure>
 
 </details>
@@ -32,7 +32,7 @@ With the same tables, translate 0x0200. Somewhere along the way one of the reads
 <details class="success answer" id="answer-2" markdown="1">
 <summary>Answer 2 <span class="hint">click to show</span></summary>
 
-0x0200 in binary: 0000 0010 0000 0000, or 00 0010 0000 0000 as 14 bits. Split: PDIndex = 0000 = 0, PTIndex = 1000 = 8, offset = 000000 = 0. VPN = 0000 1000 = 8, the first byte of VPN 8. Read 1 is the same directory entry 0 as in Exercise 1: valid, frame 100. Read 2 is row 8 of frame 100: invalid. The hardware cannot go on. It raises an exception (Figure 20.6, line 23), control passes to the OS, and the OS kills the process, because VPN 8 was never part of its address space. Two reads, no data. The failure is at read 2, not read 1: the directory page for VPNs 0 to 15 exists, because VPNs 0, 1, 4 and 5 share it with real pages, and only the page table entry can say that VPN 8 is empty.
+0x0200 in binary: 0000 0010 0000 0000, or 00 0010 0000 0000 as 14 bits. Split: PDIndex = 0000 = 0, PTIndex = 1000 = 8, offset = 000000 = 0. VPN = 0000 1000 = 8, the first byte of VPN 8. Read 1 is the same directory entry 0 as in [Exercise 1](#exercise-1): valid, frame 100. Read 2 is row 8 of frame 100: invalid. The hardware cannot go on. It raises an exception (OSTEP Figure 20.6, line 23), control passes to the OS, and the OS kills the process, because VPN 8 was never part of its address space. Two reads, no data. The failure is at read 2, not read 1: the directory page for VPNs 0 to 15 exists, because VPNs 0, 1, 4 and 5 share it with real pages, and only the page table entry can say that VPN 8 is empty.
 
 </details>
 
@@ -54,17 +54,41 @@ Run FIFO on the stream 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5, as in [Section 5.3](c
 <details class="success answer" id="answer-4" markdown="1">
 <summary>Answer 4 <span class="hint">click to show</span></summary>
 
-Most people expect the bigger cache to miss less. With 3 frames: references 1, 2, 3 (pages 1, 2, 3) miss and fill the cache: 1, 2, 3. Reference 4 (page 4) misses, 1 goes: 2, 3, 4. Reference 5 (page 1) misses, 2 goes: 3, 4, 1. Reference 6 (page 2) misses, 3 goes: 4, 1, 2. Reference 7 (page 5) misses, 4 goes: 1, 2, 5. Reference 8 (page 1) hits. Reference 9 (page 2) hits. Reference 10 (page 3) misses, 1 goes: 2, 5, 3. Reference 11 (page 4) misses, 2 goes: 5, 3, 4. Reference 12 (page 5) hits. Total: 3 hits (references 8, 9, 12), 9 misses; check 3 + 9 = 12. With 4 frames: references 1 to 4 miss and fill the cache: 1, 2, 3, 4. References 5 and 6 (pages 1, 2) hit. Reference 7 (page 5) misses, 1 goes: 2, 3, 4, 5. Reference 8 (page 1) misses, 2 goes: 3, 4, 5, 1. Reference 9 (page 2) misses, 3 goes: 4, 5, 1, 2. Reference 10 (page 3) misses, 4 goes: 5, 1, 2, 3. Reference 11 (page 4) misses, 5 goes: 1, 2, 3, 4. Reference 12 (page 5) misses, 1 goes: 2, 3, 4, 5. Total: 2 hits (references 5, 6), 10 misses; check 2 + 10 = 12. The bigger cache misses more: 10 against 9. That is Belady's anomaly. Figures R.2 and R.3 are the deck's answer slide. Look at the 4-frame trace after reference 7: the cache holds 2, 3, 4, 5 in that order, and the stream then asks for 1, 2, 3, 4, 5 in turn. Each request misses and evicts the oldest page, which is exactly the page the next request will ask for. Every page is thrown out one step before it is needed.
+Most people expect the bigger cache to miss less. With 3 frames: references 1, 2, 3 (pages 1, 2, 3) miss and fill the cache: 1, 2, 3. Reference 4 (page 4) misses, 1 goes: 2, 3, 4. Reference 5 (page 1) misses, 2 goes: 3, 4, 1. Reference 6 (page 2) misses, 3 goes: 4, 1, 2. Reference 7 (page 5) misses, 4 goes: 1, 2, 5. Reference 8 (page 1) hits. Reference 9 (page 2) hits. Reference 10 (page 3) misses, 1 goes: 2, 5, 3. Reference 11 (page 4) misses, 2 goes: 5, 3, 4. Reference 12 (page 5) hits. Total: 3 hits (references 8, 9, 12), 9 misses; check 3 + 9 = 12. With 4 frames: references 1 to 4 miss and fill the cache: 1, 2, 3, 4. References 5 and 6 (pages 1, 2) hit. Reference 7 (page 5) misses, 1 goes: 2, 3, 4, 5. Reference 8 (page 1) misses, 2 goes: 3, 4, 5, 1. Reference 9 (page 2) misses, 3 goes: 4, 5, 1, 2. Reference 10 (page 3) misses, 4 goes: 5, 1, 2, 3. Reference 11 (page 4) misses, 5 goes: 1, 2, 3, 4. Reference 12 (page 5) misses, 1 goes: 2, 3, 4, 5. Total: 2 hits (references 5, 6), 10 misses; check 2 + 10 = 12. The bigger cache misses more: 10 against 9. That is Belady's anomaly. In the textbook's words: "In general, you would expect the cache hit rate to increase (get better) when the cache gets larger. But in this case, with FIFO, it gets worse!" (OSTEP section 22.3). Here are both traces in full. Look at the 4-frame trace after reference 7: the cache holds 2, 3, 4, 5 in that order, and the stream then asks for 1, 2, 3, 4, 5 in turn. Each request misses and evicts the oldest page, which is exactly the page the next request will ask for. Every page is thrown out one step before it is needed.
 
-<figure markdown="1">
-![Figure R.2. The deck's answer to Exercise 4: both FIFO traces, 3 hits and 9 misses with 3 frames against 2 hits and 10 misses with 4. From slide 56, following the aside in textbook section 22.3.](figs/belady_a.png){width=100%}
-<figcaption markdown="1">Figure R.2. The deck's answer to Exercise 4: both FIFO traces, 3 hits and 9 misses with 3 frames against 2 hits and 10 misses with 4. From slide 56, following the aside in textbook section 22.3.</figcaption>
-</figure>
+*FIFO with 3 frames: 3 hits, 9 misses*
 
-<figure markdown="1">
-![Figure R.3. The deck's cards for Exercise 4: the anomaly named, why LRU never shows it (the stack property), and what to look at in the 4-frame trace. From slide 56, following the aside in textbook section 22.3.](figs/belady_cards.png){width=48%}
-<figcaption markdown="1">Figure R.3. The deck's cards for Exercise 4: the anomaly named, why LRU never shows it (the stack property), and what to look at in the 4-frame trace. From slide 56, following the aside in textbook section 22.3.</figcaption>
-</figure>
+| Access | Hit or miss | Evict | Resulting cache state |
+|---|---|---|---|
+| 1 | Miss |  | 1 |
+| 2 | Miss |  | 1, 2 |
+| 3 | Miss |  | 1, 2, 3 |
+| 4 | Miss | 1 | 2, 3, 4 |
+| 1 | Miss | 2 | 3, 4, 1 |
+| 2 | Miss | 3 | 4, 1, 2 |
+| 5 | Miss | 4 | 1, 2, 5 |
+| 1 | Hit |  | 1, 2, 5 |
+| 2 | Hit |  | 1, 2, 5 |
+| 3 | Miss | 1 | 2, 5, 3 |
+| 4 | Miss | 2 | 5, 3, 4 |
+| 5 | Hit |  | 5, 3, 4 |
+
+*FIFO with 4 frames: 2 hits, 10 misses*
+
+| Access | Hit or miss | Evict | Resulting cache state |
+|---|---|---|---|
+| 1 | Miss |  | 1 |
+| 2 | Miss |  | 1, 2 |
+| 3 | Miss |  | 1, 2, 3 |
+| 4 | Miss |  | 1, 2, 3, 4 |
+| 1 | Hit |  | 1, 2, 3, 4 |
+| 2 | Hit |  | 1, 2, 3, 4 |
+| 5 | Miss | 1 | 2, 3, 4, 5 |
+| 1 | Miss | 2 | 3, 4, 5, 1 |
+| 2 | Miss | 3 | 4, 5, 1, 2 |
+| 3 | Miss | 4 | 5, 1, 2, 3 |
+| 4 | Miss | 5 | 1, 2, 3, 4 |
+| 5 | Miss | 1 | 2, 3, 4, 5 |
 
 
 <!-- anim:belady:start -->
@@ -77,7 +101,7 @@ Step through both FIFO runs yourself, one reference at a time, with 3 frames and
 
 ### Exercise 5 {#exercise-5}
 
-With the tables of Figure 2.6 again, translate 0x3FC5. Give the physical address in hex, checked two ways (by bits and by multiplication), and the number of memory reads.
+With the tables of Figure 2.4 again, translate 0x3FC5. Give the physical address in hex, checked two ways (by bits and by multiplication), and the number of memory reads.
 
 <details class="success answer" id="answer-5" markdown="1">
 <summary>Answer 5 <span class="hint">click to show</span></summary>
@@ -88,12 +112,12 @@ With the tables of Figure 2.6 again, translate 0x3FC5. Give the physical address
 
 ### Exercise 6 {#exercise-6}
 
-Two readings from the real captures. First, [Section 3.6](class-1.md#sec-3-6)'s read 2 returned the entry 0x0000000021fc7401 from the middle page. Using the method of [Section 3.2](class-1.md#sec-3-2), and without looking back at [Section 3.6](class-1.md#sec-3-6), decode it: what are its ten flag bits in hex, which named bits are set, is it a leaf, and what physical address does `PTE2PA` give? Second, in Figure 3.13 (the `info mem` capture), read the row for virtual address 0x7000: which frame holds it, which of the seven attribute letters are set, and has the program touched that page yet?
+Two readings from the real captures. First, [Section 3.6](class-1.md#sec-3-6)'s read 2 returned the entry 0x0000000021fc7401 from the middle page. Using the method of [Section 3.2](class-1.md#sec-3-2), and without looking back at [Section 3.6](class-1.md#sec-3-6), decode it: what are its ten flag bits in hex, which named bits are set, is it a leaf, and what physical address does `PTE2PA` give? Second, in [Section 3.7](class-1.md#sec-3-7)'s `info mem` capture, read the row for virtual address 0x7000: which frame holds it, which of the seven attribute letters are set, and has the program touched that page yet?
 
 <details class="success answer" id="answer-6" markdown="1">
 <summary>Answer 6 <span class="hint">click to show</span></summary>
 
-First reading. The low three hex digits of 0x21fc7401 are 401 = 0100 0000 0001. The lowest 10 of those 12 bits are 00 0000 0001, so the flags are 0x001: only bit 0, V, is set; R, W, X and U are all clear. An entry with V set and R, W and X clear is not a leaf; it points at another page-table page. The two bits above the flags are 01 = 1, so the PPN is 0x21fc7 × 4 + 1 = 0x87f1c + 1 = 0x87f1d, and `PTE2PA` gives 0x87f1d000, the leaf page. Second reading. The row for 0000000000007000 in Figure 3.13 says paddr 0000000087f53000, so frame 0x87f53 holds it; the attributes are `rw-u---`: read, write and user set, execute, global, accessed and dirty clear. The accessed letter is clear, so the program has not touched that page since it was mapped; pgdemo grew its heap and never wrote into it.
+First reading. The low three hex digits of 0x21fc7401 are 401 = 0100 0000 0001. The lowest 10 of those 12 bits are 00 0000 0001, so the flags are 0x001: only bit 0, V, is set; R, W, X and U are all clear. An entry with V set and R, W and X clear is not a leaf; it points at another page-table page. The two bits above the flags are 01 = 1, so the PPN is 0x21fc7 × 4 + 1 = 0x87f1c + 1 = 0x87f1d, and `PTE2PA` gives 0x87f1d000, the leaf page. Second reading. The row for 0000000000007000 in the `info mem` capture says paddr 0000000087f53000, so frame 0x87f53 holds it; the attributes are `rw-u---`: read, write and user set, execute, global, accessed and dirty clear. The accessed letter is clear, so the program has not touched that page since it was mapped; pgdemo grew its heap and never wrote into it.
 
 </details>
 
@@ -110,12 +134,12 @@ One leaf page of the table covers 512 entries × 4 KiB = 2 MiB, so the GiB is 1 
 
 ### Exercise 8 {#exercise-8}
 
-Run LRU on the stream of Exercise 4 (1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5) with a cache of 3 frames, least recently used on the left, moving a page to the right end on a hit. Count the hits. Then explain, in one or two sentences, why LRU with 4 frames cannot do worse than LRU with 3 on any stream, and why FIFO can.
+Run LRU on the stream of [Exercise 4](#exercise-4) (1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5) with a cache of 3 frames, least recently used on the left, moving a page to the right end on a hit. Count the hits. Then explain, in one or two sentences, why LRU with 4 frames cannot do worse than LRU with 3 on any stream, and why FIFO can.
 
 <details class="success answer" id="answer-8" markdown="1">
 <summary>Answer 8 <span class="hint">click to show</span></summary>
 
-LRU with 3 frames, least recent on the left. References 1, 2, 3 miss: 1, 2, 3. Reference 4 (page 4) misses, 1 goes: 2, 3, 4. Reference 5 (page 1) misses, 2 goes: 3, 4, 1. Reference 6 (page 2) misses, 3 goes: 4, 1, 2. Reference 7 (page 5) misses, 4 goes: 1, 2, 5. Reference 8 (page 1) hits, 1 moves right: 2, 5, 1. Reference 9 (page 2) hits: 5, 1, 2. Reference 10 (page 3) misses, 5 goes: 1, 2, 3. Reference 11 (page 4) misses, 1 goes: 2, 3, 4. Reference 12 (page 5) misses, 2 goes: 3, 4, 5. Total: 2 hits, 10 misses. Why 4 frames cannot do worse: LRU keeps exactly the N most recently used pages. The 3 most recently used pages are always among the 4 most recently used. So everything the 3-frame cache holds, the 4-frame cache also holds, at every moment. A hit in the small cache is therefore a hit in the big one, and the big one can only add hits. That is the stack property. FIFO keeps the N most recently arrived pages. A page's arrival time depends on when it was last evicted, which differs between the two cache sizes. So the contents of the 3-frame cache need not be inside the 4-frame cache, and Exercise 4 is a stream where they are not.
+LRU with 3 frames, least recent on the left. References 1, 2, 3 miss: 1, 2, 3. Reference 4 (page 4) misses, 1 goes: 2, 3, 4. Reference 5 (page 1) misses, 2 goes: 3, 4, 1. Reference 6 (page 2) misses, 3 goes: 4, 1, 2. Reference 7 (page 5) misses, 4 goes: 1, 2, 5. Reference 8 (page 1) hits, 1 moves right: 2, 5, 1. Reference 9 (page 2) hits: 5, 1, 2. Reference 10 (page 3) misses, 5 goes: 1, 2, 3. Reference 11 (page 4) misses, 1 goes: 2, 3, 4. Reference 12 (page 5) misses, 2 goes: 3, 4, 5. Total: 2 hits, 10 misses. Why 4 frames cannot do worse: LRU keeps exactly the N most recently used pages. The 3 most recently used pages are always among the 4 most recently used. So everything the 3-frame cache holds, the 4-frame cache also holds, at every moment. A hit in the small cache is therefore a hit in the big one, and the big one can only add hits. That is the stack property. FIFO keeps the N most recently arrived pages. A page's arrival time depends on when it was last evicted, which differs between the two cache sizes. So the contents of the 3-frame cache need not be inside the 4-frame cache, and [Exercise 4](#exercise-4) is a stream where they are not.
 
 </details>
 
