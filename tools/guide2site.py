@@ -518,8 +518,8 @@ def main():
 # Numbered references ("slide 15", "From slide 6") stop the build for every week. Weeks listed in
 # NO_DECK_WORDS (their figures redrawn, their prose rewritten) also may not say "slide", "deck" or "PowerPoint".
 SLIDE_NUM = re.compile(r"\bslides?\s+\d+", re.I)
-DECK_WORD = re.compile(r"\b(slides?|decks?|deck's|PowerPoint)\b(?! (right|left|up|down|every|over|toward|into|along))", re.I)
-NO_DECK_WORDS = {"w05", "w06", "w07", "w08", "w09", "w10", "w11"}
+DECK_WORD = re.compile(r"\b(slides?|decks?|deck's|PowerPoint)\b(?! (right|left|up|down|every|over|toward|into|along|bits|that|them|it|the|n)\b)", re.I)
+NO_DECK_WORDS = {"w01","w02","w03","w04","w05", "w06", "w07", "w08", "w09", "w10", "w11"}
 
 
 def check_no_slide_refs(wk, outdir):

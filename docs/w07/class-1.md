@@ -1,148 +1,5 @@
 # The class: a share for every job, then many CPUs (OSTEP 9 and 10) {#class-1}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 1661" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="1661" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#2f3e9e">WEEK 7 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#opening-1" class="cmap-link"><title>Where we left off, and three questions</title><rect x="10" y="122" width="206" height="46" rx="6" fill="#f3f4f6" stroke="#9aa3b2" stroke-width="1.1"/><text x="20" y="138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">Where we left off: Where we left</text><text x="20" y="153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">off, and three questions</text></a>
-<a href="#sec-1-1" class="cmap-link"><title>1.1 Problem: A priority cannot promise a share</title><rect x="384" y="190" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="196" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="206.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="208" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.1 A priority cannot promise a share</text></a>
-<a href="#sec-1-5" class="cmap-link"><title>1.5 Problem: Unfairness over a short run: the fairness metric F</title><rect x="384" y="221" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="227" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="237.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="239" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.5 Unfairness over a short run: the fairness metric F</text></a>
-<path d="M352,219 C368,219 368,204 384,204" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<path d="M352,219 C368,219 368,234 384,234" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="206" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="223" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-1-2" class="cmap-link"><title>1.2 Concept: Tickets, and lottery scheduling</title><rect x="384" y="260" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="266" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="276.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="278" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.2 Tickets, and lottery scheduling</text></a>
-<a href="#sec-1-3" class="cmap-link"><title>1.3 Worked example: Finding the winning ticket: the ticket walk</title><rect x="384" y="291" width="400" height="27" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="297" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="307.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="309" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.3 Finding the winning ticket: the ticket walk</text></a>
-<a href="#sec-1-4" class="cmap-link"><title>1.4 Concept: The lottery decision in code: OSTEP Figure 9.1</title><rect x="384" y="322" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="328" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="338.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="340" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.4 The lottery decision in code: OSTEP Figure 9.1</text></a>
-<a href="#sec-1-6" class="cmap-link"><title>1.6 Worked example: Stride scheduling, one turn at a time</title><rect x="384" y="353" width="400" height="27" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="359" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="369.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="371" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.6 Stride scheduling, one turn at a time</text></a>
-<a href="#sec-1-7" class="cmap-link"><title>1.7 Concept: One stride cycle: why counting gives the exact share</title><rect x="384" y="384" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="390" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="400.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="402" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.7 One stride cycle: why counting gives the exact share</text></a>
-<path d="M352,336 C368,336 368,274 384,274" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,336 C368,336 368,304 384,304" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,336 C368,336 368,336 384,336" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,336 C368,336 368,366 384,366" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,336 C368,336 368,398 384,398" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="322" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="340" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-1-8" class="cmap-link"><title>1.8 Check yourself: What tickets settled, and what they left open</title><rect x="384" y="423" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="429" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="439.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="441" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.8 What tickets settled, and what they left open</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="454" width="400" height="106" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="470" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: A ticket count per job is its share. Lottery draws</text><text x="394" y="485" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">one random ticket per slice: the share arrives on average, with</text><text x="394" y="500" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">no state but the counts. Stride keeps a pass per job, runs the</text><text x="394" y="515" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">lowest and adds its stride: the share is exact every cycle. The</text><text x="394" y="530" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">costs: a newcomer&#x27;s pass, and nobody saying where the tickets</text><text x="394" y="545" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">come from.</text></a>
-<path d="M352,492 C368,492 368,436 384,436" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,492 C368,492 368,507 384,507" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="478" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="496" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-2" class="cmap-link"><title>Extra 2 Deeper, Q1: Moving tickets around: currency, transfer, inflation</title><rect x="384" y="572" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="578" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="588.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="590" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 2 Moving tickets around: currency, transfer,</text><text x="465" y="605" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">inflation</text></a>
-<a href="#extra-3" class="cmap-link"><title>Extra 3 Deeper, Q1: The fairness curve, measured point by point</title><rect x="384" y="618" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="624" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="634.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="636" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 3 The fairness curve, measured point by point</text></a>
-<path d="M352,608 C368,608 368,593 384,593" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,608 C368,608 368,632 384,632" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="596" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="612" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,420 C232,420 232,219 248,219" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,420 C232,420 232,336 248,336" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,420 C232,420 232,492 248,492" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,420 C232,420 232,608 248,608" fill="none" stroke="#2f3e9e" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-1" class="cmap-link"><title>Q1. How can a scheduler promise each job a share of the CPU, instead of ranking jobs? The answer is a number per job and two rules that use it</title><rect x="10" y="362" width="206" height="116" rx="8" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.9"/><circle cx="28" cy="382" r="11" fill="#2f3e9e"/><text x="28" y="386" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="386" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How can a scheduler</text><text x="48" y="402" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">promise each job a share</text><text x="48" y="418" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">of the CPU, instead of</text><text x="48" y="434" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">ranking jobs? The answer</text><text x="48" y="450" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">is a number per job and</text><text x="48" y="466" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">two rules that use it</text></a>
-<text x="113.0" y="667" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-2-1" class="cmap-link"><title>2.1 Problem: Who hands out tickets, and how to find the lowest among thousands</title><rect x="384" y="679" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="685" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="695.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="697" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.1 Who hands out tickets, and how to find the lowest</text><text x="448" y="712" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">among thousands</text></a>
-<path d="M352,700 C368,700 368,700 384,700" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="687" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="704" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-2-2" class="cmap-link"><title>2.2 Concept: Virtual runtime and the scheduling window</title><rect x="384" y="733" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="739" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="749.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="751" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.2 Virtual runtime and the scheduling window</text></a>
-<a href="#sec-2-3" class="cmap-link"><title>2.3 Concept: The weight table: from nice to a share</title><rect x="384" y="764" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="770" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="780.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="782" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.3 The weight table: from nice to a share</text></a>
-<path d="M352,762 C368,762 368,746 384,746" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,762 C368,762 368,778 384,778" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="749" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="766" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-2-4" class="cmap-link"><title>2.4 Real machine: Three nice levels on one core, measured</title><rect x="384" y="803" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="809" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="819.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="821" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.4 Three nice levels on one core, measured</text></a>
-<path d="M352,816 C368,816 368,816 384,816" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="804" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="820" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-2-5" class="cmap-link"><title>2.5 Check yourself: What the weight table settled, and what it left open</title><rect x="384" y="842" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="848" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="858.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="860" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.5 What the weight table settled, and what it</text><text x="487" y="875" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">left open</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="888" width="400" height="106" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="904" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: vruntime is the pass: in CFS the lowest runs, and a</text><text x="394" y="919" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">turn is the job&#x27;s weight share of the 48 ms window (48 ms over</text><text x="394" y="934" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the number of jobs when the weights are equal), never below 6 ms.</text><text x="394" y="949" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Everyone normally starts at nice 0; a table turns nice into a</text><text x="394" y="964" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">weight that sets both the turn and the speed of the virtual</text><text x="394" y="979" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">clock. …</text></a>
-<path d="M352,918 C368,918 368,863 384,863" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,918 C368,918 368,941 384,941" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="905" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="922" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-4" class="cmap-link"><title>Extra 4 Deeper, Q2: The tree of runnable jobs, and a sleeper&#x27;s vruntime</title><rect x="384" y="1006" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1012" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1022.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1024" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 4 The tree of runnable jobs, and a sleeper&#x27;s</text><text x="465" y="1039" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">vruntime</text></a>
-<a href="#extra-5" class="cmap-link"><title>Extra 5 Deeper, Q2: From CFS to EEVDF, and the ratio property of the table</title><rect x="384" y="1052" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1058" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1068.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1070" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 5 From CFS to EEVDF, and the ratio property of</text><text x="465" y="1085" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">the table</text></a>
-<path d="M352,1050 C368,1050 368,1027 384,1027" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1050 C368,1050 368,1073 384,1073" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1037" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1054" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,888 C232,888 232,700 248,700" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,888 C232,888 232,762 248,762" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,888 C232,888 232,816 248,816" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,888 C232,888 232,918 248,918" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,888 C232,888 232,1050 248,1050" fill="none" stroke="#2f3e9e" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-2" class="cmap-link"><title>Q2. How does Linux keep that promise for thousands of jobs, when nobody hands out numbers there and the knob a user has for a share is nice? This answer is also where the 90% and 10% of Part 0 came from</title><rect x="10" y="806" width="206" height="164" rx="8" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.9"/><circle cx="28" cy="826" r="11" fill="#2f3e9e"/><text x="28" y="830" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="830" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How does Linux keep that</text><text x="48" y="846" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">promise for thousands of</text><text x="48" y="862" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">jobs, when nobody hands</text><text x="48" y="878" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">out numbers there and</text><text x="48" y="894" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">the knob a user has for</text><text x="48" y="910" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">a share is nice? This</text><text x="48" y="926" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">answer is also where the</text><text x="48" y="942" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">90% and 10% of Part 0</text><text x="48" y="958" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">came from</text></a>
-<text x="113.0" y="1116" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-3-1" class="cmap-link"><title>3.1 Problem: Each CPU brings its own cache</title><rect x="384" y="1128" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1134" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1144.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1146" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.1 Each CPU brings its own cache</text></a>
-<a href="#sec-3-6" class="cmap-link"><title>3.6 Problem: Load imbalance, migration and work stealing</title><rect x="384" y="1159" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1165" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1175.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1177" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.6 Load imbalance, migration and work stealing</text></a>
-<path d="M352,1157 C368,1157 368,1142 384,1142" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<path d="M352,1157 C368,1157 368,1172 384,1172" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="1144" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="1161" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-3-3" class="cmap-link"><title>3.3 Concept: Single-queue multiprocessor scheduling (SQMS)</title><rect x="384" y="1198" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1204" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1214.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1216" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.3 Single-queue multiprocessor scheduling (SQMS)</text></a>
-<a href="#sec-3-5" class="cmap-link"><title>3.5 Concept: Multi-queue multiprocessor scheduling (MQMS)</title><rect x="384" y="1229" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1235" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1245.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1247" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.5 Multi-queue multiprocessor scheduling (MQMS)</text></a>
-<path d="M352,1227 C368,1227 368,1212 384,1212" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1227 C368,1227 368,1242 384,1242" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1214" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1231" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-3-2" class="cmap-link"><title>3.2 Real machine: Cache affinity: what a move costs</title><rect x="384" y="1268" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1274" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1284.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1286" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.2 Cache affinity: what a move costs</text></a>
-<a href="#sec-3-4" class="cmap-link"><title>3.4 Real kernel: xv6: one process array, a lock per entry</title><rect x="384" y="1299" width="400" height="27" rx="6" fill="#ffffff" stroke="#6b4fa0" stroke-width="1.1"/><rect x="390" y="1305" width="74" height="15" rx="3" fill="#6b4fa0"/><text x="396" y="1315.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text><text x="471" y="1317" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.4 xv6: one process array, a lock per entry</text></a>
-<path d="M352,1297 C368,1297 368,1282 384,1282" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1297 C368,1297 368,1312 384,1312" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="1284" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="1301" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-3-7" class="cmap-link"><title>3.7 Check yourself: What many CPUs settled, and what they left open</title><rect x="384" y="1338" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1344" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1354.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1356" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.7 What many CPUs settled, and what they left</text><text x="487" y="1371" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">open</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="1384" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1400" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Each CPU has a cache, so a move can cost a job a</text><text x="394" y="1415" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">refill of its cache (in the measurements, a move every</text><text x="394" y="1430" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">millisecond or two made the run 1.7 to 3.3 times slower: 0.5 to</text><text x="394" y="1445" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.2 ms per move, about what refetching the whole list would</text><text x="394" y="1460" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">cost): keep a job where it last ran, which is cache affinity. …</text></a>
-<path d="M352,1406 C368,1406 368,1359 384,1359" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,1406 C368,1406 368,1430 384,1430" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1394" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1410" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-1" class="cmap-link"><title>Extra 1 Deeper, Q3: Linux: a queue per CPU plus a balancer</title><rect x="384" y="1487" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1493" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1503.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="1505" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 1 Linux: a queue per CPU plus a balancer</text></a>
-<a href="#extra-6" class="cmap-link"><title>Extra 6 Deeper, Q3: Linux&#x27;s multiprocessor schedulers over time</title><rect x="384" y="1518" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1524" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1534.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="1536" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 6 Linux&#x27;s multiprocessor schedulers over time</text></a>
-<path d="M352,1516 C368,1516 368,1500 384,1500" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1516 C368,1516 368,1532 384,1532" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1503" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1520" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,1338 C232,1338 232,1157 248,1157" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,1338 C232,1338 232,1227 248,1227" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,1338 C232,1338 232,1297 248,1297" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,1338 C232,1338 232,1406 248,1406" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,1338 C232,1338 232,1516 248,1516" fill="none" stroke="#2f3e9e" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-3" class="cmap-link"><title>Q3. What changes when there are many CPUs instead of one? Each CPU brings a cache, and the one queue suddenly has many readers</title><rect x="10" y="1280" width="206" height="116" rx="8" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.9"/><circle cx="28" cy="1300" r="11" fill="#2f3e9e"/><text x="28" y="1304" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="1304" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">What changes when there</text><text x="48" y="1320" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">are many CPUs instead of</text><text x="48" y="1336" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">one? Each CPU brings a</text><text x="48" y="1352" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">cache, and the one queue</text><text x="48" y="1368" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">suddenly has many</text><text x="48" y="1384" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">readers</text></a>
-<a href="#summary-1" class="cmap-link"><title>What this class settled, and the scheduling block in review</title><rect x="10" y="1579" width="206" height="66" rx="7" fill="#555e6b"/><text x="21" y="1598" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: What this class</text><text x="21" y="1614" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">settled, and the scheduling</text><text x="21" y="1630" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">block in review</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-1.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## <span class="lbl lbl-roadmap">Roadmap</span> Where we left off, and three questions {#opening-1 data-toc-label="[Roadmap] Where we left off, and three questions"}
 
 The last class left two things open. A priority ranks jobs, so it can say who runs first but not how much each one gets; it cannot promise anyone a quarter of the CPU. And every picture so far had one CPU, one cache and one queue, while real machines have several CPUs, each with its own small fast memory beside it.
@@ -166,7 +23,7 @@ What we have is the multi-level feedback queue of Part 0. Its queues are ranked 
 Where it breaks is a request that is about amounts. Picture a shared server. Customer A paid for 75% of one core and customer B paid for 25%, and both always have work to do. Suppose A happens to sit on the higher queue. What does MLFQ give them?
 
 <figure markdown="1">
-![Figure 1.1. Twelve time slices, three ways. Top: A on a higher queue. Middle: A and B on the same queue. Bottom: what was paid for, a pattern no rule makes.](figs/rank_strips.svg){width=70%}
+![Figure 1.1. Twelve time slices, three ways. Top: A on a higher queue. Middle: A and B on the same queue. Bottom: what was paid for, a pattern no rule makes.](figs/rank_strips.svg){width=80%}
 <figcaption markdown="1">Figure 1.1. Twelve time slices, three ways. Top: A on a higher queue. Middle: A and B on the same queue. Bottom: what was paid for, a pattern no rule makes.</figcaption>
 </figure>
 
@@ -200,12 +57,12 @@ The idea is bigger than the CPU. The same count can share memory between **virtu
 Now a rule that turns tickets into turns. Every time slice, the scheduler holds a lottery: it draws one ticket number at random, from 0 to 99, and whoever holds that number runs for that slice. This is **lottery scheduling**: a proportional-share scheduler that draws a random winning ticket every time slice and runs the job that holds it.
 
 <figure markdown="1">
-![Figure 1.2. The 100 tickets: A holds 0 to 74, B holds 75 to 99. The red marks above the strip are 20 random draws.](figs/ticket_strip_draws.svg){width=90%}
+![Figure 1.2. The 100 tickets: A holds 0 to 74, B holds 75 to 99. The red marks above the strip are 20 random draws.](figs/ticket_strip_draws.svg){width=100%}
 <figcaption markdown="1">Figure 1.2. The 100 tickets: A holds 0 to 74, B holds 75 to 99. The red marks above the strip are 20 random draws.</figcaption>
 </figure>
 
 <figure markdown="1">
-![Figure 1.3. The 20 time slices those 20 draws produce.](figs/twenty_slices.svg){width=90%}
+![Figure 1.3. The 20 time slices those 20 draws produce.](figs/twenty_slices.svg){width=100%}
 <figcaption markdown="1">Figure 1.3. The 20 time slices those 20 draws produce.</figcaption>
 </figure>
 
@@ -231,7 +88,7 @@ The draw gives a number, and several jobs hold the tickets. The scheduler has to
 Three jobs this time: A holds 100 tickets, B holds 50 and C holds 250. That is 100 + 50 + 250 = 400 tickets in all, so a draw is a number from 0 to 399. Suppose the draw is 300.
 
 <figure markdown="1">
-![Figure 1.4. The 400 tickets handed out in order: A gets the first 100, B the next 50, C the last 250. The red arrow is the draw, ticket 300.](figs/ticket_people.svg){width=90%}
+![Figure 1.4. The 400 tickets handed out in order: A gets the first 100, B the next 50, C the last 250. The red arrow is the draw, ticket 300.](figs/ticket_people.svg){width=100%}
 <figcaption markdown="1">Figure 1.4. The 400 tickets handed out in order: A gets the first 100, B the next 50, C the last 250. The red arrow is the draw, ticket 300.</figcaption>
 </figure>
 
@@ -250,7 +107,7 @@ This is the **ticket walk**: add each job's tickets to a running total, in list 
 One thing to keep straight. The walk only finds the winner. Nobody runs during it. Once the winner is known, that job runs for the whole time slice, and the next slice starts with a fresh draw: one draw, one walk, one winner per slice.
 
 <figure markdown="1">
-![Figure 1.5. Six real slices with these three jobs, from a lottery simulator run (seed 4; Section 1.4 explains seeds).](figs/six_slices.svg){width=90%}
+![Figure 1.5. Six real slices with these three jobs, from a lottery simulator run (seed 4; Section 1.4 explains seeds).](figs/six_slices.svg){width=100%}
 <figcaption markdown="1">Figure 1.5. Six real slices with these three jobs, from a lottery simulator run (seed 4; [Section 1.4](#sec-1-4) explains seeds).</figcaption>
 </figure>
 
@@ -275,7 +132,7 @@ C wins most often because C holds most of the tickets: 250 of 400, which is 62.5
 The last part did the walk by hand. A scheduler has to do it in code, every time slice, so here are the 16 lines that OSTEP gives as its Figure 9.1. You do not need to read C to follow them, because you just did the same thing by hand. The few C words that appear are explained right after the listing.
 
 <figure markdown="1">
-![Figure 1.6. The list of jobs the code walks: each box is one job's record, with its name and its ticket count; head points at the first record, and NULL marks the end.](figs/job_list.svg){width=60%}
+![Figure 1.6. The list of jobs the code walks: each box is one job's record, with its name and its ticket count; head points at the first record, and NULL marks the end.](figs/job_list.svg){width=75%}
 <figcaption markdown="1">Figure 1.6. The list of jobs the code walks: each box is one job's record, with its name and its ticket count; head points at the first record, and NULL marks the end.</figcaption>
 </figure>
 
@@ -312,20 +169,13 @@ Lines that start with `//` are comments: notes for the reader that the computer 
 - Line 14 steps to the next job in the list.
 
 <figure markdown="1">
-![Figure 1.7. The 400 tickets in a row with the running total marked: the counter passes 300 only after C's tickets are added, so C holds ticket 300.](figs/counter_strip.svg){width=70%}
+![Figure 1.7. The 400 tickets in a row with the running total marked: the counter passes 300 only after C's tickets are added, so C holds ticket 300.](figs/counter_strip.svg){width=100%}
 <figcaption markdown="1">Figure 1.7. The 400 tickets in a row with the running total marked: the counter passes 300 only after C's tickets are added, so C holds ticket 300.</figcaption>
 </figure>
 
 Figure 1.7 is the same 400 tickets with the running total marked under the strip. After A the counter is 100, after B 150, after C 400. It passes 300 only when C's tickets are added. That is why one random number is enough. The draw picks a ticket number, not a job. The walk down the list turns that number into its owner by adding up the ticket counts. So no job has to remember which numbers it holds, and adding a job is just adding its count.
 
 The six real slices of Figure 1.5 came from this same algorithm, run by the simulator with **seed** 4. A seed is the starting number for the random draws: the same seed gives the same draws again, so anyone can repeat the run exactly.
-
-
-<!-- anim:lottery:start -->
-Step through the ticket walk yourself, for the draw of Section 1.3 and the six draws of Figure 1.5.
-
-<div class="anim" data-anim="lottery" markdown="0"></div>
-<!-- anim:lottery:end -->
 
 - What this part settled: the whole lottery scheduler is one random number and one walk down a list.
 - What it leaves open: how well it keeps the promise. Being cheap is not the same as being right, and the next part measures how wrong a short run can be.
@@ -339,7 +189,7 @@ What we have is lottery scheduling: a ticket count per job, one random draw per 
 Where it breaks is time. The lottery is right on average, and an average needs many draws. A job that needs only a few slices may be finished before the average ever arrives.
 
 <figure markdown="1">
-![Figure 1.8. One real run: two jobs with equal tickets and 10 slices of work each. B finished at slice 16, A at slice 20.](figs/raffle_run.svg){width=70%}
+![Figure 1.8. One real run: two jobs with equal tickets and 10 slices of work each. B finished at slice 16, A at slice 20.](figs/raffle_run.svg){width=100%}
 <figcaption markdown="1">Figure 1.8. One real run: two jobs with equal tickets and 10 slices of work each. B finished at slice 16, A at slice 20.</figcaption>
 </figure>
 
@@ -385,7 +235,7 @@ The rule, in words: every turn the scheduler does the same four things.
 The counters keep score of how much CPU each job has had, measured against its tickets, and the smallest score always goes next.
 
 <figure markdown="1">
-![Figure 1.9. Turn 1 of stride: the three counters before the turn, the four things the scheduler does, and the three counters after the turn.](figs/stride_turn1.svg){width=85%}
+![Figure 1.9. Turn 1 of stride: the three counters before the turn, the four things the scheduler does, and the three counters after the turn.](figs/stride_turn1.svg){width=100%}
 <figcaption markdown="1">Figure 1.9. Turn 1 of stride: the three counters before the turn, the four things the scheduler does, and the three counters after the turn.</figcaption>
 </figure>
 
@@ -418,7 +268,7 @@ Now you can see why the job with fewer tickets gets the bigger step. The rule is
 Four turns have run in slow motion. What we still do not know is whether the turns come out exactly in the ticket ratio, and when the pattern starts over. Here is the whole lap, all eight turns at once.
 
 <figure markdown="1">
-![Figure 1.10. The three steps: 10000 divided by the tickets. More tickets, shorter bar.](figs/step_bars.svg){width=55%}
+![Figure 1.10. The three steps: 10000 divided by the tickets. More tickets, shorter bar.](figs/step_bars.svg){width=60%}
 <figcaption markdown="1">Figure 1.10. The three steps: 10000 divided by the tickets. More tickets, shorter bar.</figcaption>
 </figure>
 
@@ -451,7 +301,7 @@ Now all three counters sit at 200. Figure 1.11 draws this as a staircase: each b
 This table is OSTEP's Figure 9.3 in full: the lowest number in each row is the job that runs.
 
 <figure markdown="1">
-![Figure 1.12. The same lap as a row of time slices: A B C C C A C C.](figs/lap_timeline.svg){width=80%}
+![Figure 1.12. The same lap as a row of time slices: A B C C C A C C.](figs/lap_timeline.svg){width=100%}
 <figcaption markdown="1">Figure 1.12. The same lap as a row of time slices: A B C C C A C C.</figcaption>
 </figure>
 
@@ -460,13 +310,6 @@ Figure 1.12 is the lap as a row of slices: A, B, C, C, C, A, C, C. A **cycle** (
 Count the blocks in each column of Figure 1.11: A ran 2 turns, B ran 1, C ran 5. The tickets were 100, 50 and 250. Divide the tickets by 50 and they read 2, 1 and 5. So the turns are in exactly the ticket ratio. Here is the argument. A lap is over when the three counters meet again, at 200. To climb from 0 to 200 a job needs 200 divided by its step turns: 2 for A, 1 for B, 5 for C. That is the ticket ratio, the same in every lap, and no luck is involved. The next lap looks exactly the same.
 
 Stride is exact, so you might expect nobody to choose the lottery any more. The lottery survives because stride keeps a counter for every job, and a job that arrives in the middle has none. Give the newcomer a counter of 0, and it sits at the bottom for a long time, taking turn after turn while the others wait, until it catches up. There is a fix (start it at the lowest counter in the queue, [Exercise 9](review.md#exercise-9)), but it is one more rule, applied right at every arrival and every time a job wakes up. (A job **sleeps** while it waits for something, such as a key press or data from the disk, which is **I/O**, input or output; it **wakes up** when that arrives.) The lottery has no such state. A new job brings its tickets and is in the very next draw.
-
-
-<!-- anim:stride:start -->
-Step through one stride cycle yourself, turn by turn.
-
-<div class="anim" data-anim="stride" markdown="0"></div>
-<!-- anim:stride:end -->
 
 - What this part settled: stride gives each job exactly its ticket share in every cycle.
 - What it leaves open: a newcomer's counter. And two questions nobody has asked yet: who hands out the tickets, and how a scheduler finds the lowest counter among thousands of jobs.
@@ -495,7 +338,7 @@ Check yourself: you should now be able to trace the pass values of three jobs th
 What we have is stride as a kernel would keep it: for each job, a ticket count and a pass value, the counter, in a list. Every decision picks the job with the lowest pass.
 
 <figure markdown="1">
-![Figure 2.1. Stride as a kernel would keep it: each job's record holds its tickets and its pass value, in a list.](figs/kernel_list.svg){width=60%}
+![Figure 2.1. Stride as a kernel would keep it: each job's record holds its tickets and its pass value, in a list.](figs/kernel_list.svg){width=80%}
 <figcaption markdown="1">Figure 2.1. Stride as a kernel would keep it: each job's record holds its tickets and its pass value, in a list.</figcaption>
 </figure>
 
@@ -508,7 +351,7 @@ The second question is about scale. A busy server has thousands of tasks, and at
 So we need two things. For the first question, the scheduler gives each process only a knob: every job starts at its parent's nice value, normally 0, and the user can only nudge one job relative to the others. For the second question, Linux has a real answer: keep the jobs in a structure where the lowest is found without reading all of them.
 
 <figure markdown="1">
-![Figure 2.2. Seven pass values as a sorted tree (120 at the top; 60 and 300 below it; 20, 90, 200 and 450 at the bottom): smaller to the left, bigger to the right. The lowest is always the leftmost node.](figs/pass_tree.svg){width=55%}
+![Figure 2.2. Seven pass values as a sorted tree (120 at the top; 60 and 300 below it; 20, 90, 200 and 450 at the bottom): smaller to the left, bigger to the right. The lowest is always the leftmost node.](figs/pass_tree.svg){width=65%}
 <figcaption markdown="1">Figure 2.2. Seven pass values as a sorted tree (120 at the top; 60 and 300 below it; 20, 90, 200 and 450 at the bottom): smaller to the left, bigger to the right. The lowest is always the leftmost node.</figcaption>
 </figure>
 
@@ -537,7 +380,7 @@ The last part left open what Linux keeps in place of a pass value. Linux wants w
 Linux, in the version OSTEP describes, settles this with a window instead of a fixed slice. Every runnable job gets one turn inside a window of 48 milliseconds, called **sched_latency**. 48 ms, and the 6 ms below, are the values OSTEP uses in its examples; a real kernel sets its own, and what matters here is the rule, not the exact numbers. So with equal jobs a turn is 48 ms divided by the number of jobs ([Section 2.3](#sec-2-3) adds weights): with 4 jobs, 48 / 4 = 12 ms each; with 2 jobs, 48 / 2 = 24 ms each.
 
 <figure markdown="1">
-![Figure 2.3. OSTEP Figure 9.4: A, B, C and D each run 12 ms in turn; C finishes at 84 ms and D at 96 ms; from then on A and B alternate with 24 ms each. Time in milliseconds.](figs/fig94.svg){width=90%}
+![Figure 2.3. OSTEP Figure 9.4: A, B, C and D each run 12 ms in turn; C finishes at 84 ms and D at 96 ms; from then on A and B alternate with 24 ms each. Time in milliseconds.](figs/fig94.svg){width=100%}
 <figcaption markdown="1">Figure 2.3. OSTEP Figure 9.4: A, B, C and D each run 12 ms in turn; C finishes at 84 ms and D at 96 ms; from then on A and B alternate with 24 ms each. Time in milliseconds.</figcaption>
 </figure>
 
@@ -599,7 +442,7 @@ Three quarters and a quarter. Check this: 36 + 12 = 48. The 90% and 10% of Part 
 A job at nice 0 has weight 1024, so its vruntime grows exactly as fast as real time: 1024 / 1024 = 1. A's weight is 3121, so A's clock runs at 1024 / 3121 = 0.33 of real time, a third of B's speed.
 
 <figure markdown="1">
-![Figure 2.4. One 48 ms window with A at nice −5 and B at nice 0: A runs 36 ms and B runs 12 ms, yet both virtual clocks rise by the same 12.](figs/weight_bars.svg){width=85%}
+![Figure 2.4. One 48 ms window with A at nice −5 and B at nice 0: A runs 36 ms and B runs 12 ms, yet both virtual clocks rise by the same 12.](figs/weight_bars.svg){width=100%}
 <figcaption markdown="1">Figure 2.4. One 48 ms window with A at nice −5 and B at nice 0: A runs 36 ms and B runs 12 ms, yet both virtual clocks rise by the same 12.</figcaption>
 </figure>
 
@@ -719,9 +562,9 @@ So this is the mechanism, visible. Each clock ticks at 1024 over the job's weigh
 
 *The argument in one line:* why are the three clocks level while the CPU times differ? the scheduler keeps the clocks together (CFS runs the lowest clock; EEVDF never runs one ahead of the weighted average), so the three clocks stay level → each clock ticks at 1024 ÷ weight → nice 10's clock ticks 9 times faster than nice 0's, so it reaches the same level with 188 ms of real time where nice 0 needs 1725 → so the real time splits as the weights say.
 
-??? note "The program behind Figure 0.3 and Section 2.4 (you can skip this listing)"
+??? note "The program behind Figure 0.2 and Section 2.4 (you can skip this listing)"
 
-    The two-copy run of Part 0 (Figure 0.3) used the same `share.c` listed above. To repeat the runs you need Linux, because `taskset` exists only there; on Windows, use WSL, the Linux inside Windows that the labs use. Then:
+    The two-copy run of Part 0 (Figure 0.2) used the same `share.c` listed above. To repeat the runs you need Linux, because `taskset` exists only there; on Windows, use WSL, the Linux inside Windows that the labs use. Then:
     
     1. Open the Terminal program (on Windows, open Ubuntu from the Start menu). It shows the `$` prompt of the shell. A Mac's own Terminal will not do: it has no `apt` (the installer of step 2) and no `taskset`; on a Mac, install a Linux virtual machine (a free app such as UTM can run Ubuntu) and follow these steps inside it.
     2. Install the C compiler once: `sudo apt update`, then `sudo apt install gcc` (`sudo` runs a command as administrator and asks for your own password; `apt` is Ubuntu's installer, and `update` refreshes its list of packages).
@@ -758,7 +601,7 @@ Check yourself: you should now be able to predict the split of two always-runnin
 So far every picture had one CPU. When a second one shows up, one new thing arrives, and it changes everything after it: each CPU comes with its own cache.
 
 <figure markdown="1">
-![Figure 3.1. What we have: one CPU with a small fast cache in front of a slow memory, and one queue of runnable jobs.](figs/one_cpu.svg){width=55%}
+![Figure 3.1. What we have: one CPU with a small fast cache in front of a slow memory, and one queue of runnable jobs.](figs/one_cpu.svg){width=85%}
 <figcaption markdown="1">Figure 3.1. What we have: one CPU with a small fast cache in front of a slow memory, and one queue of runnable jobs.</figcaption>
 </figure>
 
@@ -767,7 +610,7 @@ What we have is Figure 3.1: one CPU, one cache, one memory, one queue. A **cache
 Where it breaks: with two CPUs, two things go wrong.
 
 <figure markdown="1">
-![Figure 3.2. Two caches can disagree, and one queue has two readers. Top: OSTEP's story in three steps. Bottom: both CPUs read the head of the queue at the same instant.](figs/coherence.svg){width=60%}
+![Figure 3.2. Two caches can disagree, and one queue has two readers. Top: OSTEP's story in three steps. Bottom: both CPUs read the head of the queue at the same instant.](figs/coherence.svg){width=90%}
 <figcaption markdown="1">Figure 3.2. Two caches can disagree, and one queue has two readers. Top: OSTEP's story in three steps. Bottom: both CPUs read the head of the queue at the same instant.</figcaption>
 </figure>
 
@@ -864,7 +707,7 @@ bounce  10.90 s   se.nr_migrations 6102   (ended at line 14456)
 Pinned took 3.2 to 4.1 s and same 3.3 to 4.5 s, so the two ranges overlap: a shared cloud machine is noisy by about a second. Bounce took 10.4 to 10.9 s that day, much slower than the 7.06 s of the first round, while pinned (3.2 to 4.1 s, against 4.16 s) changed by less than the machine's noise of about a second. So each move cost more that day than in the first round (worked out below), and these runs do not show why; other work on the shared machine is one possibility. Round by round, 10.74 / 3.24 = 3.3, 10.38 / 4.08 = 2.5 and 10.90 / 3.45 = 3.2: between 2.5 and 3.3 times slower than pinned. The difference that holds up, every round, is between bounce and the other two.
 
 <figure markdown="1">
-![Figure 3.3. A likely reason the bounce is slow: on the warm core each step takes about 10 nanoseconds (4.16 s / 400,000,000 steps), reading from the cache; on a cold core each step can be a trip to the shared cache or to memory until the list is pulled in again.](figs/warm_cold.svg){width=70%}
+![Figure 3.3. A likely reason the bounce is slow: on the warm core each step takes about 10 nanoseconds (4.16 s / 400,000,000 steps), reading from the cache; on a cold core each step can be a trip to the shared cache or to memory until the list is pulled in again.](figs/warm_cold.svg){width=90%}
 <figcaption markdown="1">Figure 3.3. A likely reason the bounce is slow: on the warm core each step takes about 10 nanoseconds (4.16 s / 400,000,000 steps), reading from the cache; on a cold core each step can be a trip to the shared cache or to memory until the list is pulled in again.</figcaption>
 </figure>
 
@@ -954,7 +797,7 @@ The principle has a name. A job that ran on a CPU has built up state in that CPU
 We now know two facts about many CPUs: moving a job costs its cache, and a shared queue needs a lock. Now the queue itself. We already have a scheduler with one queue, so the obvious first design lets every CPU pick from it.
 
 <figure markdown="1">
-![Figure 3.4. One shared queue (A to E) and four CPUs, each with its own cache: every CPU takes the next job from the one queue.](figs/sqms.svg){width=70%}
+![Figure 3.4. One shared queue (A to E) and four CPUs, each with its own cache: every CPU takes the next job from the one queue.](figs/sqms.svg){width=90%}
 <figcaption markdown="1">Figure 3.4. One shared queue (A to E) and four CPUs, each with its own cache: every CPU takes the next job from the one queue.</figcaption>
 </figure>
 
@@ -988,7 +831,7 @@ Here is the argument. Every CPU changes the same queue, so each decision waits f
 The shared queue is not just a textbook idea: the kernel you build in the labs uses one shared queue too, and its code shows both the shared queue and the lock that the two-readers picture of [Section 3.1](#sec-3-1) needed.
 
 <figure markdown="1">
-![Figure 3.5. Three CPUs, each running its own copy of the scheduler loop, all walking one shared array of 64 process entries, each entry with its own lock.](figs/three_cpus_array.svg){width=70%}
+![Figure 3.5. Three CPUs, each running its own copy of the scheduler loop, all walking one shared array of 64 process entries, each entry with its own lock.](figs/three_cpus_array.svg){width=90%}
 <figcaption markdown="1">Figure 3.5. Three CPUs, each running its own copy of the scheduler loop, all walking one shared array of 64 process entries, each entry with its own lock.</figcaption>
 </figure>
 
@@ -1128,7 +971,7 @@ With one CPU the two children share it: 16,746 + 24,405 = 41,151 loops in all. W
 One shared queue caused both failures of [Section 3.3](#sec-3-3): the lock and the lost affinity. So the other design gives every CPU a queue of its own.
 
 <figure markdown="1">
-![Figure 3.6. Two CPUs, four jobs, a queue per CPU: A and C live on CPU 0's queue Q0, B and D on CPU 1's queue Q1, and each CPU runs its own queue by round robin.](figs/mqms.svg){width=85%}
+![Figure 3.6. Two CPUs, four jobs, a queue per CPU: A and C live on CPU 0's queue Q0, B and D on CPU 1's queue Q1, and each CPU runs its own queue by round robin.](figs/mqms.svg){width=100%}
 <figcaption markdown="1">Figure 3.6. Two CPUs, four jobs, a queue per CPU: A and C live on CPU 0's queue Q0, B and D on CPU 1's queue Q1, and each CPU runs its own queue by round robin.</figcaption>
 </figure>
 
@@ -1150,7 +993,7 @@ But if you have been paying attention, you may already see a new problem. Queues
 What we have is a queue per CPU, each minding its own business. Where it breaks is the moment one of them empties out.
 
 <figure markdown="1">
-![Figure 3.7. Top: C finishes, so A has CPU 0 to itself while B and D share CPU 1. Middle: A finishes too, and CPU 0 sits idle. Bottom: jobs keep moving so that the load stays balanced.](figs/imbalance.svg){width=85%}
+![Figure 3.7. Top: C finishes, so A has CPU 0 to itself while B and D share CPU 1. Middle: A finishes too, and CPU 0 sits idle. Bottom: jobs keep moving so that the load stays balanced.](figs/imbalance.svg){width=100%}
 <figcaption markdown="1">Figure 3.7. Top: C finishes, so A has CPU 0 to itself while B and D share CPU 1. Middle: A finishes too, and CPU 0 sits idle. Bottom: jobs keep moving so that the load stays balanced.</figcaption>
 </figure>
 
@@ -1198,12 +1041,7 @@ The class in one line: a share is a number per job; Linux keeps it with a weight
 
 #### The scheduling block, three classes on one map
 
-<figure markdown="1">
-![Figure 3.8. The scheduling block as three classes side by side, each with the question it answered and, in its yellow box, what it left open.](figs/three_classes.svg){width=100%}
-<figcaption markdown="1">Figure 3.8. The scheduling block as three classes side by side, each with the question it answered and, in its yellow box, what it left open.</figcaption>
-</figure>
-
-Scheduling took three classes, and each one began where the one before it stopped (Figure 3.8):
+Scheduling took three classes, and each one began where the one before it stopped:
 
 1. The first class asked how to judge a schedule. It gave two yardsticks, turnaround and response time, and a rule that wins each one: shortest job first (run the job with the least work left first) wins turnaround but needs the job lengths, and round robin wins response time at a cost in turnaround. Left open: no kernel knows a job's length.
 2. The second class answered that with the multi-level feedback queue: start at the top, sink when you use up your allotment, and a boost every S milliseconds. The queue a job ends up on is a guess at its type. Left open: a priority ranks jobs; it cannot promise a share.
@@ -1270,7 +1108,7 @@ pid 2604 se.nr_migrations                             :                    0
 How to read it. `> /dev/null` throws the programs' printed lines away. **ps** lists processes (`-o` names the columns to show, `-C spin` keeps only processes of the program `spin`): its `PSR` column is the core a task last ran on, `NI` the nice value, `%CPU` the percentage of a CPU it has been using, `COMMAND` the program name. `pgrep spin` lists the process ids of the running `spin` programs, and the last loop prints each one's `se.nr_migrations` from its `/proc` file.
 
 <figure markdown="1">
-![Figure E1.1. Where the kernel put the four jobs: two on CPU 0's queue and two on CPU 1's, each with about half a core.](figs/balance_landed.svg){width=70%}
+![Figure E1.1. Where the kernel put the four jobs: two on CPU 0's queue and two on CPU 1's, each with about half a core.](figs/balance_landed.svg){width=85%}
 <figcaption markdown="1">Figure E1.1. Where the kernel put the four jobs: two on CPU 0's queue and two on CPU 1's, each with about half a core.</figcaption>
 </figure>
 
@@ -1309,7 +1147,7 @@ R       average F over 30 seeds   (lottery.py -l R:100,R:100 -s SEED -c)
 ```
 
 <figure markdown="1">
-![Figure E3.1. Average F against job length R, OSTEP Figure 9.2 re-measured.](figs/fairness_curve.svg){width=75%}
+![Figure E3.1. Average F against job length R, OSTEP Figure 9.2 re-measured.](figs/fairness_curve.svg){width=100%}
 <figcaption markdown="1">Figure E3.1. Average F against job length R, OSTEP Figure 9.2 re-measured.</figcaption>
 </figure>
 
@@ -1338,7 +1176,7 @@ for R in (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000):
 Two details of Linux's scheduler that the class left out: how the lowest clock is found fast, and what a job that slept gets.
 
 <figure markdown="1">
-![Figure E4.1. OSTEP Figure 9.5: ten runnable jobs kept in a red-black tree by their vruntime. The leftmost node, 1, runs next.](figs/rbtree.svg){width=60%}
+![Figure E4.1. OSTEP Figure 9.5: ten runnable jobs kept in a red-black tree by their vruntime. The leftmost node, 1, runs next.](figs/rbtree.svg){width=70%}
 <figcaption markdown="1">Figure E4.1. OSTEP Figure 9.5: ten runnable jobs kept in a red-black tree by their vruntime. The leftmost node, 1, runs next.</figcaption>
 </figure>
 

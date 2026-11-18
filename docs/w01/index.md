@@ -14,22 +14,32 @@ Read with this week:
 
 ## Part 0. Where we are in the course, and what a beginner needs first {#part-0}
 
-This part does two jobs before the new material starts. It shows where this week sits in the whole course. And it gives you the handful of words a beginner needs before the first slide of real content makes sense: what a program is, what memory and an address are, what a processor does, and what a file is. This is the first week, so there is no previous week to rebuild. Everything later in this guide uses these words without stopping to define them, so if one of them is shaky, this is the place to fix it.
+This part does two jobs before the new material starts. It shows where this week sits in the whole course. And it gives you the handful of words a beginner needs before the real content makes sense: what a program is, what memory and an address are, what a processor does, and what a file is. This is the first week, so there is no previous week to rebuild. Everything later in this guide uses these words without stopping to define them, so if one of them is shaky, this is the place to fix it.
 
 #### The course map {#p0-map}
 
 A week of material makes sense only if you know which question it answers and what comes after it. So the first picture is the whole course.
 
 <figure markdown="1">
-![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks of the course with this one marked, and the question each block will ask.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, and the weeks of the course with this one marked.](figs/coursemap.svg){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, and the weeks of the course with this one marked.</figcaption>
 </figure>
 
-An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own processor and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1. The textbook calls them the three easy pieces, and the title of this guide is the title of the week's deck.
+An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own processor and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1. The textbook calls them the three easy pieces.
 
 The second row of Figure 0.1 cuts the course into five blocks (groups of weeks). Virtualization takes the first three: the processor from the point of view of a running program, then memory, then the processor again to ask which program should run next. Block 4 is concurrency, and block 5 is devices and files. The strip of boxes under the blocks is the weeks of the course, and the first one is marked "we are here"; nothing is done yet.
 
-The table in the lower half of Figure 0.1 is the plan. Each block answers one question, and its answer opens the next block's question. This week does something different from every later week: it does not go deep into any one block. Instead it says what an operating system is and watches it do each of its three jobs once, with a real program each time. The first class covers the first job, virtualization, twice: once for the processor and once for memory. The second class covers the other two jobs, concurrency and persistence. Each later week then takes one of those jobs apart.
+The table below is the plan. Each block answers one question, and its answer opens the next block's question.
+
+| Block | What it does | The question it opens |
+|---|---|---|
+| this week: the three pieces | what an OS is, and the three jobs it does: it virtualizes the machine, it keeps sharing correct, it keeps data safe | how does one CPU run many programs, and how does the OS stay in control? |
+| 2. the process and the mechanism | a running program with its own view of the machine; the trap, the system call and the timer that hand control back | the program also needs memory: how is it shared without programs seeing each other? |
+| 3. memory | a private address space per process; pages and a table that translates them; a TLB; pages that live on disk | the mechanism can stop any process and start another: which one should run next? |
+| 4. scheduling | turnaround against response time; round robin; a scheduler that learns from the past | what happens when two of those running things touch the same data? |
+| 5. threads and locks | the three-instruction counter bug; locks, condition variables, deadlock | what survives when the power goes out? |
+| 6. devices and files | disks; files, directories and inodes; crash consistency and journaling | |
+ This week does something different from every later week: it does not go deep into any one block. Instead it says what an operating system is and watches it do each of its three jobs once, with a real program each time. The first class covers the first job, virtualization, twice: once for the processor and once for memory. The second class covers the other two jobs, concurrency and persistence. Each later week then takes one of those jobs apart.
 
 #### What a program is, and what the processor does with it {#p0-program}
 
@@ -41,7 +51,7 @@ A **running program** is a program that the processor is currently working throu
 
 #### Memory and addresses {#p0-memory}
 
-A computer's main memory (**RAM**) is a very long row of **bytes**. A byte is a small unit of storage: eight **bits**, where a bit (a binary digit) is a single 0 or 1. Eight bits can be set in 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = 256 different ways, so a byte holds one letter, or a number from 0 to 255. Each byte has a number, its **address**, starting from 0. When a program says "read the byte at address 21", it is naming a position in that row. That is all an address is: a position number. Everything a running program has, its instructions and its data, sits in memory at some address. A **variable** is a named place in memory that holds one value, such as a counter; the program uses the name, and the value can change as it runs. Main memory is built from chips called **DRAM** (dynamic RAM), and slides often label it that way. A **load** is an instruction that reads a value from memory into a register, and a **store** is one that writes a value from a register into memory. "Memory" and "RAM" mean the same thing in this guide.
+A computer's main memory (**RAM**) is a very long row of **bytes**. A byte is a small unit of storage: eight **bits**, where a bit (a binary digit) is a single 0 or 1. Eight bits can be set in 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = 256 different ways, so a byte holds one letter, or a number from 0 to 255. Each byte has a number, its **address**, starting from 0. When a program says "read the byte at address 21", it is naming a position in that row. That is all an address is: a position number. Everything a running program has, its instructions and its data, sits in memory at some address. A **variable** is a named place in memory that holds one value, such as a counter; the program uses the name, and the value can change as it runs. Main memory is built from chips called **DRAM** (dynamic RAM), and drawings often label it that way. A **load** is an instruction that reads a value from memory into a register, and a **store** is one that writes a value from a register into memory. "Memory" and "RAM" mean the same thing in this guide.
 
 Memory sizes come in bytes and in multiples of 1024. A **kB** (kilobyte, also written KB) is 1024 bytes, an **MB** (megabyte) is 1024 kB, and a **GB** (gigabyte) is 1024 MB. You will also see these written KiB, MiB and GiB, or, as some programs print them, Mi and Gi. The extra letter is the careful spelling for "a multiple of 1024, not of 1000". In this guide both spellings mean the same thing. Check this: 200 MB is 200 × 1024 = 204,800 kB, a number that comes back in [Section 6.5](class-2.md#sec-6-5).
 

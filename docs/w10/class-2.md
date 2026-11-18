@@ -1,161 +1,5 @@
 # Second class: why deadlocks happen, four ways to prevent one, the other attitudes, and a server with no threads (OSTEP 32.3, 32.4 and 33) {#class-2}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 1710" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="1710" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#a0632a">WEEK 10 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#opening-2" class="cmap-link"><title>Where we left off: four conditions, all needed</title><rect x="10" y="122" width="206" height="46" rx="6" fill="#f3f4f6" stroke="#9aa3b2" stroke-width="1.1"/><text x="20" y="138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">Where we left off: four</text><text x="20" y="153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">conditions, all needed</text></a>
-<a href="#sec-4-1" class="cmap-link"><title>4.1 Problem: Simple deadlocks look avoidable, so why do they happen?</title><rect x="384" y="190" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="196" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="206.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="208" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.1 Simple deadlocks look avoidable, so why do they</text><text x="448" y="223" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">happen?</text></a>
-<path d="M352,211 C368,211 368,211 384,211" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="198" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="215" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-4-2" class="cmap-link"><title>4.2 Concept: vector_add(): two locks the caller never sees</title><rect x="384" y="244" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="250" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="260.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="262" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.2 vector_add(): two locks the caller never sees</text></a>
-<path d="M352,258 C368,258 368,258 384,258" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="244" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="262" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-4-3" class="cmap-link"><title>4.3 Real machine: Swapped arguments hung all 3 runs; the same order finished</title><rect x="384" y="283" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="289" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="299.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="301" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.3 Swapped arguments hung all 3 runs; the same</text><text x="476" y="316" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">order finished</text></a>
-<path d="M352,304 C368,304 368,304 384,304" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="291" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="308" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-4-4" class="cmap-link"><title>4.4 Check yourself: What the first question settled</title><rect x="384" y="337" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="343" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="353.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="355" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.4 What the first question settled</text></a>
-<path d="M352,350 C368,350 368,350 384,350" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="338" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="354" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-1" class="cmap-link"><title>Extra 1 Deeper, Q4: select(): ask the kernel which clients have something waiting</title><rect x="384" y="376" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="382" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="392.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q4</text><text x="465" y="394" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 1 select(): ask the kernel which clients have</text><text x="465" y="409" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">something waiting</text></a>
-<a href="#extra-2" class="cmap-link"><title>Extra 2 Deeper, Q4: One handler that blocks makes every client wait</title><rect x="384" y="422" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="428" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="438.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q4</text><text x="465" y="440" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 2 One handler that blocks makes every client</text><text x="465" y="455" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">wait</text></a>
-<a href="#extra-3" class="cmap-link"><title>Extra 3 Deeper, Q4: Asynchronous I/O: start the read, return at once, ask later</title><rect x="384" y="468" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="474" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="484.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q4</text><text x="465" y="486" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 3 Asynchronous I/O: start the read, return at</text><text x="465" y="501" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">once, ask later</text></a>
-<a href="#extra-4" class="cmap-link"><title>Extra 4 Deeper, Q4: What stays hard with events, and the verdict of OSTEP section 33.9</title><rect x="384" y="514" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="520" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="530.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q4</text><text x="465" y="532" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 4 What stays hard with events, and the verdict</text><text x="465" y="547" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">of OSTEP section 33.9</text></a>
-<path d="M352,466 C368,466 368,397 384,397" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,466 C368,466 368,443 384,443" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,466 C368,466 368,489 384,489" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,466 C368,466 368,535 384,535" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="453" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="470" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,375 C232,375 232,211 248,211" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,375 C232,375 232,258 248,258" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,375 C232,375 232,304 248,304" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,375 C232,375 232,350 248,350" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,375 C232,375 232,466 248,466" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-4" class="cmap-link"><title>Q1. Why do deadlocks happen in real code, when a two-lock one looks so easy to avoid?</title><rect x="10" y="333" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="353" r="11" fill="#a0632a"/><text x="28" y="357" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="357" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Why do deadlocks happen</text><text x="48" y="373" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">in real code, when a</text><text x="48" y="389" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">two-lock one looks so</text><text x="48" y="405" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">easy to avoid?</text></a>
-<text x="113.0" y="578" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-5-1" class="cmap-link"><title>5.1 Problem: Break one condition, and deadlock cannot happen</title><rect x="384" y="590" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="596" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="606.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="608" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.1 Break one condition, and deadlock cannot happen</text></a>
-<path d="M352,604 C368,604 368,604 384,604" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="590" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="608" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-5-2" class="cmap-link"><title>5.2 Concept: Attempt 1, circular wait: everyone uses one order</title><rect x="384" y="629" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="635" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="645.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="647" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.2 Attempt 1, circular wait: everyone uses one order</text></a>
-<a href="#sec-5-3" class="cmap-link"><title>5.3 Concept: Attempt 2, hold-and-wait: take every lock in one step</title><rect x="384" y="660" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="666" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="676.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="678" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.3 Attempt 2, hold-and-wait: take every lock in one</text><text x="448" y="693" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">step</text></a>
-<a href="#sec-5-4" class="cmap-link"><title>5.4 Concept: Attempt 3, no preemption: try the second lock, or back off</title><rect x="384" y="706" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="712" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="722.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="724" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.4 Attempt 3, no preemption: try the second lock, or</text><text x="448" y="739" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">back off</text></a>
-<a href="#sec-5-6" class="cmap-link"><title>5.6 Concept: Attempt 4, mutual exclusion: update with one instruction, no lock</title><rect x="384" y="752" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="758" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="768.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="770" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.6 Attempt 4, mutual exclusion: update with one</text><text x="448" y="785" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">instruction, no lock</text></a>
-<path d="M352,712 C368,712 368,642 384,642" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,712 C368,712 368,681 384,681" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,712 C368,712 368,727 384,727" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,712 C368,712 368,773 384,773" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="698" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="716" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-5-5" class="cmap-link"><title>5.5 Real machine: No run hung, but the retries point to livelock</title><rect x="384" y="806" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="812" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="822.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="824" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.5 No run hung, but the retries point to livelock</text></a>
-<a href="#sec-5-7" class="cmap-link"><title>5.7 Real machine: Four fixes, one job: all finish, at different prices</title><rect x="384" y="837" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="843" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="853.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="855" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.7 Four fixes, one job: all finish, at different</text><text x="476" y="870" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">prices</text></a>
-<path d="M352,842 C368,842 368,820 384,820" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,842 C368,842 368,858 384,858" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="830" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="846" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-5-8" class="cmap-link"><title>5.8 Check yourself: What the second question settled</title><rect x="384" y="891" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="897" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="907.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="909" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.8 What the second question settled</text></a>
-<path d="M352,904 C368,904 368,904 384,904" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="892" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="908" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-5" class="cmap-link"><title>Extra 5 Deeper, Q2: The lock-free insert, step by step: one swap fails and retries</title><rect x="384" y="930" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="936" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="946.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="948" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 5 The lock-free insert, step by step: one swap</text><text x="465" y="963" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">fails and retries</text></a>
-<a href="#extra-6" class="cmap-link"><title>Extra 6 Deeper, Q2: The dining philosophers again: one reversed reach breaks the circle</title><rect x="384" y="976" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="982" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="992.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="994" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 6 The dining philosophers again: one reversed</text><text x="465" y="1009" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">reach breaks the circle</text></a>
-<path d="M352,974 C368,974 368,951 384,951" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,974 C368,974 368,997 384,997" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="961" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="978" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,806 C232,806 232,604 248,604" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,806 C232,806 232,712 248,712" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,806 C232,806 232,842 248,842" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,806 C232,806 232,904 248,904" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,806 C232,806 232,974 248,974" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-5" class="cmap-link"><title>Q2. Which of the four conditions can we break, and what does each break cost?</title><rect x="10" y="764" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="784" r="11" fill="#a0632a"/><text x="28" y="788" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="788" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Which of the four</text><text x="48" y="804" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">conditions can we break,</text><text x="48" y="820" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">and what does each break</text><text x="48" y="836" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">cost?</text></a>
-<text x="113.0" y="1040" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-6-1" class="cmap-link"><title>6.1 Problem: Prevention needs everyone to follow the rule</title><rect x="384" y="1052" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1058" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1068.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1070" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.1 Prevention needs everyone to follow the rule</text></a>
-<path d="M352,1066 C368,1066 368,1066 384,1066" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="1052" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="1070" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-6-2" class="cmap-link"><title>6.2 Concept: Avoidance: never run together threads that could form a circle</title><rect x="384" y="1091" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1097" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1107.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1109" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.2 Avoidance: never run together threads that could</text><text x="448" y="1124" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">form a circle</text></a>
-<a href="#sec-6-3" class="cmap-link"><title>6.3 Concept: Detect and recover: let it happen, find the circle, restart</title><rect x="384" y="1137" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1143" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1153.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1155" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.3 Detect and recover: let it happen, find the circle,</text><text x="448" y="1170" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">restart</text></a>
-<a href="#sec-6-4" class="cmap-link"><title>6.4 Concept: Which attitude fits? Three questions, in order</title><rect x="384" y="1183" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1189" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1199.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1201" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.4 Which attitude fits? Three questions, in order</text></a>
-<path d="M352,1150 C368,1150 368,1112 384,1112" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1150 C368,1150 368,1158 384,1158" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1150 C368,1150 368,1196 384,1196" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1138" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1154" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-6-5" class="cmap-link"><title>6.5 Check yourself: What the third question settled</title><rect x="384" y="1222" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1228" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1238.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1240" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.5 What the third question settled</text></a>
-<path d="M352,1236 C368,1236 368,1236 384,1236" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1222" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1240" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<path d="M216,1152 C232,1152 232,1066 248,1066" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1152 C232,1152 232,1150 248,1150" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1152 C232,1152 232,1236 248,1236" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<a href="#chapter-6" class="cmap-link"><title>Q3. If we cannot prevent a deadlock, what else can we do?</title><rect x="10" y="1118" width="206" height="68" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="1138" r="11" fill="#a0632a"/><text x="28" y="1142" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="1142" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">If we cannot prevent a</text><text x="48" y="1158" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">deadlock, what else can</text><text x="48" y="1174" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">we do?</text></a>
-<text x="113.0" y="1271" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-7-1" class="cmap-link"><title>7.1 Problem: Threads bring locks, deadlock, and no say in who runs when</title><rect x="384" y="1283" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1289" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1299.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1301" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">7.1 Threads bring locks, deadlock, and no say in who</text><text x="448" y="1316" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">runs when</text></a>
-<path d="M352,1304 C368,1304 368,1304 384,1304" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="1291" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="1308" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-7-2" class="cmap-link"><title>7.2 Concept: An event loop: wait, handle one event, repeat; no locks</title><rect x="384" y="1337" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1343" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1353.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1355" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">7.2 An event loop: wait, handle one event, repeat; no</text><text x="448" y="1370" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">locks</text></a>
-<path d="M352,1358 C368,1358 368,1358 384,1358" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1345" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1362" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-7-3" class="cmap-link"><title>7.3 Check yourself: What the fourth question settled</title><rect x="384" y="1391" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1397" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1407.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1409" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">7.3 What the fourth question settled</text></a>
-<path d="M352,1404 C368,1404 368,1404 384,1404" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1392" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1408" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-1" class="cmap-link"><title>Extra 1 Deeper, Q4: select(): ask the kernel which clients have something waiting</title><rect x="384" y="1430" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1436" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1446.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q4</text><text x="465" y="1448" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 1 select(): ask the kernel which clients have</text><text x="465" y="1463" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">something waiting</text></a>
-<a href="#extra-2" class="cmap-link"><title>Extra 2 Deeper, Q4: One handler that blocks makes every client wait</title><rect x="384" y="1476" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1482" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1492.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q4</text><text x="465" y="1494" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 2 One handler that blocks makes every client</text><text x="465" y="1509" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">wait</text></a>
-<a href="#extra-3" class="cmap-link"><title>Extra 3 Deeper, Q4: Asynchronous I/O: start the read, return at once, ask later</title><rect x="384" y="1522" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1528" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1538.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q4</text><text x="465" y="1540" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 3 Asynchronous I/O: start the read, return at</text><text x="465" y="1555" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">once, ask later</text></a>
-<a href="#extra-4" class="cmap-link"><title>Extra 4 Deeper, Q4: What stays hard with events, and the verdict of OSTEP section 33.9</title><rect x="384" y="1568" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1574" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1584.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q4</text><text x="465" y="1586" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 4 What stays hard with events, and the verdict</text><text x="465" y="1601" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">of OSTEP section 33.9</text></a>
-<path d="M352,1520 C368,1520 368,1451 384,1451" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1520 C368,1520 368,1497 384,1497" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1520 C368,1520 368,1543 384,1543" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1520 C368,1520 368,1589 384,1589" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1507" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1524" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,1448 C232,1448 232,1304 248,1304" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1448 C232,1448 232,1358 248,1358" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1448 C232,1448 232,1404 248,1404" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1448 C232,1448 232,1520 248,1520" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-7" class="cmap-link"><title>Q4. Could we be concurrent without threads, and without their bugs?</title><rect x="10" y="1414" width="206" height="68" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="1434" r="11" fill="#a0632a"/><text x="28" y="1438" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q4</text><text x="48" y="1438" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Could we be concurrent</text><text x="48" y="1454" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">without threads, and</text><text x="48" y="1470" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">without their bugs?</text></a>
-<a href="#summary-2" class="cmap-link"><title>What the second class settled</title><rect x="10" y="1644" width="206" height="50" rx="7" fill="#555e6b"/><text x="21" y="1663" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: What the second class</text><text x="21" y="1679" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">settled</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-2.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## <span class="lbl lbl-roadmap">Roadmap</span> Where we left off: four conditions, all needed {#opening-2 data-toc-label="[Roadmap] Where we left off: four conditions, all needed"}
 
 The first class ended with a program that stopped. In `deadlock.c` ([Section 3.2](class-1.md#sec-3-2)), thread 1 takes lock L1 and then lock L2, and thread 2 takes L2 and then L1. One run printed two lines and then nothing, until `timeout` killed it with exit status 124 ([Section 3.3](class-1.md#sec-3-3)).
@@ -168,7 +12,7 @@ The first class also gave that hang a name and a shape. A **deadlock** is a grou
 4. **Circular wait**: the waits form a circle, each thread waiting for the next, and the last one for the first.
 
 <figure markdown="1">
-![Figure 4.1. Last class in one picture. Top: the two classes of bugs. Middle: a deadlock drawn as holds and wants; a solid arrow means "holds", a dashed arrow "wanted by". Bottom: the four conditions, and the sentence that this class rests on.](figs/c2_recap.svg){width=72%}
+![Figure 4.1. Last class in one picture. Top: the two classes of bugs. Middle: a deadlock drawn as holds and wants; a solid arrow means "holds", a dashed arrow "wanted by". Bottom: the four conditions, and the sentence that this class rests on.](figs/c2_recap.svg){width=100%}
 <figcaption markdown="1">Figure 4.1. Last class in one picture. Top: the two classes of bugs. Middle: a deadlock drawn as holds and wants; a solid arrow means "holds", a dashed arrow "wanted by". Bottom: the four conditions, and the sentence that this class rests on.</figcaption>
 </figure>
 
@@ -197,7 +41,7 @@ The four questions of this class, in order:
 The obvious fix for last class's program is one rule: both threads take L1 first. Then nobody can hold L2 without first holding L1, so whichever thread gets L1 also finds L2 free. No circle can form. A rule that simple should have made deadlock rare. It has not, and OSTEP gives two reasons.
 
 <figure markdown="1">
-![Figure 4.2. Where it breaks, in two pictures. Top: two parts of an operating system that need each other. Bottom: Java's Vector, whose AddAll() hides its two locks inside.](figs/c2_hidden.svg){width=48%}
+![Figure 4.2. Where it breaks, in two pictures. Top: two parts of an operating system that need each other. Bottom: Java's Vector, whose AddAll() hides its two locks inside.](figs/c2_hidden.svg){width=100%}
 <figcaption markdown="1">Figure 4.2. Where it breaks, in two pictures. Top: two parts of an operating system that need each other. Bottom: Java's Vector, whose AddAll() hides its two locks inside.</figcaption>
 </figure>
 
@@ -275,13 +119,6 @@ Here is what happens when the two calls meet at the wrong moment. Inside the fun
 | 4 | | line 25: lock `v1.lock`: held, sleep | thread 2 waits for thread 1 |
 
 After step 4, each thread holds the lock the other one waits for. It is the circle of [Section 3.4](class-1.md#sec-3-4), and the program prints nothing per lock, so this order of steps is a reading of the code. The next part shows that the real runs end exactly this way.
-
-
-<!-- anim:vector10:start -->
-Step through the hang yourself: the same line 24 takes a different first lock in each thread, and the circle closes at line 25.
-
-<div class="anim" data-anim="vector10" markdown="0"></div>
-<!-- anim:vector10:end -->
 
 - What this part settled: `vector_add()` is `AddAll()` in C; its lock order is the argument order, so two callers that pass the same two vectors in opposite orders take the same two locks in opposite orders.
 - What it leaves open: whether this really hangs on a machine, and whether passing the same order really cures it.
@@ -490,13 +327,6 @@ Here is the moment that hung `vector_deadlock.c`, run through this code. Thread 
 
 No circle could form, because the thread that met a busy lock let go of its own. This order of steps is a reading of the code; the program prints only its totals.
 
-
-<!-- anim:trylock10:start -->
-Step through attempt 3 yourself: the moment that hung the last program, with trylock in place of the second lock.
-
-<div class="anim" data-anim="trylock10" markdown="0"></div>
-<!-- anim:trylock10:end -->
-
 - What this part settled: trylock plus giving back the first lock breaks no preemption from the inside: the holder gives up its own lock, so no thread ever waits while holding, and no deadlock can form.
 - What it leaves open: what the retries cost, and whether the two threads could keep getting in each other's way.
 
@@ -531,7 +361,7 @@ Every run finished with exit status 0. Not one hung. But the retries are large. 
 That points at a new danger. Suppose both threads take their first lock at the same moment, both fail their trylock at the same moment, both give back at the same moment, and both start again in step, every time.
 
 <figure markdown="1">
-![Figure 5.1. The worst case of attempt 3, as a drawing (not a capture): both threads lock, fail, give back and lock again in step, so neither ever holds both locks.](figs/c2_livelock.svg){width=60%}
+![Figure 5.1. The worst case of attempt 3, as a drawing (not a capture): both threads lock, fail, give back and lock again in step, so neither ever holds both locks.](figs/c2_livelock.svg){width=100%}
 <figcaption markdown="1">Figure 5.1. The worst case of attempt 3, as a drawing (not a capture): both threads lock, fail, give back and lock again in step, so neither ever holds both locks.</figcaption>
 </figure>
 
@@ -682,7 +512,7 @@ OSTEP's example has 2 CPUs and 4 threads, T1 to T4. In the first case, the threa
 T1 and T2 both want both locks, so a circle could form between them if both were partway through at once. The scheduler never lets them overlap: one runs to the end before the other starts. Running on different CPUs is not enough, and neither is taking turns on one CPU, since a thread switched out in the middle still holds its locks. T3 wants only L2, so it may run beside either of them: to be on a circle, a thread must hold one lock while it waits for another, so a thread that takes only one lock never is.
 
 <figure markdown="1">
-![Figure 6.1. Case A: one schedule that cannot deadlock. T1 and T2 run one after the other on CPU 2; T3 and T4 run on CPU 1, beside them; T3 may overlap either, since it takes only L2. Box lengths are drawn equal; the book gives no times.](figs/c2_avoid_a.svg){width=48%}
+![Figure 6.1. Case A: one schedule that cannot deadlock. T1 and T2 run one after the other on CPU 2; T3 and T4 run on CPU 1, beside them; T3 may overlap either, since it takes only L2. Box lengths are drawn equal; the book gives no times.](figs/c2_avoid_a.svg){width=80%}
 <figcaption markdown="1">Figure 6.1. Case A: one schedule that cannot deadlock. T1 and T2 run one after the other on CPU 2; T3 and T4 run on CPU 1, beside them; T3 may overlap either, since it takes only L2. Box lengths are drawn equal; the book gives no times.</figcaption>
 </figure>
 
@@ -696,7 +526,7 @@ In the second case, three threads want both locks:
 Now T1, T2 and T3 must never run at the same time as each other, so they run one after another; OSTEP's drawing puts them on one CPU, and the other CPU sits idle once T4 is done. The whole job takes longer.
 
 <figure markdown="1">
-![Figure 6.2. Case B: T1, T2 and T3 take turns on CPU 2, while CPU 1 runs T4 and then sits idle.](figs/c2_avoid_b.svg){width=48%}
+![Figure 6.2. Case B: T1, T2 and T3 take turns on CPU 2, while CPU 1 runs T4 and then sits idle.](figs/c2_avoid_b.svg){width=80%}
 <figcaption markdown="1">Figure 6.2. Case B: T1, T2 and T3 take turns on CPU 2, while CPU 1 runs T4 and then sits idle.</figcaption>
 </figure>
 
@@ -712,7 +542,7 @@ Using advance knowledge of which locks each thread will take, to schedule thread
 Avoidance needs knowledge that a general system does not have. The last attitude needs no knowledge in advance at all. If deadlocks are rare, and starting over is cheap, then paying for prevention all through the code can cost more than the deadlocks do. So this attitude lets a deadlock happen, and looks for it now and then.
 
 <figure markdown="1">
-![Figure 6.3. What a detector looks at: the dependency graph of the first class, built while the system runs, and the detector's loop: every so often, build the graph and look for a circle.](figs/c2_detector.svg){width=48%}
+![Figure 6.3. What a detector looks at: the dependency graph of the first class, built while the system runs, and the detector's loop: every so often, build the graph and look for a circle.](figs/c2_detector.svg){width=100%}
 <figcaption markdown="1">Figure 6.3. What a detector looks at: the dependency graph of the first class, built while the system runs, and the detector's loop: every so often, build the graph and look for a circle.</figcaption>
 </figure>
 
@@ -728,11 +558,6 @@ The reasoning behind it is a piece of engineering advice that OSTEP calls Tom We
 ### 6.4 <span class="lbl lbl-concept">Concept</span> Which attitude fits? Three questions, in order {#sec-6-4 data-toc-label="6.4 [Concept] Which attitude fits? Three questions, in order"}
 
 Three attitudes, each fitting a different kind of system. OSTEP describes them one by one. One way to choose, built from OSTEP's descriptions (OSTEP itself gives no such procedure), is to ask three questions, in this order.
-
-<figure markdown="1">
-![Figure 6.4. The decision, as a flowchart: three questions in order, each with the attitude it leads to and a real system that uses it.](figs/c2_decision.svg){width=90%}
-<figcaption markdown="1">Figure 6.4. The decision, as a flowchart: three questions in order, each with the attitude it leads to and a real system that uses it.</figcaption>
-</figure>
 
 1. **Can every piece of code agree on one order for taking the locks?** If yes, prevent, with lock ordering. The Linux kernel does this. Its code that maps files into memory, `mm/filemap.c`, still opens with the comment OSTEP quotes, listing which locks must be taken before which. And its lock checker, called **lockdep**, records the order in which locks are taken while the kernel runs, and reports a pair taken in reverse order the first time it sees one, before any deadlock has actually happened.
 2. **If not: does the system know, before it starts, every task and every lock each task will take?** If yes, avoid, by scheduling. That mostly means small embedded systems, whose set of tasks is fixed in advance. A general-purpose OS never knows this.
@@ -789,7 +614,7 @@ while (1) {
 `while (1)` loops for ever (1 counts as true). `getEvents()` waits until something has happened, such as a message arriving from a client, and returns the list of what happened. Each thing that happened is an **event**. `processEvent(e)` runs the code for one event, to its end. The one loop is called the **event loop**, and the code that processes one kind of event is an **event handler**.
 
 <figure markdown="1">
-![Figure 7.1. The event loop as a flowchart: wait for events, take the next one, run its handler to the end, and go round again.](figs/c2_event_loop.svg){width=72%}
+![Figure 7.1. The event loop as a flowchart: wait for events, take the next one, run its handler to the end, and go round again.](figs/c2_event_loop.svg){width=100%}
 <figcaption markdown="1">Figure 7.1. The event loop as a flowchart: wait for events, take the next one, run its handler to the end, and go round again.</figcaption>
 </figure>
 
@@ -960,19 +785,12 @@ The chapter's verdict: "both threads and events are likely to persist as two dif
 
 Step 4 is the one that matters. A plain store there would have set `head` to `n1`, which points at A, and `n2` would have vanished from the list: that is how the unprotected insert of [Section 5.7](#sec-5-7) lost about half its nodes. The compare refused, thread 1 looked again, and in the end the list is `n1`, then `n2`, then A. No lock was held at any step.
 
-
-<!-- anim:casinsert10:start -->
-Step through the two inserts yourself: thread 2 swaps first, thread 1's swap fails, and thread 1 looks again.
-
-<div class="anim" data-anim="casinsert10" markdown="0"></div>
-<!-- anim:casinsert10:end -->
-
 ### Extra 6 <span class="lbl lbl-deeper">Deeper, Q2</span> The dining philosophers again: one reversed reach breaks the circle {#extra-6 data-toc-label="Extra 6 [Deeper, Q2] The dining philosophers again: one reversed reach breaks the circle"}
 
 Last week's dining philosophers look different with this week's words. Five philosophers sit at a round table, with one fork between each pair, and each needs the two forks beside it to eat.
 
 <figure markdown="1">
-![Figure E6.1. Five philosophers, P0 to P4, and five forks between them. P4, in orange, reaches for its forks in the other order.](figs/c2_philosophers.svg){width=40%}
+![Figure E6.1. Five philosophers, P0 to P4, and five forks between them. P4, in orange, reaches for its forks in the other order.](figs/c2_philosophers.svg){width=50%}
 <figcaption markdown="1">Figure E6.1. Five philosophers, P0 to P4, and five forks between them. P4, in orange, reaches for its forks in the other order.</figcaption>
 </figure>
 

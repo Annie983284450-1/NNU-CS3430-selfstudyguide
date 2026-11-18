@@ -1,147 +1,27 @@
 # Second class: the other two pieces: a shared counter that loses updates, and a write that is not yet on the disk (OSTEP 2) {#class-2}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 1279" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="1279" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#555e6b">WEEK 1 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#opening-2" class="cmap-link"><title>Recap of the first class, and the three questions of the second</title><rect x="10" y="122" width="206" height="61" rx="6" fill="#f3f4f6" stroke="#9aa3b2" stroke-width="1.1"/><text x="20" y="138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">Where we left off: Recap of the</text><text x="20" y="153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">first class, and the three</text><text x="20" y="168" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">questions of the second</text></a>
-<a href="#sec-4-1" class="cmap-link"><title>4.1 Problem: Two threads, one counter, and a total of 103,902</title><rect x="384" y="205" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="211" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="221.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="223" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.1 Two threads, one counter, and a total of 103,902</text></a>
-<path d="M352,218 C368,218 368,218 384,218" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="206" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="222" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-4-2" class="cmap-link"><title>4.2 Worked example: The two-thread counter program: threads.v0.c</title><rect x="384" y="244" width="400" height="27" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="250" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="260.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="262" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.2 The two-thread counter program: threads.v0.c</text></a>
-<a href="#sec-4-3" class="cmap-link"><title>4.3 Concept: What a thread is: a program counter, registers and a stack, sharing one address space</title><rect x="384" y="275" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="281" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="291.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="293" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.3 What a thread is: a program counter, registers and a</text><text x="448" y="308" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">stack, sharing one address space</text></a>
-<a href="#sec-4-5" class="cmap-link"><title>4.5 Concept: counter++ is three instructions: the lost update</title><rect x="384" y="321" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="327" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="337.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="339" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.5 counter++ is three instructions: the lost update</text></a>
-<a href="#sec-4-6" class="cmap-link"><title>4.6 Concept: Why 1000 loops hid the bug: the head start</title><rect x="384" y="352" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="358" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="368.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="370" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.6 Why 1000 loops hid the bug: the head start</text></a>
-<path d="M352,312 C368,312 368,258 384,258" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,312 C368,312 368,296 384,296" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,312 C368,312 368,334 384,334" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,312 C368,312 368,366 384,366" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="298" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="316" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-4-4" class="cmap-link"><title>4.4 Real machine: Same input, different wrong answers</title><rect x="384" y="391" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="397" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="407.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="409" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.4 Same input, different wrong answers</text></a>
-<path d="M352,404 C368,404 368,404 384,404" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="392" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="408" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#extra-6" class="cmap-link"><title>Extra 6 Deeper, Q1: The concurrency crux in full, and the road ahead</title><rect x="384" y="430" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="436" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="446.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="448" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 6 The concurrency crux in full, and the road</text><text x="465" y="463" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">ahead</text></a>
-<path d="M352,451 C368,451 368,451 384,451" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="438" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="455" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,340 C232,340 232,218 248,218" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,340 C232,340 232,312 248,312" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,340 C232,340 232,404 248,404" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,340 C232,340 232,451 248,451" fill="none" stroke="#555e6b" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-4" class="cmap-link"><title>Q1. What goes wrong when two threads add to one counter at the same time?</title><rect x="10" y="298" width="206" height="84" rx="8" fill="#ffffff" stroke="#555e6b" stroke-width="1.9"/><circle cx="28" cy="318" r="11" fill="#555e6b"/><text x="28" y="322" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="322" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">What goes wrong when two</text><text x="48" y="338" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">threads add to one</text><text x="48" y="354" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">counter at the same</text><text x="48" y="370" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">time?</text></a>
-<text x="113.0" y="494" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-5-1" class="cmap-link"><title>5.1 Problem: The three instructions must become one step, at a price</title><rect x="384" y="506" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="512" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="522.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="524" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.1 The three instructions must become one step, at a</text><text x="448" y="539" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">price</text></a>
-<path d="M352,527 C368,527 368,527 384,527" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="514" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="531" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-5-2" class="cmap-link"><title>5.2 Concept: The mutex and the critical section: threads.v1.c</title><rect x="384" y="560" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="566" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="576.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="578" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.2 The mutex and the critical section: threads.v1.c</text></a>
-<a href="#sec-5-5" class="cmap-link"><title>5.5 Worked example: Recording who did each increment: threads.v2.c</title><rect x="384" y="591" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="597" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="607.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="609" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.5 Recording who did each increment:</text><text x="487" y="624" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">threads.v2.c</text></a>
-<path d="M352,596 C368,596 368,574 384,574" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,596 C368,596 368,612 384,612" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="584" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="600" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-5-3" class="cmap-link"><title>5.3 Real machine: Always right, eight times slower: what the lock costs</title><rect x="384" y="645" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="651" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="661.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="663" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.3 Always right, eight times slower: what the lock</text><text x="476" y="678" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">costs</text></a>
-<a href="#sec-5-6" class="cmap-link"><title>5.6 Real machine: 86,581 switches: the lock only decides where the boundary falls</title><rect x="384" y="691" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="697" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="707.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="709" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.6 86,581 switches: the lock only decides where</text><text x="476" y="724" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the boundary falls</text></a>
-<path d="M352,689 C368,689 368,666 384,666" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,689 C368,689 368,712 384,712" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="676" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="693" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-5-4" class="cmap-link"><title>5.4 Check yourself: Does the lock remove the parallelism?</title><rect x="384" y="745" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="751" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="761.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="763" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.4 Does the lock remove the parallelism?</text></a>
-<path d="M352,758 C368,758 368,758 384,758" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="746" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="762" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<path d="M216,641 C232,641 232,527 248,527" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,641 C232,641 232,596 248,596" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,641 C232,641 232,689 248,689" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,641 C232,641 232,758 248,758" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<a href="#chapter-5" class="cmap-link"><title>Q2. How does a lock fix it, and what does the fix cost?</title><rect x="10" y="607" width="206" height="68" rx="8" fill="#ffffff" stroke="#555e6b" stroke-width="1.9"/><circle cx="28" cy="627" r="11" fill="#555e6b"/><text x="28" y="631" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="631" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How does a lock fix it,</text><text x="48" y="647" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">and what does the fix</text><text x="48" y="663" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">cost?</text></a>
-<text x="113.0" y="794" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-6-1" class="cmap-link"><title>6.1 Problem: RAM forgets at power off, and the disk is about 1000 times slower</title><rect x="384" y="806" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="812" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="822.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="824" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.1 RAM forgets at power off, and the disk is about 1000</text><text x="448" y="839" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">times slower</text></a>
-<path d="M352,827 C368,827 368,827 384,827" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="814" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="831" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-6-2" class="cmap-link"><title>6.2 Worked example: open, write, close: the file descriptor and the 13 bytes</title><rect x="384" y="860" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="866" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="876.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="878" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.2 open, write, close: the file descriptor and</text><text x="487" y="893" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the 13 bytes</text></a>
-<a href="#sec-6-3" class="cmap-link"><title>6.3 Concept: The write path: the inode, the page cache and the dirty page</title><rect x="384" y="906" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="912" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="922.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="924" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.3 The write path: the inode, the page cache and the</text><text x="448" y="939" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">dirty page</text></a>
-<path d="M352,904 C368,904 368,881 384,881" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,904 C368,904 368,927 384,927" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="891" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="908" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-6-4" class="cmap-link"><title>6.4 Real machine: strace: watching the system calls cross into the kernel</title><rect x="384" y="960" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="966" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="976.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="978" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.4 strace: watching the system calls cross into</text><text x="476" y="993" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the kernel</text></a>
-<a href="#sec-6-5" class="cmap-link"><title>6.5 Real machine: Dirty pages measured: /proc/meminfo, dd and sync</title><rect x="384" y="1006" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1012" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1022.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1024" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.5 Dirty pages measured: /proc/meminfo, dd and</text><text x="476" y="1039" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">sync</text></a>
-<a href="#sec-6-6" class="cmap-link"><title>6.6 Real machine: fsync: durability at thousands of times the cost</title><rect x="384" y="1052" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1058" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1068.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1070" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.6 fsync: durability at thousands of times the</text><text x="476" y="1085" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">cost</text></a>
-<path d="M352,1027 C368,1027 368,981 384,981" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1027 C368,1027 368,1027 384,1027" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1027 C368,1027 368,1073 384,1073" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="1014" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="1031" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#extra-7" class="cmap-link"><title>Extra 7 Deeper, Q3: The four jobs a file system must get right</title><rect x="384" y="1106" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1112" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1122.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="1124" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 7 The four jobs a file system must get right</text></a>
-<a href="#extra-8" class="cmap-link"><title>Extra 8 Deeper, Q3: A name, an inode number, a data block: where the 13 bytes live</title><rect x="384" y="1137" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1143" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1153.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="1155" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 8 A name, an inode number, a data block: where</text><text x="465" y="1170" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">the 13 bytes live</text></a>
-<path d="M352,1142 C368,1142 368,1120 384,1120" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1142 C368,1142 368,1158 384,1158" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1130" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1146" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,994 C232,994 232,827 248,827" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,994 C232,994 232,904 248,904" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,994 C232,994 232,1027 248,1027" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,994 C232,994 232,1142 248,1142" fill="none" stroke="#555e6b" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-6" class="cmap-link"><title>Q3. When write() returns, are the bytes on the disk?</title><rect x="10" y="960" width="206" height="68" rx="8" fill="#ffffff" stroke="#555e6b" stroke-width="1.9"/><circle cx="28" cy="980" r="11" fill="#555e6b"/><text x="28" y="984" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="984" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">When write() returns,</text><text x="48" y="1000" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">are the bytes on the</text><text x="48" y="1016" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">disk?</text></a>
-<a href="#summary-2" class="cmap-link"><title>Summary of the week: six questions, three pieces</title><rect x="10" y="1213" width="206" height="50" rx="7" fill="#555e6b"/><text x="21" y="1232" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: Summary of the week:</text><text x="21" y="1248" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">six questions, three pieces</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-2.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## <span class="lbl lbl-roadmap">Roadmap</span> Recap of the first class, and the three questions of the second {#opening-2 data-toc-label="[Roadmap] Recap of the first class, and the three questions of the second"}
 
-The first class covered virtualization, the pleasant piece of the course, where the operating system hands out comfortable illusions. Each illusion it built was settled, and each left one question open. The second class exists to take up those two open questions: what happens when two of the virtual processors really run at the same time and touch the same data, and what happens when the power goes out. The deck calls them the other two pieces: concurrency, where sharing goes wrong, and persistence, where the power goes out. Figure 4.1 is the first class in two pictures, with the two open questions under them.
+The first class covered virtualization, the pleasant piece of the course, where the operating system hands out comfortable illusions. Each illusion it built was settled, and each left one question open. The second class exists to take up those two open questions: what happens when two of the virtual processors really run at the same time and touch the same data, and what happens when the power goes out. They are the other two pieces of the course: concurrency, where sharing goes wrong, and persistence, where the power goes out. Figure 4.1 is the first class in two pictures, with the two open questions under them.
 
 <figure markdown="1">
-![Figure 4.1. The first class in two pictures: four programs on one physical processor, and two processes at the same address mapped to two places in physical memory, with the question each one leaves open.](figs/recap_c2.png){width=100%}
+![Figure 4.1. The first class in two pictures: four programs on one physical processor, and two processes at the same address mapped to two places in physical memory, with the question each one leaves open.](figs/recap_c2.svg){width=100%}
 <figcaption markdown="1">Figure 4.1. The first class in two pictures: four programs on one physical processor, and two processes at the same address mapped to two places in physical memory, with the question each one leaves open.</figcaption>
 </figure>
 
-The line at the top lists the words the first class left with. Process: a running program. System call: the only door into the kernel. Mechanism against policy: the how and the which. Illusion: each program believes it owns a machine.
+The first class left these words behind. Process: a running program. System call: the only door into the kernel. Mechanism against policy: the how and the which. Illusion: each program believes it owns a machine.
 
 The left picture is [Chapter 2](class-1.md#chapter-2). Four programs, A, B, C and D, share one physical processor, and each one believes it has the processor to itself; the OS switches among them. That much is settled. Left open is the question under it: what if two of those virtual processors touch the same data at the same time? That is **concurrency**, many things happening at once, and the second class goes there first.
 
 The right picture is [Chapter 3](class-1.md#chapter-3). Two processes use the same address, 0x200000, and the OS maps the two to two different places in physical memory. Private memory per process: settled too. Left open is the question under it: what survives when the power goes out? Registers and DRAM are volatile (Part 0): when the power goes, or the system crashes, any data in memory is lost. Keeping data safe across that is **persistence**, and the second half of the class goes there.
 
-So the second class asks three questions. The first two are one bug and its fix; the third is the other piece. Figure 4.2 is the deck's list.
+So the second class asks three questions. The first two are one bug and its fix; the third is the other piece.
 
-<figure markdown="1">
-![Figure 4.2. The three questions of the second class.](figs/roadmap_c2.png){width=100%}
-<figcaption markdown="1">Figure 4.2. The three questions of the second class.</figcaption>
-</figure>
+!!! roadmap "The three questions of the second class"
+
+    1. What goes wrong when two threads add to one counter at the same time?
+    2. How does a lock fix it, and what does the fix cost?
+    3. When `write()` returns, are the bytes on the disk?
 
 First, what goes wrong when two threads add to one counter at the same time ([Chapter 4](#chapter-4), Sections [4.1](#sec-4-1) to [4.6](#sec-4-6))? The counter ends up wrong, and the answer goes down to three machine instructions. Second, how does a lock fix it, and what does the fix cost ([Chapter 5](#chapter-5), Sections [5.1](#sec-5-1) to [5.6](#sec-5-6))? We measure the price, and we check whether the two threads still run in parallel at all. Third, when `write()` returns, are the bytes on the disk ([Chapter 6](#chapter-6), Sections [6.1](#sec-6-1) to [6.6](#sec-6-6))? A program writes 13 bytes to a file, and we trace where those bytes actually are. The week summary answers all six questions of the week. Extras [6](#extra-6) to [10](#extra-10) go deeper.
 
@@ -151,67 +31,89 @@ First, what goes wrong when two threads add to one counter at the same time ([Ch
 
 ### 4.1 <span class="lbl lbl-problem">Problem</span> Two threads, one counter, and a total of 103,902 {#sec-4-1 data-toc-label="4.1 [Problem] Two threads, one counter, and a total of 103,902"}
 
-What we have: the first class kept processes apart, each in its own private memory. But some programs want two lines of work to share data on purpose: a web server answering many requests that all update one count of visitors, a game whose physics and drawing share one world. For that, a process can contain more than one **thread**: a line of execution inside a process, with its own place in the program, that shares all of the process's memory with the other threads ([Section 4.3](#sec-4-3) draws it exactly). Figure 4.3 is the deck's problem slide for this question.
+What we have: the first class kept processes apart, each in its own private memory. But some programs want two lines of work to share data on purpose: a web server answering many requests that all update one count of visitors, a game whose physics and drawing share one world. For that, a process can contain more than one **thread**: a line of execution inside a process, with its own place in the program, that shares all of the process's memory with the other threads ([Section 4.3](#sec-4-3) draws it exactly). Figure 4.2 draws the problem.
 
 <figure markdown="1">
-![Figure 4.3. The problem of the second class's first question, left and middle columns: one process with two threads that both add to one counter, and the number it printed.](figs/p_counter_a.png){width=100%}
-<figcaption markdown="1">Figure 4.3. The problem of the second class's first question, left and middle columns: one process with two threads that both add to one counter, and the number it printed.</figcaption>
+![Figure 4.2. What we have (one process with two threads that both add to one counter) and where it breaks (the number it printed).](figs/p_counter.svg){width=100%}
+<figcaption markdown="1">Figure 4.2. What we have (one process with two threads that both add to one counter) and where it breaks (the number it printed).</figcaption>
 </figure>
 
-The left column is the setup. One process, two threads, A and B, each running the same function, `worker()`. Each thread adds 1 to one shared number, `counter`, a given number of times, called `loops`. `counter++` is C for "add one to counter". Both arrows end at the same byte in memory, on purpose: that is what threads are for.
+The left half is the setup. One process, two threads, A and B, each running the same function, `worker()`. Each thread adds 1 to one shared number, `counter`, a given number of times, called `loops`. `counter++` is C for "add one to counter". Both arrows end at the same byte in memory, on purpose: that is what threads are for.
 
-Where it breaks is the middle column. Run the program with 100,000 loops, so that each thread adds 1 a hundred thousand times. The answer should be 2 × 100,000 = 200,000. The program printed 103,902. Count the damage: 200,000 − 103,902 = 96,098 additions vanished, almost half. Run it again and it prints a different wrong number. There is no random number anywhere in the program ([Section 4.2](#sec-4-2) shows all of it). And at 1000 loops the answer is right every time.
+Where it breaks is the right half. Run the program with 100,000 loops, so that each thread adds 1 a hundred thousand times. The answer should be 2 × 100,000 = 200,000. The program printed 103,902. Count the damage: 200,000 − 103,902 = 96,098 additions vanished, almost half. Run it again and it prints a different wrong number. There is no random number anywhere in the program ([Section 4.2](#sec-4-2) shows all of it). And at 1000 loops the answer is right every time.
 
-So what we need is the right column, Figure 4.4.
+So what do we need?
 
-<figure markdown="1">
-![Figure 4.4. The right column: the textbook's second crux, how to build correct concurrent programs, the plan, and the question put to the room.](figs/p_counter_b.png){width=50%}
-<figcaption markdown="1">Figure 4.4. The right column: the textbook's second crux, how to build correct concurrent programs, the plan, and the question put to the room.</figcaption>
-</figure>
+!!! crux "The crux of the problem: how to build correct concurrent programs"
+
+    When there are many concurrently executing threads within the same memory space, how can we build a correctly working program? What primitives are needed from the OS? What mechanisms should be provided by the hardware? (OSTEP section 2.3)
 
 This is the second crux of the course: when there are many threads running at the same time within the same memory space, how can we build a correctly working program? What **primitives** (basic building blocks) are needed from the OS? What mechanisms should the hardware provide? The plan has two steps. First, find out what `counter++` really is to the hardware, because the bug lives there (Sections [4.2](#sec-4-2) to [4.6](#sec-4-6)). Then, a rule that lets only one thread at a time through that line, and a measurement of what the rule costs ([Chapter 5](#chapter-5)).
 
-The orange box was a question to the room, and it is worth answering for yourself before reading on: two threads each add 1000, and the final value is 2000 every time. Does that prove the program is correct? Hold your answer; [Section 4.6](#sec-4-6) settles it, and [Exercise 4](review.md#exercise-4) asks it again.
+Here is a question worth answering for yourself before reading on: two threads each add 1000, and the final value is 2000 every time. Does that prove the program is correct? Hold your answer; [Section 4.6](#sec-4-6) settles it, and [Exercise 4](review.md#exercise-4) asks it again.
 
 ### 4.2 <span class="lbl lbl-example">Worked example</span> The two-thread counter program: threads.v0.c {#sec-4-2 data-toc-label="4.2 [Worked example] The two-thread counter program: threads.v0.c"}
 
-[Section 4.1](#sec-4-1) described the program in a sentence and showed a wrong number. Before we can explain the number, we need to see that the program does exactly what the sentence says and nothing more: no randomness, no tricks. Figure 4.5 is the whole program, which is OSTEP Figure 2.5.
+[Section 4.1](#sec-4-1) described the program in a sentence and showed a wrong number. Before we can explain the number, we need to see that the program does exactly what the sentence says and nothing more: no randomness, no tricks. Here is the whole program, which is OSTEP Figure 2.5.
 
-<figure markdown="1">
-![Figure 4.5. threads.v0.c, complete, with five numbered callouts. Following OSTEP Figure 2.5.](figs/threads_v0.png){width=65%}
-<figcaption markdown="1">Figure 4.5. threads.v0.c, complete, with five numbered callouts. Following OSTEP Figure 2.5.</figcaption>
-</figure>
+*`threads.v0.c`, complete (OSTEP Figure 2.5)*
 
-Figure 4.6 is the deck's five cards that explain the callouts, and the question put to the room.
+```c linenums="1" hl_lines="5 6 11 24 25 26 27"
+#include <stdio.h>
+#include <stdlib.h>
+#include "common.h"
 
-<figure markdown="1">
-![Figure 4.6. The five callouts explained, and the prediction asked before the run.](figs/threads_v0_cards.png){width=79%}
-<figcaption markdown="1">Figure 4.6. The five callouts explained, and the prediction asked before the run.</figcaption>
-</figure>
+volatile int counter = 0;
+int loops;
 
-Read it by the callouts.
+void *worker(void *arg) {
+    int i;
+    for (i = 0; i < loops; i++) {
+        counter++;
+    }
+    pthread_exit(NULL);
+}
 
-Callout 1 is two **global variables**: variables declared outside every function, so that every function, and every thread, uses the same single copy. `counter` starts at 0, and `loops` will hold the number typed on the command line. There is exactly one `counter` in memory, and both threads read and write it. The word `volatile` in front of it tells the compiler to really read the value from memory and really write it back on every `counter++`, and never keep it in a register to save time. Without `volatile` the compiler might keep the counter in a register for the whole loop, and the experiment would show something else.
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "usage: threads <loops>\n");
+        exit(1);
+    }
+    loops = atoi(argv[1]);
+    pthread_t p1, p2;
+    printf("Initial value : %d\n", counter);
+    Pthread_create(&p1, NULL, worker, NULL);
+    Pthread_create(&p2, NULL, worker, NULL);
+    Pthread_join(p1, NULL);
+    Pthread_join(p2, NULL);
+    printf("Final value   : %d\n", counter);
+    return 0;
+}
+```
 
-Callout 2 is `worker()`, the function each thread runs. `void *worker(void *arg)` is how C writes a function that the thread library (the ready-made thread functions of callout 5) can start; the `void *` parts mean "a pointer to anything", and this program ignores them. Inside is a loop: `for (i = 0; i < loops; i++)` means "set i to 0; while i is less than loops, run the block and then add one to i". So the block, `counter++;`, runs `loops` times. Then `pthread_exit(NULL)` ends the thread. That is all a thread does here: read counter, add one, write it back, `loops` times.
+Read it in five pieces.
+
+Lines 5 and 6 are two **global variables**: variables declared outside every function, so that every function, and every thread, uses the same single copy. `counter` starts at 0, and `loops` will hold the number typed on the command line. There is exactly one `counter` in memory, and both threads read and write it. The word `volatile` in front of it tells the compiler to really read the value from memory and really write it back on every `counter++`, and never keep it in a register to save time. Without `volatile` the compiler might keep the counter in a register for the whole loop, and the experiment would show something else.
+
+Lines 8 to 14 are `worker()`, the function each thread runs. `void *worker(void *arg)` is how C writes a function that the thread library (the ready-made thread functions described below) can start; the `void *` parts mean "a pointer to anything", and this program ignores them. Inside is a loop: `for (i = 0; i < loops; i++)` means "set i to 0; while i is less than loops, run the block and then add one to i". So the block, `counter++;`, runs `loops` times. Then `pthread_exit(NULL)` ends the thread. That is all a thread does here: read counter, add one, write it back, `loops` times.
 
 Then `main`. The lines `if (argc != 2) { ... exit(1); }` check that exactly one word was typed after the program's name (`argc` counts the words, including the name; `!=` means "is not equal to"). If not, the program prints how to use it (`fprintf(stderr, ...)` prints to the error output, a second output channel for messages) and stops with `exit(1)`, where 1 means "something went wrong". `loops = atoi(argv[1]);` turns that word into a number (`atoi` stands for "ASCII to integer", text to whole number). `pthread_t p1, p2;` makes two variables that will name the two threads. Then it prints the counter's starting value.
 
-Callout 3 is `Pthread_create`, twice. Each call asks the OS for one new thread inside this same process, and each new thread starts running `worker`. The `&p1` gives the function the address of `p1` (the `&` means "the address of"), so it can store the new thread's name there. `NULL` means "no address". Here it means "use the default settings" and "no argument for worker".
+Lines 24 and 25 call `Pthread_create`, twice. Each call asks the OS for one new thread inside this same process, and each new thread starts running `worker`. The `&p1` gives the function the address of `p1` (the `&` means "the address of"), so it can store the new thread's name there. `NULL` means "no address". Here it means "use the default settings" and "no argument for worker".
 
-Callout 4 is `Pthread_join`, twice. Join means wait: `main` waits until both workers have finished, then prints the final value of the counter.
+Lines 26 and 27 call `Pthread_join`, twice. Join means wait: `main` waits until both workers have finished, then prints the final value of the counter.
 
-Callout 5 is the capital P. The real functions are `pthread_create` and `pthread_join`, from **POSIX**, the standard that says what a Unix-like system must offer C programs, so that the same code runs on Linux and macOS; **pthreads** is its section on threads. The capital-P versions are tiny wrappers in the textbook's `common.h` that call the real function and check that it returned 0, meaning success, so that an error is not silently ignored. They are a shorthand of the course's demo code, not part of POSIX.
+Finally, the capital P, and line 3's `common.h`. The real functions are `pthread_create` and `pthread_join`, from **POSIX**, the standard that says what a Unix-like system must offer C programs, so that the same code runs on Linux and macOS; **pthreads** is its section on threads. The capital-P versions are tiny wrappers in the textbook's `common.h` that call the real function and check that it returned 0, meaning success, so that an error is not silently ignored. They are a shorthand of the course's demo code, not part of POSIX.
 
-The yellow box is the prediction asked in class, before any run: with `loops` = 1000, each thread adds 1000, so what will the final value be? The natural prediction is 2 × 1000 = 2000. [Section 4.4](#sec-4-4) shows the runs.
+Before any run, make a prediction: with `loops` = 1000, each thread adds 1000, so what will the final value be? The natural prediction is 2 × 1000 = 2000. [Section 4.4](#sec-4-4) shows the runs.
 
 ### 4.3 <span class="lbl lbl-concept">Concept</span> What a thread is: a program counter, registers and a stack, sharing one address space {#sec-4-3 data-toc-label="4.3 [Concept] What a thread is: a program counter, registers and a stack, sharing one address space"}
 
-[Section 4.2](#sec-4-2)'s program called `Pthread_create` twice and said "a new thread inside this process". Before reading the results, we need to know exactly what was created, because the results depend on one fact: what the two threads share and what each has to itself. Figure 4.7 is the deck's drawing of the process after the two calls.
+[Section 4.2](#sec-4-2)'s program called `Pthread_create` twice and said "a new thread inside this process". Before reading the results, we need to know exactly what was created, because the results depend on one fact: what the two threads share and what each has to itself. Figure 4.3 draws the process after the two calls.
 
 <figure markdown="1">
-![Figure 4.7. One process after two Pthread_create calls: what all threads share, what each thread has to itself, and two cores (processors inside one chip, defined below) running the two workers at the same instant.](figs/thread_model.png){width=100%}
-<figcaption markdown="1">Figure 4.7. One process after two Pthread_create calls: what all threads share, what each thread has to itself, and two cores (processors inside one chip, defined below) running the two workers at the same instant.</figcaption>
+![Figure 4.3. One process after two Pthread_create calls: what all threads share, what each thread has to itself, and two cores (processors inside one chip, defined below) running the two workers at the same instant.](figs/thread_model.svg){width=100%}
+<figcaption markdown="1">Figure 4.3. One process after two Pthread_create calls: what all threads share, what each thread has to itself, and two cores (processors inside one chip, defined below) running the two workers at the same instant.</figcaption>
 </figure>
 
 The whole big box is one process, so everything inside it lives in one address space ([Section 3.1](class-1.md#sec-3-1)). The left column is what all threads share. That is the code (`worker()` and `main()`), the global variables (`counter` and `loops`, highlighted), and the heap (the memory `malloc` hands out, [Section 3.2](class-1.md#sec-3-2)). It is also the rest of the process's records, such as open files and the PID.
@@ -224,46 +126,85 @@ The bottom row is what the scheduler does with them. A **core** is one complete 
 
 ### 4.4 <span class="lbl lbl-machine">Real machine</span> Same input, different wrong answers {#sec-4-4 data-toc-label="4.4 [Real machine] Same input, different wrong answers"}
 
-[Section 4.3](#sec-4-3) left two threads on two cores, both adding to one counter. If the hardware simply did one addition after another, the final value would be 2 × loops every time, whatever the order. Figure 4.8 is what the arm64 Mac printed at three sizes.
+[Section 4.3](#sec-4-3) left two threads on two cores, both adding to one counter. If the hardware simply did one addition after another, the final value would be 2 × loops every time, whatever the order. Here is what the arm64 Mac printed at three sizes.
 
-<figure markdown="1">
-![Figure 4.8. threads.v0.c run on the arm64 Mac at three loop counts: always right at 1000, right once in twenty at 10,000, never right at 100,000 and above.](figs/reveal.png){width=100%}
-<figcaption markdown="1">Figure 4.8. threads.v0.c run on the arm64 Mac at three loop counts: always right at 1000, right once in twenty at 10,000, never right at 100,000 and above.</figcaption>
-</figure>
+*loops = 1000: always right*
 
-Left panel, 1000 loops: the final value is 2000, and again 2000. Exactly the prediction. (Each run first prints `Initial value : 0`, the counter before the threads start.)
+```text
+prompt> ./threads 1000
+Initial value : 0
+Final value   : 2000
+prompt> ./threads 1000
+Initial value : 0
+Final value   : 2000
+```
 
-Middle panel, 10,000 loops, run 20 times in a row. The first line is a small shell loop: `for i in $(seq 20); do ./threads 10000; done` runs the command 20 times (`seq 20` produces the numbers 1 to 20, and the loop runs once for each). The right answer is 2 × 10,000 = 20,000. The first run gave 20,000. The next ones gave 14,625, 10,131, 13,640 and 11,878, then 13 more wrong values the slide does not print, then 10,000 and 11,115 (10,000 is exactly one thread's total, so it is wrong too). So 1 right and 19 wrong (1 + 4 + 13 + 2 = 20 runs), each wrong one different.
+*loops = 10000: sometimes right, usually wrong (20 runs; 13 lines left out in the middle)*
 
-Right panel, 100,000 loops and up: 103,902 instead of 200,000, then 120,205. And at 1,000,000 loops: 1,014,781 instead of 2,000,000.
+```text
+prompt> for i in $(seq 20); do ./threads 10000; done
+Final value   : 20000
+Final value   : 14625
+Final value   : 10131
+Final value   : 13640
+Final value   : 11878
+   ... 13 more, all wrong ...
+Final value   : 10000
+Final value   : 11115
+```
 
-The blue box says it plainly. Same program, same input. At 1000 it is right every time; at 10,000 it is right once in twenty; at 100,000 it is never right, and a different wrong number each run. There is not a single random number in this program. Everything you know about programs says the same input gives the same output, and that rule just broke.
+*loops = 100000 and up: always wrong*
 
-The bottom line gives two clues. Clue 1: the wrong answers always fall between one thread's total and two threads' total. At 100,000 loops, that is between 100,000 and 200,000, and 103,902 and 120,205 both are. Clue 2: the bigger the loop count, the closer the answer gets to one thread's total. At 1,000,000 loops, one thread's total is 1,000,000 and the answer was 1,014,781, only 14,781 above it. Count the loss: 2,000,000 − 1,014,781 = 985,219 additions vanished, and 985,219 ÷ 2,000,000 ≈ 0.49, nearly half. [Section 4.5](#sec-4-5) explains clue 1, and [Section 4.6](#sec-4-6) explains clue 2.
+```text
+prompt> ./threads 100000
+Initial value : 0
+Final value   : 103902
+prompt> ./threads 100000
+Initial value : 0
+Final value   : 120205
+prompt> ./threads 1000000
+Initial value : 0
+Final value   : 1014781
+```
 
-The grey box at the bottom of the slide tells you how to try it yourself, on a Mac in the Terminal or on Ubuntu: `cc -Wall -pthread -o threads threads.v0.c`, then `./threads 10000`. (`cc` is the C compiler under another name, and `-pthread` adds the thread library.) On Windows, the same two commands work inside Ubuntu running under WSL2, Windows' built-in way of running Linux. PowerShell and cmd, Windows' own command windows, cannot build this program on their own, because it needs POSIX threads. (Terminal is the Mac's command window.) The program also needs `common.h`, the textbook's helper file. Your wrong numbers will differ from these, and so may the loop count at which the answers start going wrong: a machine whose threads start faster or slower moves that boundary ([Section 4.6](#sec-4-6) explains why). The shape will not change: at a large enough loop count, the answer is wrong, and different on every run.
+At 1000 loops: the final value is 2000, and again 2000. Exactly the prediction. (Each run first prints `Initial value : 0`, the counter before the threads start.)
+
+At 10,000 loops, run 20 times in a row. The first line is a small shell loop: `for i in $(seq 20); do ./threads 10000; done` runs the command 20 times (`seq 20` produces the numbers 1 to 20, and the loop runs once for each). The right answer is 2 × 10,000 = 20,000. The first run gave 20,000. The next ones gave 14,625, 10,131, 13,640 and 11,878, then 13 more wrong values left out of the capture, then 10,000 and 11,115 (10,000 is exactly one thread's total, so it is wrong too). So 1 right and 19 wrong (1 + 4 + 13 + 2 = 20 runs), each wrong one different.
+
+At 100,000 loops and up: 103,902 instead of 200,000, then 120,205. And at 1,000,000 loops: 1,014,781 instead of 2,000,000.
+
+Put plainly: Same program, same input. At 1000 it is right every time; at 10,000 it is right once in twenty; at 100,000 it is never right, and a different wrong number each run. There is not a single random number in this program. Everything you know about programs says the same input gives the same output, and that rule just broke.
+
+The runs give two clues. Clue 1: the wrong answers always fall between one thread's total and two threads' total. At 100,000 loops, that is between 100,000 and 200,000, and 103,902 and 120,205 both are. Clue 2: the bigger the loop count, the closer the answer gets to one thread's total. At 1,000,000 loops, one thread's total is 1,000,000 and the answer was 1,014,781, only 14,781 above it. Count the loss: 2,000,000 − 1,014,781 = 985,219 additions vanished, and 985,219 ÷ 2,000,000 ≈ 0.49, nearly half. [Section 4.5](#sec-4-5) explains clue 1, and [Section 4.6](#sec-4-6) explains clue 2.
+
+To try it yourself, on a Mac in the Terminal or on Ubuntu: `cc -Wall -pthread -o threads threads.v0.c`, then `./threads 10000`. (`cc` is the C compiler under another name, and `-pthread` adds the thread library.) On Windows, the same two commands work inside Ubuntu running under WSL2, Windows' built-in way of running Linux. PowerShell and cmd, Windows' own command windows, cannot build this program on their own, because it needs POSIX threads. (Terminal is the Mac's command window.) The program also needs `common.h`, the textbook's helper file. Your wrong numbers will differ from these, and so may the loop count at which the answers start going wrong: a machine whose threads start faster or slower moves that boundary ([Section 4.6](#sec-4-6) explains why). The shape will not change: at a large enough loop count, the answer is wrong, and different on every run.
 
 ### 4.5 <span class="lbl lbl-concept">Concept</span> counter++ is three instructions: the lost update {#sec-4-5 data-toc-label="4.5 [Concept] counter++ is three instructions: the lost update"}
 
-Clue 1 of [Section 4.4](#sec-4-4): the wrong answers sit between one thread's work and two threads' work. So increments are being lost, not invented: the counter never ends up higher than it should. Something must let one thread's addition overwrite the other's. In C, `counter++` looks like one indivisible step. To find where an addition can disappear, we have to look at what the processor actually runs for that one line. Figure 4.9 is what the compiler made of it on the arm64 Mac.
+Clue 1 of [Section 4.4](#sec-4-4): the wrong answers sit between one thread's work and two threads' work. So increments are being lost, not invented: the counter never ends up higher than it should. Something must let one thread's addition overwrite the other's. In C, `counter++` looks like one indivisible step. To find where an addition can disappear, we have to look at what the processor actually runs for that one line. Here is what the compiler made of it on the arm64 Mac.
 
-<figure markdown="1">
-![Figure 4.9. counter++ as compiled on the arm64 Mac of these runs: three machine instructions, load, add, store.](figs/three_instr.png){width=100%}
-<figcaption markdown="1">Figure 4.9. counter++ as compiled on the arm64 Mac of these runs: three machine instructions, load, add, store.</figcaption>
-</figure>
+*`counter++` as compiled on the arm64 Mac of these runs*
 
-This is **assembly language**: the machine's own instructions written as short words, one per line. Each line here has an instruction name, its operands (the values or places it works on), and, after the semicolon, a comment the deck added. `w0`, `w1` and `x0` are registers. `[x0]` means "the memory at the address held in register x0", which here is the address of `counter`. `#1` is the constant number 1.
+```text
+ldr  w0, [x0]       ; 1. load counter into a register
+add  w1, w0, #1     ; 2. add one, in the register
+str  w1, [x0]       ; 3. store it back to memory
+```
+
+This is **assembly language**: the machine's own instructions written as short words, one per line. Each line here has an instruction name, its operands (the values or places it works on), and, after the semicolon, a comment added to explain it. `w0`, `w1` and `x0` are registers. `[x0]` means "the memory at the address held in register x0", which here is the address of `counter`. `#1` is the constant number 1.
 
 So one C statement became three machine instructions. Line 1, `ldr w0, [x0]`, loads the counter from memory into register w0 (ldr is "load register"). Line 2, `add w1, w0, #1`, adds one to it, inside the processor, and puts the result in register w1; memory is not touched. Line 3, `str w1, [x0]`, stores w1 back to memory (str is "store register"). Nothing ties the three together. Between any two of them, the other core can do anything it likes to the same counter in memory. The textbook's word for "all at once, with no gap" is **atomic**, and these three instructions are not atomic.
 
-Figure 4.10 is what that allows. It is the four-step, two-core timeline to know by heart.
+The table shows what that allows. It is the four-step, two-core timeline to know by heart.
 
-<figure markdown="1">
-![Figure 4.10. Two cores, four time steps, counter starting at 50: both threads load 50, both store 51, and one increment is lost.](figs/lost_timeline.png){width=100%}
-<figcaption markdown="1">Figure 4.10. Two cores, four time steps, counter starting at 50: both threads load 50, both store 51, and one increment is lost.</figcaption>
-</figure>
+| Time step | core 0 · thread A | core 1 · thread B | memory · counter |
+|---|---|---|---|
+| 1 | `ldr` → 50 | | 50 |
+| 2 | `add` → 51 | `ldr` → 50 | 50 |
+| 3 | `str` 51 | `add` → 51 | 51 |
+| 4 | | `str` 51 | 51, one increment lost |
 
-Time runs to the right, one column per step. The top row is core 0 running thread A, the middle row is core 1 running thread B, and the bottom row is the counter in memory. The counter starts at 50.
+Time runs down, one row per step. The second column is core 0 running thread A, the third is core 1 running thread B, and the last is the counter in memory. The counter starts at 50.
 
 Step 1: A loads 50 into its register. B has not touched the counter yet. Memory says 50.
 
@@ -275,30 +216,42 @@ Step 4: B stores 51. Memory says 51.
 
 Two increments ran, and the counter grew by one: 50 to 51, where it should be 52. B loaded 50 before A had stored 51, so A's addition was overwritten. Nothing detected it: no error, no crash, just a wrong number. This kind of bug, where the result depends on the exact timing of two threads, is called a **race condition**, and this particular kind of damage is a **lost update**.
 
-The blue box at the bottom explains why so many were lost. On a machine with one core, this needs the timer interrupt ([Section 2.3](class-1.md#sec-2-3)) to land exactly between one thread's load and its store, which is rare. The timer fires only every few milliseconds (each operating system chooses its own interval). The gap between a load and its store lasts a few nanoseconds at most ([Section 4.6](#sec-4-6) works out about 2.5 ns for a whole increment, from a measurement in [Section 5.3](#sec-5-3)). On two cores it needs no interrupt at all: the two threads run at the same instant and collide on a large share of the iterations: at 1,000,000 loops nearly half of all the additions were lost ([Section 4.4](#sec-4-4)). That is why, at large loop counts, nearly one thread's whole total vanished. Why close to half? Each collision turns two increments into a rise of one. If the threads collided on nearly every increment, the counter would rise by about one per pair of increments, which is one thread's total. The wrong answers near one thread's total suggest that, at large loop counts, they nearly did.
+Why were so many lost? On a machine with one core, this needs the timer interrupt ([Section 2.3](class-1.md#sec-2-3)) to land exactly between one thread's load and its store, which is rare. The timer fires only every few milliseconds (each operating system chooses its own interval). The gap between a load and its store lasts a few nanoseconds at most ([Section 4.6](#sec-4-6) works out about 2.5 ns for a whole increment, from a measurement in [Section 5.3](#sec-5-3)). On two cores it needs no interrupt at all: the two threads run at the same instant and collide on a large share of the iterations: at 1,000,000 loops nearly half of all the additions were lost ([Section 4.4](#sec-4-4)). That is why, at large loop counts, nearly one thread's whole total vanished. Why close to half? Each collision turns two increments into a rise of one. If the threads collided on nearly every increment, the counter would rise by about one per pair of increments, which is one thread's total. The wrong answers near one thread's total suggest that, at large loop counts, they nearly did.
 
 ### 4.6 <span class="lbl lbl-concept">Concept</span> Why 1000 loops hid the bug: the head start {#sec-4-6 data-toc-label="4.6 [Concept] Why 1000 loops hid the bug: the head start"}
 
-Clue 2 of [Section 4.4](#sec-4-4): the bigger the loop count, the closer the answer gets to one thread's total, and at the other end, at 1000 loops, the program was right every time. Both halves say the same thing: the longer the loops, the more of them go wrong. [Section 4.5](#sec-4-5) showed the program can lose an update on any iteration where the two threads overlap. So at 1000 loops the threads either never overlapped, or overlapped too briefly to lose anything, every single time. The reason is timing, and Figure 4.11 draws it.
+Clue 2 of [Section 4.4](#sec-4-4): the bigger the loop count, the closer the answer gets to one thread's total, and at the other end, at 1000 loops, the program was right every time. Both halves say the same thing: the longer the loops, the more of them go wrong. [Section 4.5](#sec-4-5) showed the program can lose an update on any iteration where the two threads overlap. So at 1000 loops the threads either never overlapped, or overlapped too briefly to lose anything, every single time. The reason is timing, and Figure 4.4 draws it.
 
 <figure markdown="1">
-![Figure 4.11. The head start: at 1000 loops thread A finishes before thread B exists, so the loops never overlap; at 100,000 loops they overlap for most of the run.](figs/headstart.png){width=100%}
-<figcaption markdown="1">Figure 4.11. The head start: at 1000 loops thread A finishes before thread B exists, so the loops never overlap; at 100,000 loops they overlap for most of the run.</figcaption>
+![Figure 4.4. The head start: at 1000 loops thread A finishes before thread B exists, so the loops never overlap; at 100,000 loops they overlap for most of the run.](figs/headstart.svg){width=100%}
+<figcaption markdown="1">Figure 4.4. The head start: at 1000 loops thread A finishes before thread B exists, so the loops never overlap; at 100,000 loops they overlap for most of the run.</figcaption>
 </figure>
 
-The sentence at the top is the key fact: creating the second thread takes tens of microseconds. (That is the deck's figure, not measured in this guide; [Section 5.6](#sec-5-6) finds a check of it in a real run.) `main` creates thread A first and thread B second, so A gets a head start of tens of microseconds before B even exists. That head start decides whether the two loops ever overlap.
+The key fact: creating the second thread takes tens of microseconds. (That is a round figure, not measured in this guide; [Section 5.6](#sec-5-6) finds a check of it in a real run.) `main` creates thread A first and thread B second, so A gets a head start of tens of microseconds before B even exists. That head start decides whether the two loops ever overlap.
 
 How long does a loop take? [Section 5.3](#sec-5-3) will show a measurement on the same Mac: two threads did 100,000,000 increments each, side by side on two cores, in 0.253 seconds. Since each thread did its own 100,000,000 in that time, each took 0.253 ÷ 100,000,000 = 0.00000000253 seconds, about 2.5 nanoseconds, per increment. (Part 0: a nanosecond is a thousandth of a microsecond.) That measurement comes from a much longer run, so it is only a rough guide for a short loop, but the argument needs only the size: a few microseconds against tens. So a loop of 1000 takes about 1000 × 2.5 ns = 2,500 ns = 2.5 µs, a few microseconds. A loop of 10,000 takes about 25 µs, and a loop of 100,000 about 250 µs.
 
-Top panel, 1000 loops: A's whole loop takes a few microseconds, so A is already finished before B has been created. B then runs its loop alone. No overlap, nobody to collide with, and the answer, 2000, is correct.
+Top, 1000 loops: A's whole loop takes a few microseconds, so A is already finished before B has been created. B then runs its loop alone. No overlap, nobody to collide with, and the answer, 2000, is correct.
 
-Bottom panel, 100,000 loops: A's loop takes hundreds of microseconds, so B arrives while A is still running, and from then on the two loops run at the same time on two cores, inside the red box. Every iteration in that stretch can lose an update, and the answer is about 100,000, wrong. The longer the loops, the larger the share of them that runs during the overlap, so more updates are lost and the answer slides toward one thread's total: that is clue 2.
+Bottom, 100,000 loops: A's loop takes hundreds of microseconds, so B arrives while A is still running, and from then on the two loops run at the same time on two cores, inside the red box. Every iteration in that stretch can lose an update, and the answer is about 100,000, wrong. The longer the loops, the larger the share of them that runs during the overlap, so more updates are lost and the answer slides toward one thread's total: that is clue 2.
 
 And 10,000, the middle case: a loop of about 25 µs takes about as long as creating a thread. So sometimes B arrives just after A has finished, and the answer is right; usually B arrives in time to collide. That is the "right once in twenty". No simple arithmetic gives the exact 1 in 20: it depends on how long creating the thread happens to take on each run.
 
-The line at the bottom settles the question of [Section 4.1](#sec-4-1). Two thousand every time proves nothing. The bug is in the program in both runs; only the second run gave it a chance to show. A test that passes only tells you that this timing did not trigger the bug.
+This settles the question of [Section 4.1](#sec-4-1). Two thousand every time proves nothing. The bug is in the program in both runs; only the second run gave it a chance to show. A test that passes only tells you that this timing did not trigger the bug.
 
-**Checkpoint 1.** Settled: `counter++` is load, add, store. When the other thread loads between one thread's load and its store, one increment is lost, silently. Creating a thread takes tens of microseconds, so at 1000 loops thread A finishes before B exists and the bug never shows. Still open: the three instructions have to become one step that the other thread cannot get in between. What does the OS give us for that, and what does it cost? You should now be able to draw the four-step, two-core timeline in which two increments raise the counter by one.
+Here is the first checkpoint.
+
+!!! settled "Settled"
+
+    `counter++` is load, add, store. When the other thread loads between one thread's load and its store, one increment is lost, silently. Creating a thread takes tens of microseconds, so at 1000 loops thread A finishes before B exists and the bug never shows.
+
+!!! open "Still open"
+
+    the three instructions have to become one step that the other thread cannot get in between. What does the OS give us for that, and what does it cost?
+
+!!! able "You should now be able to"
+
+    Draw the four-step, two-core timeline in which two increments raise the counter by one.
 
 ## Chapter 5. How does a lock fix it, and what does the fix cost? {#chapter-5}
 
@@ -306,88 +259,136 @@ The line at the bottom settles the question of [Section 4.1](#sec-4-1). Two thou
 
 ### 5.1 <span class="lbl lbl-problem">Problem</span> The three instructions must become one step, at a price {#sec-5-1 data-toc-label="5.1 [Problem] The three instructions must become one step, at a price"}
 
-What we have, from [Chapter 4](#chapter-4): `counter++` is three instructions, load, add and store, and the gaps between them are open. Figure 5.1 is the deck's problem slide for the second question, and its left column is that picture.
+What we have, from [Chapter 4](#chapter-4): `counter++` is three instructions, load, add and store, and the gaps between them are open. Figure 5.1 draws that picture next to where it breaks.
 
 <figure markdown="1">
-![Figure 5.1. The problem of the fix, left and middle columns: three instructions with two open gaps, and the same bug at three loop counts.](figs/p_onestep_a.png){width=99%}
-<figcaption markdown="1">Figure 5.1. The problem of the fix, left and middle columns: three instructions with two open gaps, and the same bug at three loop counts.</figcaption>
+![Figure 5.1. What we have (three instructions with two open gaps) and where it breaks (the same bug at three loop counts).](figs/p_onestep.svg){width=100%}
+<figcaption markdown="1">Figure 5.1. What we have (three instructions with two open gaps) and where it breaks (the same bug at three loop counts).</figcaption>
 </figure>
 
 In either gap, the other thread can load the old value, and then two increments raise the counter by one. The hardware runs the three instructions one at a time, but nothing ties them together, and the other core can run its own three in the gaps.
 
-Where it breaks is the middle column: the same bug at three loop counts. At 1000 loops the program is right every time, at 10,000 it is right once in 20 runs, and at 100,000 it is never right (103,902). [Chapter 4](#chapter-4) explained all three with one bug and three timings. So the middle column's conclusion is the dangerous one: a test that passes proves only that this timing did not trigger the bug. We cannot fix this by testing more, or by hoping the timing stays lucky. The program itself has to change.
+Where it breaks is the right half: the same bug at three loop counts. At 1000 loops the program is right every time, at 10,000 it is right once in 20 runs, and at 100,000 it is never right (103,902). [Chapter 4](#chapter-4) explained all three with one bug and three timings. So the conclusion is the dangerous one: a test that passes proves only that this timing did not trigger the bug. We cannot fix this by testing more, or by hoping the timing stays lucky. The program itself has to change.
 
-So what we need is the right column, Figure 5.2.
-
-<figure markdown="1">
-![Figure 5.2. The right column: what the crux asks for, the shape of the fix, and the two questions that follow it.](figs/p_onestep_b.png){width=48%}
-<figcaption markdown="1">Figure 5.2. The right column: what the crux asks for, the shape of the fix, and the two questions that follow it.</figcaption>
-</figure>
+So what do we need?
 
 The crux of [Section 4.1](#sec-4-1) already asked for it: what primitives are needed from the OS, what mechanisms from the hardware, and how can we use them to solve the problems of concurrency? The shape of the answer: a primitive from the OS that lets exactly one thread be between the load and the store at a time. Then the three instructions can no longer be pulled apart, because the other thread is kept out of the gaps. A reader who stops here can already see two questions this raises. If only one thread at a time may do the increment, is the program still running in parallel at all, that is, with both threads doing work at the same moment on two cores? And while one thread waits for the other, what does the waiting cost? Sections [5.3](#sec-5-3) to [5.6](#sec-5-6) measure both.
 
 ### 5.2 <span class="lbl lbl-concept">Concept</span> The mutex and the critical section: threads.v1.c {#sec-5-2 data-toc-label="5.2 [Concept] The mutex and the critical section: threads.v1.c"}
 
-[Section 5.1](#sec-5-1) asked for a primitive that admits exactly one thread at a time to the three instructions. The thread library offers exactly that, and adding it to the program takes four lines. Figure 5.3 is the program with the lock added; the green lines are the only lines that changed from [Section 4.2](#sec-4-2)'s program.
+[Section 5.1](#sec-5-1) asked for a primitive that admits exactly one thread at a time to the three instructions. The thread library offers exactly that, and adding it to the program takes four lines. Here is the program with the lock added; the highlighted lines are the only lines that changed from [Section 4.2](#sec-4-2)'s program (line 13, `counter++`, is highlighted with them because it sits between them).
 
-<figure markdown="1">
-![Figure 5.3. threads.v1.c, complete: the counter program with a lock, the changed lines in green, three callouts.](figs/threads_v1.png){width=65%}
-<figcaption markdown="1">Figure 5.3. threads.v1.c, complete: the counter program with a lock, the changed lines in green, three callouts.</figcaption>
-</figure>
+*`threads.v1.c`, complete*
 
-Figure 5.4 is the deck's cards for the callouts.
+```c linenums="1" hl_lines="5 12 13 14 29"
+#include <stdio.h>
+#include <stdlib.h>
+#include "common.h"
 
-<figure markdown="1">
-![Figure 5.4. The four cards: one lock guarding the counter, lock and unlock around counter++, initialize the lock first, everything else unchanged; and the note that later weeks take this one idea apart.](figs/threads_v1_cards.png){width=79%}
-<figcaption markdown="1">Figure 5.4. The four cards: one lock guarding the counter, lock and unlock around counter++, initialize the lock first, everything else unchanged; and the note that later weeks take this one idea apart.</figcaption>
-</figure>
+pthread_mutex_t m;
+volatile int counter = 0;
+int loops;
 
-Callout 1 is a new global variable, `pthread_mutex_t m;`. Its type is a **mutex**, short for mutual exclusion: a lock with two states, free, or held by exactly one thread. Because it is global, both threads use the same one.
+void *worker(void *arg) {
+    int i;
+    for (i = 0; i < loops; i++) {
+        Pthread_mutex_lock(&m);
+        counter++;
+        Pthread_mutex_unlock(&m);
+    }
+    pthread_exit(NULL);
+}
 
-Callout 2 is the change inside `worker`. Before `counter++`, the thread calls `Pthread_mutex_lock(&m)`; after it, `Pthread_mutex_unlock(&m)`. The rule a mutex enforces: only the thread holding `m` may be between those two lines. If the other thread arrives at the lock call while `m` is held, it waits there until the holder unlocks. So the load, add and store can no longer be split by the other thread: while one thread is anywhere among the three instructions, the other is waiting at the door. Why can the lock itself not lose an update the same way? Because it is built from special hardware instructions that check and change the lock as one atomic step, so two threads cannot both take it. How, is a later week. The code protected by a lock like this is called a **critical section**: a stretch of code that touches shared data and must be run by only one thread at a time.
+int
+main(int argc, char *argv[])
+{
+    if (argc != 2) {
+        fprintf(stderr, "usage: threads <value>\n");
+        exit(1);
+    }
+    loops = atoi(argv[1]);
+    pthread_t p1, p2;
+    printf("Initial value : %d\n", counter);
+    Pthread_mutex_init(&m, NULL);
+    Pthread_create(&p1, NULL, worker, NULL);
+    Pthread_create(&p2, NULL, worker, NULL);
+    Pthread_join(p1, NULL);
+    Pthread_join(p2, NULL);
+    printf("Final value   : %d\n", counter);
+    return 0;
+}
+```
 
-Callout 3 is `Pthread_mutex_init(&m, NULL)` in `main`: the lock must be set up, once, before anyone uses it. A lock that was never set up holds whatever bytes happened to be in that memory, and could look held when nobody holds it. So `main` does it before creating the workers. (As in [Chapter 4](#chapter-4), the capital P names the textbook's wrappers that check for errors.)
+Line 5 is a new global variable, `pthread_mutex_t m;`. Its type is a **mutex**, short for mutual exclusion: a lock with two states, free, or held by exactly one thread. Because it is global, both threads use the same one.
 
-Card 4 says everything else is unchanged: the same two threads, the same shared counter, the same two cores.
+Lines 12 to 14 are the change inside `worker`. Before `counter++`, the thread calls `Pthread_mutex_lock(&m)`; after it, `Pthread_mutex_unlock(&m)`. The rule a mutex enforces: only the thread holding `m` may be between those two lines. If the other thread arrives at the lock call while `m` is held, it waits there until the holder unlocks. So the load, add and store can no longer be split by the other thread: while one thread is anywhere among the three instructions, the other is waiting at the door. Why can the lock itself not lose an update the same way? Because it is built from special hardware instructions that check and change the lock as one atomic step, so two threads cannot both take it. How, is a later week. The code protected by a lock like this is called a **critical section**: a stretch of code that touches shared data and must be run by only one thread at a time.
 
-The yellow note is honest about how much this hides. Three later weeks of the course are about this one idea: how a lock is built from hardware instructions, why it works, what it costs, and how it goes wrong. Here the only point is that a fix exists.
+Line 29 is `Pthread_mutex_init(&m, NULL)` in `main`: the lock must be set up, once, before anyone uses it. A lock that was never set up holds whatever bytes happened to be in that memory, and could look held when nobody holds it. So `main` does it before creating the workers. (As in [Chapter 4](#chapter-4), the capital P names the textbook's wrappers that check for errors.)
+
+Everything else is unchanged: the same two threads, the same shared counter, the same two cores.
+
+Be honest about how much this hides. Three later weeks of the course are about this one idea: how a lock is built from hardware instructions, why it works, what it costs, and how it goes wrong. Here the only point is that a fix exists.
 
 ### 5.3 <span class="lbl lbl-machine">Real machine</span> Always right, eight times slower: what the lock costs {#sec-5-3 data-toc-label="5.3 [Real machine] Always right, eight times slower: what the lock costs"}
 
-[Section 5.2](#sec-5-2) claimed the lock makes the three instructions one step. A claim about concurrency is worth nothing until it survives the sizes that broke the old program, and [Section 5.1](#sec-5-1) promised a price. Figure 5.5 is both, measured on the arm64 Mac. The locked program, threads.v1.c, was compiled under the name `threads_locked`.
+[Section 5.2](#sec-5-2) claimed the lock makes the three instructions one step. A claim about concurrency is worth nothing until it survives the sizes that broke the old program, and [Section 5.1](#sec-5-1) promised a price. Here are both, measured on the arm64 Mac. The locked program, threads.v1.c, was compiled under the name `threads_locked`.
 
-<figure markdown="1">
-![Figure 5.5. Top: the locked program is exact at every size. Bottom: the broken and the locked program timed at 100 million loops, and three readings of the numbers.](figs/locked_runs.png){width=56%}
-<figcaption markdown="1">Figure 5.5. Top: the locked program is exact at every size. Bottom: the broken and the locked program timed at 100 million loops, and three readings of the numbers.</figcaption>
-</figure>
+*`threads.v1.c`: correct at every size, every run*
 
-The top box: at 100,000 loops, 200,000; at 1,000,000, twice, 2,000,000; at 100,000,000, 200,000,000. Exact at every size, every run.
+```text
+prompt> ./threads_locked 100000
+Final value   : 200000
+prompt> ./threads_locked 1000000
+Final value   : 2000000
+prompt> ./threads_locked 1000000
+Final value   : 2000000
+prompt> ./threads_locked 100000000
+Final value   : 200000000
+```
 
-The bottom box is the price. `time` in front of a command runs it and then reports how long it took. Its last line has four numbers. **user** is the processor time spent running the program's own code, added up over all its threads. **system** is the processor time spent inside the kernel on the program's behalf, for example in system calls. **cpu** is how busy the processors were on average, as a percentage of one processor: 200% would mean two processors busy the whole time. **total** is the time on the wall clock, from start to finish, as a person with a stopwatch would measure it.
+*What it costs (the Mac, 100 million loops)*
+
+```text
+prompt> time ./threads 100000000
+Final value   : 101231628
+0.49s user 0.00s system 195% cpu 0.253 total
+prompt> time ./threads_locked 100000000
+Final value   : 200000000
+2.78s user 0.65s system 175% cpu 1.959 total
+```
+
+The first capture: at 100,000 loops, 200,000; at 1,000,000, twice, 2,000,000; at 100,000,000, 200,000,000. Exact at every size, every run.
+
+The second capture is the price. `time` in front of a command runs it and then reports how long it took. Its last line has four numbers. **user** is the processor time spent running the program's own code, added up over all its threads. **system** is the processor time spent inside the kernel on the program's behalf, for example in system calls. **cpu** is how busy the processors were on average, as a percentage of one processor: 200% would mean two processors busy the whole time. **total** is the time on the wall clock, from start to finish, as a person with a stopwatch would measure it.
 
 Read the two runs, both at 100,000,000 loops, so 200,000,000 increments in each run. The broken program, `threads`, printed a wrong value (101,231,628) and took 0.253 seconds. The locked program printed the right value (200,000,000) and took 1.959 seconds. Check the ratio: 1.959 ÷ 0.253 is about 7.7, so about 8 times longer for the same 200 million increments. Check the percentages a second way, as user plus system over total. Broken: (0.49 + 0.00) ÷ 0.253 = 1.94, which is about 195%: two cores busy nearly all the time. Locked: (2.78 + 0.65) ÷ 1.959 = 3.43 ÷ 1.959 = 1.75, which is 175%. Why this formula gives the cpu number: if two cores are busy for the whole wall-clock time, the processor time added up over both is twice the wall-clock time, 200%. So processor time divided by wall-clock time is the average number of busy cores, and 1.75 means that, on average, 1.75 of the 2 cores were busy, so 2 − 1.75 = 0.25 of a core, a quarter of one core's time, went unused.
 
-The three lines under the box read those numbers. 8 times slower for the same 200 million increments. 0.65 seconds of system time, where the broken program had none. The slide reads this as the waiting thread being put to sleep and woken up by the kernel, over and over, which is kernel work. And 175%, not 195%: one core was partly idle while its thread waited.
+Three readings of those numbers. 8 times slower for the same 200 million increments. 0.65 seconds of system time, where the broken program had none. A likely reading is that the waiting thread was put to sleep and woken up by the kernel, over and over, which is kernel work. And 175%, not 195%: one core was partly idle while its thread waited.
 
-Figure 5.6 is the lock working, drawn the same way as [Section 4.5](#sec-4-5)'s timeline.
+The table shows the lock working, drawn the same way as [Section 4.5](#sec-4-5)'s timeline.
 
-<figure markdown="1">
-![Figure 5.6. The lock at work: A takes the lock, does its three instructions and unlocks; B asks while A holds it and waits; then B's turn. The counter goes 50, 51, 52.](figs/lock_timeline.png){width=90%}
-<figcaption markdown="1">Figure 5.6. The lock at work: A takes the lock, does its three instructions and unlocks; B asks while A holds it and waits; then B's turn. The counter goes 50, 51, 52.</figcaption>
-</figure>
+| Time step | core 0 · A | core 1 · B | counter |
+|---|---|---|---|
+| 1 | lock ✓ | | 50 |
+| 2 | `ldr add str` | lock... wait | 50 |
+| 3 | unlock | wait | 51 |
+| 4 | | lock ✓ | 51 |
+| 5 | | `ldr add str` | 51 |
+| 6 | | unlock | 52 ✓ |
 
-A takes the lock (green: inside the critical section), runs `ldr add str`, and unlocks. B asks for the lock while A holds it, so B waits (red), twice as long as one step. When A unlocks, B takes the lock, runs its three instructions, and unlocks. The counter goes 50, then 51 after A's store, then 52 after B's. Nothing is lost.
+A takes the lock (from here until it unlocks, A is inside the critical section), runs `ldr add str`, and unlocks. B asks for the lock while A holds it, so B waits, for two steps. When A unlocks, B takes the lock, runs its three instructions, and unlocks. The counter goes 50, then 51 after A's store, then 52 after B's. Nothing is lost.
 
-The blue box on the slide, beside this drawing, says where the time went. While B waits, its core does nothing useful: either it spins, asking for the lock again and again, or the OS puts B to sleep and wakes it at A's unlock. In the traced run of [Section 5.6](#sec-5-6) (100,000 loops; the 100,000,000-loop run was not traced), the lock changed hands about every 2.3 increments, so this waiting happens constantly. If the lock changed hands as often in this longer run, which is likely since only the length changed, then 200,000,000 increments ÷ 2.3 is about 87 million hand-offs, each with a short wait. That is the likely place the 1.96 seconds went. The 0.65 seconds of system time shows the kernel was involved, so at least some of the waiting was sleeping. Some of the 2.78 seconds of user time may be spinning; the capture cannot separate the two. (Time a thread spends spinning is its own code running, so it counts as user time; putting a thread to sleep and waking it is done by the kernel, so that counts as system time.) Correctness has a price. The concurrency weeks ask how to pay less of it.
+Where did the time go? While B waits, its core does nothing useful: either it spins, asking for the lock again and again, or the OS puts B to sleep and wakes it at A's unlock. In the traced run of [Section 5.6](#sec-5-6) (100,000 loops; the 100,000,000-loop run was not traced), the lock changed hands about every 2.3 increments, so this waiting happens constantly. If the lock changed hands as often in this longer run, which is likely since only the length changed, then 200,000,000 increments ÷ 2.3 is about 87 million hand-offs, each with a short wait. That is the likely place the 1.96 seconds went. The 0.65 seconds of system time shows the kernel was involved, so at least some of the waiting was sleeping. Some of the 2.78 seconds of user time may be spinning; the capture cannot separate the two. (Time a thread spends spinning is its own code running, so it counts as user time; putting a thread to sleep and waking it is done by the kernel, so that counts as system time.) Correctness has a price. The concurrency weeks ask how to pay less of it.
 
 ### 5.4 <span class="lbl lbl-check">Check yourself</span> Does the lock remove the parallelism? {#sec-5-4 data-toc-label="5.4 [Check yourself] Does the lock remove the parallelism?"}
 
-[Section 5.3](#sec-5-3) left a doubt in its numbers. The locked program prints exactly 200,000,000 every time. But that is also exactly what we would get if thread A ran its whole loop first and thread B ran its whole loop afterwards, with no overlap at all. So the right answer cannot tell us whether the two threads still run at the same time. The deck stops here and asks. Figure 5.7 is the question.
+[Section 5.3](#sec-5-3) left a doubt in its numbers. The locked program prints exactly 200,000,000 every time. But that is also exactly what we would get if thread A ran its whole loop first and thread B ran its whole loop afterwards, with no overlap at all. So the right answer cannot tell us whether the two threads still run at the same time. So stop here and decide.
 
-<figure markdown="1">
-![Figure 5.7. The vote: is anything still happening in parallel? Three options.](figs/vote.png){width=100%}
-<figcaption markdown="1">Figure 5.7. The vote: is anything still happening in parallel? Three options.</figcaption>
-</figure>
+> **Is anything still happening in parallel?** The locked program prints 2000000 every single time, the same answer as if A ran its whole loop first and B ran afterwards. So which is it?
+>
+> - A. No. The lock made the threads take turns: A finishes its loop, then B runs.
+> - B. Yes. Both are running at the same time; they alternate through the lock, thousands of times.
+> - C. The final value cannot tell us. We need to look at something else.
 
 Option A says the lock made the threads take turns: A finishes its loop, then B runs. Option B says both are running at the same time, and they alternate through the lock thousands of times. Option C says the final value cannot tell us, and we need to look at something else. Think for thirty seconds and choose one before reading on; it is also [Exercise 6](review.md#exercise-6).
 
@@ -395,46 +396,118 @@ Whatever you chose, notice this: 2,000,000 at a million loops is consistent with
 
 ### 5.5 <span class="lbl lbl-example">Worked example</span> Recording who did each increment: threads.v2.c {#sec-5-5 data-toc-label="5.5 [Worked example] Recording who did each increment: threads.v2.c"}
 
-[Section 5.4](#sec-5-4) needs an observation that shows the order of the increments, not just their total. The simplest one: write down, for every increment, which thread did it. Figure 5.8 is the locked program with that record added, complete in two columns.
+[Section 5.4](#sec-5-4) needs an observation that shows the order of the increments, not just their total. The simplest one: write down, for every increment, which thread did it. Here is the locked program with that record added, complete.
 
-<figure markdown="1">
-![Figure 5.8. threads.v2.c, complete, lines 1 to 29 on the left and 30 to 57 on the right: the locked program plus a record of which thread did each increment.](figs/threads_v2.png){width=100%}
-<figcaption markdown="1">Figure 5.8. threads.v2.c, complete, lines 1 to 29 on the left and 30 to 57 on the right: the locked program plus a record of which thread did each increment.</figcaption>
-</figure>
+*`threads.v2.c`, complete*
 
-Figure 5.9 is the deck's four cards for the callouts.
+```c linenums="1" hl_lines="10 13 17 18 35 36"
+// threads.v2.c : threads.v1.c plus a record of
+// WHICH thread performed each increment.
+#include <stdio.h>
+#include <stdlib.h>
+#include "common.h"
 
-<figure markdown="1">
-![Figure 5.9. The four callouts of threads.v2.c: one byte per increment, two writes inside the lock, a letter for each thread, and reading the record after join.](figs/threads_v2_cards.png){width=45%}
-<figcaption markdown="1">Figure 5.9. The four callouts of threads.v2.c: one byte per increment, two writes inside the lock, a letter for each thread, and reading the record after join.</figcaption>
-</figure>
+pthread_mutex_t m;
+volatile int counter = 0;
+int loops;
+char *who;   // who[k] = 'A' or 'B'
 
-Callout 1: a new global, `char *who;`, a pointer ([Section 3.2](class-1.md#sec-3-2)) to a row of single characters, one byte per increment. The comment says what it will hold: `who[k]` is 'A' or 'B', the thread that performed increment number k. In `main` (right column, first line), `who = malloc(2 * (size_t)loops);` asks for 2 × loops bytes, one for each of the increments the two threads will make. (`(size_t)` converts the number to the type C uses for sizes, so the multiplication cannot overflow. To overflow is to produce a number too big for its type, which then wraps around to a wrong value. You can ignore it.)
+void *worker(void *arg) {
+    char id = *(char *)arg;
+    int i;
+    for (i = 0; i < loops; i++) {
+        Pthread_mutex_lock(&m);
+        who[counter] = id;
+        counter++;
+        Pthread_mutex_unlock(&m);
+    }
+    return NULL;
+}
 
-Callout 2: inside the lock there are now two writes. `who[counter] = id;` records this thread's letter in the slot for the current increment, and then `counter++` performs it. Both are protected by the same lock, so the record cannot itself race: no other thread can slip in between them.
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "usage: threads <loops>\n");
+        exit(1);
+    }
+    loops = atoi(argv[1]);
+    who = malloc(2 * (size_t)loops);
+    char a = 'A', b = 'B';
+    pthread_t p1, p2;
+    Pthread_mutex_init(&m, NULL);
+    printf("Initial value : %d\n", counter);
+    Pthread_create(&p1, NULL, worker, &a);
+    Pthread_create(&p2, NULL, worker, &b);
+    Pthread_join(p1, NULL);
+    Pthread_join(p2, NULL);
+    printf("Final value   : %d\n", counter);
 
-Callout 3: each thread gets its own letter. `main` makes two characters, `char a = 'A', b = 'B';`, and passes `&a` to the first `Pthread_create` and `&b` to the second, as the fourth argument, the one [Section 4.2](#sec-4-2)'s program left as `NULL`. Each thread receives that pointer as `arg`, and `char id = *(char *)arg;` reads the letter out of it (the `(char *)` tells C that `arg` points to a character; the leading `*` reads the character at that address). So thread one writes 'A' and thread two writes 'B'.
+    // summarize: runs of A's and B's, and switches
+    int k, switches = 0, runs = 0, len = 1;
+    printf("Run lengths   : ");
+    for (k = 1; k <= counter; k++) {
+        if (k < counter && who[k] == who[k-1]) {
+            len++;
+            continue;
+        }
+        if (runs++ < 12)
+            printf("%c%d ", who[k-1], len);
+        len = 1;
+        if (k < counter)
+            switches++;
+    }
+    printf("...\nThread switches : %d\n", switches);
+    return 0;
+}
+```
 
-Callout 4: after both joins, `main` reads the record from start to end. It counts how often the letter changes from one increment to the next: each change is a **thread switch**, a moment when the lock passed from one thread to the other. It also prints the first twelve **run lengths**, how many increments in a row one thread did before the other got in, written like A1953 (thread A, 1953 increments in a row). In the loop, `len++` grows the current run while the letter stays the same. When the letter changes, the run is printed (if fewer than 12 have been printed so far), `len` starts again at 1, and `switches++` counts the switch. Everything else is the locked program, unchanged.
+Line 10: a new global, `char *who;`, a pointer ([Section 3.2](class-1.md#sec-3-2)) to a row of single characters, one byte per increment. The comment says what it will hold: `who[k]` is 'A' or 'B', the thread that performed increment number k. In `main`, line 30, `who = malloc(2 * (size_t)loops);` asks for 2 × loops bytes, one for each of the increments the two threads will make. (`(size_t)` converts the number to the type C uses for sizes, so the multiplication cannot overflow. To overflow is to produce a number too big for its type, which then wraps around to a wrong value. You can ignore it.)
+
+Lines 17 and 18: inside the lock there are now two writes. `who[counter] = id;` records this thread's letter in the slot for the current increment, and then `counter++` performs it. Both are protected by the same lock, so the record cannot itself race: no other thread can slip in between them.
+
+Lines 13, 31, 35 and 36: each thread gets its own letter. `main` makes two characters, `char a = 'A', b = 'B';`, and passes `&a` to the first `Pthread_create` and `&b` to the second, as the fourth argument, the one [Section 4.2](#sec-4-2)'s program left as `NULL`. Each thread receives that pointer as `arg`, and `char id = *(char *)arg;` reads the letter out of it (the `(char *)` tells C that `arg` points to a character; the leading `*` reads the character at that address). So thread one writes 'A' and thread two writes 'B'.
+
+Lines 41 to 55: after both joins, `main` reads the record from start to end. It counts how often the letter changes from one increment to the next: each change is a **thread switch**, a moment when the lock passed from one thread to the other. It also prints the first twelve **run lengths**, how many increments in a row one thread did before the other got in, written like A1953 (thread A, 1953 increments in a row). In the loop, `len++` grows the current run while the letter stays the same. When the letter changes, the run is printed (if fewer than 12 have been printed so far), `len` starts again at 1, and `switches++` counts the switch. Everything else is the locked program, unchanged.
 
 ### 5.6 <span class="lbl lbl-machine">Real machine</span> 86,581 switches: the lock only decides where the boundary falls {#sec-5-6 data-toc-label="5.6 [Real machine] 86,581 switches: the lock only decides where the boundary falls"}
 
-[Section 5.5](#sec-5-5) built the record; now it can answer the vote of [Section 5.4](#sec-5-4). If option A were right, the record would show one long run of A's and then one long run of B's: one switch. If option B were right, it would show the letters alternating many times. Figure 5.10 is the record, from the arm64 Mac, with threads.v2.c compiled under the name `threads_trace`.
+[Section 5.5](#sec-5-5) built the record; now it can answer the vote of [Section 5.4](#sec-5-4). If option A were right, the record would show one long run of A's and then one long run of B's: one switch. If option B were right, it would show the letters alternating many times. Here is the record, from the arm64 Mac, with threads.v2.c compiled under the name `threads_trace`.
+
+*Sample run on the arm64 Mac (your numbers will differ; the output lines of each run are set side by side, and the `Initial value` line is left out)*
+
+```text
+prompt> ./threads_trace 1000
+Final value   : 2000      Run lengths : A1000 B1000 ...      Thread switches : 1
+prompt> ./threads_trace 100000
+Final value   : 200000    Run lengths : A1953 B1 A1 B16 A14 B2 A1 B1 A4 B7 A1 B1 ...
+                                                                 Thread switches : 86581
+```
 
 <figure markdown="1">
-![Figure 5.10. Two runs of the recording program: at 1000 loops, one switch; at 100,000 loops, a long head start for A and then 86,581 switches in 200,000 increments, also drawn as a colored strip.](figs/trace_run.png){width=100%}
-<figcaption markdown="1">Figure 5.10. Two runs of the recording program: at 1000 loops, one switch; at 100,000 loops, a long head start for A and then 86,581 switches in 200,000 increments, also drawn as a colored strip.</figcaption>
+![Figure 5.2. The 200,000 increments of the second run, in order, colored by thread, not to scale: A's head start, then 86,581 switches.](figs/trace_strip.svg){width=100%}
+<figcaption markdown="1">Figure 5.2. The 200,000 increments of the second run, in order, colored by thread, not to scale: A's head start, then 86,581 switches.</figcaption>
 </figure>
 
 At 1000 loops: final value 2000, run lengths A1000 B1000, and 1 thread switch. A did all its 1000 increments, then B did all of its. That is the no-overlap case of [Section 4.6](#sec-4-6): A finished before B existed.
 
-At 100,000 loops: final value 200,000, exact, as the lock promised. The run lengths tell the story: A1953, then B1, A1, B16, A14, B2, A1, B1, A4, B7, A1, B1, and so on. First, A alone for 1953 increments: its head start, while B was being created. This is the check promised in [Section 4.6](#sec-4-6). A ran these increments alone, taking a lock that nobody else wanted. Taking and releasing even a free lock is extra work, and with no other thread there is no waiting, so such an increment costs more than the 2.5 ns of a bare increment ([Section 4.6](#sec-4-6)). It costs less than an increment in the fully contended locked run of 100,000,000 loops (contended: the other thread wants the lock too), because that run includes all the waiting. In that run each thread did its own 100,000,000 increments in 1.959 s (Figure 5.5), so each thread took 1.959 ÷ 100,000,000 ≈ 0.0000000196 s, about 19.6 ns, per increment of its own. So the 1953 increments took between 1953 × 2.5 ns ≈ 5 µs and 1953 × 19.6 ns ≈ 38 µs: from a few microseconds to a few tens of them, which fits the deck's "tens of microseconds" for creating a thread. It is longer than the loop of 1000 (about 2.5 µs) and much shorter than the loop of 100,000 (about 250 µs), so the head start is a sound explanation. Then the two threads hand the lock back and forth, one, sixteen, fourteen, two increments at a time. The total: 86,581 thread switches. Check what that means: 200,000 ÷ 86,581 is about 2.3, so the lock changed hands about every 2.3 increments. (This is the 2.3 that [Section 5.3](#sec-5-3)'s blue box used.)
+At 100,000 loops: final value 200,000, exact, as the lock promised. The run lengths tell the story: A1953, then B1, A1, B16, A14, B2, A1, B1, A4, B7, A1, B1, and so on. First, A alone for 1953 increments: its head start, while B was being created. This is the check promised in [Section 4.6](#sec-4-6). A ran these increments alone, taking a lock that nobody else wanted. Taking and releasing even a free lock is extra work, and with no other thread there is no waiting, so such an increment costs more than the 2.5 ns of a bare increment ([Section 4.6](#sec-4-6)). It costs less than an increment in the fully contended locked run of 100,000,000 loops (contended: the other thread wants the lock too), because that run includes all the waiting. In that run each thread did its own 100,000,000 increments in 1.959 s ([Section 5.3](#sec-5-3)), so each thread took 1.959 ÷ 100,000,000 ≈ 0.0000000196 s, about 19.6 ns, per increment of its own. So the 1953 increments took between 1953 × 2.5 ns ≈ 5 µs and 1953 × 19.6 ns ≈ 38 µs: from a few microseconds to a few tens of them, which fits the round figure of "tens of microseconds" for creating a thread. It is longer than the loop of 1000 (about 2.5 µs) and much shorter than the loop of 100,000 (about 250 µs), so the head start is a sound explanation. Then the two threads hand the lock back and forth, one, sixteen, fourteen, two increments at a time. The total: 86,581 thread switches. Check what that means: 200,000 ÷ 86,581 is about 2.3, so the lock changed hands about every 2.3 increments. (This is the 2.3 that [Section 5.3](#sec-5-3)'s blue box used.)
 
-The colored strip under the output is the same run as a picture, not to scale: a long navy block for A's head start, then navy and yellow alternating to the end.
+Figure 5.2 is the same run as a picture, not to scale: a long navy block for A's head start, then navy and yellow alternating to the end.
 
-So the answer to the vote is B. Both cores were busy the whole time, fighting over one counter. The text at the bottom of the slide says what the lock did and did not do. The lock did not stop the two threads from running at the same time. It only decided where the boundary between them may fall: between two increments, never inside one. Same concurrency as the broken program, same hardware, one rule added. That rule, and what it costs, is what the concurrency part of the course is about.
+So the answer to the vote is B. Both cores were busy the whole time, fighting over one counter. Here is what the lock did and did not do. The lock did not stop the two threads from running at the same time. It only decided where the boundary between them may fall: between two increments, never inside one. Same concurrency as the broken program, same hardware, one rule added. That rule, and what it costs, is what the concurrency part of the course is about.
 
-**Checkpoint 2.** Settled: a lock turns the three instructions into a critical section, which only the lock's holder may be inside. The answer is exact at every size, about 8 times slower, and the two threads still run at the same time; the lock only decides where the boundary between them may fall. Still open: every number so far lived in RAM, and RAM forgets at the first power cut. What survives, and when is a written byte actually safe? You should now be able to say what a lock changes about a program and what it does not change.
+Here is the second checkpoint.
+
+!!! settled "Settled"
+
+    a lock turns the three instructions into a critical section, which only the lock's holder may be inside. The answer is exact at every size, about 8 times slower, and the two threads still run at the same time; the lock only decides where the boundary between them may fall.
+
+!!! open "Still open"
+
+    every number so far lived in RAM, and RAM forgets at the first power cut. What survives, and when is a written byte actually safe?
+
+!!! able "You should now be able to"
+
+    Say what a lock changes about a program and what it does not change.
 
 ## Chapter 6. When write() returns, are the bytes on the disk? {#chapter-6}
 
@@ -442,63 +515,81 @@ So the answer to the vote is B. Both cores were busy the whole time, fighting ov
 
 ### 6.1 <span class="lbl lbl-problem">Problem</span> RAM forgets at power off, and the disk is about 1000 times slower {#sec-6-1 data-toc-label="6.1 [Problem] RAM forgets at power off, and the disk is about 1000 times slower"}
 
-What we have: every number in this guide so far, the counters of `mem.c` and of the thread programs, every variable of every program, lived in memory. Figure 6.1 is the deck's problem slide for the third question, and its left column says where exactly.
+What we have: every number in this guide so far, the counters of `mem.c` and of the thread programs, every variable of every program, lived in memory. Figure 6.1 says where exactly, and where it breaks.
 
 <figure markdown="1">
-![Figure 6.1. The problem of persistence, left and middle columns: the fast memories are all volatile, the disk remembers but is about 1000 times slower, and a counter in RAM vanishes when the power cord is pulled.](figs/p_power_a.png){width=99%}
-<figcaption markdown="1">Figure 6.1. The problem of persistence, left and middle columns: the fast memories are all volatile, the disk remembers but is about 1000 times slower, and a counter in RAM vanishes when the power cord is pulled.</figcaption>
+![Figure 6.1. What we have (the fast memories are all volatile; the disk remembers but is about 1000 times slower) and where it breaks (a counter in RAM vanishes when the power cord is pulled).](figs/p_power.svg){width=100%}
+<figcaption markdown="1">Figure 6.1. What we have (the fast memories are all volatile; the disk remembers but is about 1000 times slower) and where it breaks (a counter in RAM vanishes when the power cord is pulled).</figcaption>
 </figure>
 
-The left column lists the places a program's data can be, with how long each takes to reach ([Extra 2](class-1.md#extra-2) has the full list). Registers take about 0.3 ns, the caches 1 to 10 ns, and DRAM, main memory, about 100 ns. All three are fast, and all three are volatile (Part 0): they forget everything when the power goes. Below them is the SSD, the kind of disk most machines have now, at about 100 µs. The disk remembers, but it is slow. (A spinning hard disk is slower still, about 10 ms; [Extra 2](class-1.md#extra-2). This chapter's "1000 times" is for the SSD.) Check the slide's "about 1000 times slower than DRAM": 100 µs is 100,000 ns, and 100,000 ÷ 100 = 1000.
+The left half lists the places a program's data can be, with how long each takes to reach ([Extra 2](class-1.md#extra-2) has the full list). Registers take about 0.3 ns, the caches 1 to 10 ns, and DRAM, main memory, about 100 ns. All three are fast, and all three are volatile (Part 0): they forget everything when the power goes. Below them is the SSD, the kind of disk most machines have now, at about 100 µs. The disk remembers, but it is slow. (A spinning hard disk is slower still, about 10 ms; [Extra 2](class-1.md#extra-2). This chapter's "1000 times" is for the SSD.) Check the claim "about 1000 times slower than DRAM": 100 µs is 100,000 ns, and 100,000 ÷ 100 = 1000.
 
-Where it breaks is the middle column. A counter sits in RAM with the value 7. Pull the power cord, and when the machine comes back, the RAM holds nothing: the `mem.c` counter, the threads counter, every variable of every program, gone. The obvious fix fails too. Writing every value straight to the disk on every change would make every write about 1000 times slower than a memory write, and every program would crawl.
+Where it breaks is the right half. A counter sits in RAM with the value 7. Pull the power cord, and when the machine comes back, the RAM holds nothing: the `mem.c` counter, the threads counter, every variable of every program, gone. The obvious fix fails too. Writing every value straight to the disk on every change would make every write about 1000 times slower than a memory write, and every program would crawl.
 
-So what we need is the right column, Figure 6.2.
+So what do we need?
 
-<figure markdown="1">
-![Figure 6.2. The right column: the textbook's third crux, how to store data persistently, and the shape of the answer.](figs/p_power_b.png){width=48%}
-<figcaption markdown="1">Figure 6.2. The right column: the textbook's third crux, how to store data persistently, and the shape of the answer.</figcaption>
-</figure>
+!!! crux "The crux of the problem: how to store data persistently"
+
+    The file system is the part of the OS in charge of managing persistent data. What techniques are needed to do so correctly? What mechanisms and policies are required to do so with high performance? How is reliability achieved, in the face of failures in hardware and software? (OSTEP section 2.4)
 
 This is the third crux of the course, on persistence. The **file system** is the part of the OS in charge of managing data that must last (Part 0 named it). What techniques does it need to do that correctly? What mechanisms and policies does it need to do it fast? And how does it stay reliable when the hardware or the software fails? The shape of the answer: system calls that hand our bytes to the file system, and a clear answer to one question. When the call returns, are the bytes safe yet? And if not, what does it cost to make them safe? Given the two numbers in the left column, a reader can guess the shape of the trade before seeing it: something fast that is not yet safe, and something safe that is not fast.
 
 ### 6.2 <span class="lbl lbl-example">Worked example</span> open, write, close: the file descriptor and the 13 bytes {#sec-6-2 data-toc-label="6.2 [Worked example] open, write, close: the file descriptor and the 13 bytes"}
 
-[Section 6.1](#sec-6-1) asked for system calls that hand bytes to the file system. Before asking where the bytes go, we need the simplest program that hands some over, so that every later measurement is about something we have read in full. Figure 6.3 is OSTEP Figure 2.6, complete, and its run.
+[Section 6.1](#sec-6-1) asked for system calls that hand bytes to the file system. Before asking where the bytes go, we need the simplest program that hands some over, so that every later measurement is about something we have read in full. Here is OSTEP Figure 2.6, complete, and its run.
 
-<figure markdown="1">
-![Figure 6.3. io.c, complete (OSTEP Figure 2.6), with four callouts, and its run on Ubuntu: the file's contents, then the same file byte by byte.](figs/io_c.png){width=70%}
-<figcaption markdown="1">Figure 6.3. io.c, complete (OSTEP Figure 2.6), with four callouts, and its run on Ubuntu: the file's contents, then the same file byte by byte.</figcaption>
-</figure>
+*`io.c`, complete (OSTEP Figure 2.6)*
 
-Figure 6.4 is the deck's four cards for the callouts, and the lesson.
+```c linenums="1" hl_lines="8 9 10 11 12 13"
+#include <stdio.h>
+#include <unistd.h>
+#include <assert.h>
+#include <fcntl.h>
+#include <sys/types.h>
 
-<figure markdown="1">
-![Figure 6.4. The four cards: open turns a name into a number, write hands over 13 bytes, close forgets the number, assert checks for failure; and why files exist at all.](figs/io_cards.png){width=76%}
-<figcaption markdown="1">Figure 6.4. The four cards: open turns a name into a number, write hands over 13 bytes, close forgets the number, assert checks for failure; and why files exist at all.</figcaption>
-</figure>
+int main(int argc, char *argv[]) {
+    int fd = open("/tmp/file",
+                  O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+    assert(fd >= 0);
+    int rc = write(fd, "hello world\n", 13);
+    assert(rc == 13);
+    close(fd);
+    return 0;
+}
+```
 
-The program makes three system calls. Read them by the callouts.
+*Ubuntu: run it, then look at the file byte by byte*
 
-Callout 1 is `open`. It takes a name, `/tmp/file`, and a list of options combined with `|`, a sign that joins the options into one number. `O_WRONLY` opens the file for writing only. `O_CREAT` creates it if it does not exist. `O_TRUNC` truncates it, that is, empties it if it already has contents. The last option, `S_IRWXU`, sets the file's **permissions**, the rules for who may use it, so that only its owner may read, write or run it. Permissions exist because many users and programs share one machine, and a file should not be readable or changeable by everyone. They are often written as three digits: the first for the owner, the second for the owner's **group** (a named set of users), the third for everyone else. Each digit adds 4 for read, 2 for write and 1 for run, so 7 = 4 + 2 + 1 means all three, 6 = 4 + 2 means read and write, 4 means read only, and 0 means nothing. `S_IRWXU` written that way is 700: everything for the owner, nothing for anyone else. Each digit runs from 0 to 7, so a permission number is a number in base 8, called **octal**; that is also the "o" in `od` below. `open` returns a **file descriptor**: a small whole number that the kernel uses to remember this open file. The name becomes a number, and from now on the program uses only the number, which is quicker for the kernel to look up on every later call than a name would be. ([Section 2.5](class-1.md#sec-2-5) showed where the number points: it is a position in the `ofile` array of the process's `struct proc`.) The program keeps it in `fd`.
+```text
+prompt> gcc -Wall -o io io.c
+prompt> ./io
+prompt> cat /tmp/file
+hello world
+prompt> od -c /tmp/file
+0000000  h e l l o   w o r l d \n \0
+```
 
-Callout 2 is `write`. It takes three things: the file descriptor, a pointer to the bytes (here the text `"hello world\n"`), and a count, 13. It returns how many bytes it accepted, kept in `rc`. Count the 13: "hello" is 5 letters, the space makes 6, "world" brings it to 11, and the newline `\n` is the 12th. The 13th byte is the **NUL** byte, a byte whose value is 0, written `\0`, which C puts after the end of every piece of text written in double quotes, so that programs can find where the text ends. So 5 + 1 + 5 + 1 + 1 = 13, and the file really ends with a NUL. (That is ten letters, a space, a newline and the NUL, as the card says.)
+The program makes three system calls.
 
-Callout 3 is `close`. The kernel forgets the file descriptor. The file stays on the disk, and the number can be reused for the next file the program opens.
+Lines 8 and 9 are `open`. It takes a name, `/tmp/file`, and a list of options combined with `|`, a sign that joins the options into one number. `O_WRONLY` opens the file for writing only. `O_CREAT` creates it if it does not exist. `O_TRUNC` truncates it, that is, empties it if it already has contents. The last option, `S_IRWXU`, sets the file's **permissions**, the rules for who may use it, so that only its owner may read, write or run it. Permissions exist because many users and programs share one machine, and a file should not be readable or changeable by everyone. They are often written as three digits: the first for the owner, the second for the owner's **group** (a named set of users), the third for everyone else. Each digit adds 4 for read, 2 for write and 1 for run, so 7 = 4 + 2 + 1 means all three, 6 = 4 + 2 means read and write, 4 means read only, and 0 means nothing. `S_IRWXU` written that way is 700: everything for the owner, nothing for anyone else. Each digit runs from 0 to 7, so a permission number is a number in base 8, called **octal**; that is also the "o" in `od` below. `open` returns a **file descriptor**: a small whole number that the kernel uses to remember this open file. The name becomes a number, and from now on the program uses only the number, which is quicker for the kernel to look up on every later call than a name would be. ([Section 2.5](class-1.md#sec-2-5) showed where the number points: it is a position in the `ofile` array of the process's `struct proc`.) The program keeps it in `fd`.
 
-Callout 4 is `assert`. `assert(fd >= 0);` stops the program with an error message if the condition is false. `open` and `write` report failure by returning −1, so these two lines stop the program if either call failed. It is the same check the capital-P wrappers did for the thread functions in [Section 4.2](#sec-4-2). (`>=` means "is greater than or equal to", and `==` means "is equal to"; a single `=` stores a value, a double one compares.)
+Line 11 is `write`. It takes three things: the file descriptor, a pointer to the bytes (here the text `"hello world\n"`), and a count, 13. It returns how many bytes it accepted, kept in `rc`. Count the 13: "hello" is 5 letters, the space makes 6, "world" brings it to 11, and the newline `\n` is the 12th. The 13th byte is the **NUL** byte, a byte whose value is 0, written `\0`, which C puts after the end of every piece of text written in double quotes, so that programs can find where the text ends. So 5 + 1 + 5 + 1 + 1 = 13, and the file really ends with a NUL. (That is ten letters, a space, a newline and the NUL, as the card says.)
 
-The lower half of Figure 6.3 is the run on Ubuntu. `gcc -Wall -o io io.c` compiles it, and `./io` runs it; it prints nothing. `cat /tmp/file` prints the file: `hello world`. `od -c /tmp/file` prints the file byte by byte (`od` is "octal dump", and `-c` shows each byte as a character). `0000000` is the position of the first byte shown. Then come h, e, l, l, o, a space, w, o, r, l, d, `\n` and `\0`. Twelve visible characters and then the NUL. The 13 is not a typo; it is the string's terminator.
+Line 13 is `close`. The kernel forgets the file descriptor. The file stays on the disk, and the number can be reused for the next file the program opens.
 
-The blue box is the reason for all of this. DRAM is volatile: power off, everything gone. Files must outlive the process, the crash and the power cut. These three system calls, open, write and close, hand that job to the file system, the part of the OS that manages the disk, whose job is to make sure the bytes are still there tomorrow.
+Lines 10 and 12 are `assert`. `assert(fd >= 0);` stops the program with an error message if the condition is false. `open` and `write` report failure by returning −1, so these two lines stop the program if either call failed. It is the same check the capital-P wrappers did for the thread functions in [Section 4.2](#sec-4-2). (`>=` means "is greater than or equal to", and `==` means "is equal to"; a single `=` stores a value, a double one compares.)
+
+The second capture is the run on Ubuntu. `gcc -Wall -o io io.c` compiles it, and `./io` runs it; it prints nothing. `cat /tmp/file` prints the file: `hello world`. `od -c /tmp/file` prints the file byte by byte (`od` is "octal dump", and `-c` shows each byte as a character). `0000000` is the position of the first byte shown. Then come h, e, l, l, o, a space, w, o, r, l, d, `\n` and `\0`. Twelve visible characters and then the NUL. The 13 is not a typo; it is the string's terminator.
+
+Here is the reason for all of this. DRAM is volatile: power off, everything gone. Files must outlive the process, the crash and the power cut. These three system calls, open, write and close, hand that job to the file system, the part of the OS that manages the disk, whose job is to make sure the bytes are still there tomorrow.
 
 ### 6.3 <span class="lbl lbl-concept">Concept</span> The write path: the inode, the page cache and the dirty page {#sec-6-3 data-toc-label="6.3 [Concept] The write path: the inode, the page cache and the dirty page"}
 
-[Section 6.2](#sec-6-2)'s `write` returned 13: the kernel accepted 13 bytes. [Section 6.1](#sec-6-1) set the trap this has to avoid: a disk write costs about 1000 times a memory write, yet the bytes must end up on the disk. Those two facts cannot both be satisfied at the moment `write` returns, so the kernel must be doing something between "accepted" and "on the disk". Figure 6.5 is the deck's drawing of the whole path, top to bottom.
+[Section 6.2](#sec-6-2)'s `write` returned 13: the kernel accepted 13 bytes. [Section 6.1](#sec-6-1) set the trap this has to avoid: a disk write costs about 1000 times a memory write, yet the bytes must end up on the disk. Those two facts cannot both be satisfied at the moment `write` returns, so the kernel must be doing something between "accepted" and "on the disk". Figure 6.2 draws the whole path, top to bottom.
 
 <figure markdown="1">
-![Figure 6.5. What one write call sets in motion: the file descriptor table, the inode, the page cache in RAM where the bytes are copied and the page is marked dirty, the moment write returns, and the later writeback to the SSD.](figs/write_path.png){width=100%}
-<figcaption markdown="1">Figure 6.5. What one write call sets in motion: the file descriptor table, the inode, the page cache in RAM where the bytes are copied and the page is marked dirty, the moment write returns, and the later writeback to the SSD.</figcaption>
+![Figure 6.2. What one write call sets in motion: the file descriptor table, the inode, the page cache in RAM where the bytes are copied and the page is marked dirty, the moment write returns, and the later writeback to the SSD.](figs/write_path.svg){width=100%}
+<figcaption markdown="1">Figure 6.2. What one write call sets in motion: the file descriptor table, the inode, the page cache in RAM where the bytes are copied and the page is marked dirty, the moment write returns, and the later writeback to the SSD.</figcaption>
 </figure>
 
 Top box: the program calls `write(3, "hello world\n", 13)`. The 3 is the file descriptor that `open` returned ([Section 6.4](#sec-6-4) shows why it is 3). This is a system call, so the processor switches into the kernel: the dashed line is the user/kernel boundary of [Section 1.4](class-1.md#sec-1-4).
@@ -511,82 +602,158 @@ The red tag on the right: and here `write` returns 13. The 13 means the kernel h
 
 The two lower boxes are what happens later. **Writeback** is the kernel writing dirty pages to the disk. On Linux it writes a page once the page has been dirty for about 30 seconds (a Linux setting that [Section 6.5](#sec-6-5) reads), so a write normally reaches the disk within about half a minute of being made. It does this in batches, on its own schedule, or sooner if the program asks for it with `fsync` ([Section 6.6](#sec-6-6)). Batching is the reason for the delay. Each trip to the disk has a large fixed cost, whatever its size, the way a delivery truck costs about the same for one box or fifty. So one trip for many writes makes the expensive trip much cheaper per byte. Then the **disk driver**, the part of the OS that knows how to talk to one particular kind of device, sends the page to the SSD, where it lands in one 4096-byte **block** (the unit in which a disk is handed out).
 
-The three cards on the slide's right side sum it up. Fast: `write` returns as soon as the bytes are in the kernel's RAM, with no disk involved yet. Later: Linux writes a dirty page to disk once it is about 30 seconds old, in batches. Risky: a power cut inside that window, and the program was told 13, success, while the bytes are gone. Every database and every file system is about managing that window. The next three slides look at the layers for real: strace for the top layer ([Section 6.4](#sec-6-4)), the file system's records for the second ([Extra 8](#extra-8)), and the kernel's count of dirty memory for the window itself ([Section 6.5](#sec-6-5)).
+In sum. Fast: `write` returns as soon as the bytes are in the kernel's RAM, with no disk involved yet. Later: Linux writes a dirty page to disk once it is about 30 seconds old, in batches. Risky: a power cut inside that window, and the program was told 13, success, while the bytes are gone. Every database and every file system is about managing that window. The next sections look at the layers for real: strace for the top layer ([Section 6.4](#sec-6-4)), the file system's records for the second ([Extra 8](#extra-8)), and the kernel's count of dirty memory for the window itself ([Section 6.5](#sec-6-5)).
 
 ### 6.4 <span class="lbl lbl-machine">Real machine</span> strace: watching the system calls cross into the kernel {#sec-6-4 data-toc-label="6.4 [Real machine] strace: watching the system calls cross into the kernel"}
 
-[Section 6.3](#sec-6-3) drew the top layer of the write path, a program making three system calls, as boxes. A drawing could be wrong. On Linux there is a tool that sits exactly on the user/kernel line and prints every system call a program makes, with its arguments and its return value, so the top layer can be checked. Figure 6.6 is `io` run under that tool, on an Ubuntu 22.04 machine.
+[Section 6.3](#sec-6-3) drew the top layer of the write path, a program making three system calls, as boxes. A drawing could be wrong. On Linux there is a tool that sits exactly on the user/kernel line and prints every system call a program makes, with its arguments and its return value, so the top layer can be checked. Here is `io` run under that tool, on an Ubuntu 22.04 machine.
 
-<figure markdown="1">
-![Figure 6.6. strace on io: the open, write and close calls, the three that belong to the program shown in bold, and the count of every call the program made.](figs/strace.png){width=95%}
-<figcaption markdown="1">Figure 6.6. strace on io: the open, write and close calls, the three that belong to the program shown in bold, and the count of every call the program made.</figcaption>
-</figure>
+*Ubuntu 22.04: only the three calls we care about (the program's own three are the last three calls)*
+
+```text
+prompt> strace -e trace=openat,write,close ./io
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+close(3)                                = 0
+openat(AT_FDCWD, "/lib/aarch64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+close(3)                                = 0
+openat(AT_FDCWD, "/tmp/file", O_WRONLY|O_CREAT|O_TRUNC, 0700) = 3
+write(3, "hello world\n\0", 13)          = 13
+close(3)                                = 0
++++ exited with 0 +++
+```
+
+*All of it: the counts from `strace -c ./io`, a few rows of its table and the total*
+
+```text
+prompt> strace -c ./io
+  calls  syscall              calls  syscall
+      1  execve                   6  mmap
+      3  openat                   4  mprotect
+      1  write                    3  munmap   ...
+     30  total
+```
 
 The tool is **strace**. `strace -e trace=openat,write,close ./io` runs `io` and prints only those three kinds of call. Each line is one system call: its name, its arguments in parentheses, and after the `=` the value it returned.
 
-The last three bold lines are the program's own. `openat(AT_FDCWD, "/tmp/file", O_WRONLY|O_CREAT|O_TRUNC, 0700) = 3` is our `open`. `openat` is the modern Linux name for open. `AT_FDCWD` means "relative to the current folder", the folder the program was started in, which does not matter for a name starting with `/`. The options are the three of [Section 6.2](#sec-6-2), and `0700` is `S_IRWXU` written as the three permission digits of [Section 6.2](#sec-6-2), 700, with a leading 0 that marks the digits as base 8. It returned 3, the file descriptor. Why 3? Because every program starts with three files already open: 0 is **standard input** (where the program reads typed input), 1 is **standard output** (where it prints), and 2 is **standard error** (where it prints error messages). The next free number is 3. `write(3, "hello world\n\0", 13) = 13`: the kernel received exactly the 13 bytes, the NUL included, and accepted all 13. `close(3) = 0`: success. Then `+++ exited with 0 +++`: the program ended with status 0, no error.
+The last three calls are the program's own. `openat(AT_FDCWD, "/tmp/file", O_WRONLY|O_CREAT|O_TRUNC, 0700) = 3` is our `open`. `openat` is the modern Linux name for open. `AT_FDCWD` means "relative to the current folder", the folder the program was started in, which does not matter for a name starting with `/`. The options are the three of [Section 6.2](#sec-6-2), and `0700` is `S_IRWXU` written as the three permission digits of [Section 6.2](#sec-6-2), 700, with a leading 0 that marks the digits as base 8. It returned 3, the file descriptor. Why 3? Because every program starts with three files already open: 0 is **standard input** (where the program reads typed input), 1 is **standard output** (where it prints), and 2 is **standard error** (where it prints error messages). The next free number is 3. `write(3, "hello world\n\0", 13) = 13`: the kernel received exactly the 13 bytes, the NUL included, and accepted all 13. `close(3) = 0`: success. Then `+++ exited with 0 +++`: the program ended with status 0, no error.
 
 The first four lines come with every C program and are not ours. Before `main` runs, the **loader**, the code that prepares a program to run, opens two files. One is `/etc/ld.so.cache`, its list of where libraries are kept. The other is `libc.so.6`, the C library itself, which provides `printf` and the rest. Each gets descriptor 3 and is closed again. The kernel always hands out the lowest free number, which is why our file also got 3. (`aarch64` in the path is another name for arm64: this Ubuntu ran on an arm64 processor.)
 
-The lower box counts everything: `strace -c ./io` gives a total of 30 system calls. `execve`, once, is the call that starts the program. `openat` appears 3 times (the two loader opens and ours), `write` once. `mmap` (6 times), `mprotect` (4) and `munmap` (3) are the loader setting up memory for the library before `main` runs; the slide shows only these rows and the total. They add up to 1 + 3 + 1 + 6 + 4 + 3 = 18. The other 12 calls are kinds the slide leaves out (its `...`). One of them is `close`, which the listing above shows three times (the loader's two and ours). Three of the 30 calls are ours, so 30 − 3 = 27 are setup.
+The second capture counts everything: `strace -c ./io` gives a total of 30 system calls. `execve`, once, is the call that starts the program. `openat` appears 3 times (the two loader opens and ours), `write` once. `mmap` (6 times), `mprotect` (4) and `munmap` (3) are the loader setting up memory for the library before `main` runs; the capture keeps only these rows and the total. They add up to 1 + 3 + 1 + 6 + 4 + 3 = 18. The other 12 calls are kinds the capture leaves out (its `...`). One of them is `close`, which the listing above shows three times (the loader's two and ours). Three of the 30 calls are ours, so 30 − 3 = 27 are setup.
 
-Figure 6.7 is the deck's three cards, which say the same in short.
-
-<figure markdown="1">
-![Figure 6.7. The syscall boundary in three cards: openat is open, write shows the NUL too, three calls were yours; and where strace sits.](figs/strace_cards.png){width=53%}
-<figcaption markdown="1">Figure 6.7. The syscall boundary in three cards: openat is open, write shows the NUL too, three calls were yours; and where strace sits.</figcaption>
-</figure>
-
-The last card is the point. strace sits exactly on the user/kernel line of the layer diagram of [Section 1.4](class-1.md#sec-1-4). Anything a program does to the outside world passes through that line: every file, every network message, every new process. strace can watch all of it, because the kernel offers a way for one program to watch another program's system calls, and strace uses it. strace exists only on Linux (Ubuntu, or Ubuntu inside WSL2 on Windows); on a Mac, use Ubuntu in a virtual machine.
+The point: strace sits exactly on the user/kernel line of the layer diagram of [Section 1.4](class-1.md#sec-1-4). Anything a program does to the outside world passes through that line: every file, every network message, every new process. strace can watch all of it, because the kernel offers a way for one program to watch another program's system calls, and strace uses it. strace exists only on Linux (Ubuntu, or Ubuntu inside WSL2 on Windows); on a Mac, use Ubuntu in a virtual machine.
 
 ### 6.5 <span class="lbl lbl-machine">Real machine</span> Dirty pages measured: /proc/meminfo, dd and sync {#sec-6-5 data-toc-label="6.5 [Real machine] Dirty pages measured: /proc/meminfo, dd and sync"}
 
-[Section 6.4](#sec-6-4) confirmed the top layer: the calls go in, and 13 comes back. The claim that matters most, though, is [Section 6.3](#sec-6-3)'s window: bytes accepted but not yet on the disk. That window is invisible to the program, so it needs a measurement. Linux keeps a running count of exactly those bytes. Figure 6.8 reads it before and after a large write, on Ubuntu.
+[Section 6.4](#sec-6-4) confirmed the top layer: the calls go in, and 13 comes back. The claim that matters most, though, is [Section 6.3](#sec-6-3)'s window: bytes accepted but not yet on the disk. That window is invisible to the program, so it needs a measurement. Linux keeps a running count of exactly those bytes. Here it is, read before and after a large write, on Ubuntu.
+
+*Ubuntu: how much written data is sitting in RAM, not yet on disk*
+
+```text
+prompt> grep Dirty /proc/meminfo
+Dirty:           144 kB
+prompt> dd if=/dev/zero of=big.bin bs=1M count=200
+prompt> grep Dirty /proc/meminfo        # right after write() returned
+Dirty:        204828 kB                 # 200 MB waiting in RAM
+prompt> time sync                       # force it to the disk
+real    0m0.082s
+prompt> grep Dirty /proc/meminfo
+Dirty:             0 kB
+prompt> cat /proc/sys/vm/dirty_expire_centisecs
+3000                                    # 30 seconds
+```
 
 <figure markdown="1">
-![Figure 6.8. The RAM window measured: the kernel's count of dirty memory before and after writing 200 MB, then after sync, and the 30-second rule; the drawing below shows the page cache draining to the SSD.](figs/dirty.png){width=79%}
-<figcaption markdown="1">Figure 6.8. The RAM window measured: the kernel's count of dirty memory before and after writing 200 MB, then after sync, and the 30-second rule; the drawing below shows the page cache draining to the SSD.</figcaption>
+![Figure 6.3. The window as a picture: dirty pages wait in the page cache in RAM, and drain to the SSD by writeback within 30 seconds, or on sync or fsync.](figs/dirty_window.svg){width=80%}
+<figcaption markdown="1">Figure 6.3. The window as a picture: dirty pages wait in the page cache in RAM, and drain to the SSD by writeback within 30 seconds, or on sync or fsync.</figcaption>
 </figure>
 
-`/proc/meminfo` is a file the kernel makes up on the spot each time it is read: it reports the kernel's memory counters as text. `grep Dirty /proc/meminfo` prints only its `Dirty` line, which counts the kilobytes that programs have written but the disk has not yet received. (A text after `#` in the capture is the deck's comment.)
+`/proc/meminfo` is a file the kernel makes up on the spot each time it is read: it reports the kernel's memory counters as text. `grep Dirty /proc/meminfo` prints only its `Dirty` line, which counts the kilobytes that programs have written but the disk has not yet received. (A text after `#` in the capture is a comment added to explain the line.)
 
-To see the window clearly, the experiment makes one large write quickly and watches the count. Line by line. Before the experiment, `Dirty: 144 kB`: nearly nothing is waiting. Then `dd if=/dev/zero of=big.bin bs=1M count=200`: **dd** is a program that copies data in blocks. Here it reads from `/dev/zero`, a made-up file that produces zero bytes forever, and writes into a new file `big.bin`, in 200 blocks (`count=200`) of 1 MiB each (`bs=1M`, block size). That is 200 MiB, which is 200 × 1024 = 204,800 kB. The slide's text says dd finished in 0.03 seconds. Right after it returned, `Dirty: 204828 kB`: a little more than the 204,800 kB dd wrote, so all of it is in RAM, the disk has none of it, and dd has already reported success. (Dirty is a count at one moment, so it need not equal 144 + 204,800: some of the earlier 144 kB had probably been written back in the meantime, and other programs may have dirtied a little more. The capture does not say exactly.)
+To see the window clearly, the experiment makes one large write quickly and watches the count. Line by line. Before the experiment, `Dirty: 144 kB`: nearly nothing is waiting. Then `dd if=/dev/zero of=big.bin bs=1M count=200`: **dd** is a program that copies data in blocks. Here it reads from `/dev/zero`, a made-up file that produces zero bytes forever, and writes into a new file `big.bin`, in 200 blocks (`count=200`) of 1 MiB each (`bs=1M`, block size). That is 200 MiB, which is 200 × 1024 = 204,800 kB. Right after it returned, `Dirty: 204828 kB`: a little more than the 204,800 kB dd wrote, so all of it is in RAM, the disk has none of it, and dd has already reported success. (Dirty is a count at one moment, so it need not equal 144 + 204,800: some of the earlier 144 kB had probably been written back in the meantime, and other programs may have dirtied a little more. The capture does not say exactly.)
 
 `time sync`: **sync** tells the kernel to write every dirty page to the disk now. It took 0.082 seconds (the `real` line is the wall-clock time). After it, `Dirty: 0 kB`.
 
 The last command reads one of the kernel's settings: `dirty_expire_centisecs` is 3000, in hundredths of a second, so 3000 ÷ 100 = 30 seconds. That is the rule behind "within about 30 seconds": without `sync`, Linux would have written the 200 MB on its own once the data was 30 seconds old. Anything younger than that may still be only in RAM.
 
-The drawing under the capture is the window as a picture. Programs write into the page cache in RAM, 200 MB of dirty pages here. RAM drains to the SSD later, by writeback within 30 seconds, or by `sync` or `fsync` on request. The cards on the slide's right side name the trade. It is fast, because RAM absorbs the writes and the disk sees a few big batches. It is dangerous, because a crash inside the window destroys bytes that the program was told had been written. That window is the whole problem, and the file-system part of the course is about keeping the speed while shrinking the danger.
+Figure 6.3 is the window as a picture. Programs write into the page cache in RAM, 200 MB of dirty pages here. RAM drains to the SSD later, by writeback within 30 seconds, or by `sync` or `fsync` on request. The trade is plain. It is fast, because RAM absorbs the writes and the disk sees a few big batches. It is dangerous, because a crash inside the window destroys bytes that the program was told had been written. That window is the whole problem, and the file-system part of the course is about keeping the speed while shrinking the danger.
 
 ### 6.6 <span class="lbl lbl-machine">Real machine</span> fsync: durability at thousands of times the cost {#sec-6-6 data-toc-label="6.6 [Real machine] fsync: durability at thousands of times the cost"}
 
-[Section 6.5](#sec-6-5) measured the window: written bytes sit in RAM for up to 30 seconds. Data is **durable** when it will survive a crash or a power cut; **durability** is that property, and bytes inside the window do not have it yet. Some programs cannot accept that. A bank that tells a customer "your payment is saved" and then loses it in a power cut has broken its promise. So there must be a way for a program to close the window on purpose, and [Section 6.1](#sec-6-1) predicted it would not be free. Figure 6.9 is a program that measures the price.
+[Section 6.5](#sec-6-5) measured the window: written bytes sit in RAM for up to 30 seconds. Data is **durable** when it will survive a crash or a power cut; **durability** is that property, and bytes inside the window do not have it yet. Some programs cannot accept that. A bank that tells a customer "your payment is saved" and then loses it in a power cut has broken its promise. So there must be a way for a program to close the window on purpose, and [Section 6.1](#sec-6-1) predicted it would not be free. Here is a program that measures the price.
 
-<figure markdown="1">
-![Figure 6.9. fsync_test.c, complete: write 12 bytes N times, with or without fsync after each write, and time only the loop.](figs/fsync_c.png){width=78%}
-<figcaption markdown="1">Figure 6.9. fsync_test.c, complete: write 12 bytes N times, with or without fsync after each write, and time only the loop.</figcaption>
-</figure>
+*`fsync_test.c`, complete*
 
-The call is **fsync**: `fsync(fd)` does not return until all of this file's data is on the disk. Here is what the program does, in order. The helper `now()` returns the current time in seconds, with a fractional part: `gettimeofday` fills in the time since a fixed date in two parts: `t.tv_sec`, the whole seconds, and `t.tv_usec`, the extra microseconds. `t.tv_sec + t.tv_usec / 1e6` adds them up (`1e6` is 1,000,000, so microseconds become seconds). `main` expects two words after its name (`argc != 3` counts the name too): `n`, how many writes, and `do_sync`, 1 to fsync after every write and 0 not to. It opens a file called `testfile` with the same options as [Section 6.2](#sec-6-2) (`0644` is the three digits of [Section 6.2](#sec-6-2) with a leading 0: 6 lets the owner read and write, and the two 4s let the group and everyone else read). Then, callout 2, it reads the clock, runs the loop, and reads the clock again, so only the loop is timed: open and close are outside the clock, and the number is the cost of the writes alone. The loop writes the 12 bytes of `"hello world\n"` (12 this time, without the NUL) `n` times, and callout 1, the green line, `if (do_sync) fsync(fd);`, waits for the disk after every write when `do_sync` is 1. At the end it prints the number of writes, the setting, the total seconds (`%.3f` prints three decimals) and the microseconds per write, `(t1 - t0) / n * 1e6`; the program writes `us` for µs.
+```c linenums="1" hl_lines="21 24 26"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/time.h>
 
-Figure 6.10 is three runs on Ubuntu, with ext4 on an SSD (**ext4** is the usual Linux file system).
+double now(void) {
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    return t.tv_sec + t.tv_usec / 1e6;
+}
 
-<figure markdown="1">
-![Figure 6.10. Three runs of fsync_test on Ubuntu with ext4 on an SSD: 0.2 µs per write without fsync, 1638 µs with it, 760 µs in the longer run; and the two cards.](figs/fsync_runs.png){width=73%}
-<figcaption markdown="1">Figure 6.10. Three runs of fsync_test on Ubuntu with ext4 on an SSD: 0.2 µs per write without fsync, 1638 µs with it, 760 µs in the longer run; and the two cards.</figcaption>
-</figure>
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        fprintf(stderr, "usage: fsync_test <count> <0|1>\n");
+        return 1;
+    }
+    int n = atoi(argv[1]);
+    int do_sync = atoi(argv[2]);   // 1 = fsync after every write
+    int fd = open("testfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    double t0 = now();
+    for (int i = 0; i < n; i++) {
+        write(fd, "hello world\n", 12);
+        if (do_sync) fsync(fd);
+    }
+    double t1 = now();
+    close(fd);
+    printf("%d writes, fsync=%d : %.3f s  (%.1f us per write)\n",
+           n, do_sync, t1 - t0, (t1 - t0) / n * 1e6);
+    return 0;
+}
+```
+
+The call is **fsync**: `fsync(fd)` does not return until all of this file's data is on the disk. Here is what the program does, in order. The helper `now()` returns the current time in seconds, with a fractional part: `gettimeofday` fills in the time since a fixed date in two parts: `t.tv_sec`, the whole seconds, and `t.tv_usec`, the extra microseconds. `t.tv_sec + t.tv_usec / 1e6` adds them up (`1e6` is 1,000,000, so microseconds become seconds). `main` expects two words after its name (`argc != 3` counts the name too): `n`, how many writes, and `do_sync`, 1 to fsync after every write and 0 not to. It opens a file called `testfile` with the same options as [Section 6.2](#sec-6-2) (`0644` is the three digits of [Section 6.2](#sec-6-2) with a leading 0: 6 lets the owner read and write, and the two 4s let the group and everyone else read). Then, at line 21, it reads the clock, runs the loop, and reads the clock again, so only the loop is timed: open and close are outside the clock, and the number is the cost of the writes alone. The loop writes the 12 bytes of `"hello world\n"` (12 this time, without the NUL) `n` times, and line 24, `if (do_sync) fsync(fd);`, waits for the disk after every write when `do_sync` is 1. At the end it prints the number of writes, the setting, the total seconds (`%.3f` prints three decimals) and the microseconds per write, `(t1 - t0) / n * 1e6`; the program writes `us` for µs.
+
+Here are three runs on Ubuntu, with ext4 on an SSD (**ext4** is the usual Linux file system).
+
+```text
+prompt> ./fsync_test 1000 0
+1000 writes, fsync=0 : 0.000 s  (0.2 us per write)
+prompt> ./fsync_test 1000 1
+1000 writes, fsync=1 : 1.638 s  (1638 us per write)
+prompt> ./fsync_test 10000 1
+10000 writes, fsync=1 : 7.600 s  (760 us per write)
+```
 
 Without fsync, 1000 writes took 0.2 µs each: they all went into RAM. The total prints as 0.000 s, and that is consistent: 1000 × 0.2 µs = 200 µs = 0.0002 s, which rounds to 0.000 with three decimals. With fsync, 1000 writes took 1.638 seconds, which is 1.638 ÷ 1000 = 0.001638 s, 1638 µs per write. A longer run of 10,000 writes with fsync took 7.600 seconds, 760 µs each (7.600 ÷ 10,000 = 0.00076 s). The capture does not say why the longer run was cheaper per write. Both are thousands of times slower than 0.2 µs, and this guide quotes the first run, 1638 µs.
 
 Why is one fsync'd write so much more than the SSD's 100 µs of [Section 6.1](#sec-6-1)? The likely reason, which the capture does not break down: one fsync is not one disk access. The file system must also write its own records about the file, and the drive must confirm the data is safe, before fsync can return. The capture does not break the time down. Check the ratio: 1638 ÷ 0.2 = 8190, about 8000, and even 760 ÷ 0.2 = 3800. Thousands of times slower, for the same bytes. One call turns the 30-second promise into a now, and that is its price, paid on every write.
 
-The yellow card on the slide names who pays it: every database, on every **commit** (the moment a database promises a change is saved). A database that says "committed" and then loses the row is worthless. The persistence part of the course is about how to be durable without paying this on every write: batching, journaling (writing a short note of a change before making it, [Extra 7](#extra-7)), one disk trip for many writes. The grey note under the slide adds one fact for Mac users: on macOS, `fsync` only pushes data to the drive's own cache, and the call that really waits for the disk is `fcntl(fd, F_FULLFSYNC, 0)`. Same experiment, different numbers.
+Who pays it? every database, on every **commit** (the moment a database promises a change is saved). A database that says "committed" and then loses the row is worthless. The persistence part of the course is about how to be durable without paying this on every write: batching, journaling (writing a short note of a change before making it, [Extra 7](#extra-7)), one disk trip for many writes. One more fact for Mac users: on macOS, `fsync` only pushes data to the drive's own cache, and the call that really waits for the disk is `fcntl(fd, F_FULLFSYNC, 0)`. Same experiment, different numbers.
 
-**Checkpoint 3.** Settled: `write()` returns as soon as the bytes are in the kernel's page cache in RAM; the disk gets them later, within about 30 seconds on Linux. `fsync()` waits for the disk and costs 1638 microseconds a write instead of 0.2, thousands of times more. Still open: how a file system keeps the speed of the cache and still shrinks the window in which a crash loses data. That is the last part of the course. You should now be able to say what `write()` returning 13 promises, and what `fsync()` adds to that promise.
+Here is the third checkpoint.
+
+!!! settled "Settled"
+
+    `write()` returns as soon as the bytes are in the kernel's page cache in RAM; the disk gets them later, within about 30 seconds on Linux. `fsync()` waits for the disk and costs 1638 microseconds a write instead of 0.2, thousands of times more.
+
+!!! open "Still open"
+
+    how a file system keeps the speed of the cache and still shrinks the window in which a crash loses data. That is the last part of the course.
+
+!!! able "You should now be able to"
+
+    Say what `write()` returning 13 promises, and what `fsync()` adds to that promise.
 
 ## <span class="lbl lbl-summary">Summary</span> Summary of the week: six questions, three pieces {#summary-2 data-toc-label="[Summary] Summary of the week: six questions, three pieces"}
 
-The week asked six questions, three in each class, and each answer opened the next question. The deck's last summary slide answers all six in order, each with the problem it solved.
+The week asked six questions, three in each class, and each answer opened the next question. Here are all six answers in order, each with the problem it solved.
 
 Question 1: what is an operating system, and where does it sit? A layer between programs and hardware: a virtual machine, a library, and a referee, entered only through system calls ([Chapter 1](class-1.md#chapter-1)). Question 2: how does one processor run many programs? The OS switches among them fast, so one processor looks like many. The mechanism switches, the policy chooses, and a process is a struct in the kernel ([Chapter 2](class-1.md#chapter-2)). Question 3: how do two programs share one memory? A private address space per process, mapped by the OS onto physical memory; the program never sees the map ([Chapter 3](class-1.md#chapter-3)).
 
@@ -594,7 +761,7 @@ Question 4: what goes wrong when two threads add to one counter? `counter++` is 
 
 Three pieces, three cruxes: share the machine, keep the sharing correct, keep the data safe. For each piece you now own one fact, with the demo it came from. Virtualization: four loops ran on one processor, and two programs counted separately at one address. Concurrency: `counter++` is three instructions, and two threads printed 103,902 instead of 200,000. Persistence: `write` returned 13 before the disk had a single one of the bytes.
 
-The week's words, each with a picture to bring to mind. Process: the `struct proc` of xv6. System call: the 21 lines of `syscall.h`, and the strace lines. Kernel space against user space: the layer picture. Mechanism against policy: the switch against the choice. Address space: the two maps of [Section 3.3](class-1.md#sec-3-3). **Race condition**: 103,902. Critical section: the green lines of threads.v1.c. **Atomicity**, the property of happening all at once with no gap ([Section 4.5](#sec-4-5)): what the lock gave the three instructions. File descriptor: the 3 that `open` returned. Page cache: the 204,828 kB of dirty memory. `fsync`: 1638 µs against 0.2.
+The week's words, each with a picture to bring to mind. Process: the `struct proc` of xv6. System call: the 21 lines of `syscall.h`, and the strace lines. Kernel space against user space: the layer picture. Mechanism against policy: the switch against the choice. Address space: the two maps of [Section 3.3](class-1.md#sec-3-3). **Race condition**: 103,902. Critical section: the highlighted lines of threads.v1.c. **Atomicity**, the property of happening all at once with no gap ([Section 4.5](#sec-4-5)): what the lock gave the three instructions. File descriptor: the 3 that `open` returned. Page cache: the 204,828 kB of dirty memory. `fsync`: 1638 µs against 0.2.
 
 Three questions to check yourself. Why does the threads program at 100,000 loops give a different answer on every run? Can you draw the layer picture with the system-call arrow? Why does 13 from `write` not mean the bytes are on the disk? If you can do those three, the week is yours. On the reading: read chapters 1 and 2 of the textbook once, all of it; the asides are short and often the best part. What matters is what met the pictures in this guide.
 
@@ -602,53 +769,72 @@ Three questions to check yourself. Why does the threads program at 100,000 loops
 
 ### Extra 6 <span class="lbl lbl-deeper">Deeper, Q1</span> The concurrency crux in full, and the road ahead {#extra-6 data-toc-label="Extra 6 [Deeper, Q1] The concurrency crux in full, and the road ahead"}
 
-This part and the four after it are the second class's "deeper, if time allows" block. [Chapter 4](#chapter-4) quoted the second crux as a problem to solve today, and [Chapter 5](#chapter-5) solved it for one counter. But one counter is the smallest possible case, and the crux is about every program that shares memory. Figure E6.1 is the crux in the deck's shorter wording, with where the course takes it.
+This part and the four after it are optional. [Chapter 4](#chapter-4) quoted the second crux as a problem to solve today, and [Chapter 5](#chapter-5) solved it for one counter. But one counter is the smallest possible case, and the crux is about every program that shares memory. Here is the crux in a shorter wording, with where the course takes it.
 
-<figure markdown="1">
-![Figure E6.1. The second crux, how to build correct concurrent programs, and the road through the concurrency part of the course.](figs/crux2.png){width=100%}
-<figcaption markdown="1">Figure E6.1. The second crux, how to build correct concurrent programs, and the road through the concurrency part of the course.</figcaption>
-</figure>
+!!! crux "The crux: how to build correct concurrent programs"
 
-With many threads in the same memory space, what primitives do we need from the OS and the hardware to make sharing correct, and still fast? The road has three stops. First, the lock, which makes a critical section behave as one action ([Chapter 5](#chapter-5) met it). Second, locks inside real data structures, with two more tools for waiting and waking: **condition variables** (a way for a thread to sleep until some condition becomes true) and **semaphores** (a counter that threads can wait on). Third, how it all goes wrong anyway: concurrency bugs and deadlock, two threads each waiting forever for the other ([Extra 5](class-1.md#extra-5)). The Banker's algorithm on the slide is a classic method for avoiding deadlock.
+    (shortened). With many threads in the same memory space, what primitives do we need from the OS and hardware to make sharing correct, and still fast?
 
-The second line is a piece of history. Concurrency was forced first on the people writing the operating system itself. An interrupt, as [Section 2.3](class-1.md#sec-2-3) defined it, makes the processor stop what it is doing and run kernel code; devices raise them as well as the timer. Even on one processor, an interrupt can arrive at any moment while the kernel is in the middle of updating its own records. The kernel juggling interrupts was the first concurrent program. User programs inherited the problem when threads arrived.
+With many threads in the same memory space, what primitives do we need from the OS and the hardware to make sharing correct, and still fast? The road has three stops. First, the lock, which makes a critical section behave as one action ([Chapter 5](#chapter-5) met it). Second, locks inside real data structures, with two more tools for waiting and waking: **condition variables** (a way for a thread to sleep until some condition becomes true) and **semaphores** (a counter that threads can wait on). Third, how it all goes wrong anyway: concurrency bugs and deadlock, two threads each waiting forever for the other ([Extra 5](class-1.md#extra-5)). The Banker's algorithm is a classic method for avoiding deadlock.
+
+Next, a piece of history. Concurrency was forced first on the people writing the operating system itself. An interrupt, as [Section 2.3](class-1.md#sec-2-3) defined it, makes the processor stop what it is doing and run kernel code; devices raise them as well as the timer. Even on one processor, an interrupt can arrive at any moment while the kernel is in the middle of updating its own records. The kernel juggling interrupts was the first concurrent program. User programs inherited the problem when threads arrived.
 
 ### Extra 7 <span class="lbl lbl-deeper">Deeper, Q3</span> The four jobs a file system must get right {#extra-7 data-toc-label="Extra 7 [Deeper, Q3] The four jobs a file system must get right"}
 
-[Chapter 6](#chapter-6) followed 13 bytes from `write` to the disk and found one window. A file system has more to worry about than that window, and the third crux names it in general terms. Figure E7.1 breaks the crux into four jobs.
+[Chapter 6](#chapter-6) followed 13 bytes from `write` to the disk and found one window. A file system has more to worry about than that window, and the third crux names it in general terms. Here is the crux broken into four jobs.
 
-<figure markdown="1">
-![Figure E7.1. The persistence crux as four jobs for the file system: where bytes live, finding them by name, hiding the slowness, and surviving a crash in the middle of a write.](figs/fs_jobs.png){width=100%}
-<figcaption markdown="1">Figure E7.1. The persistence crux as four jobs for the file system: where bytes live, finding them by name, hiding the slowness, and surviving a crash in the middle of a write.</figcaption>
-</figure>
+- Where on disk do written bytes live? (allocation, data structures)
+- How do we find them again by NAME? (directories, inodes)
+- Writing is slow: batch it? cache it? (performance)
+- Power dies MID-write: what now? (crash consistency: journaling, copy-on-write)
 
-Where on disk do written bytes live, and who decides? That is **allocation**, and the file system's data structures. How do we find them again by name? That is **directories** (folders) and inodes, and [Extra 8](#extra-8) shows both. Writing is slow, so should it be batched, or cached? That is performance, and [Chapter 6](#chapter-6) measured one answer. And the hard one: the power dies in the middle of a write; what now? That is **crash consistency**, and its two standard answers have names. **Journaling** writes a note of what is about to change before changing it, so that after a crash the note can be replayed. **Copy-on-write** never overwrites data in place, and writes new versions elsewhere. The box restates the crux: what techniques store data correctly and fast, and keep it correct even when hardware and software fail? The last part of the course answers it in that order, ending with journaling, which runs inside almost every laptop and phone today.
+!!! crux "The crux: how to store data persistently"
+
+    (shortened). What techniques store data correctly and fast, and keep it correct even when hardware and software fail?
+
+Where on disk do written bytes live, and who decides? That is **allocation**, and the file system's data structures. How do we find them again by name? That is **directories** (folders) and inodes, and [Extra 8](#extra-8) shows both. Writing is slow, so should it be batched, or cached? That is performance, and [Chapter 6](#chapter-6) measured one answer. And the hard one: the power dies in the middle of a write; what now? That is **crash consistency**, and its two standard answers have names. **Journaling** writes a note of what is about to change before changing it, so that after a crash the note can be replayed. **Copy-on-write** never overwrites data in place, and writes new versions elsewhere. The crux restates it: what techniques store data correctly and fast, and keep it correct even when hardware and software fail? The last part of the course answers it in that order, ending with journaling, which runs inside almost every laptop and phone today.
 
 ### Extra 8 <span class="lbl lbl-deeper">Deeper, Q3</span> A name, an inode number, a data block: where the 13 bytes live {#extra-8 data-toc-label="Extra 8 [Deeper, Q3] A name, an inode number, a data block: where the 13 bytes live"}
 
-[Section 6.3](#sec-6-3) said the kernel finds a file's bytes through its inode, numbered 372 on the Ubuntu machine, and that the disk works in 4096-byte blocks. Both claims can be read off the file system's own records. Figure E8.1 asks the file system about `/tmp/file`.
+[Section 6.3](#sec-6-3) said the kernel finds a file's bytes through its inode, numbered 372 on the Ubuntu machine, and that the disk works in 4096-byte blocks. Both claims can be read off the file system's own records. Here we ask the file system about `/tmp/file`.
+
+*Ubuntu: ask the file system about the file (the `stat` output is trimmed to its main lines)*
+
+```text
+prompt> ls -li /tmp/file
+372 -rwx------ 1 annie annie 13 Sep  3 06:41 /tmp/file
+prompt> stat /tmp/file
+  Size: 13      Blocks: 8      IO Block: 4096   regular file
+  Device: 10302h   Inode: 372   Links: 1
+  Access: (0700/-rwx------)  Uid: annie   Gid: annie
+  Modify: 2026-09-03 06:41:09.134003942 +0000
+```
 
 <figure markdown="1">
-![Figure E8.1. ls -li and stat on /tmp/file, the three pieces of a file on disk (directory entry, inode, data block), and the three cards.](figs/inode.png){width=100%}
-<figcaption markdown="1">Figure E8.1. ls -li and stat on /tmp/file, the three pieces of a file on disk (directory entry, inode, data block), and the three cards.</figcaption>
+![Figure E8.1. The three pieces of a file on disk: the directory entry, the inode, and the data block.](figs/inode_pieces.svg){width=100%}
+<figcaption markdown="1">Figure E8.1. The three pieces of a file on disk: the directory entry, the inode, and the data block.</figcaption>
 </figure>
 
 `ls -li /tmp/file` lists the file in long form (`-l`) with its inode number (`-i`). The extra first column, 372, is the inode number, the file system's internal name for this file. Then the permissions, `-rwx------`: the owner may read, write and execute, and nobody else may do anything, which is the `S_IRWXU` of [Section 6.2](#sec-6-2). Then the number of links, 1 (how many names point at this file; the next paragraph explains); the owner and group, `annie`; the size, 13 bytes; and the time it was last changed.
 
 `stat /tmp/file` prints the inode itself. `Size: 13` and `Blocks: 8` and `IO Block: 4096`. `Inode: 372` and `Links: 1`: one link means exactly one name points at this inode. The permissions again, as the number 0700. The owner, and the time of the last change. Notice what the inode holds: size, owner, permissions, times, and where the bytes are. Notice what it does not hold: the file's name, and the file's contents.
 
-The drawing below puts the three pieces on the disk. A directory is a file too: `/tmp` holds a list of pairs, each a name and an inode number, and its entry for our file says `file → 372`. Inode 372 holds the size, the link count, the owner, times, permissions, and a list of the blocks that hold the bytes. The data block, 4096 bytes, holds `hello world\n\0`, our 13 bytes, and 4096 − 13 = 4083 bytes unused. So: a name, then a number, then the bytes. The name and the bytes are kept in different places on the disk. That is why renaming a file is instant: only the directory's entry changes, and the inode and the bytes stay where they are. It is also why one file can have two names: two directory entries with the same inode number.
+Figure E8.1 puts the three pieces on the disk. A directory is a file too: `/tmp` holds a list of pairs, each a name and an inode number, and its entry for our file says `file → 372`. Inode 372 holds the size, the link count, the owner, times, permissions, and a list of the blocks that hold the bytes. The data block, 4096 bytes, holds `hello world\n\0`, our 13 bytes, and 4096 − 13 = 4083 bytes unused. So: a name, then a number, then the bytes. The name and the bytes are kept in different places on the disk. That is why renaming a file is instant: only the directory's entry changes, and the inode and the bytes stay where they are. It is also why one file can have two names: two directory entries with the same inode number.
 
-The yellow card: 13 bytes cost 4096. The disk is handed out in 4 KB blocks. `stat` counts `Blocks` in units of 512 bytes, a Unix convention kept from old disks whose smallest unit, the **sector**, was 512 bytes. So `Blocks: 8` is 8 × 512 = 4096 bytes: eight sectors, one block. Small files waste most of their block.
+And 13 bytes cost 4096. The disk is handed out in 4 KB blocks. `stat` counts `Blocks` in units of 512 bytes, a Unix convention kept from old disks whose smallest unit, the **sector**, was 512 bytes. So `Blocks: 8` is 8 × 512 = 4096 bytes: eight sectors, one block. Small files waste most of their block.
 
 ### Extra 9 [Deeper, the week] An operating system is judged by four goals {#extra-9}
 
-The week showed what an operating system does. It did not yet say how to judge whether one does it well, and the measurements kept raising that question: the lock was correct and 8 times slower; `fsync` was safe and thousands of times slower. Figure E9.1 is the textbook's list of design goals.
+The week showed what an operating system does. It did not yet say how to judge whether one does it well, and the measurements kept raising that question: the lock was correct and 8 times slower; `fsync` was safe and thousands of times slower. Here is the textbook's list of design goals.
 
-<figure markdown="1">
-![Figure E9.1. Four design goals: abstraction, performance, protection and isolation, reliability; plus energy, security and mobility, depending on the setting.](figs/goals.png){width=100%}
-<figcaption markdown="1">Figure E9.1. Four design goals: abstraction, performance, protection and isolation, reliability; plus energy, security and mobility, depending on the setting.</figcaption>
-</figure>
+| Goal | What it asks |
+|---|---|
+| Abstraction | find the right ideas (process, address space, file) so programs are easy to write on top |
+| Performance | virtualization must cost little: minimize overhead in time and space |
+| Protection and isolation | a buggy (or malicious) program must not harm others, or the OS itself |
+| Reliability | the OS must run non-stop: when it fails, everything fails |
+
+...plus, depending on the setting: energy efficiency, security, mobility.
 
 Abstraction: find the right ideas, such as the process, the address space and the file, so that programs are easy to write on top. An **abstraction** is a simple idea that hides a complicated reality; every week of the course introduces one and shows what it hides. Performance: virtualization must cost little, in time and in space. The lock's 8 times is this goal in numbers. Protection and isolation: a buggy or malicious program must not harm others, or the OS itself. Two processes with the same address and different contents is protection at work. Reliability: the OS must run non-stop, because when it fails, everything above it fails. Then, depending on the setting: energy efficiency, security and mobility. Phones care most about energy, banks favor reliability, game consoles favor performance. The goals conflict, and every later week's designs are judged against them.
 
@@ -657,7 +843,7 @@ Abstraction: find the right ideas, such as the process, the address space and th
 The week's ideas, the system call, user and kernel mode, switching among programs, private memory, can look like recent inventions. They are not, and their history explains why some old computers lacked them. Figure E10.1 is ninety seconds of it.
 
 <figure markdown="1">
-![Figure E10.1. A timeline of operating systems: libraries and batch jobs, protection and system calls, multiprogramming and Unix, the PC that forgot, and the systems that relearned. Following textbook section 2.6.](figs/history.png){width=100%}
+![Figure E10.1. A timeline of operating systems: libraries and batch jobs, protection and system calls, multiprogramming and Unix, the PC that forgot, and the systems that relearned. Following textbook section 2.6.](figs/history.svg){width=100%}
 <figcaption markdown="1">Figure E10.1. A timeline of operating systems: libraries and batch jobs, protection and system calls, multiprogramming and Unix, the PC that forgot, and the systems that relearned. Following textbook section 2.6.</figcaption>
 </figure>
 

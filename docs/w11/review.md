@@ -102,7 +102,7 @@ Process 1 runs for 3 time slots and then starts a disk read that keeps the disk 
 Number the slots from 1. The disk is busy in slots 4 to 7 in both cases.
 
 <figure markdown="1">
-![Figure R.1. Answer 6. (a) Polling: process 1 runs slots 1 to 3, polls in slots 4 to 7 (p), runs slots 8 and 9, and process 2 runs slots 10 to 15. (b) Interrupts: process 2 runs slots 4 to 7 while the disk works, process 1 runs slots 8 and 9, and process 2 finishes its last 2 slots in 10 and 11.](figs/ans_timeline.svg){width=78%}
+![Figure R.1. Answer 6. (a) Polling: process 1 runs slots 1 to 3, polls in slots 4 to 7 (p), runs slots 8 and 9, and process 2 runs slots 10 to 15. (b) Interrupts: process 2 runs slots 4 to 7 while the disk works, process 1 runs slots 8 and 9, and process 2 finishes its last 2 slots in 10 and 11.](figs/ans_timeline.svg){width=100%}
 <figcaption markdown="1">Figure R.1. [Answer 6](#answer-6). (a) Polling: process 1 runs slots 1 to 3, polls in slots 4 to 7 (p), runs slots 8 and 9, and process 2 runs slots 10 to 15. (b) Interrupts: process 2 runs slots 4 to 7 while the disk works, process 1 runs slots 8 and 9, and process 2 finishes its last 2 slots in 10 and 11.</figcaption>
 </figure>
 
@@ -123,7 +123,7 @@ Imagine a broken version of `virtio_disk_rw()` in which the check of `b->disk` a
 One order that loses the wake-up:
 
 <figure markdown="1">
-![Figure R.2. Answer 7. Process A checks b->disk and sees 1; before A sleeps, the disk's interrupt runs the handler, which sets b->disk to 0 and calls wakeup(b) while nobody is asleep on b; then A calls sleep(b), and no second interrupt ever comes for this request.](figs/ans_lostwakeup.svg){width=78%}
+![Figure R.2. Answer 7. Process A checks b->disk and sees 1; before A sleeps, the disk's interrupt runs the handler, which sets b->disk to 0 and calls wakeup(b) while nobody is asleep on b; then A calls sleep(b), and no second interrupt ever comes for this request.](figs/ans_lostwakeup.svg){width=100%}
 <figcaption markdown="1">Figure R.2. [Answer 7](#answer-7). Process A checks b->disk and sees 1; before A sleeps, the disk's interrupt runs the handler, which sets b->disk to 0 and calls wakeup(b) while nobody is asleep on b; then A calls sleep(b), and no second interrupt ever comes for this request.</figcaption>
 </figure>
 

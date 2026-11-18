@@ -1,172 +1,5 @@
 # First class: locks inside data structures, and a queue to sleep on (OSTEP 29 and 30.1) {#class-1}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 2317" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="2317" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#a0632a">WEEK 9 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#opening-1" class="cmap-link"><title>Where we left off: a lock around one line, and now a whole structure</title><rect x="10" y="122" width="206" height="61" rx="6" fill="#f3f4f6" stroke="#9aa3b2" stroke-width="1.1"/><text x="20" y="138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">Where we left off: a lock around</text><text x="20" y="153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">one line, and now a whole</text><text x="20" y="168" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">structure</text></a>
-<a href="#sec-1-3" class="cmap-link"><title>1.3 Problem: The crux: make the structure correct first, then fast</title><rect x="384" y="205" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="211" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="221.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="223" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.3 The crux: make the structure correct first, then</text><text x="448" y="238" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">fast</text></a>
-<path d="M352,226 C368,226 368,226 384,226" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="213" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="230" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-1-1" class="cmap-link"><title>1.1 Concept: A counter as a tiny data structure: one int and three functions</title><rect x="384" y="259" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="265" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="275.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="277" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.1 A counter as a tiny data structure: one int and</text><text x="448" y="292" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">three functions</text></a>
-<a href="#sec-1-4" class="cmap-link"><title>1.4 Concept: Step 1: the lock becomes a field of the struct</title><rect x="384" y="305" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="311" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="321.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="323" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.4 Step 1: the lock becomes a field of the struct</text></a>
-<a href="#sec-1-5" class="cmap-link"><title>1.5 Concept: Step 2: increment() takes the lock, adds, and gives it back</title><rect x="384" y="336" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="342" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="352.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="354" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.5 Step 2: increment() takes the lock, adds, and gives</text><text x="448" y="369" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">it back</text></a>
-<a href="#sec-1-6" class="cmap-link"><title>1.6 Concept: Step 3: get() follows the same rule, reads included</title><rect x="384" y="382" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="388" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="398.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="400" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.6 Step 3: get() follows the same rule, reads included</text></a>
-<path d="M352,334 C368,334 368,280 384,280" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,334 C368,334 368,318 384,318" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,334 C368,334 368,357 384,357" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,334 C368,334 368,396 384,396" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="321" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="338" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-1-2" class="cmap-link"><title>1.2 Real machine: Four threads call increment(), and most of the adds vanish</title><rect x="384" y="421" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="427" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="437.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="439" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.2 Four threads call increment(), and most of the</text><text x="476" y="454" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">adds vanish</text></a>
-<a href="#sec-1-7" class="cmap-link"><title>1.7 Real machine: Result: 4,000,000 every run, with one thread inside at a time</title><rect x="384" y="467" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="473" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="483.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="485" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.7 Result: 4,000,000 every run, with one thread</text><text x="476" y="500" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">inside at a time</text></a>
-<path d="M352,465 C368,465 368,442 384,442" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,465 C368,465 368,488 384,488" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="452" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="469" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-1-8" class="cmap-link"><title>1.8 Check yourself: What the first question settled</title><rect x="384" y="521" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="527" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="537.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="539" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.8 What the first question settled</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="552" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="568" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Inside the structure: one lock, taken by every</text><text x="394" y="583" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">function that threads call, on entry and released before it</text><text x="394" y="598" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">returns. Without it the counter kept 1,037,269 to 1,071,121 of</text><text x="394" y="613" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4,000,000 adds; with it, 4,000,000 every run. Cost: one thread at</text><text x="394" y="628" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">a time.</text></a>
-<path d="M352,582 C368,582 368,534 384,534" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,582 C368,582 368,598 384,598" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="569" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="586" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-2" class="cmap-link"><title>Extra 2 Deeper, Q1: Lock only the lines that touch shared data</title><rect x="384" y="655" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="661" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="671.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="673" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 2 Lock only the lines that touch shared data</text></a>
-<path d="M352,668 C368,668 368,668 384,668" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="656" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="672" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,446 C232,446 232,226 248,226" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,446 C232,446 232,334 248,334" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,446 C232,446 232,465 248,465" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,446 C232,446 232,582 248,582" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,446 C232,446 232,668 248,668" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-1" class="cmap-link"><title>Q1. Where does the lock go when a whole data structure is shared?</title><rect x="10" y="412" width="206" height="68" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="432" r="11" fill="#a0632a"/><text x="28" y="436" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="436" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Where does the lock go</text><text x="48" y="452" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">when a whole data</text><text x="48" y="468" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">structure is shared?</text></a>
-<text x="113.0" y="704" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-2-2" class="cmap-link"><title>2.2 Problem: Every add takes the one lock: adds go one at a time</title><rect x="384" y="716" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="722" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="732.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="734" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.2 Every add takes the one lock: adds go one at a time</text></a>
-<a href="#sec-2-9" class="cmap-link"><title>2.9 Problem: One lock on a list, held for the whole walk</title><rect x="384" y="747" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="753" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="763.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="765" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.9 One lock on a list, held for the whole walk</text></a>
-<path d="M352,745 C368,745 368,730 384,730" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<path d="M352,745 C368,745 368,760 384,760" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="732" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="749" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-2-3" class="cmap-link"><title>2.3 Concept: Step 1: the approximate counter, each CPU counts alone and reports every S adds</title><rect x="384" y="786" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="792" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="802.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="804" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.3 Step 1: the approximate counter, each CPU counts</text><text x="448" y="819" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">alone and reports every S adds</text></a>
-<a href="#sec-2-4" class="cmap-link"><title>2.4 Worked example: Step 2: a slot lock per add, the global lock per S</title><rect x="384" y="832" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="838" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="848.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="850" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.4 Step 2: a slot lock per add, the global lock</text><text x="487" y="865" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">per S</text></a>
-<a href="#sec-2-5" class="cmap-link"><title>2.5 Worked example: Step 3: get() reads only the global count, which lags</title><rect x="384" y="878" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="884" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="894.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="896" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.5 Step 3: get() reads only the global count,</text><text x="487" y="911" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">which lags</text></a>
-<a href="#sec-2-7" class="cmap-link"><title>2.7 Concept: Why slower: neighboring counts share a 64-byte block</title><rect x="384" y="924" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="930" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="940.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="942" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.7 Why slower: neighboring counts share a 64-byte block</text></a>
-<a href="#sec-2-11" class="cmap-link"><title>2.11 Concept: Step 1: 101 short lists, one lock each, picked by the key</title><rect x="384" y="955" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="961" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="971.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="973" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.11 Step 1: 101 short lists, one lock each, picked by</text><text x="448" y="988" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the key</text></a>
-<a href="#sec-2-13" class="cmap-link"><title>2.13 Concept: The design behind both fixes: split what is shared, lock each part</title><rect x="384" y="1001" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1007" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1017.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1019" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.13 The design behind both fixes: split what is shared,</text><text x="448" y="1034" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">lock each part</text></a>
-<path d="M352,914 C368,914 368,807 384,807" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,914 C368,914 368,853 384,853" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,914 C368,914 368,899 384,899" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,914 C368,914 368,938 384,938" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,914 C368,914 368,976 384,976" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,914 C368,914 368,1022 384,1022" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="902" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="918" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-2-1" class="cmap-link"><title>2.1 Real machine: One lock: four times the work takes over 20 times as long</title><rect x="384" y="1055" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1061" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1071.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1073" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.1 One lock: four times the work takes over 20</text><text x="476" y="1088" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">times as long</text></a>
-<a href="#sec-2-6" class="cmap-link"><title>2.6 Real machine: Measured: as printed, four slots are slower than one lock</title><rect x="384" y="1101" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1107" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1117.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1119" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.6 Measured: as printed, four slots are slower</text><text x="476" y="1134" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">than one lock</text></a>
-<a href="#sec-2-8" class="cmap-link"><title>2.8 Real machine: The fix: one 128-byte block per slot, and the slots scale</title><rect x="384" y="1147" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1153" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1163.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1165" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.8 The fix: one 128-byte block per slot, and the</text><text x="476" y="1180" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">slots scale</text></a>
-<a href="#sec-2-10" class="cmap-link"><title>2.10 Real machine: Measured: four threads look up slower than one</title><rect x="384" y="1193" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1199" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1209.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1211" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.10 Measured: four threads look up slower than one</text></a>
-<a href="#sec-2-12" class="cmap-link"><title>2.12 Real machine: Step 2, measured: 4 threads about 2 times faster, not 4</title><rect x="384" y="1224" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1230" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1240.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1242" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.12 Step 2, measured: 4 threads about 2 times</text><text x="476" y="1257" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">faster, not 4</text></a>
-<path d="M352,1160 C368,1160 368,1076 384,1076" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1160 C368,1160 368,1122 384,1122" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1160 C368,1160 368,1168 384,1168" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1160 C368,1160 368,1206 384,1206" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1160 C368,1160 368,1245 384,1245" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="1148" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="1164" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-2-14" class="cmap-link"><title>2.14 Check yourself: What the second question settled</title><rect x="384" y="1278" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1284" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1294.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1296" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.14 What the second question settled</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="1309" width="400" height="106" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1325" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Every add needed the one lock: 4 threads took more</text><text x="394" y="1340" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">than 20 times as long as 1 thread, for 4 times the work. A count</text><text x="394" y="1355" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">per slot (per CPU in OSTEP), moved to a global count every S</text><text x="394" y="1370" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">adds, scaled almost perfectly (0.0055 s for 4 threads against</text><text x="394" y="1385" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">0.0050 s for 1) once no two slots (a count and its lock) shared a</text><text x="394" y="1400" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">cache line; …</text></a>
-<path d="M352,1346 C368,1346 368,1292 384,1292" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,1346 C368,1346 368,1362 384,1362" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1334" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1350" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-1" class="cmap-link"><title>Extra 1 Deeper, Q2: The threshold S trades accuracy for speed</title><rect x="384" y="1427" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1433" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1443.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1445" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 1 The threshold S trades accuracy for speed</text></a>
-<a href="#extra-3" class="cmap-link"><title>Extra 3 Deeper, Q2: Hand-over-hand: a lock per node, and rarely any faster</title><rect x="384" y="1458" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1464" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1474.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1476" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 3 Hand-over-hand: a lock per node, and rarely</text><text x="465" y="1491" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">any faster</text></a>
-<a href="#extra-4" class="cmap-link"><title>Extra 4 Deeper, Q2: Michael and Scott: one lock for the head, one for the tail</title><rect x="384" y="1504" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1510" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1520.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1522" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 4 Michael and Scott: one lock for the head, one</text><text x="465" y="1537" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">for the tail</text></a>
-<a href="#extra-5" class="cmap-link"><title>Extra 5 Deeper, Q2: One big kernel lock, then many: how Linux grew up</title><rect x="384" y="1550" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1556" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1566.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1568" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 5 One big kernel lock, then many: how Linux</text><text x="465" y="1583" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">grew up</text></a>
-<path d="M352,1510 C368,1510 368,1440 384,1440" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1510 C368,1510 368,1479 384,1479" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1510 C368,1510 368,1525 384,1525" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1510 C368,1510 368,1571 384,1571" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1496" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1514" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,1156 C232,1156 232,745 248,745" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1156 C232,1156 232,914 248,914" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1156 C232,1156 232,1160 248,1160" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1156 C232,1156 232,1346 248,1346" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1156 C232,1156 232,1510 248,1510" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-2" class="cmap-link"><title>Q2. Why can one lock make four threads slower than one, and how do we spread the work?</title><rect x="10" y="1114" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="1134" r="11" fill="#a0632a"/><text x="28" y="1138" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="1138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Why can one lock make</text><text x="48" y="1154" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">four threads slower than</text><text x="48" y="1170" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">one, and how do we</text><text x="48" y="1186" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">spread the work?</text></a>
-<text x="113.0" y="1614" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-3-1" class="cmap-link"><title>3.1 Problem: A join: the parent waits for its child by watching a flag</title><rect x="384" y="1626" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1632" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1642.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1644" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.1 A join: the parent waits for its child by watching a</text><text x="448" y="1659" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">flag</text></a>
-<path d="M352,1647 C368,1647 368,1647 384,1647" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="1634" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="1651" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-3-3" class="cmap-link"><title>3.3 Concept: Step 1: a queue to sleep in until something changes</title><rect x="384" y="1680" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1686" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1696.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1698" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.3 Step 1: a queue to sleep in until something changes</text></a>
-<a href="#sec-3-4" class="cmap-link"><title>3.4 Concept: Step 2: wait() drops the lock and sleeps, in one step</title><rect x="384" y="1711" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1717" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1727.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1729" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.4 Step 2: wait() drops the lock and sleeps, in one</text><text x="448" y="1744" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">step</text></a>
-<a href="#sec-3-5" class="cmap-link"><title>3.5 Concept: Step 3: signal() wakes the sleeper, who checks done again</title><rect x="384" y="1757" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1763" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1773.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1775" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.5 Step 3: signal() wakes the sleeper, who checks done</text><text x="448" y="1790" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">again</text></a>
-<a href="#sec-3-6" class="cmap-link"><title>3.6 Worked example: The join, order 1: the parent arrives first and waits, the child wakes it</title><rect x="384" y="1803" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1809" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1819.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1821" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.6 The join, order 1: the parent arrives first</text><text x="487" y="1836" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">and waits, the child wakes it</text></a>
-<a href="#sec-3-7" class="cmap-link"><title>3.7 Worked example: The join, order 2: the child finishes first, and nothing is lost</title><rect x="384" y="1849" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1855" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1865.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1867" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.7 The join, order 2: the child finishes first,</text><text x="487" y="1882" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">and nothing is lost</text></a>
-<a href="#sec-3-8" class="cmap-link"><title>3.8 Worked example: Shortcut 1: drop done, and the parent can sleep forever</title><rect x="384" y="1895" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1901" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1911.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1913" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.8 Shortcut 1: drop done, and the parent can</text><text x="487" y="1928" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">sleep forever</text></a>
-<a href="#sec-3-9" class="cmap-link"><title>3.9 Worked example: Shortcut 2: drop the lock, and the signal hits a gap</title><rect x="384" y="1941" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1947" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1957.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1959" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.9 Shortcut 2: drop the lock, and the signal</text><text x="487" y="1974" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">hits a gap</text></a>
-<a href="#sec-3-10" class="cmap-link"><title>3.10 Concept: The join&#x27;s design: three pieces, one per failure you saw</title><rect x="384" y="1987" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1993" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="2003.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="2005" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.10 The join&#x27;s design: three pieces, one per failure</text><text x="448" y="2020" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">you saw</text></a>
-<path d="M352,1854 C368,1854 368,1694 384,1694" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1854 C368,1854 368,1732 384,1732" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1854 C368,1854 368,1778 384,1778" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1854 C368,1854 368,1824 384,1824" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1854 C368,1854 368,1870 384,1870" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1854 C368,1854 368,1916 384,1916" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1854 C368,1854 368,1962 384,1962" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1854 C368,1854 368,2008 384,2008" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1842" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1858" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-3-2" class="cmap-link"><title>3.2 Real machine: Measured: spinning burns a whole CPU, or steals the child&#x27;s</title><rect x="384" y="2041" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="2047" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="2057.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="2059" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.2 Measured: spinning burns a whole CPU, or steals</text><text x="476" y="2074" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the child&#x27;s</text></a>
-<path d="M352,2062 C368,2062 368,2062 384,2062" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="2049" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="2066" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-3-11" class="cmap-link"><title>3.11 Check yourself: What the third question settled</title><rect x="384" y="2095" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="2101" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="2111.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="2113" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.11 What the third question settled</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="2126" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="2142" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: A condition variable: keep the event in a variable,</text><text x="394" y="2157" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">hold the lock, and wait(), which releases the lock and sleeps in</text><text x="394" y="2172" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">one step; the other thread changes the variable and signals.</text><text x="394" y="2187" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Cost: three pieces (variable, lock, condition variable) that must</text><text x="394" y="2202" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">all be there.</text></a>
-<path d="M352,2156 C368,2156 368,2108 384,2108" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,2156 C368,2156 368,2172 384,2172" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="2143" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="2160" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<path d="M216,1924 C232,1924 232,1647 248,1647" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1924 C232,1924 232,1854 248,1854" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1924 C232,1924 232,2062 248,2062" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1924 C232,1924 232,2156 248,2156" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<a href="#chapter-3" class="cmap-link"><title>Q3. How does a thread wait for something to happen, rather than for a lock?</title><rect x="10" y="1890" width="206" height="68" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="1910" r="11" fill="#a0632a"/><text x="28" y="1914" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="1914" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How does a thread wait</text><text x="48" y="1930" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">for something to happen,</text><text x="48" y="1946" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">rather than for a lock?</text></a>
-<a href="#summary-1" class="cmap-link"><title>What the first class settled</title><rect x="10" y="2251" width="206" height="50" rx="7" fill="#555e6b"/><text x="21" y="2270" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: What the first class</text><text x="21" y="2286" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">settled</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-1.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## <span class="lbl lbl-roadmap">Roadmap</span> Where we left off: a lock around one line, and now a whole structure {#opening-1 data-toc-label="[Roadmap] Where we left off: a lock around one line, and now a whole structure"}
 
 Last week ended with a lock that worked and that we had opened up. Three things are settled. A lock needs one read-and-write the hardware will not split, such as test-and-set. A waiting thread should sleep on a queue, not spin. Linux keeps a lock in one word and calls the kernel only when somebody has to sleep or be woken. The words that come back today are the critical section (the lines that touch shared data), mutual exclusion (one thread inside at a time), the mutex (a mutual exclusion lock; `lock()` takes it, `unlock()` gives it back), test-and-set and the futex.
@@ -264,7 +97,7 @@ Half 1 is **correct**: no add is lost, whatever the threads do. Half 2 is **fast
 First, where should the lock live?
 
 <figure markdown="1">
-![Figure 1.1. Two homes for the lock. Top: outside, with every caller, as last week; thread C forgot it. Bottom: inside the structure, taken by its own functions; every caller just calls `increment(&c)`.](figs/lock_outside_inside.svg){width=55%}
+![Figure 1.1. Two homes for the lock. Top: outside, with every caller, as last week; thread C forgot it. Bottom: inside the structure, taken by its own functions; every caller just calls `increment(&c)`.](figs/lock_outside_inside.svg){width=100%}
 <figcaption markdown="1">Figure 1.1. Two homes for the lock. Top: outside, with every caller, as last week; thread C forgot it. Bottom: inside the structure, taken by its own functions; every caller just calls `increment(&c)`.</figcaption>
 </figure>
 
@@ -334,7 +167,7 @@ The struct now carries a lock. Last week the race was inside the add, so the add
 Lines 18 to 22 of the listing in [Section 1.4](#sec-1-4) are `increment()`. Line 19 takes the lock: `pthread_mutex_lock(&c->lock)` waits until nobody is inside, then enters. Line 20 is unchanged, `c->value++`, still load, add, store; but only the thread holding the lock is running these three steps now, so nobody can slip in between its load and its store. Line 21 gives the lock back: `pthread_mutex_unlock(&c->lock)`, and the next waiter may enter. Both calls reach the lock through the struct, `&c->lock`.
 
 <figure markdown="1">
-![Figure 1.2. While T1 is inside `increment()`, holding the lock, T2 arrives, finds the lock held, and waits.](figs/increment_wait.svg){width=60%}
+![Figure 1.2. While T1 is inside `increment()`, holding the lock, T2 arrives, finds the lock held, and waits.](figs/increment_wait.svg){width=90%}
 <figcaption markdown="1">Figure 1.2. While T1 is inside `increment()`, holding the lock, T2 arrives, finds the lock held, and waits.</figcaption>
 </figure>
 
@@ -385,12 +218,7 @@ $ ./counter_lock 4
 
 4 × 1,000,000 = 4,000,000, every run. The counter is thread safe.
 
-<figure markdown="1">
-![Figure 1.3. The three steps together: the problem, where the lock moved, what each function does with it, and what that solved.](figs/counter_design.svg){width=70%}
-<figcaption markdown="1">Figure 1.3. The three steps together: the problem, where the lock moved, what each function does with it, and what that solved.</figcaption>
-</figure>
-
-Figure 1.3 puts the three steps side by side. The problem: with no lock most adds were lost, and a lock left to callers is forgotten by one of them. Step 1 moved the lock inside `counter_t`, next to `value`. Step 2 made `increment()` do lock, add, unlock, so no add is lost. Step 3 made `get()` do lock, copy, unlock, so no read is half done. Solved: callers only call, there is nothing to forget, and the run prints 4,000,000 every time.
+Here are the three steps side by side. The problem: with no lock most adds were lost, and a lock left to callers is forgotten by one of them. Step 1 moved the lock inside `counter_t`, next to `value`. Step 2 made `increment()` do lock, add, unlock, so no add is lost. Step 3 made `get()` do lock, copy, unlock, so no read is half done. Solved: callers only call, there is nothing to forget, and the run prints 4,000,000 every time.
 
 This is the pattern, and it is the right first version of any shared structure. One lock per structure. Every function that threads call takes the lock on entry and releases it just before it returns. Callers simply call `increment()` and `get()`, from any number of threads, and nothing is lost. Nothing is simpler than this. One lock and one rule are easy to get right, and getting it right comes first.
 
@@ -438,7 +266,7 @@ $ ./counter_lock 4
 ```
 
 <figure markdown="1">
-![Figure 2.1. The same four runs as bars. The green dashed line is perfect scaling: 0.0042 s at every thread count. The red bar is what 4 threads took.](figs/lock_bars.svg){width=70%}
+![Figure 2.1. The same four runs as bars. The green dashed line is perfect scaling: 0.0042 s at every thread count. The red bar is what 4 threads took.](figs/lock_bars.svg){width=100%}
 <figcaption markdown="1">Figure 2.1. The same four runs as bars. The green dashed line is perfect scaling: 0.0042 s at every thread count. The red bar is what 4 threads took.</figcaption>
 </figure>
 
@@ -456,7 +284,7 @@ The question to think about before the next part: four CPUs are doing four times
 What we have is four CPUs and one lock. `increment()` is nothing but lock, add, unlock (lines 18 to 22 of the [Section 1.4](#sec-1-4) listing). Every `increment()` on every CPU wants the same lock.
 
 <figure markdown="1">
-![Figure 2.2. Four CPUs, one lock. At any moment one CPU holds it and three wait.](figs/one_lock_four_cpus.svg){width=55%}
+![Figure 2.2. Four CPUs, one lock. At any moment one CPU holds it and three wait.](figs/one_lock_four_cpus.svg){width=85%}
 <figcaption markdown="1">Figure 2.2. Four CPUs, one lock. At any moment one CPU holds it and three wait.</figcaption>
 </figure>
 
@@ -549,13 +377,6 @@ So the counter trades exactness for speed, and S is the knob. A small S keeps th
 
 Where is a count that lags acceptable? A statistics counter in a kernel (packets received, pages mapped) is read rarely and updated constantly; a total that is a little behind is fine there. A bank balance is not that kind of counter.
 
-
-<!-- anim:approx:start -->
-Step through the table of Section 2.3 yourself, one time row at a time, and then the get() of this section.
-
-<div class="anim" data-anim="approx" markdown="0"></div>
-<!-- anim:approx:end -->
-
 - What this part settled: `get()` returns G, which can be behind the truth by at most 4 × S.
 - What it leaves open: whether the three steps really made the counter fast. The next part measures it, and it does not go the way OSTEP says.
 
@@ -619,7 +440,7 @@ $ getconf LEVEL1_DCACHE_LINESIZE
 (`sizeof(x)` is the size of `x` in bytes; `LEVEL1_DCACHE_LINESIZE` is the line size of the level-1 data cache, the cache closest to the CPU; the `padded` line is for the fixed struct of [Section 2.8](#sec-2-8).) The four counts sit at bytes 56 to 71 of the struct: 16 bytes in a row, `local[0]` at 56, `local[1]` at 60, `local[2]` at 64, `local[3]` at 68, with the locks packed right behind them from byte 72 on. Cache lines are 64-byte blocks of memory, cut from address 0, so a line boundary is an address that is a multiple of 64; the cache finds a line by the address with its last 6 bits dropped, which is the same as rounding down to a multiple of 64, because 64 is 2 to the 6th. The capture does not print where the struct starts, so the guide cannot say where the boundaries fall inside it. But 16 bytes in a row can cross at most one boundary, so at least two of the four counts, and perhaps all four, sit in one line, and the locks, written on every add too, begin right behind them. Neighboring counts share a line, and that is all the argument needs. (Two side notes, safe to skip. Why 56 and not 4 + 48 = 52: gcc keeps a mutex on an address that is a multiple of 8, a rule called **alignment**, because the mutex holds 8-byte fields and the CPU reads an 8-byte field in one step only from such an address; so `glock` starts at byte 8, not 4, and 8 + 48 = 56. And the table of [Section 2.3](#sec-2-3) and the figure call the counts L1 to L4; L1 is `local[0]`.)
 
 <figure markdown="1">
-![Figure 2.3. The struct as printed: 4 counts in 16 bytes, then 4 locks of 48 bytes each; boxes not to scale. Neighbors share a 64-byte line.](figs/cache_line_row.svg){width=70%}
+![Figure 2.3. The struct as printed: 4 counts in 16 bytes, then 4 locks of 48 bytes each; boxes not to scale. Neighbors share a 64-byte line.](figs/cache_line_row.svg){width=100%}
 <figcaption markdown="1">Figure 2.3. The struct as printed: 4 counts in 16 bytes, then 4 locks of 48 bytes each; boxes not to scale. Neighbors share a 64-byte line.</figcaption>
 </figure>
 
@@ -716,7 +537,7 @@ list  4 threads x   10000 lookups  found 40000  time 0.592 s
 One thread: 0.387 to 0.438 s. Four threads: 0.587 to 0.607 s. Slower with 4, not faster. (`found 40000` says every lookup found its key, since every key looked up is one of the 10,000 in the list.)
 
 <figure markdown="1">
-![Figure 2.4. What the four threads do in time: one walks while the other three wait at the lock, so the walks go one after another.](figs/list_walk_timeline.svg){width=60%}
+![Figure 2.4. What the four threads do in time: one walks while the other three wait at the lock, so the walks go one after another.](figs/list_walk_timeline.svg){width=100%}
 <figcaption markdown="1">Figure 2.4. What the four threads do in time: one walks while the other three wait at the lock, so the walks go one after another.</figcaption>
 </figure>
 
@@ -753,7 +574,7 @@ int Hash_Lookup(hash_t *H, int key) { return List_Lookup(&H->lists[key % BUCKETS
 A **hash table** is many short lists in an array, and a rule (here `key % 101`) that says which list a key belongs to, so each lookup walks only one short list. One slot of the table is a **hash bucket**; here each bucket is a short list with its own lock.
 
 <figure markdown="1">
-![Figure 2.5. The table: buckets [0] to [100], each a short list with its own lock. Thread T1 looks up key 57 and lands in bucket [57]; T2 looks up key 103 and lands in bucket [2] (103 % 101 = 2). Two keys, two buckets, two locks: both walks at once.](figs/hash_buckets.svg){width=75%}
+![Figure 2.5. The table: buckets [0] to [100], each a short list with its own lock. Thread T1 looks up key 57 and lands in bucket [57]; T2 looks up key 103 and lands in bucket [2] (103 % 101 = 2). Two keys, two buckets, two locks: both walks at once.](figs/hash_buckets.svg){width=100%}
 <figcaption markdown="1">Figure 2.5. The table: buckets [0] to [100], each a short list with its own lock. Thread T1 looks up key 57 and lands in bucket [57]; T2 looks up key 103 and lands in bucket [2] (103 % 101 = 2). Two keys, two buckets, two locks: both walks at once.</figcaption>
 </figure>
 
@@ -800,12 +621,7 @@ What the counter and the table share: more locks help only when different thread
 
 The counter and the list were made fast by the same idea. Here is the whole second question as one argument, each step next to the problem it removed.
 
-<figure markdown="1">
-![Figure 2.6. Top row, the counter: one lock, then four slots, the layout surprise, and the fix. Bottom row, the list: one lock, then 101 buckets.](figs/split_design.svg){width=100%}
-<figcaption markdown="1">Figure 2.6. Top row, the counter: one lock, then four slots, the layout surprise, and the fix. Bottom row, the list: one lock, then 101 buckets.</figcaption>
-</figure>
-
-The counter, Figure 2.6 top row, left to right:
+The counter, step by step:
 
 - the problem: one lock, taken on every add, made 4 threads 22 times slower;
 - step 1: a count per CPU, each under its own lock, so no two CPUs want one lock;
@@ -815,7 +631,7 @@ The counter, Figure 2.6 top row, left to right:
 - the layout fix: one 128-byte block per slot;
 - solved: 4 threads in about the time of 1, 0.0055 s, 17 times faster than one lock.
 
-The list, bottom row:
+The list:
 
 - the problem: one lock held for the whole walk made 4 threads slower than 1;
 - step 1: 101 short lists, one lock each, `key % 101` picks the list, so two keys mean two locks;
@@ -897,7 +713,7 @@ real 0.97 s  user 0.97 s
 ```
 
 <figure markdown="1">
-![Figure 3.1. Top, 4 CPUs: the child works on one CPU while the parent spins on another, from start to finish. Bottom, 1 CPU: the parent and the child take turns, so the spinner steals time from the very thread it is waiting for.](figs/spin_timelines.svg){width=60%}
+![Figure 3.1. Top, 4 CPUs: the child works on one CPU while the parent spins on another, from start to finish. Bottom, 1 CPU: the parent and the child take turns, so the spinner steals time from the very thread it is waiting for.](figs/spin_timelines.svg){width=100%}
 <figcaption markdown="1">Figure 3.1. Top, 4 CPUs: the child works on one CPU while the parent spins on another, from start to finish. Bottom, 1 CPU: the parent and the child take turns, so the spinner steals time from the very thread it is waiting for.</figcaption>
 </figure>
 
@@ -954,7 +770,7 @@ pthread_cond_wait(pthread_cond_t *c, pthread_mutex_t *m);
 Here is what happens, with the waiting thread called T. T holds lock `m` and finds `done == 0`. T calls `wait(&c, &m)`: in one step, as far as any other thread can tell, `m` is released and T joins `c`'s queue, asleep (inside the library it is several instructions, guarded so that no signal can land between them; [Section 4.11](class-2.md#sec-4-11) shows how xv6 does that). When T later wakes, `wait()` takes `m` back before it returns, so that T checks `done` again, in the next part, with the lock held, exactly as it checked it the first time.
 
 <figure markdown="1">
-![Figure 3.2. After step 2: T is asleep on `c`'s queue, and lock `m` is free.](figs/wait_picture.svg){width=55%}
+![Figure 3.2. After step 2: T is asleep on `c`'s queue, and lock `m` is free.](figs/wait_picture.svg){width=100%}
 <figcaption markdown="1">Figure 3.2. After step 2: T is asleep on `c`'s queue, and lock `m` is free.</figcaption>
 </figure>
 
@@ -978,7 +794,7 @@ pthread_cond_signal(pthread_cond_t *c);
 It takes only the condition variable. U, the other thread, takes lock `m` and sets `done = 1`. U calls `signal(&c)`: a sleeper (T) moves from `c`'s queue to **ready**, allowed to run again. Then U unlocks `m`. T runs again: inside `wait()`, T first takes `m` back; only then does `wait()` return. T checks `done` again, finds 1, and leaves the loop.
 
 <figure markdown="1">
-![Figure 3.3. After step 3: `c`'s queue is empty, and T is ready.](figs/signal_picture.svg){width=55%}
+![Figure 3.3. After step 3: `c`'s queue is empty, and T is ready.](figs/signal_picture.svg){width=100%}
 <figcaption markdown="1">Figure 3.3. After step 3: `c`'s queue is empty, and T is ready.</figcaption>
 </figure>
 
@@ -1030,7 +846,7 @@ Lines 7 to 9 are the three pieces: the variable `done`, the lock `m` (started fr
 The parent's side first. Line 27 takes the lock, and line 28 looks at `done`, so the check happens with the lock held: the child cannot change `done` in the middle of it. `done` is 0, so line 29 calls `wait()`: the lock is released and the parent sleeps on `c`, in one step. Later the parent wakes inside `wait()` holding `m`, goes back to the `while` test on line 28, finds `done == 1`, leaves the loop and unlocks on line 30.
 
 <figure markdown="1">
-![Figure 3.4. Order 1 in time. Parent: lock, `done` is 0, wait; asleep on `c`; lock back, unlock. Child: the work; `thr_exit()`.](figs/join_order1_timeline.svg){width=65%}
+![Figure 3.4. Order 1 in time. Parent: lock, `done` is 0, wait; asleep on `c`; lock back, unlock. Child: the work; `thr_exit()`.](figs/join_order1_timeline.svg){width=100%}
 <figcaption markdown="1">Figure 3.4. Order 1 in time. Parent: lock, `done` is 0, wait; asleep on `c`; lock back, unlock. Child: the work; `thr_exit()`.</figcaption>
 </figure>
 
@@ -1151,13 +967,6 @@ The flow, with the lock dropped: parent: `done == 0`? yes; interrupted: the chil
 
 The rule both failures teach, and why the lock closes the gap. Keep the event in a variable (shortcut 1 dropped it). Hold the lock while you check it and call `wait()`, and while you change it and signal (shortcut 2 dropped it). Remove either piece, and the waiter can go to sleep after its signal has already come. With the lock held, the child cannot touch `done` between the parent's check and its sleep, because `wait()` releases the lock only as the parent falls asleep.
 
-
-<!-- anim:join:start -->
-Step through the four runs of Sections 3.6 to 3.9 yourself: the two orders that work, and the two shortcuts that fail.
-
-<div class="anim" data-anim="join" markdown="0"></div>
-<!-- anim:join:end -->
-
 - What this part settled: the lock must stay; without it the change and the signal land in the gap between the check and the sleep.
 - What it leaves open: nothing of the mechanism. One page puts the three pieces together.
 
@@ -1167,12 +976,7 @@ Step through the four runs of Sections 3.6 to 3.9 yourself: the two orders that 
 
 Why three pieces and not one? Because each shortcut you just watched lost a different thing. Here is the whole design, each piece next to the failure it removes.
 
-<figure markdown="1">
-![Figure 3.5. The join, from the spin to OSTEP Figure 30.3: the problem, the three pieces, what `wait()` itself does, and what that solved.](figs/join_design.svg){width=100%}
-<figcaption markdown="1">Figure 3.5. The join, from the spin to OSTEP Figure 30.3: the problem, the three pieces, what `wait()` itself does, and what that solved.</figcaption>
-</figure>
-
-Figure 3.5, left to right:
+The design, piece by piece:
 
 - the problem: spin on a flag, and a whole CPU is burned, or the child's own time is stolen (0.99 s of CPU);
 - piece 1, the queue: a condition variable to sleep in, so the waiter uses no CPU (0.46 s instead of 0.99 s);
@@ -1236,7 +1040,7 @@ In one sentence: put the lock in the structure, split it when a measurement says
 ```
 
 <figure markdown="1">
-![Figure E1.1. The S sweep: 4 threads × 1,000,000 adds, S from 1 to 1024, time per run.](figs/s_sweep_bars.svg){width=80%}
+![Figure E1.1. The S sweep: 4 threads × 1,000,000 adds, S from 1 to 1024, time per run.](figs/s_sweep_bars.svg){width=100%}
 <figcaption markdown="1">Figure E1.1. The S sweep: 4 threads × 1,000,000 adds, S from 1 to 1024, time per run.</figcaption>
 </figure>
 
@@ -1291,7 +1095,7 @@ Why it matters: OSTEP, in its section on the concurrent linked list, cites a stu
 [Chapter 2](#chapter-2) split the list into buckets. Another way to split the list's lock is to give every node its own lock.
 
 <figure markdown="1">
-![Figure E3.1. Five nodes, each with a lock. T1 holds nodes 2 and 3 for an instant, on its way from 2 to 3.](figs/hand_over_hand.svg){width=80%}
+![Figure E3.1. Five nodes, each with a lock. T1 holds nodes 2 and 3 for an instant, on its way from 2 to 3.](figs/hand_over_hand.svg){width=100%}
 <figcaption markdown="1">Figure E3.1. Five nodes, each with a lock. T1 holds nodes 2 and 3 for an instant, on its way from 2 to 3.</figcaption>
 </figure>
 
@@ -1339,7 +1143,7 @@ int Queue_Dequeue(queue_t *q, int *value) {
 `Queue_Enqueue()` adds at the tail and takes only `tail_lock` (line 11); `Queue_Dequeue()` removes from the head and takes only `head_lock` (line 18). (`*value = ...` stores into the caller's variable through a pointer; `free()` gives heap memory back; `new_head` is the node that becomes the new head.) So one enqueue and one dequeue can run at the same time.
 
 <figure markdown="1">
-![Figure E4.1. The queue with its dummy node: head points at the dummy, tail at the last real item.](figs/ms_queue.svg){width=55%}
+![Figure E4.1. The queue with its dummy node: head points at the dummy, tail at the last real item.](figs/ms_queue.svg){width=75%}
 <figcaption markdown="1">Figure E4.1. The queue with its dummy node: head points at the dummy, tail at the last real item.</figcaption>
 </figure>
 

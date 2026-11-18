@@ -1,148 +1,11 @@
 # First class: threads, the race on a shared counter, and the thread API, the calls that make and control threads (OSTEP 26 and 27) {#class-1}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 1582" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="1582" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#a0632a">WEEK 8 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#opening-1" class="cmap-link"><title>Where we left off: two CPUs, one queue, and a lock nobody opened</title><rect x="10" y="122" width="206" height="46" rx="6" fill="#f3f4f6" stroke="#9aa3b2" stroke-width="1.1"/><text x="20" y="138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">Where we left off: two CPUs, one</text><text x="20" y="153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">queue, and a lock nobody opened</text></a>
-<a href="#sec-1-2" class="cmap-link"><title>1.2 Problem: One point of execution leaves a core idle: parallelism and overlap</title><rect x="384" y="190" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="196" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="206.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="208" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.2 One point of execution leaves a core idle:</text><text x="448" y="223" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">parallelism and overlap</text></a>
-<path d="M352,211 C368,211 368,211 384,211" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="198" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="215" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-1-1" class="cmap-link"><title>1.1 Concept: The thread: a new abstraction inside one program</title><rect x="384" y="244" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="250" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="260.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="262" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.1 The thread: a new abstraction inside one program</text></a>
-<a href="#sec-1-3" class="cmap-link"><title>1.3 Concept: Thread against process: the thread control block and the shared page table</title><rect x="384" y="275" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="281" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="291.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="293" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.3 Thread against process: the thread control block and</text><text x="448" y="308" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the shared page table</text></a>
-<path d="M352,280 C368,280 368,258 384,258" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,280 C368,280 368,296 384,296" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="268" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="284" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-1-4" class="cmap-link"><title>1.4 Real machine: Two threads sum an array in about half the time</title><rect x="384" y="329" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="335" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="345.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="347" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.4 Two threads sum an array in about half the time</text></a>
-<a href="#sec-1-5" class="cmap-link"><title>1.5 Real machine: The scheduler decides which thread runs first</title><rect x="384" y="360" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="366" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="376.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="378" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.5 The scheduler decides which thread runs first</text></a>
-<path d="M352,358 C368,358 368,342 384,342" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,358 C368,358 368,374 384,374" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="345" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="362" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-1-6" class="cmap-link"><title>1.6 Check yourself: What the first question settled</title><rect x="384" y="399" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="405" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="415.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="417" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.6 What the first question settled</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="430" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="446" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: A thread is a second program counter and a second</text><text x="394" y="461" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">stack inside the same address space; code, heap and globals are</text><text x="394" y="476" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">shared, and the page table stays the same at a switch. Two</text><text x="394" y="491" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">threads on 2 cores summed the array in about half the time. The</text><text x="394" y="506" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">cost: nobody controls which thread runs first.</text></a>
-<path d="M352,460 C368,460 368,412 384,412" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,460 C368,460 368,476 384,476" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="447" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="464" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-1" class="cmap-link"><title>Extra 1 Deeper, Q1: The other interaction: one thread waits for another</title><rect x="384" y="533" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="539" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="549.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="551" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 1 The other interaction: one thread waits for</text><text x="465" y="566" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">another</text></a>
-<path d="M352,554 C368,554 368,554 384,554" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="541" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="558" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,384 C232,384 232,211 248,211" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,384 C232,384 232,280 248,280" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,384 C232,384 232,358 248,358" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,384 C232,384 232,460 248,460" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,384 C232,384 232,554 248,554" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-1" class="cmap-link"><title>Q1. Why would one program want more than one point of execution, and what do the two share?</title><rect x="10" y="342" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="362" r="11" fill="#a0632a"/><text x="28" y="366" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="366" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Why would one program</text><text x="48" y="382" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">want more than one point</text><text x="48" y="398" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">of execution, and what</text><text x="48" y="414" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">do the two share?</text></a>
-<text x="113.0" y="597" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-2-2" class="cmap-link"><title>2.2 Problem: The total is wrong, and different every run</title><rect x="384" y="609" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="615" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="625.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="627" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.2 The total is wrong, and different every run</text></a>
-<path d="M352,622 C368,622 368,622 384,622" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="610" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="626" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-2-4" class="cmap-link"><title>2.4 Worked example: The race on one CPU, step by step: OSTEP Figure 26.7</title><rect x="384" y="648" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="654" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="664.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="666" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.4 The race on one CPU, step by step: OSTEP</text><text x="487" y="681" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Figure 26.7</text></a>
-<a href="#sec-2-5" class="cmap-link"><title>2.5 Worked example: The race on two cores, with no interrupt</title><rect x="384" y="694" width="400" height="27" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="700" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="710.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="712" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.5 The race on two cores, with no interrupt</text></a>
-<a href="#sec-2-6" class="cmap-link"><title>2.6 Concept: Critical section, mutual exclusion and atomicity</title><rect x="384" y="725" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="731" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="741.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="743" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.6 Critical section, mutual exclusion and atomicity</text></a>
-<path d="M352,700 C368,700 368,669 384,669" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,700 C368,700 368,708 384,708" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,700 C368,700 368,738 384,738" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="687" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="704" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-2-1" class="cmap-link"><title>2.1 Real machine: A shared counter: two threads, ten million adds each</title><rect x="384" y="764" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="770" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="780.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="782" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.1 A shared counter: two threads, ten million adds</text><text x="476" y="797" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">each</text></a>
-<a href="#sec-2-3" class="cmap-link"><title>2.3 Real machine: One line of C is three instructions: load, add, store</title><rect x="384" y="810" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="816" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="826.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="828" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.3 One line of C is three instructions: load, add,</text><text x="476" y="843" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">store</text></a>
-<a href="#sec-2-7" class="cmap-link"><title>2.7 Real kernel: xv6&#x27;s free-page list is a critical section on every CPU</title><rect x="384" y="856" width="400" height="42" rx="6" fill="#ffffff" stroke="#6b4fa0" stroke-width="1.1"/><rect x="390" y="862" width="74" height="15" rx="3" fill="#6b4fa0"/><text x="396" y="872.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text><text x="471" y="874" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.7 xv6&#x27;s free-page list is a critical section on</text><text x="471" y="889" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">every CPU</text></a>
-<path d="M352,831 C368,831 368,785 384,785" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,831 C368,831 368,831 384,831" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,831 C368,831 368,877 384,877" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="818" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="835" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-2-8" class="cmap-link"><title>2.8 Check yourself: What the second question settled</title><rect x="384" y="910" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="916" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="926.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="928" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.8 What the second question settled</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="941" width="400" height="106" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="957" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: One line of C is load, add, store, with the value in</text><text x="394" y="972" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">a private register in between. A second thread&#x27;s load landing in</text><text x="394" y="987" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">that gap (after a switch, or on the other core) loses an add.</text><text x="394" y="1002" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Each thread made 10,000,000 adds; the total came out short, by a</text><text x="394" y="1017" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">different amount every run. The lines that touch shared data are</text><text x="394" y="1032" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">a critical section; …</text></a>
-<path d="M352,978 C368,978 368,924 384,924" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,978 C368,978 368,994 384,994" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="966" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="982" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-2" class="cmap-link"><title>Extra 2 Deeper, Q2: A tool that finds the race for you: helgrind</title><rect x="384" y="1059" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1065" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1075.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1077" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 2 A tool that finds the race for you: helgrind</text></a>
-<a href="#extra-3" class="cmap-link"><title>Extra 3 Deeper, Q2: Who named the problem, and why the OS met it first</title><rect x="384" y="1090" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1096" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1106.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1108" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 3 Who named the problem, and why the OS met it</text><text x="465" y="1123" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">first</text></a>
-<path d="M352,1096 C368,1096 368,1072 384,1072" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1096 C368,1096 368,1111 384,1111" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1082" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1100" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,872 C232,872 232,622 248,622" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,872 C232,872 232,700 248,700" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,872 C232,872 232,831 248,831" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,872 C232,872 232,978 248,978" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,872 C232,872 232,1096 248,1096" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-2" class="cmap-link"><title>Q2. Why does a shared counter come out wrong, and which lines are the dangerous ones?</title><rect x="10" y="830" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="850" r="11" fill="#a0632a"/><text x="28" y="854" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="854" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Why does a shared</text><text x="48" y="870" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">counter come out wrong,</text><text x="48" y="886" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">and which lines are the</text><text x="48" y="902" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">dangerous ones?</text></a>
-<text x="113.0" y="1154" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-3-1" class="cmap-link"><title>3.1 Problem: Starting a thread, and why main must wait for it</title><rect x="384" y="1166" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1172" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1182.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1184" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.1 Starting a thread, and why main must wait for it</text></a>
-<path d="M352,1180 C368,1180 368,1180 384,1180" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="1166" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="1184" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-3-2" class="cmap-link"><title>3.2 Concept: pthread_create and pthread_join as a picture</title><rect x="384" y="1205" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1211" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1221.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1223" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.2 pthread_create and pthread_join as a picture</text></a>
-<a href="#sec-3-3" class="cmap-link"><title>3.3 Worked example: Passing arguments in and a result out, in three steps</title><rect x="384" y="1236" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1242" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1252.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1254" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.3 Passing arguments in and a result out, in</text><text x="487" y="1269" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">three steps</text></a>
-<a href="#sec-3-4" class="cmap-link"><title>3.4 Concept: A lock lets only one thread at a time do the add</title><rect x="384" y="1282" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1288" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1298.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1300" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.4 A lock lets only one thread at a time do the add</text></a>
-<path d="M352,1257 C368,1257 368,1218 384,1218" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1257 C368,1257 368,1257 384,1257" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1257 C368,1257 368,1296 384,1296" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1244" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1261" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-3-5" class="cmap-link"><title>3.5 Real machine: One mutex makes the counter right, and slow</title><rect x="384" y="1321" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1327" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1337.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1339" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.5 One mutex makes the counter right, and slow</text></a>
-<path d="M352,1334 C368,1334 368,1334 384,1334" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="1322" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="1338" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-3-6" class="cmap-link"><title>3.6 Check yourself: What the third question settled</title><rect x="384" y="1360" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1366" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1376.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1378" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.6 What the third question settled</text></a>
-<a href="#summary-1" class="cmap-link"><title>The answer</title><rect x="384" y="1391" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1407" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: pthread_create starts a function as a thread with one</text><text x="394" y="1422" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">argument; pthread_join waits and collects the result; a mutex</text><text x="394" y="1437" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">around the critical section made 20,000,000 every run. The cost:</text><text x="394" y="1452" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">23 times slower in the first pair of runs (31 in the second), and</text><text x="394" y="1467" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the inside of lock() is still a mystery.</text></a>
-<path d="M352,1421 C368,1421 368,1374 384,1374" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,1421 C368,1421 368,1436 384,1436" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1408" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1425" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<path d="M216,1326 C232,1326 232,1180 248,1180" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1326 C232,1326 232,1257 248,1257" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1326 C232,1326 232,1334 248,1334" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1326 C232,1326 232,1421 248,1421" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<a href="#chapter-3" class="cmap-link"><title>Q3. What does a program say to make a thread, wait for it, and keep it out of the dangerous lines?</title><rect x="10" y="1284" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="1304" r="11" fill="#a0632a"/><text x="28" y="1308" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="1308" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">What does a program say</text><text x="48" y="1324" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">to make a thread, wait</text><text x="48" y="1340" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">for it, and keep it out</text><text x="48" y="1356" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">of the dangerous lines?</text></a>
-<a href="#summary-1" class="cmap-link"><title>What the first class settled</title><rect x="10" y="1516" width="206" height="50" rx="7" fill="#555e6b"/><text x="21" y="1535" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: What the first class</text><text x="21" y="1551" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">settled</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-1.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## <span class="lbl lbl-roadmap">Roadmap</span> Where we left off: two CPUs, one queue, and a lock nobody opened {#opening-1 data-toc-label="[Roadmap] Where we left off: two CPUs, one queue, and a lock nobody opened"}
 
 The last class ended with more than one CPU. With several CPUs, a scheduler can keep one shared queue of jobs that every CPU takes from, or one queue per CPU. The shared queue had a flaw we named but did not open.
 
 <figure markdown="1">
-![Figure 1.1. Two CPUs read the front of the same queue at the same instant. Both take job A, and nobody takes job B.](figs/recap_race.svg){width=45%}
+![Figure 1.1. Two CPUs read the front of the same queue at the same instant. Both take job A, and nobody takes job B.](figs/recap_race.svg){width=70%}
 <figcaption markdown="1">Figure 1.1. Two CPUs read the front of the same queue at the same instant. Both take job A, and nobody takes job B.</figcaption>
 </figure>
 
@@ -164,23 +27,18 @@ The second class then opens the lock itself.
 
 Everything the course has built so far made one machine look like many machines. Last week ended with two CPUs taking jobs from one queue: two flows of execution touching one piece of data, inside the kernel. The same problem shows up in an ordinary program as soon as it has two flows of execution, and there we can run it and measure it. So the week starts with that second flow inside one program; the kernel's own case comes back in Sections [2.7](#sec-2-7) and [5.3](class-2.md#sec-5-3). First we need the thing itself: a way for one program to be in two places at once, which the operating system has to offer. This part says what that new thing is. It is a new **abstraction**: a simple picture the OS offers a program in place of the messy machine underneath. The process was one abstraction, and the address space was another.
 
-<figure markdown="1">
-![Figure 1.2. The two illusions the course has built so far. Each one is about many programs sharing one machine.](figs/two_illusions.svg){width=80%}
-<figcaption markdown="1">Figure 1.2. The two illusions the course has built so far. Each one is about many programs sharing one machine.</figcaption>
-</figure>
-
-The first piece of the course built two illusions, shown in Figure 1.2. A **virtual CPU** per program: many programs seem to run at once, because the OS switches between them. A **private address space** per program: each program thinks the memory is its own, because the OS maps it onto real memory. Both illusions are about many programs. Look inside any one of those programs, and the old picture still holds: one program counter, so one place in the code, so one instruction at a time. Such a program cannot use a second core, and it cannot compute while it waits for something; [Section 1.2](#sec-1-2) shows both.
+The first piece of the course built two illusions. A **virtual CPU** per program: many programs seem to run at once, because the OS switches between them. A **private address space** per program: each program thinks the memory is its own, because the OS maps it onto real memory. Both illusions are about many programs. Look inside any one of those programs, and the old picture still holds: one program counter, so one place in the code, so one instruction at a time. Such a program cannot use a second core, and it cannot compute while it waits for something; [Section 1.2](#sec-1-2) shows both.
 
 The new idea is to give one program a second place in its own code. Same program, same memory, same code, but two program counters. This is the definition to keep:
 
 A **thread** is a point of execution inside a program: its own program counter, its own registers and its own stack, sharing the program's code, heap and global variables with the other threads of that program. A thread is very much like a separate process, except for one difference: the threads of one program share the same address space, so they can reach the same data. A program with more than one thread is a **multi-threaded program**.
 
 <figure markdown="1">
-![Figure 1.3. OSTEP Figure 26.1 redrawn. Left: a classic program, with one program counter and one stack. Right: a multi-threaded program, with two program counters (PC 1, PC 2) and two stacks in the same address space.](figs/fig261.svg){width=80%}
-<figcaption markdown="1">Figure 1.3. OSTEP Figure 26.1 redrawn. Left: a classic program, with one program counter and one stack. Right: a multi-threaded program, with two program counters (PC 1, PC 2) and two stacks in the same address space.</figcaption>
+![Figure 1.2. OSTEP Figure 26.1 redrawn. Left: a classic program, with one program counter and one stack. Right: a multi-threaded program, with two program counters (PC 1, PC 2) and two stacks in the same address space.](figs/fig261.svg){width=90%}
+<figcaption markdown="1">Figure 1.2. OSTEP Figure 26.1 redrawn. Left: a classic program, with one program counter and one stack. Right: a multi-threaded program, with two program counters (PC 1, PC 2) and two stacks in the same address space.</figcaption>
 </figure>
 
-Figure 1.3 shows the difference as two address spaces. On the left, a classic program: code at the top, then the heap, free space, and one stack at the bottom, with one PC pointing into the code. On the right, the same program with two threads: the same code and the same heap, but two stacks, and two PCs pointing at two different places in the same code. Each thread needs its own stack because each one is running its own chain of function calls; [Section 1.3](#sec-1-3) says this more carefully.
+Figure 1.2 shows the difference as two address spaces. On the left, a classic program: code at the top, then the heap, free space, and one stack at the bottom, with one PC pointing into the code. On the right, the same program with two threads: the same code and the same heap, but two stacks, and two PCs pointing at two different places in the same code. Each thread needs its own stack because each one is running its own chain of function calls; [Section 1.3](#sec-1-3) says this more carefully.
 
 An idea like this raises three questions, and this class takes them in order:
 
@@ -200,29 +58,29 @@ Questions a and b are about what a thread is. Question c is the cost of sharing,
 A thread is a second place in the code. Before we say what it is made of, here is why a program would want one. What we have is a process as we have known it, and there are two cases where it does badly.
 
 <figure markdown="1">
-![Figure 1.4. A process as we have known it: one address space, one program counter.](figs/one_process.svg){width=30%}
-<figcaption markdown="1">Figure 1.4. A process as we have known it: one address space, one program counter.</figcaption>
+![Figure 1.3. A process as we have known it: one address space, one program counter.](figs/one_process.svg){width=45%}
+<figcaption markdown="1">Figure 1.3. A process as we have known it: one address space, one program counter.</figcaption>
 </figure>
 
-What we have, in Figure 1.4: a process is one address space (code, heap, one stack), one program counter and one set of registers. There is exactly one PC, so exactly one instruction of this program runs at any moment. The OS switches between whole processes, never inside one.
+What we have, in Figure 1.3: a process is one address space (code, heap, one stack), one program counter and one set of registers. There is exactly one PC, so exactly one instruction of this program runs at any moment. The OS switches between whole processes, never inside one.
 
 <figure markdown="1">
-![Figure 1.5. Two cases one process does badly. Case 1: a big computation keeps core 0 busy while core 1 sits idle. Case 2: a program that waits for the disk does nothing while it waits.](figs/two_cases.svg){width=60%}
-<figcaption markdown="1">Figure 1.5. Two cases one process does badly. Case 1: a big computation keeps core 0 busy while core 1 sits idle. Case 2: a program that waits for the disk does nothing while it waits.</figcaption>
+![Figure 1.4. Two cases one process does badly. Case 1: a big computation keeps core 0 busy while core 1 sits idle. Case 2: a program that waits for the disk does nothing while it waits.](figs/two_cases.svg){width=100%}
+<figcaption markdown="1">Figure 1.4. Two cases one process does badly. Case 1: a big computation keeps core 0 busy while core 1 sits idle. Case 2: a program that waits for the disk does nothing while it waits.</figcaption>
 </figure>
 
-Where it breaks, in Figure 1.5. The measurements in this guide come from a computer running Linux (Part 0), in the version called Ubuntu 24.04; Ubuntu is one of the packaged versions of Linux. It has an x86-64 processor (the 64-bit Intel and AMD family) and 2 cores; this guide calls it the Ubuntu machine.
+Where it breaks, in Figure 1.4. The measurements in this guide come from a computer running Linux (Part 0), in the version called Ubuntu 24.04; Ubuntu is one of the packaged versions of Linux. It has an x86-64 processor (the 64-bit Intel and AMD family) and 2 cores; this guide calls it the Ubuntu machine.
 
 - **Case 1, a big computation.** A program adds up an **array** (a row of numbered elements of one type, stored one after another) of 400,000,000 numbers. It keeps core 0 busy for about a second (1.10 s in [Section 1.4](#sec-1-4)'s capture) while core 1 has nothing to run. The work takes about twice as long as the machine could do it.
 - **Case 2, a program that waits.** A program asks the disk for a block of data, and it has nothing to do until the block arrives, which can take milliseconds. Its own work stops for the whole wait.
 
 A second process could take the extra work in both cases. The trouble is where it lives. A second process gets an address space of its own, so it cannot see this program's array. Two processes can share memory only by asking the OS for it specially (this is called shared memory); by default, they would have to copy data back and forth. Processes stay the right choice for separate programs that share little. Here the program wants to share everything.
 
-So we need one program that can be in two places in its code at once. Each place needs its own local variables. Both places should see the same heap and the same global variables. That shape is exactly a thread, and each case has a name (Figure 1.6).
+So we need one program that can be in two places in its code at once. Each place needs its own local variables. Both places should see the same heap and the same global variables. That shape is exactly a thread, and each case has a name (Figure 1.5).
 
 <figure markdown="1">
-![Figure 1.6. The two cases, fixed with two threads. Case 1, parallelism: each core runs one thread on half of the work. Case 2, overlap: while thread 1 waits for the disk, thread 2 computes.](figs/par_overlap.svg){width=48%}
-<figcaption markdown="1">Figure 1.6. The two cases, fixed with two threads. Case 1, parallelism: each core runs one thread on half of the work. Case 2, overlap: while thread 1 waits for the disk, thread 2 computes.</figcaption>
+![Figure 1.5. The two cases, fixed with two threads. Case 1, parallelism: each core runs one thread on half of the work. Case 2, overlap: while thread 1 waits for the disk, thread 2 computes.](figs/par_overlap.svg){width=100%}
+<figcaption markdown="1">Figure 1.5. The two cases, fixed with two threads. Case 1, parallelism: each core runs one thread on half of the work. Case 2, overlap: while thread 1 waits for the disk, thread 2 computes.</figcaption>
 </figure>
 
 - **Parallelism** (case 1): doing two parts of one job on two CPUs at the same time, so the job finishes sooner. Each core runs one thread on its own half of the array.
@@ -240,11 +98,11 @@ Either way the threads share the program's data, so nobody copies anything. A we
 Two threads of one program run the same code and see the same data, yet each must be able to stop and continue on its own. So each must keep something private. The clearest place to see what is private and what is shared is a switch between them.
 
 <figure markdown="1">
-![Figure 1.7. A switch drawn twice. Left: the OS switches from process A to process B. Right: from thread 1 to thread 2 of the same program. Only the last step differs.](figs/switch_pcb_tcb.svg){width=75%}
-<figcaption markdown="1">Figure 1.7. A switch drawn twice. Left: the OS switches from process A to process B. Right: from thread 1 to thread 2 of the same program. Only the last step differs.</figcaption>
+![Figure 1.6. A switch drawn twice. Left: the OS switches from process A to process B. Right: from thread 1 to thread 2 of the same program. Only the last step differs.](figs/switch_pcb_tcb.svg){width=100%}
+<figcaption markdown="1">Figure 1.6. A switch drawn twice. Left: the OS switches from process A to process B. Right: from thread 1 to thread 2 of the same program. Only the last step differs.</figcaption>
 </figure>
 
-Follow the boxes of Figure 1.7 from the top.
+Follow the boxes of Figure 1.6 from the top.
 
 - **Step 1, the same in both.** The one that stops has its registers and PC saved. A process keeps them in its **process control block** (PCB). A thread keeps them in a **thread control block** (TCB): where the OS saves a thread's registers and PC while it is not running, the thread's version of the PCB.
 - **Step 2, the same in both.** The one that starts has its registers and PC loaded from its PCB or TCB.
@@ -522,7 +380,7 @@ int main(int argc, char *argv[]) {
 - Lines 20 to 22: main waits for both, then prints the total.
 
 <figure markdown="1">
-![Figure 2.1. The picture: two threads, A and B, each add 1 to one counter, ten million times.](figs/counter_picture.svg){width=55%}
+![Figure 2.1. The picture: two threads, A and B, each add 1 to one counter, ten million times.](figs/counter_picture.svg){width=80%}
 <figcaption markdown="1">Figure 2.1. The picture: two threads, A and B, each add 1 to one counter, ten million times.</figcaption>
 </figure>
 
@@ -637,7 +495,7 @@ The next line of the full listing, `W08_demos/counter_objdump_full.out`, is this
 `jle 11dd` means "jump back to the load at `11dd` if `i` was less than or equal" to 9,999,999. Why 9,999,999 and not 10,000,000? The compiler rewrote `i < 10000000` as the same test, `i <= 9999999`.
 
 <figure markdown="1">
-![Figure 2.2. The three instructions as a picture: 1, load the value from memory into the register; 2, add 1 inside the register; 3, store the register back to memory.](figs/load_add_store.svg){width=75%}
+![Figure 2.2. The three instructions as a picture: 1, load the value from memory into the register; 2, add 1 inside the register; 3, store the register back to memory.](figs/load_add_store.svg){width=100%}
 <figcaption markdown="1">Figure 2.2. The three instructions as a picture: 1, load the value from memory into the register; 2, add 1 inside the register; 3, store the register back to memory.</figcaption>
 </figure>
 
@@ -666,7 +524,7 @@ The trace keeps the rounder numbers of the textbook's figure. The three instruct
 | interrupt: save T1 | | | | | |
 
 <figure markdown="1">
-![Figure 2.3. After step 1: thread 1 has loaded 50 and added, so its eax is 51, but it has not stored. The timer interrupt saves that 51 into thread 1's TCB. Memory still says 50.](figs/race_step1.svg){width=75%}
+![Figure 2.3. After step 1: thread 1 has loaded 50 and added, so its eax is 51, but it has not stored. The timer interrupt saves that 51 into thread 1's TCB. Memory still says 50.](figs/race_step1.svg){width=100%}
 <figcaption markdown="1">Figure 2.3. After step 1: thread 1 has loaded 50 and added, so its eax is 51, but it has not stored. The timer interrupt saves that 51 into thread 1's TCB. Memory still says 50.</figcaption>
 </figure>
 
@@ -684,7 +542,7 @@ Thread 1 loads the counter into its register and adds 1 (Figure 2.3). Look at th
 | | | `mov %eax,8049a1c` | 113 | 51 | 51 |
 
 <figure markdown="1">
-![Figure 2.4. After step 2: thread 2 loaded 50 (memory still said 50), added, and stored 51. Thread 1 still holds its own 51 in a saved register.](figs/race_step2.svg){width=75%}
+![Figure 2.4. After step 2: thread 2 loaded 50 (memory still said 50), added, and stored 51. Thread 1 still holds its own 51 in a saved register.](figs/race_step2.svg){width=100%}
 <figcaption markdown="1">Figure 2.4. After step 2: thread 2 loaded 50 (memory still said 50), added, and stored 51. Thread 1 still holds its own 51 in a saved register.</figcaption>
 </figure>
 
@@ -701,7 +559,7 @@ Thread 2 loads the counter (Figure 2.4). It reads memory, because memory is all 
 | | `mov %eax,8049a1c` | | 113 | 51 | 51 |
 
 <figure markdown="1">
-![Figure 2.5. After step 3: the OS restored thread 1's eax, 51, and thread 1 stored it over thread 2's 51. Two adds, and the counter moved by one: 51, not 52.](figs/race_step3.svg){width=75%}
+![Figure 2.5. After step 3: the OS restored thread 1's eax, 51, and thread 1 stored it over thread 2's 51. Two adds, and the counter moved by one: 51, not 52.](figs/race_step3.svg){width=100%}
 <figcaption markdown="1">Figure 2.5. After step 3: the OS restored thread 1's eax, 51, and thread 1 stored it over thread 2's 51. Two adds, and the counter moved by one: 51, not 52.</figcaption>
 </figure>
 
@@ -728,7 +586,7 @@ The table is one possible order, one moment at a time. It is not a capture; it i
 | 4 | (next pass of the loop) | `mov`: store 51 | 51 |
 
 <figure markdown="1">
-![Figure 2.6. The two cores side by side: each register holds 51, and the one counter in memory ends at 51, not 52.](figs/two_cores_race.svg){width=55%}
+![Figure 2.6. The two cores side by side: each register holds 51, and the one counter in memory ends at 51, not 52.](figs/two_cores_race.svg){width=80%}
 <figcaption markdown="1">Figure 2.6. The two cores side by side: each register holds 51, and the one counter in memory ends at 51, not 52.</figcaption>
 </figure>
 
@@ -740,13 +598,6 @@ So there are two ways in:
 - **On two cores**, no switch is needed: while both threads are in the loop, either core can load while the other's new value is still in a register.
 
 Either way the total comes out short, and different every run. This matters for the fix. Whatever we build must make the three instructions act as one on two cores, not only stop interrupts on one. A cure that only stopped interrupts would fix the one-CPU case and leave this one broken. Keep that in mind for the second class.
-
-
-<!-- anim:race:start -->
-Step through both races yourself: the one-CPU trace of Section 2.4, row by row, and the two-core run of this section.
-
-<div class="anim" data-anim="race" markdown="0"></div>
-<!-- anim:race:end -->
 
 - What this part settled: on two cores, adds are lost with no interrupt at all.
 - What it leaves open: a name for what we want, and how to get it. The next part names it.
@@ -802,7 +653,7 @@ kalloc(void)
 The `acquire` and `release` on lines 73 and 77 are xv6's lock and unlock around these lines. Ignore them for a moment.
 
 <figure markdown="1">
-![Figure 2.7. One CPU, one pop, three moments. Before line 74 the head points at page P. After line 74, r also points at P and the list has not changed. After line 76 the head has moved to Q, and P belongs to the caller.](figs/pop_moments.svg){width=70%}
+![Figure 2.7. One CPU, one pop, three moments. Before line 74 the head points at page P. After line 74, r also points at P and the list has not changed. After line 76 the head has moved to Q, and P belongs to the caller.](figs/pop_moments.svg){width=85%}
 <figcaption markdown="1">Figure 2.7. One CPU, one pop, three moments. Before line 74 the head points at page P. After line 74, r also points at P and the list has not changed. After line 76 the head has moved to Q, and P belongs to the caller.</figcaption>
 </figure>
 
@@ -811,7 +662,7 @@ Look at the middle moment of Figure 2.7. For an instant the list still says P is
 Now let two CPUs run those lines at the same moment, with the lock gone. This is not far-fetched: xv6 normally runs on 3 CPUs at once, so two CPUs can call `kalloc` together. The 3 comes from how xv6 is run. xv6 runs inside **QEMU**, a program that imitates a whole **RISC-V** computer (RISC-V is a processor family different from the x86 of the Ubuntu machine, with its own instructions). xv6 is built and started with **make**, a tool that follows the recipe in a file called `Makefile`, and that recipe tells QEMU to give xv6 3 CPUs unless the command says otherwise (`make CPUS=1 qemu`, for example).
 
 <figure markdown="1">
-![Figure 2.8. Two CPUs call kalloc at the same instant. Both read the head, both get page P, and the kernel hands out one page twice.](figs/kalloc_race.svg){width=70%}
+![Figure 2.8. Two CPUs call kalloc at the same instant. Both read the head, both get page P, and the kernel hands out one page twice.](figs/kalloc_race.svg){width=80%}
 <figcaption markdown="1">Figure 2.8. Two CPUs call kalloc at the same instant. Both read the head, both get page P, and the kernel hands out one page twice.</figcaption>
 </figure>
 
@@ -833,13 +684,6 @@ Freeing a page has the same shape. `kfree` pushes a page onto the front of the l
 Line 60 reads the head into the new page's `next` field, and line 61 writes the head. Two steps, with a gap, and a lock around them. (`pa` is the address of the page being freed; `(struct run*)` tells the compiler to treat that address as a list record.)
 
 Kernels met this problem early; the textbook calls the OS the first concurrent program. An interrupt can arrive at any instruction, and a kernel may run on several CPUs at once. So every kernel list, table and bitmap (a table of bits, one per page or disk block) is a shared variable: the process table (Roadmap 1), the free list, the file system's records. In xv6 each shared one is protected by a lock. (Data that each CPU keeps for itself needs none. Larger kernels also use lock-free structures, which threads share without any lock. They rely on instructions such as compare-and-swap, which writes a new value only if the cell still holds the expected one; [Extra 4](class-2.md#extra-4) has more.) That is why this is taught in an operating systems class.
-
-
-<!-- anim:kallocrace:start -->
-Step through it yourself: two CPUs in kalloc() with the lock gone, and then with it.
-
-<div class="anim" data-anim="kallocrace" markdown="0"></div>
-<!-- anim:kallocrace:end -->
 
 - What this part settled: a kernel list is a shared variable too, and its pop and push are critical sections.
 - What it leaves open: how a program, not the kernel, asks for threads and locks. That is [Chapter 3](#chapter-3).
@@ -941,7 +785,7 @@ Note what join does and does not fix. It only waits at the end. The adds of `cou
 Before any C, here is what it looks like to start a function as a thread, hand it something, and get something back. The program on the next pages does exactly this: main hands a new thread two numbers, 10 and 20, and gets two numbers back, 1 and 2.
 
 <figure markdown="1">
-![Figure 3.1. One run of the program, with time going to the right. Main packs {10, 20} and calls create; the thread reads 10 and 20, puts {1, 2} on the heap and returns; join hands main the address of {1, 2}. Below: where each bundle lives.](figs/create_join_timeline.svg){width=95%}
+![Figure 3.1. One run of the program, with time going to the right. Main packs {10, 20} and calls create; the thread reads 10 and 20, puts {1, 2} on the heap and returns; join hands main the address of {1, 2}. Below: where each bundle lives.](figs/create_join_timeline.svg){width=100%}
 <figcaption markdown="1">Figure 3.1. One run of the program, with time going to the right. Main packs {10, 20} and calls create; the thread reads 10 and 20, puts {1, 2} on the heap and returns; join hands main the address of {1, 2}. Below: where each bundle lives.</figcaption>
 </figure>
 
@@ -1016,7 +860,7 @@ Main declares a handle `p` (line 17) and a result pointer `rvals` (line 18). `rv
 - `&args`: the address of main's bundle, the one value the new thread receives.
 
 <figure markdown="1">
-![Figure 3.2. After step 1: main's stack holds the handle p, the bundle args = {10, 20} and rvals, not yet filled. The thread's stack holds only arg, the address of main's bundle. The heap is empty.](figs/bundles_step1.svg){width=70%}
+![Figure 3.2. After step 1: main's stack holds the handle p, the bundle args = {10, 20} and rvals, not yet filled. The thread's stack holds only arg, the address of main's bundle. The heap is empty.](figs/bundles_step1.svg){width=100%}
 <figcaption markdown="1">Figure 3.2. After step 1: main's stack holds the handle p, the bundle args = {10, 20} and rvals, not yet filled. The thread's stack holds only arg, the address of main's bundle. The heap is empty.</figcaption>
 </figure>
 
@@ -1036,7 +880,7 @@ The new thread is running now. Follow what it does with the address it was given
 - Lines 11 to 13 fill in `x = 1` and `y = 2` and return the heap address, cast back to an anything-pointer.
 
 <figure markdown="1">
-![Figure 3.3. After step 2: the result bundle {x = 1, y = 2} sits on the heap, and the thread's rvals points at it. The thread is about to return, and its stack with it.](figs/bundles_step2.svg){width=70%}
+![Figure 3.3. After step 2: the result bundle {x = 1, y = 2} sits on the heap, and the thread's rvals points at it. The thread is about to return, and its stack with it.](figs/bundles_step2.svg){width=100%}
 <figcaption markdown="1">Figure 3.3. After step 2: the result bundle {x = 1, y = 2} sits on the heap, and the thread's rvals points at it. The thread is about to return, and its stack with it.</figcaption>
 </figure>
 
@@ -1056,7 +900,7 @@ The thread has returned. Main has been waiting at join the whole time.
 - Line 23, `free(rvals)`, gives the heap memory back. After it, `rvals` must not be used again.
 
 <figure markdown="1">
-![Figure 3.4. After step 3: the thread's stack is gone, and main's rvals, set by join, points at the bundle on the heap. Neither bundle was ever stored on the thread's own stack.](figs/bundles_step3.svg){width=70%}
+![Figure 3.4. After step 3: the thread's stack is gone, and main's rvals, set by join, points at the bundle on the heap. Neither bundle was ever stored on the thread's own stack.](figs/bundles_step3.svg){width=100%}
 <figcaption markdown="1">Figure 3.4. After step 3: the thread's stack is gone, and main's rvals, set by join, points at the bundle on the heap. Neither bundle was ever stored on the thread's own stack.</figcaption>
 </figure>
 
@@ -1074,7 +918,7 @@ Join is both the wait and the hand-back (Figure 3.4). Main never touched the res
 A **lock** is a shared variable that only one thread can hold at a time. `lock()` waits until the lock is free and then takes it; `unlock()` gives it back. Put `lock()` at the start of the critical section and `unlock()` at the end.
 
 <figure markdown="1">
-![Figure 3.5. counter.c with a lock around the add, one possible order, time going to the right. A takes the free lock, does load 50, add, store 51, and unlocks. B finds the lock held and waits at the door; only after A's unlock does B take the lock, load 51 and store 52.](figs/lock_timeline.svg){width=95%}
+![Figure 3.5. counter.c with a lock around the add, one possible order, time going to the right. A takes the free lock, does load 50, add, store 51, and unlocks. B finds the lock held and waits at the door; only after A's unlock does B take the lock, load 51 and store 52.](figs/lock_timeline.svg){width=100%}
 <figcaption markdown="1">Figure 3.5. counter.c with a lock around the add, one possible order, time going to the right. A takes the free lock, does load 50, add, store 51, and unlocks. B finds the lock held and waits at the door; only after A's unlock does B take the lock, load 51 and store 52.</figcaption>
 </figure>
 

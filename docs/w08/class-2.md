@@ -1,146 +1,11 @@
 # Second class: how a lock is built: a hardware instruction and help from the OS (OSTEP 28) {#class-2}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 1596" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="1596" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#a0632a">WEEK 8 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#opening-2" class="cmap-link"><title>Where we left off: a lock that worked, and nobody knows how</title><rect x="10" y="122" width="206" height="46" rx="6" fill="#f3f4f6" stroke="#9aa3b2" stroke-width="1.1"/><text x="20" y="138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">Where we left off: a lock that</text><text x="20" y="153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">worked, and nobody knows how</text></a>
-<a href="#sec-4-1" class="cmap-link"><title>4.1 Problem: A lock is a variable, and setting it is the race again</title><rect x="384" y="190" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="196" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="206.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="208" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.1 A lock is a variable, and setting it is the race</text><text x="448" y="223" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">again</text></a>
-<path d="M352,211 C368,211 368,211 384,211" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="198" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="215" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-4-2" class="cmap-link"><title>4.2 Concept: Attempt 1: turn interrupts off</title><rect x="384" y="244" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="250" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="260.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="262" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.2 Attempt 1: turn interrupts off</text></a>
-<a href="#sec-4-3" class="cmap-link"><title>4.3 Worked example: Attempt 2: a flag with a spin loop, and the trace that breaks it</title><rect x="384" y="275" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="281" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="291.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="293" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.3 Attempt 2: a flag with a spin loop, and the</text><text x="487" y="308" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">trace that breaks it</text></a>
-<path d="M352,280 C368,280 368,258 384,258" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,280 C368,280 368,296 384,296" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="268" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="284" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-4-4" class="cmap-link"><title>4.4 Check yourself: What the first question of the second class settled</title><rect x="384" y="329" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="335" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="345.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="347" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.4 What the first question of the second class</text><text x="487" y="362" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="375" width="400" height="61" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="391" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Exclude; be fair; be cheap in three situations.</text><text x="394" y="406" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Interrupts off only works on one CPU and only for the kernel; a</text><text x="394" y="421" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">flag you test and then set has the race itself.</text></a>
-<path d="M352,382 C368,382 368,350 384,350" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,382 C368,382 368,406 384,406" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="370" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="386" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-5" class="cmap-link"><title>Extra 5 Deeper, Q1: Peterson&#x27;s algorithm: a lock from loads and stores, once</title><rect x="384" y="448" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="454" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="464.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="466" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 5 Peterson&#x27;s algorithm: a lock from loads and</text><text x="465" y="481" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">stores, once</text></a>
-<path d="M352,469 C368,469 368,469 384,469" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="456" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="473" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,342 C232,342 232,211 248,211" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,342 C232,342 232,280 248,280" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,342 C232,342 232,382 248,382" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,342 C232,342 232,469 248,469" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-4" class="cmap-link"><title>Q1. What must a lock guarantee, and why does a simple flag fail?</title><rect x="10" y="308" width="206" height="68" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="328" r="11" fill="#a0632a"/><text x="28" y="332" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="332" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">What must a lock</text><text x="48" y="348" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">guarantee, and why does</text><text x="48" y="364" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">a simple flag fail?</text></a>
-<text x="113.0" y="512" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-5-5" class="cmap-link"><title>5.5 Problem: The spin lock is correct but unfair</title><rect x="384" y="524" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="530" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="540.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="542" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.5 The spin lock is correct but unfair</text></a>
-<path d="M352,538 C368,538 368,538 384,538" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="524" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="542" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-5-1" class="cmap-link"><title>5.1 Concept: Test-and-set: read the old value and write a 1 in one step</title><rect x="384" y="563" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="569" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="579.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="581" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.1 Test-and-set: read the old value and write a 1 in</text><text x="448" y="596" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">one step</text></a>
-<a href="#sec-5-2" class="cmap-link"><title>5.2 Worked example: Two threads on a test-and-set lock, swap by swap</title><rect x="384" y="609" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="615" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="625.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="627" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.2 Two threads on a test-and-set lock, swap by</text><text x="487" y="642" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">swap</text></a>
-<a href="#sec-5-6" class="cmap-link"><title>5.6 Concept: Fetch-and-add and the ticket lock</title><rect x="384" y="655" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="661" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="671.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="673" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.6 Fetch-and-add and the ticket lock</text></a>
-<path d="M352,622 C368,622 368,584 384,584" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,622 C368,622 368,630 384,630" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,622 C368,622 368,668 384,668" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="610" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="626" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-5-3" class="cmap-link"><title>5.3 Real kernel: xv6&#x27;s acquire() and release()</title><rect x="384" y="694" width="400" height="27" rx="6" fill="#ffffff" stroke="#6b4fa0" stroke-width="1.1"/><rect x="390" y="700" width="74" height="15" rx="3" fill="#6b4fa0"/><text x="396" y="710.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text><text x="471" y="712" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.3 xv6&#x27;s acquire() and release()</text></a>
-<a href="#sec-5-4" class="cmap-link"><title>5.4 Real machine: A spin lock from one xchg makes 20,000,000 every run</title><rect x="384" y="725" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="731" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="741.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="743" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.4 A spin lock from one xchg makes 20,000,000</text><text x="476" y="758" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">every run</text></a>
-<path d="M352,730 C368,730 368,708 384,708" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,730 C368,730 368,746 384,746" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="718" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="734" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-5-7" class="cmap-link"><title>5.7 Check yourself: What the second question of the second class settled</title><rect x="384" y="779" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="785" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="795.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="797" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.7 What the second question of the second class</text><text x="487" y="812" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="825" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="841" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Test-and-set, one uninterruptible read-and-write;</text><text x="394" y="856" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">xv6&#x27;s acquire() is that loop (amoswap.w.aq) plus interrupts off</text><text x="394" y="871" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">and a fence after the swap; release() has two fences (xv6&#x27;s and</text><text x="394" y="886" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">gcc&#x27;s) before its plain store of 0. It spins, and it is unfair; a</text><text x="394" y="901" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">ticket lock from fetch-and-add is fair.</text></a>
-<path d="M352,848 C368,848 368,800 384,800" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,848 C368,848 368,870 384,870" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="834" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="852" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-4" class="cmap-link"><title>Extra 4 Deeper, Q2: Two more atomic instructions: compare-and-swap, and load-linked/store-conditional</title><rect x="384" y="928" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="934" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="944.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="946" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 4 Two more atomic instructions:</text><text x="465" y="961" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">compare-and-swap, and load-linked/store-conditional</text></a>
-<a href="#extra-7" class="cmap-link"><title>Extra 7 Deeper, Q2: Replay this week&#x27;s locks in the x86.py simulator</title><rect x="384" y="974" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="980" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="990.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="992" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 7 Replay this week&#x27;s locks in the x86.py</text><text x="465" y="1007" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">simulator</text></a>
-<path d="M352,972 C368,972 368,949 384,949" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,972 C368,972 368,995 384,995" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="959" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="976" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,772 C232,772 232,538 248,538" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,772 C232,772 232,622 248,622" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,772 C232,772 232,730 248,730" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,772 C232,772 232,848 248,848" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,772 C232,772 232,972 248,972" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-5" class="cmap-link"><title>Q2. What one instruction makes a working lock, and what does that lock still get wrong?</title><rect x="10" y="730" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="750" r="11" fill="#a0632a"/><text x="28" y="754" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="754" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">What one instruction</text><text x="48" y="770" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">makes a working lock,</text><text x="48" y="786" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">and what does that lock</text><text x="48" y="802" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">still get wrong?</text></a>
-<text x="113.0" y="1038" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-6-1" class="cmap-link"><title>6.1 Problem: On one CPU, a spinner waits for a thread that cannot run</title><rect x="384" y="1050" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1056" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1066.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1068" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.1 On one CPU, a spinner waits for a thread that cannot</text><text x="448" y="1083" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">run</text></a>
-<path d="M352,1071 C368,1071 368,1071 384,1071" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="1058" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="1075" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-6-2" class="cmap-link"><title>6.2 Concept: Attempt 3: yield the CPU instead of spinning</title><rect x="384" y="1104" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1110" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1120.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1122" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.2 Attempt 3: yield the CPU instead of spinning</text></a>
-<a href="#sec-6-3" class="cmap-link"><title>6.3 Concept: A queue of sleeping waiters: park, unpark and the guard</title><rect x="384" y="1135" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1141" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1151.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.3 A queue of sleeping waiters: park, unpark and the</text><text x="448" y="1168" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">guard</text></a>
-<a href="#sec-6-4" class="cmap-link"><title>6.4 Worked example: The lost wake-up, and setpark()</title><rect x="384" y="1181" width="400" height="27" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1187" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1197.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1199" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.4 The lost wake-up, and setpark()</text></a>
-<path d="M352,1156 C368,1156 368,1118 384,1118" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1156 C368,1156 368,1156 384,1156" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1156 C368,1156 368,1194 384,1194" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1143" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1160" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-6-5" class="cmap-link"><title>6.5 Real machine: Linux: one lock word, and the futex</title><rect x="384" y="1220" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1226" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1236.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1238" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.5 Linux: one lock word, and the futex</text></a>
-<a href="#sec-6-6" class="cmap-link"><title>6.6 Real machine: Spin against sleep, measured on one core and on two</title><rect x="384" y="1251" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1257" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1267.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1269" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.6 Spin against sleep, measured on one core and on</text><text x="476" y="1284" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">two</text></a>
-<path d="M352,1256 C368,1256 368,1234 384,1234" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1256 C368,1256 368,1272 384,1272" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="1244" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="1260" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-6-7" class="cmap-link"><title>6.7 Check yourself: What the third question of the second class settled</title><rect x="384" y="1305" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1311" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1321.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1323" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.7 What the third question of the second class</text><text x="487" y="1338" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="1351" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1367" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Sleep on a queue with park and unpark; the unlocker</text><text x="394" y="1382" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">wakes one (Figure 28.9 hands the lock over; Linux lets the woken</text><text x="394" y="1397" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">thread take it). Linux: one lock word and a futex; the kernel is</text><text x="394" y="1412" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">called only when threads collide, to sleep and to wake. Cost: a</text><text x="394" y="1427" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">system call to sleep and another to wake.</text></a>
-<path d="M352,1374 C368,1374 368,1326 384,1326" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,1374 C368,1374 368,1396 384,1396" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1360" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1378" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-6" class="cmap-link"><title>Extra 6 Deeper, Q3: Priority inversion: the trap that kept resetting a Mars lander</title><rect x="384" y="1454" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1460" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1470.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="1472" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 6 Priority inversion: the trap that kept</text><text x="465" y="1487" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">resetting a Mars lander</text></a>
-<path d="M352,1475 C368,1475 368,1475 384,1475" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1462" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1479" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,1275 C232,1275 232,1071 248,1071" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1275 C232,1275 232,1156 248,1156" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1275 C232,1275 232,1256 248,1256" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1275 C232,1275 232,1374 248,1374" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1275 C232,1275 232,1475 248,1475" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-6" class="cmap-link"><title>Q3. How does the OS stop a waiting thread from burning its whole time slice?</title><rect x="10" y="1233" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="1253" r="11" fill="#a0632a"/><text x="28" y="1257" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="1257" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How does the OS stop a</text><text x="48" y="1273" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">waiting thread from</text><text x="48" y="1289" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">burning its whole time</text><text x="48" y="1305" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">slice?</text></a>
-<a href="#summary-2" class="cmap-link"><title>What the second class settled</title><rect x="10" y="1530" width="206" height="50" rx="7" fill="#555e6b"/><text x="21" y="1549" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: What the second class</text><text x="21" y="1565" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">settled</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-2.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## <span class="lbl lbl-roadmap">Roadmap</span> Where we left off: a lock that worked, and nobody knows how {#opening-2 data-toc-label="[Roadmap] Where we left off: a lock that worked, and nobody knows how"}
 
 The first class ended with a lock that fixed the counter. Here is that class in one picture, and the one thing it did not open.
 
 <figure markdown="1">
-![Figure 4.1. The first class in one picture. Top: one line of C is three instructions, and a timer interrupt between the add and the store lets the other thread run. Bottom: the fix, a lock around the critical section; thread 2 waits outside the locked lines until unlock.](figs/recap_lock.svg){width=80%}
+![Figure 4.1. The first class in one picture. Top: one line of C is three instructions, and a timer interrupt between the add and the store lets the other thread run. Bottom: the fix, a lock around the critical section; thread 2 waits outside the locked lines until unlock.](figs/recap_lock.svg){width=100%}
 <figcaption markdown="1">Figure 4.1. The first class in one picture. Top: one line of C is three instructions, and a timer interrupt between the add and the store lets the other thread run. Bottom: the fix, a lock around the critical section; thread 2 waits outside the locked lines until unlock.</figcaption>
 </figure>
 
@@ -173,7 +38,7 @@ Settled: put a lock around the dangerous lines and the race cannot happen. Left 
 What we have is a lock as the first class used it: a variable, and two calls around the critical section. Before building one, we need to say exactly what it is and what it must do.
 
 <figure markdown="1">
-![Figure 4.2. A lock variable has two states: free (0), or held by exactly one thread, here T1 (1).](figs/lock_states.svg){width=40%}
+![Figure 4.2. A lock variable has two states: free (0), or held by exactly one thread, here T1 (1).](figs/lock_states.svg){width=80%}
 <figcaption markdown="1">Figure 4.2. A lock variable has two states: free (0), or held by exactly one thread, here T1 (1).</figcaption>
 </figure>
 
@@ -229,7 +94,7 @@ void unlock() {
 ```
 
 <figure markdown="1">
-![Figure 4.3. One CPU, the timer silenced between the two calls. Ticks that arrive during the critical section wait; later ones can be lost.](figs/irq_off.svg){width=55%}
+![Figure 4.3. One CPU, the timer silenced between the two calls. Ticks that arrive during the critical section wait; later ones can be lost.](figs/irq_off.svg){width=85%}
 <figcaption markdown="1">Figure 4.3. One CPU, the timer silenced between the two calls. Ticks that arrive during the critical section wait; later ones can be lost.</figcaption>
 </figure>
 
@@ -385,7 +250,7 @@ void unlock(lock_t *lock) {
 - Line 16, unlock: store 0.
 
 <figure markdown="1">
-![Figure 5.1. The two cases. Lock free: TestAndSet(&flag, 1) returns 0 and leaves 1 behind; 0 is not 1, so the loop ends, the thread is in, and the flag says held. Lock held: it returns 1 and writes 1 again (no change), so the thread swaps again until the owner stores 0.](figs/tas_cases.svg){width=80%}
+![Figure 5.1. The two cases. Lock free: TestAndSet(&flag, 1) returns 0 and leaves 1 behind; 0 is not 1, so the loop ends, the thread is in, and the flag says held. Lock held: it returns 1 and writes 1 again (no change), so the thread swaps again until the owner stores 0.](figs/tas_cases.svg){width=100%}
 <figcaption markdown="1">Figure 5.1. The two cases. Lock free: TestAndSet(&flag, 1) returns 0 and leaves 1 behind; 0 is not 1, so the loop ends, the thread is in, and the flag says held. Lock held: it returns 1 and writes 1 again (no change), so the thread swaps again until the owner stores 0.</figcaption>
 </figure>
 
@@ -407,7 +272,7 @@ The claim is that every order of swaps lets exactly one thread in. Here is the c
 **Step 1: two swaps, and only the first gets 0.** Two threads call `lock()` on a free lock at about the same time. Each pass of their loop is a single swap.
 
 <figure markdown="1">
-![Figure 5.2. The flag, one swap at a time. Start: the flag is 0. T1 swaps first: gets back 0, leaves 1, and is inside. T2 swaps: gets back 1, leaves 1, and loops. T2 swaps again: 1 again, for as long as T1 is inside.](figs/tas_swaps.svg){width=80%}
+![Figure 5.2. The flag, one swap at a time. Start: the flag is 0. T1 swaps first: gets back 0, leaves 1, and is inside. T2 swaps: gets back 1, leaves 1, and loops. T2 swaps again: 1 again, for as long as T1 is inside.](figs/tas_swaps.svg){width=100%}
 <figcaption markdown="1">Figure 5.2. The flag, one swap at a time. Start: the flag is 0. T1 swaps first: gets back 0, leaves 1, and is inside. T2 swaps: gets back 1, leaves 1, and loops. T2 swaps again: 1 again, for as long as T1 is inside.</figcaption>
 </figure>
 
@@ -420,7 +285,7 @@ On two cores the two swaps can arrive at the very same moment. Even then the mem
 **Step 2: unlock stores 0, and the waiter gets in.**
 
 <figure markdown="1">
-![Figure 5.3. T1 unlocks: the flag is 0. T2's next swap gets back 0 and leaves 1: T2 is inside now. A third thread swapping now would get back 1 and spin, as T2 did.](figs/tas_unlock.svg){width=80%}
+![Figure 5.3. T1 unlocks: the flag is 0. T2's next swap gets back 0 and leaves 1: T2 is inside now. A third thread swapping now would get back 1 and spin, as T2 did.](figs/tas_unlock.svg){width=100%}
 <figcaption markdown="1">Figure 5.3. T1 unlocks: the flag is 0. T2's next swap gets back 0 and leaves 1: T2 is inside now. A third thread swapping now would get back 1 and spin, as T2 did.</figcaption>
 </figure>
 
@@ -429,13 +294,6 @@ In Figure 5.3, thread 1 leaves its critical section and unlocks, which is a plai
 Notice what unlock does not do. It does not choose the next owner, and it tells nobody. It only stores 0. A waiter finds that 0 on its own next swap, which is why a waiter has to keep swapping. Suppose threads 2 and 3 had both been spinning when thread 1 unlocked: the winner would simply be whichever swap happened to land first after the store. The flag is one number; it holds no list of waiters. So the lock is correct in every order, but it is not fair, and those are different things.
 
 *Step 2 in one line:* why does the waiter get in after unlock? unlock stores 0 → the waiter's next swap reads that 0 → and leaves a 1: the waiter now owns the lock.
-
-
-<!-- anim:spinlock:start -->
-Step through the two traces yourself: the flag of Section 4.3, where both threads get in, and the test-and-set lock, where only the first swap gets the 0.
-
-<div class="anim" data-anim="spinlock" markdown="0"></div>
-<!-- anim:spinlock:end -->
 
 - What this part settled: in every order, exactly one thread gets the 0.
 - What it leaves open: nobody is served in order. That is the fairness problem of [Section 5.5](#sec-5-5). First, the real thing in xv6 and on Linux.
@@ -671,7 +529,7 @@ So on x86 a plain store is a correct unlock. Two lines on two cores show what st
 What we have: a spin lock built on test-and-set. It passes the first yardstick, mutual exclusion; two threads fighting for the counter on 2 cores got 20,000,000 every run. Now the second yardstick. When three threads want the lock, who gets it next?
 
 <figure markdown="1">
-![Figure 5.4. A spin lock with three threads: A holds the lock, B and C spin.](figs/spin_waiters.svg){width=45%}
+![Figure 5.4. A spin lock with three threads: A holds the lock, B and C spin.](figs/spin_waiters.svg){width=90%}
 <figcaption markdown="1">Figure 5.4. A spin lock with three threads: A holds the lock, B and C spin.</figcaption>
 </figure>
 
@@ -737,16 +595,9 @@ void unlock(lock_t *lock) {
 **Step 1: three threads arrive and take numbers.**
 
 <figure markdown="1">
-![Figure 5.5. Three arrivals. A arrives and takes ticket 0; the sign says 0, so A is in. B and C arrive and take tickets 1 and 2; the sign still says 0, so they spin. The lock's two integers: ticket = 3, turn = 0.](figs/ticket_step1.svg){width=75%}
+![Figure 5.5. Three arrivals. A arrives and takes ticket 0; the sign says 0, so A is in. B and C arrive and take tickets 1 and 2; the sign still says 0, so they spin. The lock's two integers: ticket = 3, turn = 0.](figs/ticket_step1.svg){width=100%}
 <figcaption markdown="1">Figure 5.5. Three arrivals. A arrives and takes ticket 0; the sign says 0, so A is in. B and C arrive and take tickets 1 and 2; the sign still says 0, so they spin. The lock's two integers: ticket = 3, turn = 0.</figcaption>
 </figure>
-
-<!-- anim:ticket:start -->
-Step through it yourself: three threads take numbers, and each unlock calls the next one.
-
-<div class="anim" data-anim="ticket" markdown="0"></div>
-<!-- anim:ticket:end -->
-
 
 In Figure 5.5, A arrives first and pulls ticket 0. The sign says 0, so A walks in. B and C arrive about the same time and pull 1 and 2. The sign still says 0, so both wait, each watching for its own number. After three arrivals the dispenser stands at 3 and the sign at 0. Three threads got three different numbers, in arrival order, and C already knows the most it can wait: C holds ticket 2, so at most 2 threads can be served before C, whatever the timing.
 
@@ -755,7 +606,7 @@ In Figure 5.5, A arrives first and pulls ticket 0. The sign says 0, so A walks i
 **Step 2: each unlock calls the next number.**
 
 <figure markdown="1">
-![Figure 5.6. Two releases. A unlocks: turn = 1, B is in, C spins. B unlocks: turn = 2, C is in. The lock's two integers: ticket = 3, turn = 2.](figs/ticket_step2.svg){width=75%}
+![Figure 5.6. Two releases. A unlocks: turn = 1, B is in, C spins. B unlocks: turn = 2, C is in. The lock's two integers: ticket = 3, turn = 2.](figs/ticket_step2.svg){width=100%}
 <figcaption markdown="1">Figure 5.6. Two releases. A unlocks: turn = 1, B is in, C spins. B unlocks: turn = 2, C is in. The lock's two integers: ticket = 3, turn = 2.</figcaption>
 </figure>
 
@@ -790,7 +641,7 @@ You should now be able to say in two sentences why test-and-set succeeds where a
 What we have: a correct spin lock, test-and-set or ticket. A waiter checks the lock in a loop until it is its turn. On two CPUs that is fine. The holder is running on the other CPU, the critical section is short, and the flag turns 0 soon; the waiter loses only as long as the section lasts. For a section of a few dozen instructions that is well under a microsecond, since a core runs on the order of a billion simple instructions a second.
 
 <figure markdown="1">
-![Figure 6.1. One CPU, two threads. T1 is switched out by the timer in the middle of its critical section; T2 runs and spins for its whole time slice; only the next timer interrupt brings T1 back.](figs/spin_one_cpu.svg){width=60%}
+![Figure 6.1. One CPU, two threads. T1 is switched out by the timer in the middle of its critical section; T2 runs and spins for its whole time slice; only the next timer interrupt brings T1 back.](figs/spin_one_cpu.svg){width=100%}
 <figcaption markdown="1">Figure 6.1. One CPU, two threads. T1 is switched out by the timer in the middle of its critical section; T2 runs and spins for its whole time slice; only the next timer interrupt brings T1 back.</figcaption>
 </figure>
 
@@ -827,7 +678,7 @@ void unlock() {
 Line 7: if the lock is taken, call `yield()` instead of looping empty.
 
 <figure markdown="1">
-![Figure 6.2. The three states of a thread, and what yield does: it moves the caller from running back to ready, and the scheduler runs someone else; later it is scheduled again.](figs/thread_states.svg){width=65%}
+![Figure 6.2. The three states of a thread, and what yield does: it moves the caller from running back to ready, and the scheduler runs someone else; later it is scheduled again.](figs/thread_states.svg){width=100%}
 <figcaption markdown="1">Figure 6.2. The three states of a thread, and what yield does: it moves the caller from running back to ready, and the scheduler runs someone else; later it is scheduled again.</figcaption>
 </figure>
 
@@ -900,16 +751,9 @@ The story first. The lock has a flag (held or free), a queue of sleeping threads
 - Line 22: it calls `park()`. The OS marks T2 blocked and runs someone else; T2 uses no CPU until someone unparks it.
 
 <figure markdown="1">
-![Figure 6.3. After step 1: the lock is held by T1, the guard is free, and T2 sleeps on the queue of waiting threads.](figs/queue_step1.svg){width=55%}
+![Figure 6.3. After step 1: the lock is held by T1, the guard is free, and T2 sleeps on the queue of waiting threads.](figs/queue_step1.svg){width=100%}
 <figcaption markdown="1">Figure 6.3. After step 1: the lock is held by T1, the guard is free, and T2 sleeps on the queue of waiting threads.</figcaption>
 </figure>
-
-<!-- anim:queuelock:start -->
-Step through it yourself: T2 and T3 park, and unlock hands the lock straight to T2. The second tab is unlock with nobody waiting.
-
-<div class="anim" data-anim="queuelock" markdown="0"></div>
-<!-- anim:queuelock:end -->
-
 
 Figure 6.3 shows the result. Here is what the guard is for. The flag and the queue must be read and changed as one unit. Picture a thread arriving while the owner holds the lock. It looks at the flag, sees 1, and decides to join the queue. Before it has joined, the owner unlocks: it looks at the queue, finds it empty, and sets the flag to 0. Now the arriving thread, still acting on the 1 it saw, adds itself to the queue and goes to sleep. Nobody is coming to wake it: the owner already decided there was no one to wake. (A later thread that takes and releases the lock might wake it, by luck.) A wake-up that a sleeping thread needs and never gets is called a **lost wake-up**. [Section 6.4](#sec-6-4) meets a second way to lose one. The guard makes the flag and the queue change together: while the arriving thread holds it, from looking at the flag to joining the queue, the owner cannot get in to look at the queue. That is also why the lock does not simply use test-and-set on the flag and skip the guard. Looking at the flag and joining the queue would then be two separate steps, with exactly this gap between them. The guard is held only for those few instructions inside `lock()` and `unlock()`, never while the user's critical section runs. Spinning still exists, but only on the guard, and only for a few instructions.
 
@@ -922,7 +766,7 @@ Figure 6.3 shows the result. Here is what the guard is for. The flag and the que
 - Line 34: T1 lets go of the guard (`m->guard = 0`).
 
 <figure markdown="1">
-![Figure 6.4. After T1 unlocks: the flag is still 1, now held by T2; T3 still sleeps on the queue.](figs/queue_step2.svg){width=55%}
+![Figure 6.4. After T1 unlocks: the flag is still 1, now held by T2; T3 still sleeps on the queue.](figs/queue_step2.svg){width=100%}
 <figcaption markdown="1">Figure 6.4. After T1 unlocks: the flag is still 1, now held by T2; T3 still sleeps on the queue.</figcaption>
 </figure>
 
@@ -938,16 +782,9 @@ The flag stays 1, and T2 is woken (Figure 6.4). When T2 wakes up, it continues f
 One trap remains. Look again at lines 20 to 22 of `lock()`: T2 writes its name on the queue, lets go of the guard, and then calls `park()`. Between letting go of the guard and calling `park()`, T2 is still awake. Now change the timing: suppose T1 unlocks exactly in that gap (Figure 6.5).
 
 <figure markdown="1">
-![Figure 6.5. T2 is on the queue and has released the guard, but has not reached park() yet: it is still awake. T1 unlocks right now.](figs/queue_step3.svg){width=55%}
+![Figure 6.5. T2 is on the queue and has released the guard, but has not reached park() yet: it is still awake. T1 unlocks right now.](figs/queue_step3.svg){width=100%}
 <figcaption markdown="1">Figure 6.5. T2 is on the queue and has released the guard, but has not reached park() yet: it is still awake. T1 unlocks right now.</figcaption>
 </figure>
-
-<!-- anim:setpark:start -->
-Step through it yourself: the seven steps without `setpark()`, and then the same timing with it.
-
-<div class="anim" data-anim="setpark" markdown="0"></div>
-<!-- anim:setpark:end -->
-
 
 T1 takes the guard, finds T2 on the queue, removes it and unparks it. But T2 is not asleep, so the unpark does nothing. Then T2 reaches `park()` and sleeps, and no wake-up is ever coming. The lock is T2's, and T2 is asleep forever. This is called the **wakeup/waiting race**: a wake-up that arrives before the sleep it was meant for is lost.
 
@@ -982,13 +819,6 @@ The state of the lock itself fits in one integer, the **lock word**, which the p
 ![Figure 6.6. One lock word, two threads, five moments. 1: T1 locks a free word, 0 → 1, one atomic instruction, no kernel. 2: T2 finds 1, writes 2 and calls futex_wait. 3: T1 unlocks, finds 2, stores 0 and calls futex_wake. 4: T2 wakes and takes the lock by writing 2. 5: T2 unlocks, finds 2, stores 0, and the wake call finds nobody asleep.](figs/lockword_walk.svg){width=100%}
 <figcaption markdown="1">Figure 6.6. One lock word, two threads, five moments. 1: T1 locks a free word, 0 → 1, one atomic instruction, no kernel. 2: T2 finds 1, writes 2 and calls futex_wait. 3: T1 unlocks, finds 2, stores 0 and calls futex_wake. 4: T2 wakes and takes the lock by writing 2. 5: T2 unlocks, finds 2, stores 0, and the wake call finds nobody asleep.</figcaption>
 </figure>
-
-<!-- anim:futex:start -->
-Step through the five moments yourself, and watch which ones enter the kernel.
-
-<div class="anim" data-anim="futex" markdown="0"></div>
-<!-- anim:futex:end -->
-
 
 Follow the integer through one contended lock and unlock (Figure 6.6).
 
@@ -1185,7 +1015,7 @@ mutex lock: 0.45 s
 First a check of the comment's 1 ms. If each section takes about 1 ms, then 2 threads × 200 sections × 1 ms = 0.4 s. All of it is inside the lock, so it runs one section after another even on 2 cores. The 2-core runs, 0.44 and 0.45 s, sit just above that: 0.44 s / 400 sections = 1.1 ms per section, lock included. So the comment is right, and the program measures what it claims. On 2 cores the two locks tie. On 1 core the spin lock takes 0.67 s and the mutex still 0.45 s: 0.67 − 0.45 = 0.22 s of the spin run was spent spinning on a flag that could not move. (A second round in the same file gave 0.45, 0.45, 0.68 and 0.45 s: the same picture.)
 
 <figure markdown="1">
-![Figure 6.7. What the extra 0.22 s is. Top, the spin lock on one core: T1 is switched out inside its section, and T2 spins for its whole slice. Bottom, the mutex: T2 tries once, sleeps in futex_wait (zz), T1 gets the CPU back at once, finishes and unlocks, and T2 goes in.](figs/spin_vs_sleep.svg){width=70%}
+![Figure 6.7. What the extra 0.22 s is. Top, the spin lock on one core: T1 is switched out inside its section, and T2 spins for its whole slice. Bottom, the mutex: T2 tries once, sleeps in futex_wait (zz), T1 gets the CPU back at once, finishes and unlocks, and T2 goes in.](figs/spin_vs_sleep.svg){width=100%}
 <figcaption markdown="1">Figure 6.7. What the extra 0.22 s is. Top, the spin lock on one core: T1 is switched out inside its section, and T2 spins for its whole slice. Bottom, the mutex: T2 tries once, sleeps in futex_wait (zz), T1 gets the CPU back at once, finishes and unlocks, and T2 goes in.</figcaption>
 </figure>
 

@@ -18,7 +18,7 @@
 ## Exercises {#exercises}
 <!-- answers folded under their exercises -->
 
-Try each exercise on paper before looking at the answers, which follow this section. The first six are questions the slides put to the room; the others use the same steps on new numbers, read a real capture, or ask for the idea in your own words. Every method the answers use was taught in the body or in the Extra the exercise names, and each exercise names where.
+Try each exercise on paper before looking at the answers, which follow this section. The first six are questions worth answering out loud; the others use the same steps on new numbers, read a real capture, or ask for the idea in your own words. Every method the answers use was taught in the body or in the Extra the exercise names, and each exercise names where.
 
 ### Exercise 1 {#exercise-1}
 
@@ -55,7 +55,7 @@ Between `fork()` and `exec()`. Before `fork()` fails because the close and the o
 
 ### Exercise 4 {#exercise-4}
 
-Which of the four outputs A, B, C and D in Figure E9.3 can `./p1` produce on a terminal? In words: A is the greeting, then the parent's line, then the child's line. B is the greeting, then the child's line, then the parent's line. C is the greeting, the parent's line, the greeting again, then the child's line. D is the greeting and the parent's line only. More than one may be right. For each one you reject, say which wrong idea about `fork()` would produce it. ([Extra 9](class-1.md#extra-9))
+Which of the four outputs A, B, C and D in [Extra 9](class-1.md#extra-9) can `./p1` produce on a terminal? In words: A is the greeting, then the parent's line, then the child's line. B is the greeting, then the child's line, then the parent's line. C is the greeting, the parent's line, the greeting again, then the child's line. D is the greeting and the parent's line only. More than one may be right. For each one you reject, say which wrong idea about `fork()` would produce it. ([Extra 9](class-1.md#extra-9))
 
 <details class="success answer" id="answer-4" markdown="1">
 <summary>Answer 4 <span class="hint">click to show</span></summary>
@@ -121,7 +121,7 @@ Each `open` lands in the lowest free slot: 0 the first time (slots 0 and 3 were 
 
 ### Exercise 9 {#exercise-9}
 
-Use the seven lines of the map in Figure E3.2, which are: `561b3e099000-561b3e09a000 r--p` (hold), `561b3e09a000-561b3e09b000 r-xp` (hold), `561b3e09b000-561b3e09c000 r--p` (hold), `561b3e09c000-561b3e09d000 r--p` (hold), `561b3e09d000-561b3e09e000 rw-p` (hold), `561b77547000-561b77568000 rw-p` ([heap]) and `7ffd5c468000-7ffd5c48c000 rw-p` ([stack]). (a) Which region holds the address `0x561b77550000`, and may the program write there? (b) Which region holds `0x561b3e09a500`, and may the program write there? (c) How many bytes, and how many 4 KB pages, does the region `561b3e09b000-561b3e09c000` cover? (Extras [3](class-1.md#extra-3) and [4](class-1.md#extra-4); [Appendix A](appendix.md#appendix-a))
+Use the seven lines of the map in [Extra 3](class-1.md#extra-3), which are: `561b3e099000-561b3e09a000 r--p` (hold), `561b3e09a000-561b3e09b000 r-xp` (hold), `561b3e09b000-561b3e09c000 r--p` (hold), `561b3e09c000-561b3e09d000 r--p` (hold), `561b3e09d000-561b3e09e000 rw-p` (hold), `561b77547000-561b77568000 rw-p` ([heap]) and `7ffd5c468000-7ffd5c48c000 rw-p` ([stack]). (a) Which region holds the address `0x561b77550000`, and may the program write there? (b) Which region holds `0x561b3e09a500`, and may the program write there? (c) How many bytes, and how many 4 KB pages, does the region `561b3e09b000-561b3e09c000` cover? (Extras [3](class-1.md#extra-3) and [4](class-1.md#extra-4); [Appendix A](appendix.md#appendix-a))
 
 <details class="success answer" id="answer-9" markdown="1">
 <summary>Answer 9 <span class="hint">click to show</span></summary>
@@ -165,12 +165,12 @@ One round trip: 0.30 s / 100,000 = 0.000003 s = 3.0 µs. Each round trip holds f
 
 ### Exercise 13 {#exercise-13}
 
-In `swtch.S`, the 9th register saved is `s6`. At what offset from `a0` is it stored? Check your answer against Figure 6.4. Then say why `swtch` saves 14 registers when a trap saves 31. ([Section 6.3](class-2.md#sec-6-3))
+In `swtch.S`, the 9th register saved is `s6`. At what offset from `a0` is it stored? Check your answer against `kernel/swtch.S` in [Section 6.3](class-2.md#sec-6-3). Then say why `swtch` saves 14 registers when a trap saves 31. ([Section 6.3](class-2.md#sec-6-3))
 
 <details class="success answer" id="answer-13" markdown="1">
 <summary>Answer 13 <span class="hint">click to show</span></summary>
 
-The registers are stored 8 bytes apart, starting at offset 0 for `ra`. The 9th register sits 8 places after the 1st, so its offset is 8 × 8 = 64; the slide's line is `sd s6, 64(a0)`. (Check by counting: `ra` 0, `sp` 8, `s0` 16, `s1` 24, `s2` 32, `s3` 40, `s4` 48, `s5` 56, `s6` 64.) `swtch` saves only 14 because it is called like an ordinary C function: the caller-saved registers are already on the stack by C's rules, so only the callee-saved ones (`ra`, `sp`, `s0` to `s11`) need saving. A trap can land between any two instructions of a program that prepared nothing, so it must save all 31.
+The registers are stored 8 bytes apart, starting at offset 0 for `ra`. The 9th register sits 8 places after the 1st, so its offset is 8 × 8 = 64; the matching line of `swtch.S` is line 18, `sd s6, 64(a0)`. (Check by counting: `ra` 0, `sp` 8, `s0` 16, `s1` 24, `s2` 32, `s3` 40, `s4` 48, `s5` 56, `s6` 64.) `swtch` saves only 14 because it is called like an ordinary C function: the caller-saved registers are already on the stack by C's rules, so only the callee-saved ones (`ra`, `sp`, `s0` to `s11`) need saving. A trap can land between any two instructions of a program that prepared nothing, so it must save all 31.
 
 </details>
 

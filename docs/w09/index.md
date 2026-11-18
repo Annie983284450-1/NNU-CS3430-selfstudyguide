@@ -120,7 +120,7 @@ Line 5: the lock's whole state is one `int`, 0 for free and 1 for held. Line 9: 
 **The waiter sleeps.** The OS fix for spinning: a waiting thread sleeps on a queue, and the thread that unlocks wakes one sleeper.
 
 <figure markdown="1">
-![Figure 0.2. Linux keeps the state of a mutex in one integer, the lock word (one field of the 48-byte `pthread_mutex_t`; the rest is bookkeeping). 0: free. 1: held, nobody waiting. 2: held, somebody may be asleep. T1 is inside with the word at 2; T2 is asleep in the kernel on the queue for the lock word's address (zz marks a sleeping thread, here and in every later picture).](figs/futex_lockword.svg){width=70%}
+![Figure 0.2. Linux keeps the state of a mutex in one integer, the lock word (one field of the 48-byte `pthread_mutex_t`; the rest is bookkeeping). 0: free. 1: held, nobody waiting. 2: held, somebody may be asleep. T1 is inside with the word at 2; T2 is asleep in the kernel on the queue for the lock word's address (zz marks a sleeping thread, here and in every later picture).](figs/futex_lockword.svg){width=100%}
 <figcaption markdown="1">Figure 0.2. Linux keeps the state of a mutex in one integer, the lock word (one field of the 48-byte `pthread_mutex_t`; the rest is bookkeeping). 0: free. 1: held, nobody waiting. 2: held, somebody may be asleep. T1 is inside with the word at 2; T2 is asleep in the kernel on the queue for the lock word's address (zz marks a sleeping thread, here and in every later picture).</figcaption>
 </figure>
 

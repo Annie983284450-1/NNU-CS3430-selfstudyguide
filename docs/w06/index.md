@@ -21,7 +21,7 @@ A few words first. The **operating system** (the **OS**) is the program that run
 #### The course map
 
 <figure markdown="1">
-![Figure 0.1. The memory unit closed (left), the mechanism the processes week built and the hole it left (right top), and the course map with this week marked (right bottom).](figs/recap_c1.svg){width=90%}
+![Figure 0.1. The memory unit closed (left), the mechanism the processes week built and the hole it left (right top), and the course map with this week marked (right bottom).](figs/recap_c1.svg){width=100%}
 <figcaption markdown="1">Figure 0.1. The memory unit closed (left), the mechanism the processes week built and the hole it left (right top), and the course map with this week marked (right bottom).</figcaption>
 </figure>
 

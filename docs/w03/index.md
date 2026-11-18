@@ -22,20 +22,31 @@ A few words first, so the map can be read. A **program** is a file of instructio
 #### The course map {#h-the-course-map}
 
 <figure markdown="1">
-![Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open.](figs/coursemap.png){width=100%}
-<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, the weeks with this one marked, and the question each step left open.</figcaption>
+![Figure 0.1. The whole course on one page: the three pieces, the five blocks, and the weeks, with this one marked.](figs/coursemap.svg){width=100%}
+<figcaption markdown="1">Figure 0.1. The whole course on one page: the three pieces, the five blocks, and the weeks, with this one marked.</figcaption>
 </figure>
 
 An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own processor and its own memory. The second is **concurrency**: many things happen at the same time without making a mess of each other. The third is **persistence**: data survives when the power goes off. They are the three colored bands at the top of Figure 0.1.
 
 The second row of Figure 0.1 cuts the course into five blocks. Virtualization takes the first three. Block 1 is the processor from the process's point of view: the first two weeks. Block 2 is memory, outlined in red: this week and the two after it. Block 3 goes back to the processor to ask which program should run next. Block 4 is concurrency, and block 5 is files and devices. This week is the third of the course, the cell marked "we are here", and the first week of memory.
 
-The lower half of Figure 0.1 is the reason the weeks come in this order: each step answered the question the one before it left open. The first step said what the three jobs are, and left open what one of those virtual processors is and how the OS keeps control of it. The second step, the processes week, built the process and the machinery that keeps the OS in control. It left open its own drawing: a process's memory was drawn as a strip of bytes that starts at address 0, and nobody said where that memory really is or what keeps one process out of another's. That is the red row, this week. The two rows after it say what this week will leave open in turn: a table that will be needed to find the pieces of memory will be too big, and pieces of memory (pages) will have to live on disk. (The map's row for that later week also names a TLB, a small fast memory inside the processor; nothing in this week needs it.)
+The weeks come in this order for a reason: each step answered the question the one before it left open.
+
+| Step | What it gave | What it left open |
+|---|---|---|
+| 1. the three pieces | the OS turns one CPU and one memory into many, shares them without chaos, and keeps data safe | what is one of those virtual CPUs, and how does the OS keep control of it? |
+| 2. the process | a program while it runs: memory, registers, open files, in one struct; fork, exec, wait; a trap and a timer keep the OS in control at full speed | its memory was drawn as a strip from 0: where is that memory really, and what keeps one process out of another's? |
+| **3. this week: the address space** | each process gets a private view of memory counted from 0; every address a program sees is virtual; `malloc` and `free` manage the heap; hardware translates every access, first with two registers and one addition | |
+| 4. pages and the TLB | memory cut into fixed-size pieces, with a table and a cache | the table is too big, and the lookup costs a memory access |
+| 5. more memory than you have | pages that live on disk until they are touched | which page to throw out when memory is full? |
+| 6. scheduling | which process runs next, and for how long | the policy that the mechanism of the process block makes possible |
+
+The first step said what the three jobs are, and left open what one of those virtual processors is and how the OS keeps control of it. The second step, the processes week, built the process and the machinery that keeps the OS in control. It left open its own drawing: a process's memory was drawn as a strip of bytes that starts at address 0, and nobody said where that memory really is or what keeps one process out of another's. That is this week. The rows after it say what this week will leave open in turn: a table that will be needed to find the pieces of memory will be too big, and pieces of memory (pages) will have to live on disk. (Step 4 also names a TLB, a small fast memory inside the processor; nothing in this week needs it.)
 
 #### The processes week, first class: one struct, three calls {#h-the-processes-week-first-class-one-struct-three-ca}
 
 <figure markdown="1">
-![Figure 0.2. The first class of the processes week, drawn: the process as one record with three parts, and the three calls that make and control one.](figs/w2_class1.png){width=90%}
+![Figure 0.2. The first class of the processes week, drawn: the process as one record with three parts, and the three calls that make and control one.](figs/w2_class1.svg){width=100%}
 <figcaption markdown="1">Figure 0.2. The first class of the processes week, drawn: the process as one record with three parts, and the three calls that make and control one.</figcaption>
 </figure>
 
@@ -48,7 +59,7 @@ Settled by that class: what a process is made of, and the three calls. Left open
 #### The processes week, second class: two modes, a timer, and the switch {#h-the-processes-week-second-class-two-modes-a-timer-}
 
 <figure markdown="1">
-![Figure 0.3. The second class of the processes week, drawn: the two CPU modes with the trap between them, the timer tick, and the context switch.](figs/w2_class2.png){width=91%}
+![Figure 0.3. The second class of the processes week, drawn: the two CPU modes with the trap between them, the timer tick, and the context switch.](figs/w2_class2.svg){width=100%}
 <figcaption markdown="1">Figure 0.3. The second class of the processes week, drawn: the two CPU modes with the trap between them, the timer tick, and the context switch.</figcaption>
 </figure>
 
@@ -60,17 +71,39 @@ A program that never asks for anything is interrupted anyway: a hardware **timer
 
 When the kernel decides to run a different process, it performs a **context switch**. The registers of the process that was running are saved into its struct, and the registers of the next process are loaded from its struct, so that the return from the trap lands in a different program. The processes week measured one switch at about 1 microsecond on the Ubuntu machine (a microsecond is a millionth of a second). So xv6 saves registers at two moments: at the trap it saves all 32 of the process's values into a part of the struct called the trapframe. At the switch it saves only the 14 registers its own kernel code needs to resume, into a part called the context, which is the "14 saved registers" of Figure 0.3.
 
-Here is the loose end, in the yellow box at the bottom of Figure 0.3. A load or a store also runs at full speed, and no trap happens. (A **load** is an instruction that reads a value from memory; a **store** is one that writes a value to memory.) The address it carries is a number out of the strip from 0. Nothing in the trap, the timer or the switch ever looks at that number. So what sends it to the right place in the real memory, and what stops it from reaching another process's bytes? That is the second class of this week.
+Here is the loose end that machinery never looked at. A load or a store also runs at full speed, and no trap happens. (A **load** is an instruction that reads a value from memory; a **store** is one that writes a value to memory.) The address it carries is a number out of the strip from 0. Nothing in the trap, the timer or the switch ever looks at that number. So what sends it to the right place in the real memory, and what stops it from reaching another process's bytes? That is the second class of this week.
 
 #### Last week's words, in one place {#h-last-week-s-words-in-one-place}
 
-<figure markdown="1">
-![Figure 0.4. The processes week's words, each in one sentence, with the textbook section where each is defined.](figs/w2_words.png){width=100%}
-<figcaption markdown="1">Figure 0.4. The processes week's words, each in one sentence, with the textbook section where each is defined.</figcaption>
-</figure>
+The first seven words are the processes week's first class, the rest its second; the section numbers are the textbook's.
 
-Figure 0.4 is the list from the slides. These are the words the rest of this guide builds on. One more from the right column: **mechanism** is how a thing is done (the switch), and **policy** is which choice is made (which process to run next, a question for later in the course). Some later parts repeat a definition as a reminder; the meaning never changes.
+| Word | Meaning |
+|---|---|
+| **process** | a program while it runs: its memory, its registers and its open files, in one struct proc, with a state (§4.1) |
+| **address space** | the memory of one process, drawn as a strip that starts at 0: code, data, heap, stack; this week's subject (§4.1, §13) |
+| **trapframe** | the place in the kernel where a process's 31 user registers and its pc are saved when it stops |
+| **fork() / exec() / wait()** | copy the caller and return twice / replace the program inside the same process / block until a child exits (§5) |
+| **file descriptor** | a small number that names an open file in a process's table: 0 input, 1 output, 2 errors (§5.4) |
+| **shell** | a user program that is a loop of fork, exec and wait; it redirects in the gap between fork and exec (§5.4) |
+| **zombie** | a process that has exited but keeps its slot until its parent collects its status (§4.4) |
+| **limited direct execution** | run the program on the real CPU at full speed, and let the hardware hand the CPU back at a few key moments (§6) |
+| **user mode / kernel mode** | two CPU modes: in user mode a privileged instruction is refused by the hardware; the kernel runs in kernel mode (§6.2) |
+| **trap / return-from-trap** | `ecall` raises the mode and jumps to the one address the kernel installed at boot; `sret` drops back into the program (§6.2) |
+| **system call** | a request to the kernel made through a trap, with its number in a7 and its result in a0 (§6.2) |
+| **timer interrupt** | the hardware calling the kernel every few milliseconds, whatever the program is doing (§6.3) |
+| **context switch** | the kernel saving one process's registers and loading another's, so the return-from-trap resumes a different process (§6.3) |
+| **mechanism / policy** | how a thing is done (the switch) / which choice is made (the scheduler, later in the course) (§2.5) |
+
+These are the words the rest of this guide builds on. One more about the last row: **mechanism** is how a thing is done (the switch), and **policy** is which choice is made (which process to run next, a question for later in the course). Some later parts repeat a definition as a reminder; the meaning never changes.
 
 #### What the processes week settled, and what it left open {#h-what-the-processes-week-settled-and-what-it-left-o}
 
-Settled: a process is a running program kept in one struct; fork, exec and wait make and control one; two modes, a trap, a timer and a switch keep the kernel in control at full speed. Left open: the memory part of the struct is a drawing. This week makes it real. The first class says what memory looks like to a program and whether that picture is true ([Chapter 1](class-1.md#chapter-1)), how a program asks for more of it and what goes wrong ([Chapter 2](class-1.md#chapter-2)), and where the bytes really come from ([Chapter 3](class-1.md#chapter-3)). The second class says what the hardware does to every address so that the picture can be true (Chapters 4 to 6).
+!!! settled "Settled"
+
+    A process is a running program kept in one struct; fork, exec and wait make and control one; two modes, a trap, a timer and a switch keep the kernel in control at full speed.
+
+!!! open "Left open"
+
+    The memory part of the struct is a drawing.
+
+This week makes it real. The first class says what memory looks like to a program and whether that picture is true ([Chapter 1](class-1.md#chapter-1)), how a program asks for more of it and what goes wrong ([Chapter 2](class-1.md#chapter-2)), and where the bytes really come from ([Chapter 3](class-1.md#chapter-3)). The second class says what the hardware does to every address so that the picture can be true (Chapters 4 to 6).

@@ -20,14 +20,9 @@ A few words first. The **operating system** (the **OS**) is the program that run
 
 #### The course map
 
-<figure markdown="1">
-![Figure 0.1. The course map as a chain of questions: each row is one step of the course, and the text on the right of each row is the question that step could not answer.](figs/course_chain.svg){width=100%}
-<figcaption markdown="1">Figure 0.1. The course map as a chain of questions: each row is one step of the course, and the text on the right of each row is the question that step could not answer.</figcaption>
-</figure>
-
 An operating system has three big jobs, and the course takes them in order. The first is **virtualization**: one computer pretends to be many, so every program behaves as if it had its own CPU and its own memory. The second is **concurrency**: many things happening at once without chaos. The third is **persistence**: data that survives the power going off. This class is the last step of the first job.
 
-Figure 0.1 lists the steps so far. Each row answered the question the row before it left open:
+Here are the steps so far. Each one answered the question the one before it left open:
 
 1. The process: a running program with its own view of the machine. Left open: how a program gets the OS to do anything for it.
 2. Limited direct execution: the program runs on the real CPU, and a trap (a forced jump into the kernel), a system call (a request a program makes to the kernel) or a timer hands control back to the OS. Left open: how memory is shared without programs seeing each other.
@@ -52,11 +47,11 @@ Three words come back on every page of this class.
 The second of those classes built a scheduler that runs short and interactive jobs first without being told how long any job is. It is the **multi-level feedback queue**, **MLFQ** for short.
 
 <figure markdown="1">
-![Figure 0.2. The multi-level feedback queue: several queues, the highest at the top, each ready job on one of them; and its five rules.](figs/recap_mlfq.svg){width=60%}
-<figcaption markdown="1">Figure 0.2. The multi-level feedback queue: several queues, the highest at the top, each ready job on one of them; and its five rules.</figcaption>
+![Figure 0.1. The multi-level feedback queue: several queues, the highest at the top, each ready job on one of them.](figs/recap_mlfq.svg){width=55%}
+<figcaption markdown="1">Figure 0.1. The multi-level feedback queue: several queues, the highest at the top, each ready job on one of them.</figcaption>
 </figure>
 
-Figure 0.2 shows it. There are several queues, ranked by **priority** (how urgent a job is: a higher queue means a higher priority). Every ready job sits on one of them. Five rules decide everything:
+Figure 0.1 shows it. There are several queues, ranked by **priority** (how urgent a job is: a higher queue means a higher priority). Every ready job sits on one of them. Five rules decide everything:
 
 - Rule 1: the higher queue runs first.
 - Rule 2: jobs on the same queue take turns, one time slice each. Taking turns like this is called **round robin**.
@@ -66,22 +61,22 @@ Figure 0.2 shows it. There are several queues, ranked by **priority** (how urgen
 
 The point of the rules is that the queue a job ends up on is a guess at what kind of job it is. A job that keeps using the CPU sinks; a job that keeps stopping to wait for a person stays high.
 
-Check this: in Figure 0.2 the queues are named Q2 (the top), Q1 and Q0 (the bottom); A and B are on Q2 and C is on Q0. By Rule 1, C cannot run while A or B is ready. By Rule 2, A and B alternate. By Rule 5, C gets back to the top at the next boost.
+Check this: in Figure 0.1 the queues are named Q2 (the top), Q1 and Q0 (the bottom); A and B are on Q2 and C is on Q0. By Rule 1, C cannot run while A or B is ready. By Rule 2, A and B alternate. By Rule 5, C gets back to the top at the next boost.
 
 #### The number that MLFQ could not explain
 
 The last class ended with one measurement that no MLFQ rule explains.
 
 <figure markdown="1">
-![Figure 0.3. Two copies of the same program on one core for 3 s: the copy at nice 0 (nice is explained just below) got 2.71 s of CPU time, the copy at nice 10 got 0.29 s.](figs/recap_nice.svg){width=60%}
-<figcaption markdown="1">Figure 0.3. Two copies of the same program on one core for 3 s: the copy at nice 0 (nice is explained just below) got 2.71 s of CPU time, the copy at nice 10 got 0.29 s.</figcaption>
+![Figure 0.2. Two copies of the same program on one core for 3 s: the copy at nice 0 (nice is explained just below) got 2.71 s of CPU time, the copy at nice 10 got 0.29 s.](figs/recap_nice.svg){width=75%}
+<figcaption markdown="1">Figure 0.2. Two copies of the same program on one core for 3 s: the copy at nice 0 (nice is explained just below) got 2.71 s of CPU time, the copy at nice 10 got 0.29 s.</figcaption>
 </figure>
 
 **nice** is the knob a Linux user has on a process's share of the CPU. It is a number from −20 to 19, and the default is 0. A higher number means "this process matters less" and asks for a smaller share of the CPU; a lower number asks for a bigger one. (The name comes from the idea that a process with a high nice value is being nice to the others.) The experiment ran two copies of the same program on one core for 3 seconds, one started with nice 0 and one with nice 10. Each copy reported how much **CPU time** it was given, meaning the time it actually spent running on the CPU, as opposed to time spent waiting for its turn.
 
-Figure 0.3 shows the result. The nice 0 copy got 2.71 s and the nice 10 copy got 0.29 s. Together that is 2.71 + 0.29 = 3.00 s, the whole 3 seconds. As shares: 2.71 / 3.00 = 0.903, which is 90%, and 0.29 / 3.00 = 0.097, which is 10%. Check this: 90% + 10% = 100%.
+Figure 0.2 shows the result. The nice 0 copy got 2.71 s and the nice 10 copy got 0.29 s. Together that is 2.71 + 0.29 = 3.00 s, the whole 3 seconds. As shares: 2.71 / 3.00 = 0.903, which is 90%, and 0.29 / 3.00 = 0.097, which is 10%. Check this: 90% + 10% = 100%.
 
-The grey numbers in Figure 0.3, 1024 and 110, are the **weights** Linux gives nice 0 and nice 10. [Section 2.3](class-1.md#sec-2-3) explains where they come from. For now notice only this: a split of 90% and 10% is an amount, and none of the five MLFQ rules talks about amounts. Rule 1 says who goes first; it never says how much each one gets.
+The grey numbers in Figure 0.2, 1024 and 110, are the **weights** Linux gives nice 0 and nice 10. [Section 2.3](class-1.md#sec-2-3) explains where they come from. For now notice only this: a split of 90% and 10% is an amount, and none of the five MLFQ rules talks about amounts. Rule 1 says who goes first; it never says how much each one gets.
 
 #### Two small tools: fractions and time units
 

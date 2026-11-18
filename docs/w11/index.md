@@ -103,7 +103,7 @@ A **lock** in the xv6 kernel is taken with `acquire(&lock)` and given back with 
 **Last week: the hang, as holds and wants.** Last week ended with a program that hung for good, drawn as a graph of who holds what and who wants what.
 
 <figure markdown="1">
-![Figure 0.2. The hang of last class, as holds and wants: thread 1 holds lock L1 and wants L2; thread 2 holds L2 and wants L1. A solid arrow is "holds", a dashed arrow is "wanted by", and the four arrows close a circle.](figs/recap_hang_graph.svg){width=60%}
+![Figure 0.2. The hang of last class, as holds and wants: thread 1 holds lock L1 and wants L2; thread 2 holds L2 and wants L1. A solid arrow is "holds", a dashed arrow is "wanted by", and the four arrows close a circle.](figs/recap_hang_graph.svg){width=80%}
 <figcaption markdown="1">Figure 0.2. The hang of last class, as holds and wants: thread 1 holds lock L1 and wants L2; thread 2 holds L2 and wants L1. A solid arrow is "holds", a dashed arrow is "wanted by", and the four arrows close a circle.</figcaption>
 </figure>
 

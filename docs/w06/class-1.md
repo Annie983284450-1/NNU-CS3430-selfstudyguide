@@ -1,127 +1,5 @@
 # First class: turnaround time against response time: FIFO, shortest job first, preemption, round robin, overlapping I/O (OSTEP 7) {#class-1}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 1233" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="1233" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#2f3e9e">WEEK 6 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#sec-1-1" class="cmap-link"><title>1.1 Problem: The scheduling problem needs a metric</title><rect x="384" y="122" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="128" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="138.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="140" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.1 The scheduling problem needs a metric</text></a>
-<path d="M352,136 C368,136 368,136 384,136" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="122" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="140" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-1-2" class="cmap-link"><title>1.2 Concept: The workload assumptions, and turnaround time</title><rect x="384" y="161" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="167" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="177.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="179" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.2 The workload assumptions, and turnaround time</text></a>
-<a href="#sec-1-3" class="cmap-link"><title>1.3 Concept: FIFO scheduling, and the convoy effect</title><rect x="384" y="192" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="198" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="208.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="210" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.3 FIFO scheduling, and the convoy effect</text></a>
-<path d="M352,190 C368,190 368,174 384,174" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,190 C368,190 368,206 384,206" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="177" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="194" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-1-4" class="cmap-link"><title>1.4 Real machine: The convoy effect measured: a batch queue on Linux</title><rect x="384" y="231" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="237" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="247.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="249" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">1.4 The convoy effect measured: a batch queue on</text><text x="476" y="264" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Linux</text></a>
-<path d="M352,252 C368,252 368,252 384,252" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="239" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="256" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#summary-13" class="cmap-link"><title>The answer</title><rect x="384" y="285" width="400" height="76" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="301" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: By average turnaround time, finish minus arrival.</text><text x="394" y="316" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">FIFO runs jobs in arrival order; with one long job in front the</text><text x="394" y="331" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">short ones convoy behind it, 110 s instead of 50. It costs</text><text x="394" y="346" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">nothing to compute and is blind to length.</text></a>
-<path d="M352,323 C368,323 368,323 384,323" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="310" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="327" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-1" class="cmap-link"><title>Extra 1 Deeper, Q1: Fairness as a metric</title><rect x="384" y="373" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="379" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="389.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="391" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 1 Fairness as a metric</text></a>
-<path d="M352,386 C368,386 368,386 384,386" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="374" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="390" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,263 C232,263 232,136 248,136" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,263 C232,263 232,190 248,190" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,263 C232,263 232,252 248,252" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,263 C232,263 232,323 248,323" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,263 C232,263 232,386 248,386" fill="none" stroke="#2f3e9e" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-1" class="cmap-link"><title>Q1. Scheduling metrics, and FIFO</title><rect x="10" y="237" width="206" height="52" rx="8" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.9"/><circle cx="28" cy="257" r="11" fill="#2f3e9e"/><text x="28" y="261" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="261" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Scheduling metrics, and</text><text x="48" y="277" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">FIFO</text></a>
-<text x="113.0" y="422" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-2-1" class="cmap-link"><title>2.1 Concept: Shortest Job First (SJF)</title><rect x="384" y="434" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="440" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="450.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="452" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.1 Shortest Job First (SJF)</text></a>
-<a href="#sec-2-2" class="cmap-link"><title>2.2 Concept: Preemption, and Shortest Time-to-Completion First (STCF)</title><rect x="384" y="465" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="471" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="481.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="483" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">2.2 Preemption, and Shortest Time-to-Completion First</text><text x="448" y="498" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">(STCF)</text></a>
-<path d="M352,470 C368,470 368,448 384,448" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,470 C368,470 368,486 384,486" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="458" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="474" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#summary-13" class="cmap-link"><title>The answer</title><rect x="384" y="519" width="400" height="76" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="535" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Shortest first: SJF when everyone arrives together,</text><text x="394" y="550" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">STCF (shortest remaining time, with preemption) when jobs arrive</text><text x="394" y="565" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">at any time. The best possible turnaround; the price is that it</text><text x="394" y="580" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">needs the lengths, and long jobs wait.</text></a>
-<path d="M352,557 C368,557 368,557 384,557" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="544" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="561" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<path d="M216,516 C232,516 232,470 248,470" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,516 C232,516 232,557 248,557" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<a href="#chapter-2" class="cmap-link"><title>Q2. Shortest job first, and preemption</title><rect x="10" y="490" width="206" height="52" rx="8" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.9"/><circle cx="28" cy="510" r="11" fill="#2f3e9e"/><text x="28" y="514" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="514" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Shortest job first, and</text><text x="48" y="530" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">preemption</text></a>
-<text x="113.0" y="617" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-3-1" class="cmap-link"><title>3.1 Problem: Response time: a second metric</title><rect x="384" y="629" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="635" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="645.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="647" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.1 Response time: a second metric</text></a>
-<path d="M352,642 C368,642 368,642 384,642" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="630" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="646" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-3-2" class="cmap-link"><title>3.2 Concept: Round robin (RR)</title><rect x="384" y="668" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="674" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="684.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="686" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.2 Round robin (RR)</text></a>
-<a href="#sec-3-3" class="cmap-link"><title>3.3 Concept: The time slice, and the cost of a context switch</title><rect x="384" y="699" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="705" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="715.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="717" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.3 The time slice, and the cost of a context switch</text></a>
-<path d="M352,697 C368,697 368,682 384,682" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,697 C368,697 368,712 384,712" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="684" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="701" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-3-4" class="cmap-link"><title>3.4 Real kernel: Round robin in xv6: scheduler()</title><rect x="384" y="738" width="400" height="27" rx="6" fill="#ffffff" stroke="#6b4fa0" stroke-width="1.1"/><rect x="390" y="744" width="74" height="15" rx="3" fill="#6b4fa0"/><text x="396" y="754.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text><text x="471" y="756" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.4 Round robin in xv6: scheduler()</text></a>
-<a href="#sec-3-5" class="cmap-link"><title>3.5 Real machine: Round robin on Linux: three jobs at once</title><rect x="384" y="769" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="775" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="785.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="787" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">3.5 Round robin on Linux: three jobs at once</text></a>
-<path d="M352,767 C368,767 368,752 384,752" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,767 C368,767 368,782 384,782" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="754" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="771" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#summary-13" class="cmap-link"><title>The answer</title><rect x="384" y="808" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="824" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Response time, the wait for the first run. Round</text><text x="394" y="839" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">robin gives every job a slice in turn: response 1 instead of 5</text><text x="394" y="854" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">for three 5 s jobs. The price is turnaround 14 instead of 10, and</text><text x="394" y="869" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">a switch per slice (1.5 µs here). Two families, and no rule wins</text><text x="394" y="884" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">both.</text></a>
-<path d="M352,854 C368,854 368,854 384,854" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="840" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="858" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-2" class="cmap-link"><title>Extra 2 Deeper, Q3: The hidden cost of a context switch: caches and the TLB</title><rect x="384" y="911" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="917" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="927.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="929" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 2 The hidden cost of a context switch: caches</text><text x="465" y="944" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">and the TLB</text></a>
-<path d="M352,932 C368,932 368,932 384,932" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="919" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="936" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,793 C232,793 232,642 248,642" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,793 C232,793 232,697 248,697" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,793 C232,793 232,767 248,767" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,793 C232,793 232,854 248,854" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,793 C232,793 232,932 248,932" fill="none" stroke="#2f3e9e" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-3" class="cmap-link"><title>Q3. Response time, and round robin</title><rect x="10" y="767" width="206" height="52" rx="8" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.9"/><circle cx="28" cy="787" r="11" fill="#2f3e9e"/><text x="28" y="791" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="791" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">Response time, and round</text><text x="48" y="807" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">robin</text></a>
-<text x="113.0" y="975" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-4-1" class="cmap-link"><title>4.1 Concept: Overlapping I/O: each CPU burst as a job</title><rect x="384" y="987" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="993" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1003.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1005" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.1 Overlapping I/O: each CPU burst as a job</text></a>
-<path d="M352,1000 C368,1000 368,1000 384,1000" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="988" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1004" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#summary-13" class="cmap-link"><title>The answer</title><rect x="384" y="1026" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1042" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Treat each CPU burst as a job and run someone else</text><text x="394" y="1057" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">during the wait: overlap. 150 ms became 100 in the drawing, 157</text><text x="394" y="1072" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">became 136 measured. The price is that the scheduler must notice</text><text x="394" y="1087" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">every block and wake-up; the gain is that jobs that wait often</text><text x="394" y="1102" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">get run often.</text></a>
-<path d="M352,1072 C368,1072 368,1072 384,1072" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1058" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1076" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<path d="M216,1054 C232,1054 232,1000 248,1000" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<path d="M216,1054 C232,1054 232,1072 248,1072" fill="none" stroke="#2f3e9e" stroke-width="1.4"/>
-<a href="#chapter-4" class="cmap-link"><title>Q4. I/O and scheduling</title><rect x="10" y="1036" width="206" height="36" rx="8" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.9"/><circle cx="28" cy="1056" r="11" fill="#2f3e9e"/><text x="28" y="1060" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q4</text><text x="48" y="1060" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">I/O and scheduling</text></a>
-<a href="#summary-13" class="cmap-link"><title>Summary of the first class: scheduling policies and metrics</title><rect x="10" y="1151" width="206" height="66" rx="7" fill="#555e6b"/><text x="21" y="1170" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: Summary of the first</text><text x="21" y="1186" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">class: scheduling policies and</text><text x="21" y="1202" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">metrics</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-1.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## Chapter 1. Scheduling metrics, and FIFO {#chapter-1}
 
 *The question this chapter answers: How do we judge a schedule, and what does the simplest one do wrong?*
@@ -148,11 +26,6 @@ So we need two things. We need simplifying assumptions about the jobs, so the pr
 
 The yardstick comes in two halves: a simplified workload, and a number.
 
-<figure markdown="1">
-![Figure 1.2. The five assumptions, with the question that drops each one.](figs/assumptions.svg){width=73%}
-<figcaption markdown="1">Figure 1.2. The five assumptions, with the question that drops each one.</figcaption>
-</figure>
-
 Start with a workload so simple that every policy is easy to judge. Assume that:
 
 1. every job runs for the same amount of time,
@@ -161,12 +34,7 @@ Start with a workload so simple that every policy is easy to judge. Assume that:
 4. jobs only use the CPU and never wait for anything, and
 5. the run time of each job is known in advance.
 
-Figure 1.2 says when each assumption goes: 1 in this block of parts, 2 and 3 in the next, 4 in the last block of the first class, and 5 only in the second class. Assumption 5 is the least realistic: no real operating system knows how long a job will run. The first class keeps it because it makes the best rules easy to see.
-
-<figure markdown="1">
-![Figure 1.3. The one number for the first class, and a note that it is only one kind of number.](figs/metric.svg){width=72%}
-<figcaption markdown="1">Figure 1.3. The one number for the first class, and a note that it is only one kind of number.</figcaption>
-</figure>
+Each assumption goes in its turn: 1 in this block of parts, 2 and 3 in the next, 4 in the last block of the first class, and 5 only in the second class. Assumption 5 is the least realistic: no real operating system knows how long a job will run. The first class keeps it because it makes the best rules easy to see.
 
 The number is **turnaround time**: the moment a job finishes minus the moment it arrived, written T_turnaround = T_completion − T_arrival. Because assumption 2 makes every arrival time 0, for now the turnaround time of a job is simply its finishing time; the 110 and the 50 of [Section 1.1](#sec-1-1) were averages of exactly this. A policy is judged by the average turnaround time over its jobs.
 
@@ -180,18 +48,32 @@ Turnaround time is a **performance** metric: it measures how fast work gets done
 The simplest rule is **FIFO**, first in, first out: run jobs in the order they arrived, each one to the end. It is also called first come, first served, like a line at a counter. There is nothing to compute and nothing to predict.
 
 <figure markdown="1">
-![Figure 1.4. OSTEP Figure 7.1: three jobs of 10 s under FIFO, and the turnaround times read off the timeline.](figs/fifo.svg){width=92%}
-<figcaption markdown="1">Figure 1.4. OSTEP Figure 7.1: three jobs of 10 s under FIFO, and the turnaround times read off the timeline.</figcaption>
+![Figure 1.2. OSTEP Figure 7.1: three jobs of 10 s under FIFO.](figs/fifo.svg){width=100%}
+<figcaption markdown="1">Figure 1.2. OSTEP Figure 7.1: three jobs of 10 s under FIFO.</figcaption>
 </figure>
+
+| job | arrives | finishes | turnaround |
+|---|---|---|---|
+| A | 0 | 10 | 10 |
+| B | 0 | 20 | 20 |
+| C | 0 | 30 | 30 |
+| average |  |  | (10 + 20 + 30) / 3 = 20 |
 
 A, B and C arrive together (A a hair before B, B a hair before C), and each needs 10 s. A runs from 0 to 10, B from 10 to 20, C from 20 to 30. Turnaround: 10, 20, 30; average (10 + 20 + 30) / 3 = 60 / 3 = 20 s. Under the five assumptions this is fine, and no order of three equal jobs can do better, because somebody has to be second and somebody third.
 
 Now drop assumption 1. Jobs no longer all take the same time. Keep the rule and change one job: A now needs 100 s.
 
 <figure markdown="1">
-![Figure 1.5. OSTEP Figure 7.2: the same arrival order with A at 100 s; the table; and the grocery line.](figs/convoy.svg){width=92%}
-<figcaption markdown="1">Figure 1.5. OSTEP Figure 7.2: the same arrival order with A at 100 s; the table; and the grocery line.</figcaption>
+![Figure 1.3. OSTEP Figure 7.2: the same arrival order with A at 100 s.](figs/convoy.svg){width=100%}
+<figcaption markdown="1">Figure 1.3. OSTEP Figure 7.2: the same arrival order with A at 100 s.</figcaption>
 </figure>
+
+| job | needs | finishes | turnaround |
+|---|---|---|---|
+| A | 100 | 100 | 100 |
+| B | 10 | 110 | 110 |
+| C | 10 | 120 | 120 |
+| average |  |  | (100 + 110 + 120) / 3 = 110 |
 
 A runs first, because it arrived first, and holds the CPU from 0 to 100. B runs from 100 to 110 and C from 110 to 120. B needed 10 s of work and waited 100 s for it; so did C. Average turnaround: (100 + 110 + 120) / 3 = 330 / 3 = 110 s. This failure has a name: the **convoy effect**, short jobs stuck waiting behind one long job, like vehicles in a convoy that all move at the speed of the slowest. FIFO cannot avoid it, because FIFO never looks at how long a job is; it only looks at who came first. The grocery line is the everyday version: one person with three full carts at the register, and everyone behind them waits the full time however little they carry.
 
@@ -256,8 +138,8 @@ C finished at 1.205 s
 ```
 
 <figure markdown="1">
-![Figure 1.6. The capture drawn as a timeline, in seconds.](figs/batch_fifo_timeline.svg){width=100%}
-<figcaption markdown="1">Figure 1.6. The capture drawn as a timeline, in seconds.</figcaption>
+![Figure 1.4. The capture drawn as a timeline, in seconds.](figs/batch_fifo_timeline.svg){width=100%}
+<figcaption markdown="1">Figure 1.4. The capture drawn as a timeline, in seconds.</figcaption>
 </figure>
 
 The shell runs A with 1000 ms, then B with 100, then C with 100, one after another. Read the capture: A finished at 1.005 s. B first ran at 1.007 s and finished at 1.105 s. C finished at 1.205 s. B and C each did 0.1 s of work and waited a full second for it. Average turnaround: (1.005 + 1.105 + 1.205) / 3 = 3.315 / 3 = 1.105 s, about 1.1. Check this: 1.005 + 1.105 is 2.110, plus 1.205 is 3.315, and 3.315 / 3 is 1.105. The convoy is real. The next part runs the same three jobs B, C, A and the average falls to 0.5.
@@ -277,13 +159,33 @@ The shell runs A with 1000 ms, then B with 100, then C with 100, one after anoth
 The fix from the pictures has a name: **SJF**, shortest job first. Of the jobs that are waiting, run the one that needs the least time, to the end; then the next shortest; and so on.
 
 <figure markdown="1">
-![Figure 2.1. OSTEP Figure 7.3, the table, and the same three jobs measured in the order B, C, A.](figs/sjf.svg){width=92%}
-<figcaption markdown="1">Figure 2.1. OSTEP Figure 7.3, the table, and the same three jobs measured in the order B, C, A.</figcaption>
+![Figure 2.1. OSTEP Figure 7.3: the same jobs, shortest first.](figs/sjf.svg){width=100%}
+<figcaption markdown="1">Figure 2.1. OSTEP Figure 7.3: the same jobs, shortest first.</figcaption>
 </figure>
+
+| job | needs | finishes | turnaround |
+|---|---|---|---|
+| B | 10 | 10 | 10 |
+| C | 10 | 20 | 20 |
+| A | 100 | 120 | 120 |
+| average |  |  | (10 + 20 + 120) / 3 = 50 |
+
+*The capture `batch_sjf.out`: the same three jobs on the Ubuntu machine, B, C, A.*
+
+```text
+$ # shortest first: B, then C, then A
+$ T0=$(now); for j in "B 100" "C 100" "A 1000"; do taskset -c 0 ./spin $j $T0; done
+B first ran at 0.004 s
+B finished at 0.103 s
+C first ran at 0.105 s
+C finished at 0.203 s
+A first ran at 0.205 s
+A finished at 1.204 s
+```
 
 B runs from 0 to 10, C from 10 to 20, and A, the 100 s job, from 20 to 120. Turnaround: 10, 20, 120; average (10 + 20 + 120) / 3 = 150 / 3 = 50 s, less than half of 110. When all jobs arrive together, no order beats shortest first: whenever a longer job is put in front of a shorter one, the shorter one waits longer than the longer one would have, and the average goes up.
 
-The capture at the bottom of Figure 2.1 is the same three processes on the Ubuntu machine, now run B, C, A: B finished at 0.103 s, C at 0.203, A at 1.204. Average (0.103 + 0.203 + 1.204) / 3 = 1.510 / 3 = 0.503 s, about 0.5, against 1.105 in arrival order. The same factor of two as the drawing. Stores apply the principle too: an express line for people with few items keeps the average wait down.
+The capture `batch_sjf.out` is the same three processes on the Ubuntu machine, now run B, C, A: B finished at 0.103 s, C at 0.203, A at 1.204. Average (0.103 + 0.203 + 1.204) / 3 = 1.510 / 3 = 0.503 s, about 0.5, against 1.105 in arrival order. The same factor of two as the drawing. Stores apply the principle too: an express line for people with few items keeps the average wait down.
 
 - What this part settled: with everyone present at time 0, shortest first is the best order.
 - What it leaves open: assumption 2, that everyone is present at time 0, which the next part drops.
@@ -295,7 +197,7 @@ What we have is SJF, which makes its decision at one moment: when the CPU become
 Where it breaks: drop assumption 2, so jobs arrive at any time. A arrives at 0 and needs 100 s; B and C arrive at 10 and need 10 s each. At time 0 the only job is A, so SJF starts A. At 10, B and C arrive, much shorter than what A has left, but assumption 3 says a started job runs to the end, so B and C wait until 100.
 
 <figure markdown="1">
-![Figure 2.2. OSTEP Figure 7.4: late arrivals under SJF, with the arrival of B and C marked.](figs/late_arrivals.svg){width=50%}
+![Figure 2.2. OSTEP Figure 7.4: late arrivals under SJF, with the arrival of B and C marked.](figs/late_arrivals.svg){width=100%}
 <figcaption markdown="1">Figure 2.2. OSTEP Figure 7.4: late arrivals under SJF, with the arrival of B and C marked.</figcaption>
 </figure>
 
@@ -306,9 +208,16 @@ So we need to drop assumption 3 as well: permission to stop a running job and co
 Add preemption to SJF and you get **STCF**, shortest time-to-completion first (some people say preemptive shortest job first, PSJF). The rule: whenever a new job arrives, look at every job in the system, including the one running, and run the one with the least time left; if that is not the running job, stop the running job.
 
 <figure markdown="1">
-![Figure 2.3. OSTEP Figure 7.5: STCF on the same jobs, and the table with arrival times subtracted.](figs/stcf.svg){width=92%}
-<figcaption markdown="1">Figure 2.3. OSTEP Figure 7.5: STCF on the same jobs, and the table with arrival times subtracted.</figcaption>
+![Figure 2.3. OSTEP Figure 7.5: STCF on the same jobs.](figs/stcf.svg){width=100%}
+<figcaption markdown="1">Figure 2.3. OSTEP Figure 7.5: STCF on the same jobs.</figcaption>
 </figure>
+
+| job | arrives | needs | finishes | turnaround |
+|---|---|---|---|---|
+| A | 0 | 100 | 120 | 120 |
+| B | 10 | 10 | 20 | 10 |
+| C | 10 | 10 | 30 | 20 |
+| average |  |  |  | (120 + 10 + 20) / 3 = 50 |
 
 A starts at 0. At 10, B and C arrive, and now three jobs are in the system: A with 90 s left, B with 10, C with 10. Least time left wins, so A is stopped, B runs from 10 to 20, C from 20 to 30, and A's remaining 90 s run from 30 to 120. Turnaround: A 120 − 0 = 120, B 20 − 10 = 10, C 30 − 10 = 20. Average (120 + 10 + 20) / 3 = 150 / 3 = 50 s, the same 50 that SJF had when everyone arrived together. With preemption and known lengths, this is the best average turnaround there is, by the same exchange argument as [Section 2.1](#sec-2-1) applied at every arrival: whenever a longer remainder runs ahead of a shorter one, swapping them lowers the average. One convention: when two remainders tie, the job already running keeps the CPU.
 
@@ -347,9 +256,14 @@ So we need a second number. **Response time** is the moment a job first runs min
 The rule that gets everyone started is **round robin** (RR): run a job for a **time slice**, then switch to the next job in the queue, and keep going around until the jobs are done. The slice is also called a **quantum**, and the whole idea is also called time-slicing. One detail: the slice has to be a multiple of the timer-interrupt period, because the timer is what takes the CPU away; if the timer fires every 10 ms, a slice can be 10, 20 or 30 ms, but not 15.
 
 <figure markdown="1">
-![Figure 3.2. OSTEP Figures 7.6 and 7.7 on the same three 5 s jobs, and the table of both metrics.](figs/rr.svg){width=92%}
-<figcaption markdown="1">Figure 3.2. OSTEP Figures 7.6 and 7.7 on the same three 5 s jobs, and the table of both metrics.</figcaption>
+![Figure 3.2. OSTEP Figures 7.6 and 7.7 on the same three 5 s jobs.](figs/rr.svg){width=100%}
+<figcaption markdown="1">Figure 3.2. OSTEP Figures 7.6 and 7.7 on the same three 5 s jobs.</figcaption>
 </figure>
+
+| | response A, B, C | average | turnaround A, B, C | average |
+|---|---|---|---|---|
+| SJF | 0, 5, 10 | (0 + 5 + 10) / 3 = 5 | 5, 10, 15 | (5 + 10 + 15) / 3 = 10 |
+| RR, 1 s slice | 0, 1, 2 | (0 + 1 + 2) / 3 = 1 | 13, 14, 15 | (13 + 14 + 15) / 3 = 14 |
 
 The top timeline is shortest first: A, then B, then C, whole. The bottom one is round robin with a 1 s slice: A for 1 s, then B, then C, then A again, and so on around, five rounds in all. Read the table.
 
@@ -461,7 +375,7 @@ yield(void)
 Here is what the function does: it is the loop each CPU runs forever; it walks the list of process records from top to bottom, and every time it finds one that is ready, it runs it. That is all.
 
 <figure markdown="1">
-![Figure 3.3. The proc array: 64 slots, the states of the processes in them, and what one tick does.](figs/array_scan.svg){width=70%}
+![Figure 3.3. The proc array: 64 slots, the states of the processes in them, and what one tick does.](figs/array_scan.svg){width=100%}
 <figcaption markdown="1">Figure 3.3. The proc array: 64 slots, the states of the processes in them, and what one tick does.</figcaption>
 </figure>
 
@@ -536,18 +450,11 @@ $
 ```
 
 <figure markdown="1">
-![Figure 3.4. What one tick does: each red arrow is one timer interrupt.](figs/rr_tick.svg){width=75%}
+![Figure 3.4. What one tick does: each red arrow is one timer interrupt.](figs/rr_tick.svg){width=100%}
 <figcaption markdown="1">Figure 3.4. What one tick does: each red arrow is one timer interrupt.</figcaption>
 </figure>
 
 With two children the console (the text screen of the xv6 machine) reads A2 B3 A4 B5 A6 B7 and so on: A had tick 2, B had tick 3, A had tick 4; strictly alternating, one tick each. With three children: A15 B16 C17 A18 B19 C20, a turn each, in array order, around and around. Each red arrow in Figure 3.4 is one timer interrupt: `usertrap` sees `which_dev == 2`, calls `yield()`, and the scheduler loop moves to the next RUNNABLE slot. A tick is about a tenth of a second, so each turn is a slice of 0.1 s. One detail at the end of the first line, B12 B13: each child counts its 10 ticks from the moment it started; A was forked first and began counting a tick or two earlier than B, so A's window closed first, and B's last prints, B12 and B13, came after A had exited, with the CPU to itself; the loop simply finds that only one slot is ready.
-
-
-<!-- anim:rr:start -->
-Step through it yourself: xv6's loop handing the CPU from A to B one tick at a time, and Figure 3.2's three jobs, one slice at a time.
-
-<div class="anim" data-anim="rr" markdown="0"></div>
-<!-- anim:rr:end -->
 
 - What this part settled: round robin is not a drawing; it is about 30 lines of your own kernel (23 in the loop, 9 in yield, 2 in the trap handler), and the console shows the turns.
 - What it leaves open: the same rule on a full Linux machine, which is next.
@@ -617,7 +524,7 @@ A computes for 10 ms, then waits 10 ms for the disk, and does that five times. B
 So we need to treat each 10 ms burst of A as a job of its own (a **CPU burst** is one stretch of computing between two waits). When A starts waiting, run B. When A's disk answers, A's next burst is the shorter job, so shortest-remaining-first gives A the CPU back. The CPU and the disk then work at the same time, which is called **overlap**. And a side effect: a job that keeps waiting gets run often, which is exactly what a job answering a person looks like, because it waits for a key, does a little work, waits again.
 
 <figure markdown="1">
-![Figure 4.2. OSTEP Figure 7.9: each burst of A is a job, and B fills A's waits.](figs/overlap_fig.svg){width=79%}
+![Figure 4.2. OSTEP Figure 7.9: each burst of A is a job, and B fills A's waits.](figs/overlap_fig.svg){width=100%}
 <figcaption markdown="1">Figure 4.2. OSTEP Figure 7.9: each burst of A is a job, and B fills A's waits.</figcaption>
 </figure>
 

@@ -272,7 +272,7 @@ Three vectors `a`, `b` and `c`, and three threads. Thread 1 calls `vector_add(&a
 With `vector_deadlock.c`, each call locks its first argument and then its second. Thread 1 takes `a`, then `b`; thread 2 takes `b`, then `c`; thread 3 takes `c`, then `a`. Suppose each thread holds its first lock. The walk from thread 1, drawn in Figure R.1: thread 1 → lock `b` → thread 2 → lock `c` → thread 3 → lock `a` → thread 1. Read: thread 1 wants `b`, held by thread 2; thread 2 wants `c`, held by thread 3; thread 3 wants `a`, held by thread 1. The walk comes back to thread 1, so it is a circle, and a deadlock: three threads, as in [Exercise 10](#exercise-10), not two. (a)
 
 <figure markdown="1">
-![Figure R.1. Exercise 18 (a): each thread holds its first lock (solid arrow) and waits for its second (dashed arrow); the arrows go all the way round, so it is a deadlock.](figs/c2_ans_three.svg){width=55%}
+![Figure R.1. Exercise 18 (a): each thread holds its first lock (solid arrow) and waits for its second (dashed arrow); the arrows go all the way round, so it is a deadlock.](figs/c2_ans_three.svg){width=75%}
 <figcaption markdown="1">Figure R.1. [Exercise 18](#exercise-18) (a): each thread holds its first lock (solid arrow) and waits for its second (dashed arrow); the arrows go all the way round, so it is a deadlock.</figcaption>
 </figure>
 
@@ -301,7 +301,7 @@ Avoidance on 2 CPUs. T1 takes L1 and L2. T2 takes only L2. T3 takes L1 and L2. T
 T1 and T3 both take L1 and L2, so they must never overlap: one must run to the end before the other starts. T2 takes only L2, so it may overlap anyone: a thread holding one lock cannot complete a circle. T4 takes no locks. One schedule, drawn in Figure R.2: CPU 1 runs T1 and then T3; CPU 2 runs T2 and then T4. T1 and T3 never overlap, and T2 overlaps T1, which is safe. (Other schedules work too, as long as T1 and T3 never overlap.)
 
 <figure markdown="1">
-![Figure R.2. Exercise 20: one schedule that cannot deadlock. T1 and T3, the two threads that take both locks, run one after the other; T2 and T4 run beside them. Box lengths are drawn equal.](figs/c2_ans_sched.svg){width=48%}
+![Figure R.2. Exercise 20: one schedule that cannot deadlock. T1 and T3, the two threads that take both locks, run one after the other; T2 and T4 run beside them. Box lengths are drawn equal.](figs/c2_ans_sched.svg){width=80%}
 <figcaption markdown="1">Figure R.2. [Exercise 20](#exercise-20): one schedule that cannot deadlock. T1 and T3, the two threads that take both locks, run one after the other; T2 and T4 run beside them. Box lengths are drawn equal.</figcaption>
 </figure>
 

@@ -1,149 +1,5 @@
 # Second class: what a disk promises, what one request costs, and in what order to serve a queue (OSTEP 37) {#class-2}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 1849" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="1849" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#555e6b">WEEK 11 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#opening-2" class="cmap-link"><title>Where we left off: the driver hands the disk a sector number</title><rect x="10" y="122" width="206" height="46" rx="6" fill="#f3f4f6" stroke="#9aa3b2" stroke-width="1.1"/><text x="20" y="138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">Where we left off: the driver</text><text x="20" y="153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">hands the disk a sector number</text></a>
-<a href="#sec-4-1" class="cmap-link"><title>4.1 Problem: The driver says &quot;sector 2&quot;. What does the disk promise?</title><rect x="384" y="190" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="196" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="206.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="208" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.1 The driver says &quot;sector 2&quot;. What does the disk</text><text x="448" y="223" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">promise?</text></a>
-<path d="M352,211 C368,211 368,211 384,211" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="198" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="215" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-4-2" class="cmap-link"><title>4.2 Concept: To the OS, a disk is a row of numbered 512-byte sectors</title><rect x="384" y="244" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="250" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="260.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="262" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.2 To the OS, a disk is a row of numbered 512-byte</text><text x="448" y="277" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">sectors</text></a>
-<a href="#sec-4-3" class="cmap-link"><title>4.3 Concept: Inside: a spinning platter, with data in rings called tracks</title><rect x="384" y="290" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="296" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="306.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="308" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.3 Inside: a spinning platter, with data in rings</text><text x="448" y="323" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">called tracks</text></a>
-<a href="#sec-4-4" class="cmap-link"><title>4.4 Concept: One track: wait for the sector to come around</title><rect x="384" y="336" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="342" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="352.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="354" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.4 One track: wait for the sector to come around</text></a>
-<a href="#sec-4-5" class="cmap-link"><title>4.5 Concept: Many tracks: move the arm, wait for the spin, then read</title><rect x="384" y="367" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="373" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="383.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="385" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.5 Many tracks: move the arm, wait for the spin, then</text><text x="448" y="400" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">read</text></a>
-<a href="#sec-4-6" class="cmap-link"><title>4.6 Worked example: Two requests on the simulator&#x27;s disk: sector 10, then 18</title><rect x="384" y="413" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="419" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="429.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="431" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.6 Two requests on the simulator&#x27;s disk: sector</text><text x="487" y="446" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">10, then 18</text></a>
-<path d="M352,350 C368,350 368,265 384,265" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,350 C368,350 368,311 384,311" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,350 C368,350 368,350 384,350" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,350 C368,350 368,388 384,388" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,350 C368,350 368,434 384,434" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="336" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="354" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-4-7" class="cmap-link"><title>4.7 Check yourself: What the first question settled</title><rect x="384" y="467" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="473" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="483.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="485" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.7 What the first question settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="498" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="514" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Any disk: a row of fixed-size sectors (512 bytes on</text><text x="394" y="529" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the textbook&#x27;s drives), asked for by number. Hard disk drives:</text><text x="394" y="544" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">only a one-sector write is all or nothing, so a larger write cut</text><text x="394" y="559" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">by a power failure is torn. Inside one: platters that spin,</text><text x="394" y="574" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">tracks of sectors, and a head on an arm. …</text></a>
-<path d="M352,528 C368,528 368,480 384,480" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,528 C368,528 368,544 384,544" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="515" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="532" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-9" class="cmap-link"><title>Extra 9 Deeper, Q1: One line turns xv6 block 1 into sectors 2 and 3</title><rect x="384" y="601" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="607" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="617.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="619" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 9 One line turns xv6 block 1 into sectors 2 and</text><text x="465" y="634" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">3</text></a>
-<a href="#extra-10" class="cmap-link"><title>Extra 10 Deeper, Q1: Track skew keeps in-order reads from missing a turn</title><rect x="384" y="647" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="653" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="663.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="665" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 10 Track skew keeps in-order reads from missing</text><text x="465" y="680" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">a turn</text></a>
-<a href="#extra-11" class="cmap-link"><title>Extra 11 Deeper, Q1: Outer tracks hold more, and the drive keeps a small cache</title><rect x="384" y="693" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="699" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="709.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="711" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 11 Outer tracks hold more, and the drive keeps</text><text x="465" y="726" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">a small cache</text></a>
-<path d="M352,668 C368,668 368,622 384,622" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,668 C368,668 368,668 384,668" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,668 C368,668 368,714 384,714" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="655" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="672" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,464 C232,464 232,211 248,211" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,464 C232,464 232,350 248,350" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,464 C232,464 232,528 248,528" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,464 C232,464 232,668 248,668" fill="none" stroke="#555e6b" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-4" class="cmap-link"><title>Q1. What does a disk look like from the outside, and what is inside?</title><rect x="10" y="430" width="206" height="68" rx="8" fill="#ffffff" stroke="#555e6b" stroke-width="1.9"/><circle cx="28" cy="450" r="11" fill="#555e6b"/><text x="28" y="454" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="454" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">What does a disk look</text><text x="48" y="470" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">like from the outside,</text><text x="48" y="486" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">and what is inside?</text></a>
-<text x="113.0" y="757" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-5-1" class="cmap-link"><title>5.1 Problem: Small reads everywhere, or one long run: which costs what?</title><rect x="384" y="769" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="775" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="785.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="787" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.1 Small reads everywhere, or one long run: which costs</text><text x="448" y="802" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">what?</text></a>
-<path d="M352,790 C368,790 368,790 384,790" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="777" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="794" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-5-2" class="cmap-link"><title>5.2 Concept: One random 4 KB read on a fast drive takes about 6 ms</title><rect x="384" y="823" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="829" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="839.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="841" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.2 One random 4 KB read on a fast drive takes about 6</text><text x="448" y="856" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">ms</text></a>
-<a href="#sec-5-3" class="cmap-link"><title>5.3 Concept: Random reads get 0.66 MB/s; one long run gets 125</title><rect x="384" y="869" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="875" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="885.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="887" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.3 Random reads get 0.66 MB/s; one long run gets 125</text></a>
-<path d="M352,860 C368,860 368,844 384,844" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,860 C368,860 368,882 384,882" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="846" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="864" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-5-4" class="cmap-link"><title>5.4 Real machine: On a disk with no moving parts, random reads cost the same</title><rect x="384" y="908" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="914" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="924.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="926" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.4 On a disk with no moving parts, random reads</text><text x="476" y="941" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">cost the same</text></a>
-<path d="M352,929 C368,929 368,929 384,929" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="916" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="933" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-5-5" class="cmap-link"><title>5.5 Check yourself: What the second question settled</title><rect x="384" y="962" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="968" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="978.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="980" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.5 What the second question settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="993" width="400" height="106" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1009" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Hard disk drives: seek + rotation + transfer. A</text><text x="394" y="1024" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">random 4 KB read takes about 6 ms on the Cheetah and about 13 ms</text><text x="394" y="1039" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">on the Barracuda, and on these two drives a long run in order is</text><text x="394" y="1054" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">about 190 to 340 times faster. A disk with no moving parts showed</text><text x="394" y="1069" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">no such gap. Problem solved: we can compute a drive&#x27;s speed from</text><text x="394" y="1084" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">its data sheet.</text></a>
-<path d="M352,1030 C368,1030 368,976 384,976" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,1030 C368,1030 368,1046 384,1046" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1018" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1034" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-12" class="cmap-link"><title>Extra 12 Deeper, Q2: Why an average seek covers one third of the disk</title><rect x="384" y="1111" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1117" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1127.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1129" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 12 Why an average seek covers one third of the</text><text x="465" y="1144" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">disk</text></a>
-<a href="#extra-13" class="cmap-link"><title>Extra 13 Deeper, Q2: On the virtual disk, 256 times the data costs 4 times the time</title><rect x="384" y="1157" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1163" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1173.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1175" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 13 On the virtual disk, 256 times the data</text><text x="465" y="1190" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">costs 4 times the time</text></a>
-<path d="M352,1155 C368,1155 368,1132 384,1132" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1155 C368,1155 368,1178 384,1178" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1142" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1159" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,986 C232,986 232,790 248,790" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,986 C232,986 232,860 248,860" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,986 C232,986 232,929 248,929" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,986 C232,986 232,1030 248,1030" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,986 C232,986 232,1155 248,1155" fill="none" stroke="#555e6b" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-5" class="cmap-link"><title>Q2. How long does one request take, and why does the order of blocks matter so much?</title><rect x="10" y="944" width="206" height="84" rx="8" fill="#ffffff" stroke="#555e6b" stroke-width="1.9"/><circle cx="28" cy="964" r="11" fill="#555e6b"/><text x="28" y="968" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="968" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How long does one</text><text x="48" y="984" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">request take, and why</text><text x="48" y="1000" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">does the order of blocks</text><text x="48" y="1016" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">matter so much?</text></a>
-<text x="113.0" y="1221" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-6-1" class="cmap-link"><title>6.1 Problem: Requests in arrival order can waste the arm&#x27;s travel</title><rect x="384" y="1233" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1239" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1249.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1251" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.1 Requests in arrival order can waste the arm&#x27;s travel</text></a>
-<a href="#sec-6-3" class="cmap-link"><title>6.3 Problem: Nearest first can make a far request wait forever</title><rect x="384" y="1264" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1270" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1280.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1282" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.3 Nearest first can make a far request wait forever</text></a>
-<a href="#sec-6-5" class="cmap-link"><title>6.5 Problem: Track-only rules ignore the spin, which can cost more</title><rect x="384" y="1295" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1301" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1311.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1313" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.5 Track-only rules ignore the spin, which can cost</text><text x="448" y="1328" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">more</text></a>
-<path d="M352,1285 C368,1285 368,1246 384,1246" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<path d="M352,1285 C368,1285 368,1278 384,1278" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<path d="M352,1285 C368,1285 368,1316 384,1316" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="1272" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="1289" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-6-2" class="cmap-link"><title>6.2 Concept: Serve the request on the nearest track first</title><rect x="384" y="1349" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1355" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1365.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1367" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.2 Serve the request on the nearest track first</text></a>
-<a href="#sec-6-4" class="cmap-link"><title>6.4 Concept: The elevator: sweep across the disk, then sweep back</title><rect x="384" y="1380" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1386" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1396.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1398" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.4 The elevator: sweep across the disk, then sweep back</text></a>
-<a href="#sec-6-6" class="cmap-link"><title>6.6 Concept: Add the seek and the spin; serve the smallest total</title><rect x="384" y="1411" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1417" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1427.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1429" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.6 Add the seek and the spin; serve the smallest total</text></a>
-<a href="#sec-6-7" class="cmap-link"><title>6.7 Worked example: Sector 16 or sector 8 first? Both arms, step by step</title><rect x="384" y="1442" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1448" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1458.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1460" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.7 Sector 16 or sector 8 first? Both arms, step</text><text x="487" y="1475" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">by step</text></a>
-<a href="#sec-6-8" class="cmap-link"><title>6.8 Concept: Today the drive orders its queue; the OS merges first</title><rect x="384" y="1488" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1494" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1504.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1506" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.8 Today the drive orders its queue; the OS merges</text><text x="448" y="1521" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">first</text></a>
-<path d="M352,1440 C368,1440 368,1362 384,1362" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1440 C368,1440 368,1394 384,1394" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1440 C368,1440 368,1424 384,1424" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1440 C368,1440 368,1463 384,1463" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1440 C368,1440 368,1509 384,1509" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1426" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1444" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-6-9" class="cmap-link"><title>6.9 Check yourself: What the third question settled</title><rect x="384" y="1542" width="400" height="27" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1548" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1558.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1560" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.9 What the third question settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="1573" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1589" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Hard disk drives: SSTF is nearest first but can</text><text x="394" y="1604" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">starve. SCAN sweeps, so a far request gets its turn. SPTF counts</text><text x="394" y="1619" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the spin too, inside the drive. Any disk: the OS merges adjacent</text><text x="394" y="1634" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">requests. Problem solved: less arm travel, and a far request no</text><text x="394" y="1649" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">longer waits forever.</text></a>
-<path d="M352,1603 C368,1603 368,1556 384,1556" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,1603 C368,1603 368,1618 384,1618" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1590" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1607" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-14" class="cmap-link"><title>Extra 14 Deeper, Q3: Fair sweeps, and waiting on purpose</title><rect x="384" y="1676" width="400" height="27" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1682" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1692.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="1694" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 14 Fair sweeps, and waiting on purpose</text></a>
-<a href="#extra-15" class="cmap-link"><title>Extra 15 Deeper, Q3: Linux merged blocks 33 and 34: three reads, two requests</title><rect x="384" y="1707" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1713" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1723.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="1725" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 15 Linux merged blocks 33 and 34: three reads,</text><text x="465" y="1740" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">two requests</text></a>
-<path d="M352,1712 C368,1712 368,1690 384,1690" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1712 C368,1712 368,1728 384,1728" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1700" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1716" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,1493 C232,1493 232,1285 248,1285" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,1493 C232,1493 232,1440 248,1440" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,1493 C232,1493 232,1603 248,1603" fill="none" stroke="#555e6b" stroke-width="1.4"/>
-<path d="M216,1493 C232,1493 232,1712 248,1712" fill="none" stroke="#555e6b" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-6" class="cmap-link"><title>Q3. When many requests wait, in what order should they be served?</title><rect x="10" y="1459" width="206" height="68" rx="8" fill="#ffffff" stroke="#555e6b" stroke-width="1.9"/><circle cx="28" cy="1479" r="11" fill="#555e6b"/><text x="28" y="1483" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="1483" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">When many requests wait,</text><text x="48" y="1499" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">in what order should</text><text x="48" y="1515" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">they be served?</text></a>
-<a href="#summary-2" class="cmap-link"><title>What the second class settled</title><rect x="10" y="1783" width="206" height="50" rx="7" fill="#555e6b"/><text x="21" y="1802" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: What the second class</text><text x="21" y="1818" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">settled</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-2.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## <span class="lbl lbl-roadmap">Roadmap</span> Where we left off: the driver hands the disk a sector number {#opening-2 data-toc-label="[Roadmap] Where we left off: the driver hands the disk a sector number"}
 
 The first class was about any device at all. It ended at the disk driver, the part of the kernel that knows how to talk to one kind of disk. This class opens that one device and looks inside. The device is the **hard disk drive**: a machine with spinning plates and a moving arm. For decades it has been the main place where computers keep data that must last. File systems, the part of the kernel that keeps files on a disk, were designed around the way a hard disk drive behaves. So the disk comes before the file system.
@@ -181,7 +37,7 @@ As in the first class, each arrow → in such a line means "and so", and a bar `
 The driver is only the middle layer of three. Figure 4.1 shows all three, and how one read passes through them.
 
 <figure markdown="1">
-![Figure 4.1. The path of one read. The file system asks for block 1 with bread(). The disk driver, virtio_disk_rw(), turns block 1 into 2 sectors. The disk finds the data and copies it into memory, and an interrupt reports that it is done. Following textbook section 36.7.](figs/c2_read_path.svg){width=62%}
+![Figure 4.1. The path of one read. The file system asks for block 1 with bread(). The disk driver, virtio_disk_rw(), turns block 1 into 2 sectors. The disk finds the data and copies it into memory, and an interrupt reports that it is done. Following textbook section 36.7.](figs/c2_read_path.svg){width=100%}
 <figcaption markdown="1">Figure 4.1. The path of one read. The file system asks for block 1 with bread(). The disk driver, virtio_disk_rw(), turns block 1 into 2 sectors. The disk finds the data and copies it into memory, and an interrupt reports that it is done. Following textbook section 36.7.</figcaption>
 </figure>
 
@@ -224,7 +80,7 @@ What we have is small. At line 245 of the driver, one line writes a sector numbe
 `buf0` is the request the driver is filling in, and `sector` is the number it computed from the block number. The driver hands this over, and the disk does the rest. Figure 4.2 is the whole conversation.
 
 <figure markdown="1">
-![Figure 4.2. What we have: the driver hands the disk a sector number.](figs/c2_driver_asks.svg){width=42%}
+![Figure 4.2. What we have: the driver hands the disk a sector number.](figs/c2_driver_asks.svg){width=70%}
 <figcaption markdown="1">Figure 4.2. What we have: the driver hands the disk a sector number.</figcaption>
 </figure>
 
@@ -249,7 +105,7 @@ Keep the power-failure case in mind. The next section answers it.
 We need to know what the disk promises. Start from the outside, because the outside is very simple. The outside of a device, meaning the requests it accepts and what it promises about them, is called its **interface**. Figure 4.3 is everything the operating system sees.
 
 <figure markdown="1">
-![Figure 4.3. The disk as the OS sees it: n sectors, numbered from 0 to n − 1. Each box is one sector of 512 bytes. Following textbook section 37.1.](figs/c2_sector_row.svg){width=62%}
+![Figure 4.3. The disk as the OS sees it: n sectors, numbered from 0 to n − 1. Each box is one sector of 512 bytes. Following textbook section 37.1.](figs/c2_sector_row.svg){width=100%}
 <figcaption markdown="1">Figure 4.3. The disk as the OS sees it: n sectors, numbered from 0 to n − 1. Each box is one sector of 512 bytes. Following textbook section 37.1.</figcaption>
 </figure>
 
@@ -260,7 +116,7 @@ The promise has two parts.
 **Part two: only a one-sector write is all or nothing.** The drive guarantees one thing about a write. A write of a single sector is **atomic**, which means it happens completely or not at all. A write of several sectors has no such promise. Figure 4.4 is the answer to the power-failure case.
 
 <figure markdown="1">
-![Figure 4.4. A write of 4 KB is 8 sectors: 4,096 / 512 = 8. The power failed after 3 sectors. The write is torn: part new, part old. Following textbook section 37.1.](figs/c2_torn_write.svg){width=62%}
+![Figure 4.4. A write of 4 KB is 8 sectors: 4,096 / 512 = 8. The power failed after 3 sectors. The write is torn: part new, part old. Following textbook section 37.1.](figs/c2_torn_write.svg){width=100%}
 <figcaption markdown="1">Figure 4.4. A write of 4 KB is 8 sectors: 4,096 / 512 = 8. The power failed after 3 sectors. The write is torn: part new, part old. Following textbook section 37.1.</figcaption>
 </figure>
 
@@ -285,7 +141,7 @@ A note on a loose word. People use **block** in two ways: for one sector, or for
 Near is fast and far is slow, and nobody promised it. To see why, we need the parts of the machine. There are only a few, and every cost in the rest of this class comes from them. Figure 4.5 is the inside of a drive, seen from above.
 
 <figure markdown="1">
-![Figure 4.5. One surface with a single track of 12 sectors, numbered 0 to 11. The platter turns counter-clockwise around the spindle. Redrawn from OSTEP Figure 37.1.](figs/c2_one_track.svg){width=40%}
+![Figure 4.5. One surface with a single track of 12 sectors, numbered 0 to 11. The platter turns counter-clockwise around the spindle. Redrawn from OSTEP Figure 37.1.](figs/c2_one_track.svg){width=55%}
 <figcaption markdown="1">Figure 4.5. One surface with a single track of 12 sectors, numbered 0 to 11. The platter turns counter-clockwise around the spindle. Redrawn from OSTEP Figure 37.1.</figcaption>
 </figure>
 
@@ -305,7 +161,7 @@ We have a spinning ring of sectors, and we want to read one of them. The platter
 The part is the **disk head**. It reads and writes the surface, and it sits at the end of the **disk arm**, right above the surface. There is one head for each surface. Figure 4.6 shows it over sector 6.
 
 <figure markdown="1">
-![Figure 4.6. Left: the head is over sector 6, and a request arrives for sector 0, on the other side of the ring. The orange arc is the part of the platter that must pass under the head first: half a turn. Right: half a turn later, sector 0 is under the head. Redrawn from OSTEP Figure 37.2.](figs/c2_rot_delay.svg){width=70%}
+![Figure 4.6. Left: the head is over sector 6, and a request arrives for sector 0, on the other side of the ring. The orange arc is the part of the platter that must pass under the head first: half a turn. Right: half a turn later, sector 0 is under the head. Redrawn from OSTEP Figure 37.2.](figs/c2_rot_delay.svg){width=100%}
 <figcaption markdown="1">Figure 4.6. Left: the head is over sector 6, and a request arrives for sector 0, on the other side of the ring. The orange arc is the part of the platter that must pass under the head first: half a turn. Right: half a turn later, sector 0 is under the head. Redrawn from OSTEP Figure 37.2.</figcaption>
 </figure>
 
@@ -333,7 +189,7 @@ One track is not realistic. A real surface has thousands of tracks, and the head
 Figure 4.7 is a disk with three tracks. The outer track holds sectors 0 to 11, the middle track holds 12 to 23, and the inner track holds 24 to 35. On this disk the tracks line up: every sector of the middle track sits exactly beside a sector of the outer track, and its number is 12 higher. The inner track's numbers are 24 higher than the outer track's. For example, sector 6 on the outer track, sector 18 on the middle track and sector 30 on the inner track are side by side. On the left, the head is over the inner track, at sector 30, and the request is for sector 11, which is on the outer track.
 
 <figure markdown="1">
-![Figure 4.7. Left: before. The head is on the inner track and sector 11 is wanted. The blue arrow is the seek to the outer track; the dashed arc is the part of the platter that passes the head meanwhile, about 3 sectors. Right: after the seek. The head is on the outer track, in the middle of sector 9; the orange arc is the remaining rotation, 1.5 sectors, before sector 11 begins. Redrawn from OSTEP Figure 37.3.](figs/c2_seek_three_tracks.svg){width=82%}
+![Figure 4.7. Left: before. The head is on the inner track and sector 11 is wanted. The blue arrow is the seek to the outer track; the dashed arc is the part of the platter that passes the head meanwhile, about 3 sectors. Right: after the seek. The head is on the outer track, in the middle of sector 9; the orange arc is the remaining rotation, 1.5 sectors, before sector 11 begins. Redrawn from OSTEP Figure 37.3.](figs/c2_seek_three_tracks.svg){width=100%}
 <figcaption markdown="1">Figure 4.7. Left: before. The head is on the inner track and sector 11 is wanted. The blue arrow is the seek to the outer track; the dashed arc is the part of the platter that passes the head meanwhile, about 3 sectors. Right: after the seek. The head is on the outer track, in the middle of sector 9; the orange arc is the remaining rotation, 1.5 sectors, before sector 11 begins. Redrawn from OSTEP Figure 37.3.</figcaption>
 </figure>
 
@@ -388,7 +244,7 @@ Every one of these numbers can be worked out by hand from the four design facts.
 **The first request: sector 10.**
 
 <figure markdown="1">
-![Figure 4.8. The start. The head is on the outer track, in the middle of sector 6. Sectors 10 and 18 are waiting. The orange arc is the wait for the start of sector 10: 15 + 3 × 30 = 105 units.](figs/c2_sim_wait10.svg){width=52%}
+![Figure 4.8. The start. The head is on the outer track, in the middle of sector 6. Sectors 10 and 18 are waiting. The orange arc is the wait for the start of sector 10: 15 + 3 × 30 = 105 units.](figs/c2_sim_wait10.svg){width=80%}
 <figcaption markdown="1">Figure 4.8. The start. The head is on the outer track, in the middle of sector 6. Sectors 10 and 18 are waiting. The orange arc is the wait for the start of sector 10: 15 + 3 × 30 = 105 units.</figcaption>
 </figure>
 
@@ -400,7 +256,7 @@ Every one of these numbers can be worked out by hand from the four design facts.
 **The second request: sector 18.**
 
 <figure markdown="1">
-![Figure 4.9. Sector 10 has been read, and the head is at its end. Sector 18 is on the middle track. The blue arrow is the seek, 40 units; the dashed arc is the part of the platter that passes the head during those 40 units.](figs/c2_sim_seek.svg){width=52%}
+![Figure 4.9. Sector 10 has been read, and the head is at its end. Sector 18 is on the middle track. The blue arrow is the seek, 40 units; the dashed arc is the part of the platter that passes the head during those 40 units.](figs/c2_sim_seek.svg){width=80%}
 <figcaption markdown="1">Figure 4.9. Sector 10 has been read, and the head is at its end. Sector 18 is on the middle track. The blue arrow is the seek, 40 units; the dashed arc is the part of the platter that passes the head during those 40 units.</figcaption>
 </figure>
 
@@ -410,14 +266,14 @@ Every one of these numbers can be worked out by hand from the four design facts.
 Which sector of the middle track is the head in now? On the outer track, the sector after 11 is sector 0, so the head would be 10 units into sector 0. The middle track's sector beside sector 0 is 0 + 12 = 12. So the head has landed 10 units into sector 12, as Figure 4.10 shows.
 
 <figure markdown="1">
-![Figure 4.10. After the seek. The head is on the middle track, 10 units into sector 12 (the small blue mark). The orange arc is the wait for sector 18: 6 × 30 − 10 = 170 units.](figs/c2_sim_land.svg){width=62%}
-<figcaption markdown="1">Figure 4.10. After the seek. The head is on the middle track, 10 units into sector 12 (the small blue mark). The orange arc is the wait for sector 18: 6 × 30 − 10 = 170 units.</figcaption>
+![Figure 4.10. After the seek. The head is on the middle track, 10 units into sector 12. The orange arc is the wait for sector 18: 6 × 30 − 10 = 170 units.](figs/c2_sim_land.svg){width=80%}
+<figcaption markdown="1">Figure 4.10. After the seek. The head is on the middle track, 10 units into sector 12. The orange arc is the wait for sector 18: 6 × 30 − 10 = 170 units.</figcaption>
 </figure>
 
 - Rotate: sector 18 begins 6 sectors after sector 12 begins, because 18 − 12 = 6. Six sectors are 6 × 30 = 180 units. But the head is already 10 units into sector 12, so 10 of the 180 have gone by. The wait is 180 − 10 = 170 units.
 
 <figure markdown="1">
-![Figure 4.11. After 170 units the head is on the border where sector 18 begins. The green arc is the transfer: sector 18 passes under the head in 30 units.](figs/c2_sim_read18.svg){width=52%}
+![Figure 4.11. After 170 units the head is on the border where sector 18 begins. The green arc is the transfer: sector 18 passes under the head in 30 units.](figs/c2_sim_read18.svg){width=80%}
 <figcaption markdown="1">Figure 4.11. After 170 units the head is on the border where sector 18 begins. The green arc is the transfer: sector 18 passes under the head in 30 units.</figcaption>
 </figure>
 
@@ -427,13 +283,6 @@ Which sector of the middle track is the head in now? On the outer track, the sec
 **Both requests.** Add the columns: seek 0 + 40 = 40, rotate 105 + 170 = 275, transfer 30 + 30 = 60, and total 135 + 240 = 375. (Check: 40 + 275 + 60 = 375.) These are the simulator's TOTALS line.
 
 Now look at where the time went. Of 375 units, the seek took 40 and the two transfers took 60. Waiting for the platter to turn took 275. On this disk and for these two requests, most of the time was the rotational delay. That is a result for this one example, not a law. [Chapter 5](#chapter-5) puts real milliseconds on the three parts.
-
-
-<!-- anim:w11seek:start -->
-Step through the two requests yourself: the platter turns to scale, and the table fills in one part at a time.
-
-<div class="anim" data-anim="w11seek" markdown="0"></div>
-<!-- anim:w11seek:end -->
 
 - What this part settled: the three parts of a request can be computed and added, and the simulator's output agrees with the hand calculation.
 - What it leaves open: the simulator counts in its own units. We still do not know how many milliseconds each part takes on a real drive.
@@ -454,14 +303,14 @@ Before reading on, make sure you can do this without looking back: say what the 
 What we have is the model of [Chapter 4](#chapter-4): one request costs a seek, a rotation and a transfer, as Figure 5.1 shows. But so far the three parts are only names.
 
 <figure markdown="1">
-![Figure 5.1. What we have: the time of one request has three parts, and no real drive's numbers yet.](figs/c2_three_parts.svg){width=42%}
+![Figure 5.1. What we have: the time of one request has three parts, and no real drive's numbers yet.](figs/c2_three_parts.svg){width=80%}
 <figcaption markdown="1">Figure 5.1. What we have: the time of one request has three parts, and no real drive's numbers yet.</figcaption>
 </figure>
 
 Where it breaks is the first time we compare two programs. Figure 5.2 shows two ways of using a disk.
 
 <figure markdown="1">
-![Figure 5.2. Two ways of using a disk. Case 1: small reads at random places, with the arm jumping between them. Case 2: one long run, read in order. Following textbook section 37.4.](figs/c2_random_vs_run.svg){width=46%}
+![Figure 5.2. Two ways of using a disk. Case 1: small reads at random places, with the arm jumping between them. Case 2: one long run, read in order. Following textbook section 37.4.](figs/c2_random_vs_run.svg){width=100%}
 <figcaption markdown="1">Figure 5.2. Two ways of using a disk. Case 1: small reads at random places, with the arm jumping between them. Case 2: one long run, read in order. Following textbook section 37.4.</figcaption>
 </figure>
 
@@ -540,7 +389,7 @@ The Barracuda, the same way: 100 / 105 = 0.95 seconds, about 950 ms, and a rate 
 Figure 5.3 puts both cases on both drives side by side. The bars are drawn to scale. The bars for the random reads are so short that they are only thin lines.
 
 <figure markdown="1">
-![Figure 5.3. Megabytes per second for the two cases on the two drives (the numbers of OSTEP Figure 37.6). Cheetah: 0.66 at random, 125 in order. Barracuda: 0.31 at random, 105 in order. Bar lengths are to scale.](figs/c2_rate_bars.svg){width=62%}
+![Figure 5.3. Megabytes per second for the two cases on the two drives (the numbers of OSTEP Figure 37.6). Cheetah: 0.66 at random, 125 in order. Barracuda: 0.31 at random, 105 in order. Bar lengths are to scale.](figs/c2_rate_bars.svg){width=85%}
 <figcaption markdown="1">Figure 5.3. Megabytes per second for the two cases on the two drives (the numbers of OSTEP Figure 37.6). Cheetah: 0.66 at random, 125 in order. Barracuda: 0.31 at random, 105 in order. Bar lengths are to scale.</figcaption>
 </figure>
 
@@ -642,7 +491,7 @@ What we have is a cost for one request: a seek, a rotation and a transfer. But a
 The simplest thing to do with a queue is to serve it in the order the requests arrived. Here is a case where that goes badly. It uses the three-track disk again: outer track 0 to 11, middle track 12 to 23, inner track 24 to 35. The head is on the inner track and has just read sector 30. Two requests are waiting. The request for sector 2 arrived first, and the request for sector 21 arrived second. Figure 6.1 shows them.
 
 <figure markdown="1">
-![Figure 6.1. Where arrival order breaks. The head has just read sector 30 on the inner track. Sector 2, on the outer track, was asked for first; sector 21, on the middle track, second. In arrival order the arm crosses the whole disk, then comes back.](figs/c2_arrival_order.svg){width=34%}
+![Figure 6.1. Where arrival order breaks. The head has just read sector 30 on the inner track. Sector 2, on the outer track, was asked for first; sector 21, on the middle track, second. In arrival order the arm crosses the whole disk, then comes back.](figs/c2_arrival_order.svg){width=60%}
 <figcaption markdown="1">Figure 6.1. Where arrival order breaks. The head has just read sector 30 on the inner track. Sector 2, on the outer track, was asked for first; sector 21, on the middle track, second. In arrival order the arm crosses the whole disk, then comes back.</figcaption>
 </figure>
 
@@ -664,7 +513,7 @@ We need a rule that picks a cheap request. A seek costs more the farther the arm
 In our example, sector 21 is one track away and sector 2 is two tracks away. SSTF serves 21 first and then 2. Figure 6.2 shows how far each request is from the head, counted in the simulator's time units.
 
 <figure markdown="1">
-![Figure 6.2. The head has just finished sector 30 on the inner track; sectors 21 and 2 wait. The inner arc: sector 21 arrives in 60 units, 40 of seek and 20 of waiting. The outer arc: sector 2 arrives in 210 units, 80 of seek and 130 of waiting. Redrawn from OSTEP Figure 37.7.](figs/c2_sstf.svg){width=58%}
+![Figure 6.2. The head has just finished sector 30 on the inner track; sectors 21 and 2 wait. The inner arc: sector 21 arrives in 60 units, 40 of seek and 20 of waiting. The outer arc: sector 2 arrives in 210 units, 80 of seek and 130 of waiting. Redrawn from OSTEP Figure 37.7.](figs/c2_sstf.svg){width=90%}
 <figcaption markdown="1">Figure 6.2. The head has just finished sector 30 on the inner track; sectors 21 and 2 wait. The inner arc: sector 21 arrives in 60 units, 40 of seek and 20 of waiting. The outer arc: sector 2 arrives in 210 units, 80 of seek and 130 of waiting. Redrawn from OSTEP Figure 37.7.</figcaption>
 </figure>
 
@@ -719,7 +568,7 @@ What we have is SSTF, which always picks the request on the nearest track. It wo
 Where it breaks: imagine that requests for the inner track keep arriving, one after another. The head is already on the inner track, so each new request is on the nearest track, zero tracks away. The request for sector 2, on the outer track, is never the nearest one. So the disk never gets to it, however long it waits. Figure 6.3 shows the situation.
 
 <figure markdown="1">
-![Figure 6.3. Where nearest first breaks. Requests for the inner track (25, 29, 33) keep arriving. The request for sector 2, in red on the outer track, is never the nearest, so it is never served.](figs/c2_starve.svg){width=34%}
+![Figure 6.3. Where nearest first breaks. Requests for the inner track (25, 29, 33) keep arriving. The request for sector 2, in red on the outer track, is never the nearest, so it is never served.](figs/c2_starve.svg){width=60%}
 <figcaption markdown="1">Figure 6.3. Where nearest first breaks. Requests for the inner track (25, 29, 33) keep arriving. The request for sector 2, in red on the outer track, is never the nearest, so it is never served.</figcaption>
 </figure>
 
@@ -770,7 +619,7 @@ What we have is two rules, SSTF (the nearest track) and SCAN (the next track on 
 Where it breaks: a request does not only need the arm on its track. It also has to wait for the spin, and [Chapter 4](#chapter-4) showed that the wait can be the larger part. Look at the case in Figure 6.5. The head has just read sector 30 on the inner track. Two requests are waiting: sector 16 on the middle track, one track away, and sector 8 on the outer track, two tracks away.
 
 <figure markdown="1">
-![Figure 6.5. Where track-only rules break. The head has just read sector 30. Sector 16 is one track away, but it has already passed the head. Sector 8 is two tracks away, and about to arrive. Following OSTEP Figure 37.8.](figs/c2_spin_blind.svg){width=34%}
+![Figure 6.5. Where track-only rules break. The head has just read sector 30. Sector 16 is one track away, but it has already passed the head. Sector 8 is two tracks away, and about to arrive. Following OSTEP Figure 37.8.](figs/c2_spin_blind.svg){width=60%}
 <figcaption markdown="1">Figure 6.5. Where track-only rules break. The head has just read sector 30. Sector 16 is one track away, but it has already passed the head. Sector 8 is two tracks away, and about to arrive. Following OSTEP Figure 37.8.</figcaption>
 </figure>
 
@@ -831,7 +680,7 @@ Both runs start from the same position. The head has just read sector 30 on the 
 **The slow arm: 40 units a track.**
 
 <figure markdown="1">
-![Figure 6.6. The slow arm, at the start. Sector 8 arrives in 30 units, but this arm needs 80 units to reach its track. Sector 16 comes around in 270 units.](figs/c2_slow_start.svg){width=62%}
+![Figure 6.6. The slow arm, at the start. Sector 8 arrives in 30 units, but this arm needs 80 units to reach its track. Sector 16 comes around in 270 units.](figs/c2_slow_start.svg){width=80%}
 <figcaption markdown="1">Figure 6.6. The slow arm, at the start. Sector 8 arrives in 30 units, but this arm needs 80 units to reach its track. Sector 16 comes around in 270 units.</figcaption>
 </figure>
 
@@ -846,7 +695,7 @@ Block:   8  Seek: 40  Rotate: 50  Transfer: 30  Total: 120
 - Sector 16: the seek takes 40 units. Sector 16 arrives after 270 units, and 40 of them were spent seeking, so the wait is 270 − 40 = 230. With the transfer: 40 + 230 + 30 = 300.
 
 <figure markdown="1">
-![Figure 6.7. The slow arm, after sector 16 is read. The head is on the middle track. Sector 8 arrives in 90 units: 40 of seek and 50 of waiting.](figs/c2_slow_step1.svg){width=52%}
+![Figure 6.7. The slow arm, after sector 16 is read. The head is on the middle track. Sector 8 arrives in 90 units: 40 of seek and 50 of waiting.](figs/c2_slow_step1.svg){width=80%}
 <figcaption markdown="1">Figure 6.7. The slow arm, after sector 16 is read. The head is on the middle track. Sector 8 arrives in 90 units: 40 of seek and 50 of waiting.</figcaption>
 </figure>
 
@@ -858,7 +707,7 @@ What if the slow arm had gone to sector 8 first? It needs 80 units to get there,
 **The fast arm: 10 units a track.**
 
 <figure markdown="1">
-![Figure 6.8. The fast arm, at the start. The same disk and the same two requests. Sector 8 still arrives in 30 units, and this arm needs only 20 units to reach its track.](figs/c2_fast_start.svg){width=62%}
+![Figure 6.8. The fast arm, at the start. The same disk and the same two requests. Sector 8 still arrives in 30 units, and this arm needs only 20 units to reach its track.](figs/c2_fast_start.svg){width=80%}
 <figcaption markdown="1">Figure 6.8. The fast arm, at the start. The same disk and the same two requests. Sector 8 still arrives in 30 units, and this arm needs only 20 units to reach its track.</figcaption>
 </figure>
 
@@ -871,14 +720,14 @@ Block:  16  Seek: 10  Rotate:200  Transfer: 30  Total: 240
 ```
 
 <figure markdown="1">
-![Figure 6.9. The fast arm, after 20 units. The arm is on the outer track, and sector 8 is still 10 units away.](figs/c2_fast_step1.svg){width=52%}
+![Figure 6.9. The fast arm, after 20 units. The arm is on the outer track, and sector 8 is still 10 units away.](figs/c2_fast_step1.svg){width=80%}
 <figcaption markdown="1">Figure 6.9. The fast arm, after 20 units. The arm is on the outer track, and sector 8 is still 10 units away.</figcaption>
 </figure>
 
 - Sector 8: the seek takes 20 units. Sector 8 arrives after 30, so the head waits 30 − 20 = 10 units. With the transfer: 20 + 10 + 30 = 60.
 
 <figure markdown="1">
-![Figure 6.10. The fast arm, after sector 8 is read. Sector 16 arrives in 210 units: 10 of seek and 200 of waiting.](figs/c2_fast_step2.svg){width=58%}
+![Figure 6.10. The fast arm, after sector 8 is read. Sector 16 arrives in 210 units: 10 of seek and 200 of waiting.](figs/c2_fast_step2.svg){width=80%}
 <figcaption markdown="1">Figure 6.10. The fast arm, after sector 8 is read. Sector 16 arrives in 210 units: 10 of seek and 200 of waiting.</figcaption>
 </figure>
 
@@ -886,13 +735,6 @@ Block:  16  Seek: 10  Rotate:200  Transfer: 30  Total: 240
 - Both: 60 + 240 = 300 units.
 
 With this fast arm the other order, 16 first, costs 300 + 120 = 420 on the simulator. The fast arm reaches the middle track after 10 units and waits 270 − 10 = 260 for sector 16, so that request costs 10 + 260 + 30 = 300. Then sector 8 is 90 units away, as it was for the slow arm. The seek takes 10, the wait is 90 − 10 = 80, and the request costs 10 + 80 + 30 = 120. So with the slow arm, 16 first wins by 420 to 660. With the fast arm, 8 first wins by 300 to 420. The best order really does depend on how fast the arm is compared with the spin, and a rule has to add both to find it.
-
-
-<!-- anim:w11sptf:start -->
-Step through both runs yourself: the slow arm, which goes to sector 16 first, and the fast arm, which goes to sector 8 first.
-
-<div class="anim" data-anim="w11sptf" markdown="0"></div>
-<!-- anim:w11sptf:end -->
 
 - What this part settled: every number in the table of [Section 6.6](#sec-6-6) follows from the seek and the rotation of each request. In this example, adding the two finds the cheaper order at either arm speed.
 - What it leaves open: how the work is shared between the operating system and the drive in a real system.
@@ -902,7 +744,7 @@ Step through both runs yourself: the slow arm, which goes to sector 16 first, an
 SPTF needs the head's exact position, and only the drive knows it. So who does the scheduling in a real system? In old systems the operating system did all of it: it looked at the waiting requests, picked the best one, and sent it to the disk. Today the work is shared, as Figure 6.11 shows.
 
 <figure markdown="1">
-![Figure 6.11. Who schedules. The OS picks a few requests and merges adjacent ones. The drive orders them by SPTF with the exact head position. Below: three requests arrive, for blocks 33, then 8, then 34; blocks 33 and 34 are joined, and two requests reach the disk. Following textbook section 37.5.](figs/c2_who_schedules.svg){width=62%}
+![Figure 6.11. Who schedules. The OS picks a few requests and merges adjacent ones. The drive orders them by SPTF with the exact head position. Below: three requests arrive, for blocks 33, then 8, then 34; blocks 33 and 34 are joined, and two requests reach the disk. Following textbook section 37.5.](figs/c2_who_schedules.svg){width=100%}
 <figcaption markdown="1">Figure 6.11. Who schedules. The OS picks a few requests and merges adjacent ones. The drive orders them by SPTF with the exact head position. Below: three requests arrive, for blocks 33, then 8, then 34; blocks 33 and 34 are joined, and two requests reach the disk. Following textbook section 37.5.</figcaption>
 </figure>
 
@@ -975,7 +817,7 @@ And the size of a block is set in `kernel/fs.h`:
 So `BSIZE / 512` is 1,024 / 512 = 2 sectors for each block, and block 1 begins at sector 1 × 2 = 2. It covers sectors 2 and 3, as Figure E9.1 shows. Try another: block 7 begins at sector 7 × 2 = 14 and covers sectors 14 and 15.
 
 <figure markdown="1">
-![Figure E9.1. Sectors on the disk, numbered from 0. Block 1 of xv6 is sectors 2 and 3.](figs/c2_block_to_sectors.svg){width=62%}
+![Figure E9.1. Sectors on the disk, numbered from 0. Block 1 of xv6 is sectors 2 and 3.](figs/c2_block_to_sectors.svg){width=100%}
 <figcaption markdown="1">Figure E9.1. Sectors on the disk, numbered from 0. Block 1 of xv6 is sectors 2 and 3.</figcaption>
 </figure>
 
@@ -990,7 +832,7 @@ On the disks drawn so far, the tracks line up: sector 12 begins exactly where se
 So real drives shift each track by a few sectors against its neighbor. That shift is the **track skew**. Figure E10.1 shows a skew of 2 sectors.
 
 <figure markdown="1">
-![Figure E10.1. Track skew of 2 sectors. Sector 12 starts 2 sectors after sector 11 ends, and each track starts 2 sectors later than the one outside it. The orange arc is the 2 sectors that pass while the arm moves to the next track. Redrawn from OSTEP Figure 37.4.](figs/c2_skew.svg){width=52%}
+![Figure E10.1. Track skew of 2 sectors. Sector 12 starts 2 sectors after sector 11 ends, and each track starts 2 sectors later than the one outside it. The orange arc is the 2 sectors that pass while the arm moves to the next track. Redrawn from OSTEP Figure 37.4.](figs/c2_skew.svg){width=80%}
 <figcaption markdown="1">Figure E10.1. Track skew of 2 sectors. Sector 12 starts 2 sectors after sector 11 ends, and each track starts 2 sectors later than the one outside it. The orange arc is the 2 sectors that pass while the arm moves to the next track. Redrawn from OSTEP Figure 37.4.</figcaption>
 </figure>
 
@@ -1058,7 +900,7 @@ Two refinements of the elevator of [Section 6.4](#sec-6-4).
 **Fair sweeps.** [Section 6.4](#sec-6-4) said that plain SCAN favors the middle tracks and that C-SCAN is fairer. Figure E14.1 counts it, on a disk with 5 tracks numbered 1 (outer) to 5 (inner). Each box is one step of the head, and the number in it is the track the head visits.
 
 <figure markdown="1">
-![Figure E14.1. Top: SCAN, back and forth. The head visits tracks 1 2 3 4 5 4 3 2 1 2 3. Track 3 gets a visit every 4 steps; track 1 waits 8 steps. Bottom: C-SCAN, one way only. The head visits 1 2 3 4 5 1 2 3 4 5 1, and every track gets a visit every 5 steps. Following textbook section 37.5.](figs/c2_scan_vs_cscan.svg){width=62%}
+![Figure E14.1. Top: SCAN, back and forth. The head visits tracks 1 2 3 4 5 4 3 2 1 2 3. Track 3 gets a visit every 4 steps; track 1 waits 8 steps. Bottom: C-SCAN, one way only. The head visits 1 2 3 4 5 1 2 3 4 5 1, and every track gets a visit every 5 steps. Following textbook section 37.5.](figs/c2_scan_vs_cscan.svg){width=100%}
 <figcaption markdown="1">Figure E14.1. Top: SCAN, back and forth. The head visits tracks 1 2 3 4 5 4 3 2 1 2 3. Track 3 gets a visit every 4 steps; track 1 waits 8 steps. Bottom: C-SCAN, one way only. The head visits 1 2 3 4 5 1 2 3 4 5 1, and every track gets a visit every 5 steps. Following textbook section 37.5.</figcaption>
 </figure>
 

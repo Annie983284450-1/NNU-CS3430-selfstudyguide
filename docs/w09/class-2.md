@@ -1,163 +1,11 @@
 # Second class: producers and consumers, and the semaphore (OSTEP 30.2, 30.3 and 31) {#class-2}
 
-<!-- classmap:start -->
-<details class="abstract cmap-details" markdown="0" open>
-<summary>Map of this class: the questions, and the steps of each</summary>
-<div class="cmap-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 1926" class="cmap" role="img" aria-label="Map of this class: each question, why we ask it, its steps, how we know, and what it settles; each box a link to its section">
-<style>.cmap .cmap-link rect{transition:filter .15s} .cmap .cmap-link:hover rect{stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))} .cmap .cmap-link:hover text{text-decoration:underline}</style>
-<rect x="0" y="0" width="796" height="1926" fill="#ffffff"/>
-<text x="10" y="20" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing=".05em" fill="#a0632a">WEEK 9 · MAP OF THIS CLASS</text>
-<text x="10" y="36" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10.5" fill="#5b6675">Each question: why we ask it, the steps that answer it, how we know, and what it settles. Every box opens its section.</text>
-<rect x="10" y="48" width="51" height="15" rx="3" fill="#b23a48"/>
-<text x="16" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text>
-<text x="66" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">why we ask: what breaks</text>
-<rect x="192.9" y="48" width="51" height="15" rx="3" fill="#1f6f8b"/>
-<text x="198.9" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text>
-<text x="249" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">the idea, one step at a time</text>
-<rect x="400.3" y="48" width="90" height="15" rx="3" fill="#5b7a2a"/>
-<text x="406.3" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text>
-<text x="496" y="59" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">traced by hand</text>
-<rect x="10" y="68" width="79" height="15" rx="3" fill="#a0632a"/>
-<text x="16" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text>
-<text x="94" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">measured on a real computer</text>
-<rect x="240.5" y="68" width="74" height="15" rx="3" fill="#6b4fa0"/>
-<text x="246.5" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text>
-<text x="319" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">read in xv6 or Linux</text>
-<rect x="431.1" y="68" width="90" height="15" rx="3" fill="#2a7a6b"/>
-<text x="437.1" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text>
-<text x="526" y="79" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">what is settled, what is open</text>
-<rect x="10" y="88" width="46" height="15" rx="3" fill="#7a7a7a"/>
-<text x="16" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper</text>
-<text x="61" y="99" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" fill="#5b6675">optional</text>
-<a href="#opening-2" class="cmap-link"><title>Where we left off: locks inside structures, and a queue to sleep on</title><rect x="10" y="122" width="206" height="61" rx="6" fill="#f3f4f6" stroke="#9aa3b2" stroke-width="1.1"/><text x="20" y="138" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">Where we left off: locks inside</text><text x="20" y="153" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">structures, and a queue to sleep</text><text x="20" y="168" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-style="italic" fill="#3a4350">on</text></a>
-<a href="#sec-4-2" class="cmap-link"><title>4.2 Problem: A lock cannot make a consumer wait for an item</title><rect x="384" y="205" width="400" height="27" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="211" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="221.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="223" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.2 A lock cannot make a consumer wait for an item</text></a>
-<path d="M352,218 C368,218 368,218 384,218" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="206" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="222" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-4-1" class="cmap-link"><title>4.1 Concept: A buffer with one slot: put() fills it, get() empties it</title><rect x="384" y="244" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="250" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="260.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="262" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.1 A buffer with one slot: put() fills it, get()</text><text x="448" y="277" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">empties it</text></a>
-<a href="#sec-4-3" class="cmap-link"><title>4.3 Worked example: Attempt 1: one condition variable and an if</title><rect x="384" y="290" width="400" height="27" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="296" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="306.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="308" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.3 Attempt 1: one condition variable and an if</text></a>
-<a href="#sec-4-4" class="cmap-link"><title>4.4 Worked example: Attempt 1 traced: Tc2 takes the item, and Tc1&#x27;s get() hits an empty slot</title><rect x="384" y="321" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="327" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="337.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="339" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.4 Attempt 1 traced: Tc2 takes the item, and</text><text x="487" y="354" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Tc1&#x27;s get() hits an empty slot</text></a>
-<a href="#sec-4-5" class="cmap-link"><title>4.5 Worked example: Attempt 2: while, but one queue, and all three fall asleep</title><rect x="384" y="367" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="373" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="383.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="385" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.5 Attempt 2: while, but one queue, and all</text><text x="487" y="400" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">three fall asleep</text></a>
-<a href="#sec-4-6" class="cmap-link"><title>4.6 Concept: Step 3: two condition variables, one queue per side</title><rect x="384" y="413" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="419" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="429.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="431" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.6 Step 3: two condition variables, one queue per side</text></a>
-<a href="#sec-4-7" class="cmap-link"><title>4.7 Concept: Step 4: MAX slots, a ring with fill_ptr, use_ptr and count</title><rect x="384" y="444" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="450" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="460.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="462" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.7 Step 4: MAX slots, a ring with fill_ptr, use_ptr and</text><text x="448" y="477" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">count</text></a>
-<a href="#sec-4-9" class="cmap-link"><title>4.9 Concept: The buffer&#x27;s design: four pieces, and where each came from</title><rect x="384" y="490" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="496" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="506.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="508" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.9 The buffer&#x27;s design: four pieces, and where each</text><text x="448" y="523" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">came from</text></a>
-<path d="M352,388 C368,388 368,265 384,265" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,388 C368,388 368,304 384,304" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,388 C368,388 368,342 384,342" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,388 C368,388 368,388 384,388" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,388 C368,388 368,426 384,426" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,388 C368,388 368,465 384,465" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,388 C368,388 368,511 384,511" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="375" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="392" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-4-8" class="cmap-link"><title>4.8 Real machine: Measured: every item consumed exactly once; 10 slots beat 1</title><rect x="384" y="544" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="550" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="560.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="562" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.8 Measured: every item consumed exactly once; 10</text><text x="476" y="577" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">slots beat 1</text></a>
-<a href="#sec-4-10" class="cmap-link"><title>4.10 Real kernel: xv6&#x27;s pipe is this buffer: 512 bytes, two sleep addresses</title><rect x="384" y="590" width="400" height="42" rx="6" fill="#ffffff" stroke="#6b4fa0" stroke-width="1.1"/><rect x="390" y="596" width="74" height="15" rx="3" fill="#6b4fa0"/><text x="396" y="606.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text><text x="471" y="608" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.10 xv6&#x27;s pipe is this buffer: 512 bytes, two sleep</text><text x="471" y="623" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">addresses</text></a>
-<a href="#sec-4-11" class="cmap-link"><title>4.11 Real kernel: xv6&#x27;s sleep() is wait(); wakeup() wakes every sleeper</title><rect x="384" y="636" width="400" height="42" rx="6" fill="#ffffff" stroke="#6b4fa0" stroke-width="1.1"/><rect x="390" y="642" width="74" height="15" rx="3" fill="#6b4fa0"/><text x="396" y="652.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real kernel</text><text x="471" y="654" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.11 xv6&#x27;s sleep() is wait(); wakeup() wakes every</text><text x="471" y="669" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">sleeper</text></a>
-<path d="M352,611 C368,611 368,565 384,565" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,611 C368,611 368,611 384,611" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,611 C368,611 368,657 384,657" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="598" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="615" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-4-12" class="cmap-link"><title>4.12 Check yourself: What the first question of the second class settled</title><rect x="384" y="690" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="696" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="706.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="708" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">4.12 What the first question of the second class</text><text x="487" y="723" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="736" width="400" height="76" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="752" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Two condition variables, each side waking only the</text><text x="394" y="767" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">other, and always while: the if broke under Mesa semantics, the</text><text x="394" y="782" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">single queue woke the wrong thread. xv6&#x27;s pipe is this with two</text><text x="394" y="797" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">sleep addresses.</text></a>
-<path d="M352,751 C368,751 368,711 384,711" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,751 C368,751 368,774 384,774" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="738" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="755" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-6" class="cmap-link"><title>Extra 6 Deeper, Q1: Covering conditions: unsure whom to wake, so wake everyone</title><rect x="384" y="824" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="830" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="840.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q1</text><text x="465" y="842" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 6 Covering conditions: unsure whom to wake, so</text><text x="465" y="857" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">wake everyone</text></a>
-<path d="M352,845 C368,845 368,845 384,845" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="832" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="849" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,538 C232,538 232,218 248,218" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,538 C232,538 232,388 248,388" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,538 C232,538 232,611 248,611" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,538 C232,538 232,751 248,751" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,538 C232,538 232,845 248,845" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-4" class="cmap-link"><title>Q1. How do producers and consumers share a buffer, using condition variables?</title><rect x="10" y="496" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="516" r="11" fill="#a0632a"/><text x="28" y="520" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="520" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How do producers and</text><text x="48" y="536" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">consumers share a</text><text x="48" y="552" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">buffer, using condition</text><text x="48" y="568" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">variables?</text></a>
-<text x="113.0" y="888" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-5-1" class="cmap-link"><title>5.1 Problem: A signal sent to nobody is lost; a count would remember it</title><rect x="384" y="900" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="906" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="916.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="918" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.1 A signal sent to nobody is lost; a count would</text><text x="448" y="933" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">remember it</text></a>
-<path d="M352,921 C368,921 368,921 384,921" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="908" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="925" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-5-2" class="cmap-link"><title>5.2 Concept: Step 1: a counter that wait() lowers and post() raises</title><rect x="384" y="954" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="960" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="970.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="972" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.2 Step 1: a counter that wait() lowers and post()</text><text x="448" y="987" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">raises</text></a>
-<a href="#sec-5-4" class="cmap-link"><title>5.4 Worked example: Step 3: start at 0, and one thread waits for another</title><rect x="384" y="1000" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1006" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1016.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1018" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.4 Step 3: start at 0, and one thread waits for</text><text x="487" y="1033" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">another</text></a>
-<a href="#sec-5-5" class="cmap-link"><title>5.5 Concept: The semaphore&#x27;s design: the start value picks its job</title><rect x="384" y="1046" width="400" height="42" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1052" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1062.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1064" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.5 The semaphore&#x27;s design: the start value picks its</text><text x="448" y="1079" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">job</text></a>
-<path d="M352,1021 C368,1021 368,975 384,975" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1021 C368,1021 368,1021 384,1021" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1021 C368,1021 368,1067 384,1067" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1008" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1025" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-5-3" class="cmap-link"><title>5.3 Real machine: Step 2: start at 1, and a semaphore is a lock</title><rect x="384" y="1100" width="400" height="27" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1106" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1116.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1118" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.3 Step 2: start at 1, and a semaphore is a lock</text></a>
-<path d="M352,1114 C368,1114 368,1114 384,1114" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="1100" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="1118" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-5-6" class="cmap-link"><title>5.6 Check yourself: What the second question of the second class settled</title><rect x="384" y="1139" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1145" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1155.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1157" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.6 What the second question of the second class</text><text x="487" y="1172" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="1185" width="400" height="61" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1201" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: A count with a queue: wait() subtracts and sleeps</text><text x="394" y="1216" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">below zero, post() adds and wakes one. Start at 1: a lock. Start</text><text x="394" y="1231" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">at 0: a wait for an event, with the post kept in the count.</text></a>
-<path d="M352,1192 C368,1192 368,1160 384,1160" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,1192 C368,1192 368,1216 384,1216" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1180" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1196" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-7" class="cmap-link"><title>Extra 7 Deeper, Q2: A semaphore built from a lock and a condition variable</title><rect x="384" y="1258" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1264" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1274.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1276" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 7 A semaphore built from a lock and a condition</text><text x="465" y="1291" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">variable</text></a>
-<a href="#extra-9" class="cmap-link"><title>Extra 9 Deeper, Q2: A semaphore as a door that lets in at most N threads</title><rect x="384" y="1304" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1310" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1320.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="1322" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 9 A semaphore as a door that lets in at most N</text><text x="465" y="1337" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">threads</text></a>
-<path d="M352,1302 C368,1302 368,1279 384,1279" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<path d="M352,1302 C368,1302 368,1325 384,1325" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1289" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1306" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,1125 C232,1125 232,921 248,921" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1125 C232,1125 232,1021 248,1021" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1125 C232,1125 232,1114 248,1114" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1125 C232,1125 232,1192 248,1192" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1125 C232,1125 232,1302 248,1302" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-5" class="cmap-link"><title>Q2. What is a semaphore, and how can one counter act as a lock or as a signal?</title><rect x="10" y="1083" width="206" height="84" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="1103" r="11" fill="#a0632a"/><text x="28" y="1107" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q2</text><text x="48" y="1107" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">What is a semaphore, and</text><text x="48" y="1123" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">how can one counter act</text><text x="48" y="1139" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">as a lock or as a</text><text x="48" y="1155" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">signal?</text></a>
-<text x="113.0" y="1368" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-6-4" class="cmap-link"><title>6.4 Problem: Readers wait for readers, though reading changes nothing</title><rect x="384" y="1380" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="1386" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="1396.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="1398" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.4 Readers wait for readers, though reading changes</text><text x="448" y="1413" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">nothing</text></a>
-<path d="M352,1401 C368,1401 368,1401 384,1401" fill="none" stroke="#b23a48" stroke-width="1.4"/>
-<rect x="248" y="1388" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
-<text x="300.0" y="1405" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
-<a href="#sec-6-2" class="cmap-link"><title>6.2 Worked example: Attempt: lock around everything, and both sides wait forever</title><rect x="384" y="1434" width="400" height="42" rx="6" fill="#ffffff" stroke="#5b7a2a" stroke-width="1.1"/><rect x="390" y="1440" width="90" height="15" rx="3" fill="#5b7a2a"/><text x="396" y="1450.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Worked example</text><text x="487" y="1452" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.2 Attempt: lock around everything, and both</text><text x="487" y="1467" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">sides wait forever</text></a>
-<a href="#sec-6-5" class="cmap-link"><title>6.5 Concept: Step 1: readers count themselves in and out</title><rect x="384" y="1480" width="400" height="27" rx="6" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.1"/><rect x="390" y="1486" width="51" height="15" rx="3" fill="#1f6f8b"/><text x="396" y="1496.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Concept</text><text x="448" y="1498" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.5 Step 1: readers count themselves in and out</text></a>
-<path d="M352,1470 C368,1470 368,1455 384,1455" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<path d="M352,1470 C368,1470 368,1494 384,1494" fill="none" stroke="#1f6f8b" stroke-width="1.4"/>
-<rect x="248" y="1458" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
-<text x="300.0" y="1474" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
-<a href="#sec-6-1" class="cmap-link"><title>6.1 Real machine: Semaphores count the slots, yet two producers write one slot</title><rect x="384" y="1519" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1525" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1535.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1537" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.1 Semaphores count the slots, yet two producers</text><text x="476" y="1552" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">write one slot</text></a>
-<a href="#sec-6-3" class="cmap-link"><title>6.3 Real machine: Lock only put() and get(), and the bounded buffer works</title><rect x="384" y="1565" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1571" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1581.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1583" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.3 Lock only put() and get(), and the bounded</text><text x="476" y="1598" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">buffer works</text></a>
-<a href="#sec-6-6" class="cmap-link"><title>6.6 Real machine: Step 2, measured: 4 readers together, 3 times faster than 1 thread, 5 times faster than the mutex</title><rect x="384" y="1611" width="400" height="42" rx="6" fill="#ffffff" stroke="#a0632a" stroke-width="1.1"/><rect x="390" y="1617" width="79" height="15" rx="3" fill="#a0632a"/><text x="396" y="1627.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Real machine</text><text x="476" y="1629" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.6 Step 2, measured: 4 readers together, 3 times</text><text x="476" y="1644" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">faster than 1 thread, 5 times faster than the mutex</text></a>
-<path d="M352,1586 C368,1586 368,1540 384,1540" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1586 C368,1586 368,1586 384,1586" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M352,1586 C368,1586 368,1632 384,1632" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<rect x="248" y="1573" width="104" height="26" rx="13" fill="#ffffff" stroke="#a0632a" stroke-width="1.5"/>
-<text x="300.0" y="1590" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#a0632a">How we know</text>
-<a href="#sec-6-7" class="cmap-link"><title>6.7 Check yourself: What the third question of the second class settled</title><rect x="384" y="1665" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="1671" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="1681.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="1683" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">6.7 What the third question of the second class</text><text x="487" y="1698" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">settled</text></a>
-<a href="#summary-2" class="cmap-link"><title>The answer</title><rect x="384" y="1711" width="400" height="61" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="1727" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: empty at MAX, full at 0, and a binary mutex inside</text><text x="394" y="1742" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">the waits (outside, it deadlocks). A reader-writer lock from two</text><text x="394" y="1757" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">semaphores and a count: readers share, a writer goes alone.</text></a>
-<path d="M352,1718 C368,1718 368,1686 384,1686" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<path d="M352,1718 C368,1718 368,1742 384,1742" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
-<rect x="248" y="1706" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
-<text x="300.0" y="1722" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-8" class="cmap-link"><title>Extra 8 Deeper, Q3: The dining philosophers: five forks, five threads, one deadlock</title><rect x="384" y="1784" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="1790" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="1800.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q3</text><text x="465" y="1802" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 8 The dining philosophers: five forks, five</text><text x="465" y="1817" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">threads, one deadlock</text></a>
-<path d="M352,1805 C368,1805 368,1805 384,1805" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<rect x="248" y="1792" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="300.0" y="1809" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
-<path d="M216,1605 C232,1605 232,1401 248,1401" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1605 C232,1605 232,1470 248,1470" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1605 C232,1605 232,1586 248,1586" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1605 C232,1605 232,1718 248,1718" fill="none" stroke="#a0632a" stroke-width="1.4"/>
-<path d="M216,1605 C232,1605 232,1805 248,1805" fill="none" stroke="#a0632a" stroke-width="1.4" stroke-dasharray="4 3"/>
-<a href="#chapter-6" class="cmap-link"><title>Q3. How do semaphores share a buffer, and let readers in together?</title><rect x="10" y="1571" width="206" height="68" rx="8" fill="#ffffff" stroke="#a0632a" stroke-width="1.9"/><circle cx="28" cy="1591" r="11" fill="#a0632a"/><text x="28" y="1595" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q3</text><text x="48" y="1595" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How do semaphores share</text><text x="48" y="1611" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">a buffer, and let</text><text x="48" y="1627" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">readers in together?</text></a>
-<a href="#summary-2" class="cmap-link"><title>What the second class settled</title><rect x="10" y="1860" width="206" height="50" rx="7" fill="#555e6b"/><text x="21" y="1879" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">Summary: What the second class</text><text x="21" y="1895" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" fill="#fff">settled</text></a>
-</svg>
-</div>
-<p><a href="../maps/class-2.svg" target="_blank" rel="noopener">Open the map in its own tab</a></p>
-</details>
-<!-- classmap:end -->
-
 ## <span class="lbl lbl-roadmap">Roadmap</span> Where we left off: locks inside structures, and a queue to sleep on {#opening-2 data-toc-label="[Roadmap] Where we left off: locks inside structures, and a queue to sleep on"}
 
 The first class ended with the join. The parent locks, sees that `done` is 0, and sleeps on `c`, which releases the lock. The child finishes, locks, writes `done = 1`, signals `c` (the parent moves to ready), and unlocks.
 
 <figure markdown="1">
-![Figure 4.1. The join with a condition variable: the parent asleep on `c`'s queue; the child works, then locks, sets `done`, signals and unlocks.](figs/recap_join.svg){width=75%}
+![Figure 4.1. The join with a condition variable: the parent asleep on `c`'s queue; the child works, then locks, sets `done`, signals and unlocks.](figs/recap_join.svg){width=100%}
 <figcaption markdown="1">Figure 4.1. The join with a condition variable: the parent asleep on `c`'s queue; the child works, then locks, sets `done`, signals and unlocks.</figcaption>
 </figure>
 
@@ -224,7 +72,7 @@ Anyone who uses a shell uses one of these. `grep foo file.txt | wc -l` runs two 
 What we have is the slot of [Section 4.1](#sec-4-1) and two kinds of threads. Producers put and consumers get, and the slot starts empty.
 
 <figure markdown="1">
-![Figure 4.2. A producer, the slot with `count = 0`, a consumer. The producer must wait while the slot is full; the consumer must wait while it is empty.](figs/producer_consumer_slot.svg){width=70%}
+![Figure 4.2. A producer, the slot with `count = 0`, a consumer. The producer must wait while the slot is full; the consumer must wait while it is empty.](figs/producer_consumer_slot.svg){width=100%}
 <figcaption markdown="1">Figure 4.2. A producer, the slot with `count = 0`, a consumer. The producer must wait while the slot is full; the consumer must wait while it is empty.</figcaption>
 </figure>
 
@@ -302,7 +150,7 @@ The first break comes from the `if`. OSTEP Figure 30.9 traces one producer, Tp, 
 | 7 | Tp | p3 | `wait()`: releases the lock, sleeps | 1 | Tp |
 
 <figure markdown="1">
-![Figure 4.3. After step 7: Tp asleep on `cond`, Tc1 ready, the slot full.](figs/cond_queue_step7.svg){width=75%}
+![Figure 4.3. After step 7: Tp asleep on `cond`, Tc1 ready, the slot full.](figs/cond_queue_step7.svg){width=100%}
 <figcaption markdown="1">Figure 4.3. After step 7: Tp asleep on `cond`, Tc1 ready, the slot full.</figcaption>
 </figure>
 
@@ -356,7 +204,7 @@ Now the second break: with one condition variable, a consumer's signal can wake 
 4. Tc2 wakes, checks with its `while`, finds the slot empty, sleeps. All three are asleep on `cond`. Nobody is left to put an item. Forever.
 
 <figure markdown="1">
-![Figure 4.4. `cond`'s queue at moment 4: Tp, Tc1 and Tc2, all asleep. That queue is the whole program.](figs/cond_queue_everyone.svg){width=65%}
+![Figure 4.4. `cond`'s queue at moment 4: Tp, Tc1 and Tc2, all asleep. That queue is the whole program.](figs/cond_queue_everyone.svg){width=100%}
 <figcaption markdown="1">Figure 4.4. `cond`'s queue at moment 4: Tp, Tc1 and Tc2, all asleep. That queue is the whole program.</figcaption>
 </figure>
 
@@ -408,13 +256,6 @@ void *consumer(void *arg) {
 
 So there are two queues and two kinds of sleeper, and each side rings only the other side's bell. The producer's flow, with the `while`: lock; while `count == MAX`, wait on `empty`; `put(base + i)`; signal `fill` (a consumer); unlock; and a woken producer goes back to the test, not straight to `put()`. The consumer mirrors it.
 
-
-<!-- anim:prodcons:start -->
-Step through the three versions of Sections 4.3 to 4.6 yourself: the if that fails, the single queue where everyone sleeps, and the two queues that work.
-
-<div class="anim" data-anim="prodcons" markdown="0"></div>
-<!-- anim:prodcons:end -->
-
 - What this part settled: producers sleep on `empty` and signal `fill`; consumers sleep on `fill` and signal `empty`; and the check stays a `while`.
 - What it leaves open: why the buffer grew to `MAX` slots.
 
@@ -451,7 +292,7 @@ int get() {
 - Lines 21 to 23, `get()`: read at `use_ptr` into `tmp` (which holds the item while the pointer moves), step the use pointer around the same way, count down.
 
 <figure markdown="1">
-![Figure 4.5. The ring with `MAX = 10`: three items inside, `use_ptr = 0`, `fill_ptr = 3`, `count = 3`.](figs/ring_picture.svg){width=80%}
+![Figure 4.5. The ring with `MAX = 10`: three items inside, `use_ptr = 0`, `fill_ptr = 3`, `count = 3`.](figs/ring_picture.svg){width=100%}
 <figcaption markdown="1">Figure 4.5. The ring with `MAX = 10`: three items inside, `use_ptr = 0`, `fill_ptr = 3`, `count = 3`.</figcaption>
 </figure>
 
@@ -488,12 +329,7 @@ The speed: with one slot, 21.66 s; with ten, 2.99 s. 21.66 / 2.99 = 7.2, so one 
 
 A working bounded buffer has four pieces that must all agree. One came from the join, two came from versions that broke in front of you, and one is for speed.
 
-<figure markdown="1">
-![Figure 4.6. The bounded buffer, from one lock to OSTEP Figure 30.14: the problem, the four pieces, and what they solved.](figs/buffer_design.svg){width=100%}
-<figcaption markdown="1">Figure 4.6. The bounded buffer, from one lock to OSTEP Figure 30.14: the problem, the four pieces, and what they solved.</figcaption>
-</figure>
-
-Figure 4.6, left to right:
+The design, piece by piece:
 
 - the problem: a lock keeps `put()` and `get()` apart, but cannot make a consumer wait for an item;
 - piece 1, lock plus count: from the join; `count` says full or empty, and the lock makes the check and the change take turns;
@@ -719,13 +555,6 @@ wakeup(void *chan)
 
 The flow of `sleep()`, with `wakeup()` in the middle: `sleep(chan, lk)`: acquire `p->lock`; release `lk`; `p->chan = chan`, state `SLEEPING`; `sched()`: the scheduler runs and releases `p->lock`; `wakeup(chan)` takes `p->lock`, sets the state to `RUNNABLE`, releases; the scheduler takes `p->lock` and switches back; release `p->lock`, acquire `lk`, return.
 
-
-<!-- anim:xv6sleep:start -->
-Step through it yourself: a reader sleeps on an empty pipe, a write wakes every sleeper on that address, and each one checks again.
-
-<div class="anim" data-anim="xv6sleep" markdown="0"></div>
-<!-- anim:xv6sleep:end -->
-
 - What this part settled: `sleep()` is `wait()` with the gap closed by taking the process's own lock first; `wakeup()` wakes every sleeper on the address, so the `while` is mandatory.
 - What it leaves open: nothing in this question. The checkpoint is next.
 
@@ -754,7 +583,7 @@ You should now be able to say what goes wrong with an `if` (a woken consumer tru
 Go back to shortcut 1 of the first class ([Section 3.8](class-1.md#sec-3-8)). The child signaled before the parent slept, and the parent slept forever.
 
 <figure markdown="1">
-![Figure 5.1. OSTEP Figure 30.4 again: the child's signal finds nobody, and the parent, arriving later, waits forever.](figs/lost_signal_timeline.svg){width=65%}
+![Figure 5.1. OSTEP Figure 30.4 again: the child's signal finds nobody, and the parent, arriving later, waits forever.](figs/lost_signal_timeline.svg){width=100%}
 <figcaption markdown="1">Figure 5.1. OSTEP Figure 30.4 again: the child's signal finds nobody, and the parent, arriving later, waits forever.</figcaption>
 </figure>
 
@@ -794,7 +623,7 @@ int sem_post(sem_t *s) {
 - `sem_t` is the type of a semaphore, and `sem_init(&s, 0, X)` starts `s` at X; the 0 means shared between threads, not processes.
 
 <figure markdown="1">
-![Figure 5.2. The value, read as a picture: 2 may pass; 1 may pass; 0, the next one sleeps; −1, one thread asleep; −2, two threads asleep.](figs/sem_value_picture.svg){width=70%}
+![Figure 5.2. The value, read as a picture: 2 may pass; 1 may pass; 0, the next one sleeps; −1, one thread asleep; −2, two threads asleep.](figs/sem_value_picture.svg){width=100%}
 <figcaption markdown="1">Figure 5.2. The value, read as a picture: 2 may pass; 1 may pass; 0, the next one sleeps; −1, one thread asleep; −2, two threads asleep.</figcaption>
 </figure>
 
@@ -899,13 +728,6 @@ The parent ends after the child, in this run and in the second one the file hold
 
 Why does the order no longer matter? If the post comes first, the value holds the event until the wait arrives. If the wait comes first, it sleeps at −1 until the post. Both end at 0.
 
-
-<!-- anim:sema:start -->
-Step through both uses yourself: a semaphore that starts at 1 (Section 5.3), and one that starts at 0 (this section).
-
-<div class="anim" data-anim="sema" markdown="0"></div>
-<!-- anim:sema:end -->
-
 - What this part settled: started at 0, a semaphore makes one thread wait for another, in either order, with no variable and no lock of our own.
 - What it leaves open: why one counter can do both jobs, on one page.
 
@@ -915,12 +737,7 @@ Step through both uses yourself: a semaphore that starts at 1 (Section 5.3), and
 
 Why can one primitive do what a lock and a condition variable did together? Because its value counts something, and what it counts is set by the number you start it at.
 
-<figure markdown="1">
-![Figure 5.3. The semaphore, from the lost signal to two uses: the problem, the idea, the definition, start at 1, start at 0, and the rule.](figs/sem_design.svg){width=100%}
-<figcaption markdown="1">Figure 5.3. The semaphore, from the lost signal to two uses: the problem, the idea, the definition, start at 1, start at 0, and the rule.</figcaption>
-</figure>
-
-Figure 5.3, left to right:
+The semaphore, step by step:
 
 - the problem: a signal sent to nobody is lost; the join needed `done`, a lock and a queue to keep it;
 - the idea: let the signal be a count; `post()` adds one even with nobody asleep, so it is kept;
@@ -1004,13 +821,6 @@ About 33,000 items were never consumed, and about 33,000 were consumed more than
 1. two semaphores that count: `empty` counts free slots, `full` counts items (this part);
 2. a binary semaphore around the whole step: both sides wait forever;
 3. the binary semaphore only around `put()` and `get()`: it works.
-
-
-<!-- anim:twoprod:start -->
-Step through the table yourself, one action at a time: two producers write slot 3, and slot 4 is skipped.
-
-<div class="anim" data-anim="twoprod" markdown="0"></div>
-<!-- anim:twoprod:end -->
 
 - What this part settled: counting semaphores give the two waits for free, but two producers can both be inside `put()`.
 - What it leaves open: where the lock goes. The obvious place turns out to be wrong.
@@ -1101,19 +911,7 @@ real 2.59 s
 
 Every item once, and 2.59 s against the 2.99 s of the condition-variable version with 10 slots ([Section 4.8](#sec-4-8)): about the same. It is the same problem as [Chapter 4](#chapter-4), solved with semaphores: two that count slots for the waits, one binary one for the lock, and the binary one inside the waits.
 
-<figure markdown="1">
-![Figure 6.1. The three steps together: counting semaphores alone, a race; the mutex around the whole step, a deadlock; the mutex only around `put()` and `get()`, solved.](figs/pcsem_design.svg){width=80%}
-<figcaption markdown="1">Figure 6.1. The three steps together: counting semaphores alone, a race; the mutex around the whole step, a deadlock; the mutex only around `put()` and `get()`, solved.</figcaption>
-</figure>
-
-Figure 6.1 is the design. Step 1 counted slots and items but left `put()` open to a race. Step 2 locked the whole step, and a sleeper took the lock down with it. Step 3 keeps the lock only around the two lines that touch the ring, and every item comes out once. The counting semaphores decide when, the binary one decides who, and the binary one must never be held while waiting. The producer's flow: `sem_wait(&empty)`: a free slot, or sleep holding nothing; `sem_wait(&mutex)`; `put()`: the two ring lines, one producer at a time; `sem_post(&mutex)`; `sem_post(&full)`: wake a consumer.
-
-
-<!-- anim:bbdeadlock:start -->
-Step through both versions yourself: the lock around everything of Section 6.2, and the lock only around put() and get().
-
-<div class="anim" data-anim="bbdeadlock" markdown="0"></div>
-<!-- anim:bbdeadlock:end -->
+Here is the design. Step 1 counted slots and items but left `put()` open to a race. Step 2 locked the whole step, and a sleeper took the lock down with it. Step 3 keeps the lock only around the two lines that touch the ring, and every item comes out once. The counting semaphores decide when, the binary one decides who, and the binary one must never be held while waiting. The producer's flow: `sem_wait(&empty)`: a free slot, or sleep holding nothing; `sem_wait(&mutex)`; `put()`: the two ring lines, one producer at a time; `sem_post(&mutex)`; `sem_post(&full)`: wake a consumer.
 
 - What this part settled: a thread sleeps on `empty` or `full` holding nothing; the mutex covers only the ring update; no sleeper ever holds it.
 - What it leaves open: one more structure, back from the first class: the list.
@@ -1196,12 +994,7 @@ list  4 threads x   10000 lookups  found 40000  time 0.606 s
 
 With one thread the two locks cost the same: 0.363 s against 0.360 s. With four threads, the readers walk the list together and finish in 0.113 s, about a third of the one-thread time (0.363 / 0.113 = 3.2); the one mutex made four threads slower than one, 0.606 s. Between the two locks at four threads, 0.606 / 0.113 = 5.4, so the reader-writer lock is about 5 times faster than the mutex at four threads (and 3.2 times faster than one thread, the fairer baseline for "how much did sharing buy", since the four-thread mutex run was slowed by the lock itself). (The one-lock list here is the same `lookup` program rerun beside `lookup_rw`; the earlier list run of [Section 2.10](class-1.md#sec-2-10), 0.402 s and 0.587 s, was another session, so the two sets differ a little.)
 
-<figure markdown="1">
-![Figure 6.2. The design: one lock made readers wait for readers; a count of readers, where the first in takes `writelock` and the last out returns it; 4 readers together, 5.4 times faster than one mutex.](figs/rw_design.svg){width=80%}
-<figcaption markdown="1">Figure 6.2. The design: one lock made readers wait for readers; a count of readers, where the first in takes `writelock` and the last out returns it; 4 readers together, 5.4 times faster than one mutex.</figcaption>
-</figure>
-
-Figure 6.2 is the design in one row. The catch is fairness: a stream of readers can keep `readers > 0` forever, and a writer waits forever. Readers can starve writers. Fair versions exist and cost more, because they must count waiting writers and hold new readers back for them, more bookkeeping under the lock. And OSTEP's tip for this whole structure is Hill's law (named for Mark Hill, a computer architect whose work on caches found that simple designs beat fancy ones): simple and dumb can be better; a fancier lock is not always faster. We measured; here, with readers only and no writer in the run, the fancier lock did win, 5 times.
+That is the design. The catch is fairness: a stream of readers can keep `readers > 0` forever, and a writer waits forever. Readers can starve writers. Fair versions exist and cost more, because they must count waiting writers and hold new readers back for them, more bookkeeping under the lock. And OSTEP's tip for this whole structure is Hill's law (named for Mark Hill, a computer architect whose work on caches found that simple designs beat fancy ones): simple and dumb can be better; a fancier lock is not always faster. We measured; here, with readers only and no writer in the run, the fancier lock did win, 5 times.
 
 - What this part settled: four readers under the reader-writer lock ran in about a third of one thread's time, which is 3.2 times faster than one thread (the fairer baseline), and 5.4 times faster than four readers behind one mutex (the lecture's headline number, against a run the mutex made slower than one thread); the price is that readers can starve writers.
 - What it leaves open: nothing in this question. The checkpoint is next.
@@ -1326,7 +1119,7 @@ Philosopher 4 takes the right fork first (lines 2 to 4). Now no cycle of waiting
 [Chapter 5](#chapter-5) used the start values 1 and 0. The third job: start a semaphore at N, `wait()` before a region and `post()` after, and at most N threads are in the region at once.
 
 <figure markdown="1">
-![Figure E9.1. A semaphore started at 3: 3 may enter; one inside, 2; two inside, 1; three inside, 0, and the next sleeps; −1, one waiting at the door.](figs/door_picture.svg){width=75%}
+![Figure E9.1. A semaphore started at 3: 3 may enter; one inside, 2; two inside, 1; three inside, 0, and the next sleeps; −1, one waiting at the door.](figs/door_picture.svg){width=100%}
 <figcaption markdown="1">Figure E9.1. A semaphore started at 3: 3 may enter; one inside, 2; two inside, 1; three inside, 0, and the next sleeps; −1, one waiting at the door.</figcaption>
 </figure>
 

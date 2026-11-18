@@ -4,12 +4,14 @@
 
 Several programs have to share one memory, because swapping a whole memory to disk on every switch is far too slow, and sharing makes protection urgent. The OS answers with an abstraction, the address space: each process sees a private memory counted from 0, with code at one end and a heap and a stack growing toward each other. Every address a program can print is virtual, a name in that private map, which is why the same program shows different addresses on every run and the stack can sit just under 128 TB on an 8 GB machine. The kernel keeps the real map of every process in `/proc/PID/maps`, and it shows a few small islands in a 128 TB ocean, each with permission letters the hardware enforces on every access. Three goals grade every memory design: transparency, efficiency and protection, and a fourth, flexibility, arrives with chapter 15. Stack memory is automatic and dies when its function returns, so data that must outlive a call, or whose size is known only at run time, goes on the heap, through `malloc` and `free`. Six classic mistakes live between those two calls; `-Wall` reports four, and valgrind, which watches the running program, reports the two that `-Wall` misses, the off-by-one and the leak. `malloc` is not a system call but a library inside the process that buys address space from the kernel rarely, with `brk` and `mmap`, and retails it often. It keeps a small header in front of each block so `free` knows its size. The kernel's yes is a promise: a gigabyte can be promised while a third of a megabyte is delivered, and the rest arrives page by page as the program touches it. One line of C is five memory accesses, all of them virtual, billions a second, so translation must be done by hardware in the path of every access. Base and bounds is that hardware at its simplest: check that the virtual address is below the bounds register, then add the base register. A virtual address is a distance along the program's own ruler, so adding the base is walking two distances end to end, and an address past the end of the ruler raises the exception behind every segmentation fault. The OS owns the two numbers: it keeps a free list of slots, saves and restores the pair at every context switch, installs the handlers at boot, and can move a process by changing one saved number. Setting them is privileged, because they are the protection. xv6 keeps a process's bound in `p->sz` and checks it in `fetchaddr`, but translates through a page table, the descendant of base and bounds. One contiguous slot stores the empty middle of the address space, internal fragmentation, which is fatal for spaces this sparse, so the next step is to cut the address space into pieces placed independently.
 
-The deck's last deeper slide says the same week in four lines, one for the abstraction, the interface, the mechanism and the flaw. It is Figure R.1, and it is a good test: each line should now unfold into a paragraph you could write yourself.
+The same week fits in four lines, one each for the abstraction, the interface, the mechanism and the flaw. It is a good test: each line should now unfold into a paragraph you could write yourself.
 
-<figure markdown="1">
-![Figure R.1. The week in four lines: the abstraction, the API, the mechanism, and the flaw that drives what comes next.](figs/fourlines.png){width=100%}
-<figcaption markdown="1">Figure R.1. The week in four lines: the abstraction, the API, the mechanism, and the flaw that drives what comes next.</figcaption>
-</figure>
+| | |
+|---|---|
+| **The abstraction** | Every process gets a private address space: code, a heap that grows one way, a stack that grows the other. Every address it ever sees is virtual, which is why the OS can randomize the layout on every run. `/proc/PID/maps` shows the real thing, and it is a few small islands in a 128 TiB ocean. |
+| **The API** | Stack memory is automatic. Heap memory is yours: `malloc` and `free`, six classic errors, four of which `-Wall` catches and two of which valgrind does. `malloc` is a library on top of `brk` and `mmap`, and it hands out memory that was promised long before it is delivered. |
+| **The mechanism** | Address translation is limited direct execution applied to memory. Base and bounds: physical = virtual + base, if virtual < bounds, else an exception, which is where your segmentation fault comes from. The OS keeps the free list, saves base and bounds across context switches, and can move processes by changing one number. |
+| **The flaw that drives what comes next** | Internal fragmentation. The whole slot has to be contiguous, so all the empty space between heap and stack occupies real memory. With address spaces this sparse, that is fatal. The fix is to chop the address space up: segmentation, then paging. |
 
 ## Exercises {#exercises}
 <!-- answers folded under their exercises -->
@@ -18,12 +20,12 @@ Do these with a pencil, and with the figures of the sections they name beside yo
 
 ### Exercise 1 {#exercise-1}
 
-Before reading [Section 1.4](class-1.md#sec-1-4), the deck asked three questions about `va.c` (Figure 1.6). Answer them now, with reasons. Which of the three printed addresses (code, heap, stack) will be smallest and which largest? Will the stack address be a number that fits inside the machine's 8 GB of RAM? And how long will the call `malloc(100e6)` take?
+[Section 1.3](class-1.md#sec-1-3) asked three questions about `va.c` before showing its output. Answer them now, with reasons. Which of the three printed addresses (code, heap, stack) will be smallest and which largest? Will the stack address be a number that fits inside the machine's 8 GB of RAM? And how long will the call `malloc(100e6)` take?
 
 <details class="success answer" id="answer-1" markdown="1">
 <summary>Answer 1 <span class="hint">click to show</span></summary>
 
-Smallest and largest: the code is lowest and the stack highest, with the heap between. The reason is the layout of Figure 13.3: code at the low end, where nothing needs room; the heap and the stack at opposite ends so they can grow toward each other. [Section 1.4](class-1.md#sec-1-4)'s run confirms it: 0x55c5... < 0x7f9e... < 0x7ffc.... (Compare first digits: 5 < 7; then for the two that start 0x7f, compare the next digits, 9 < f.) The stack address does not fit inside 8 GB. It has 12 hexadecimal digits and starts with 7, so it is just under 0x800000000000 = 2^47, about 1.4 × 10^14 bytes. 8 GB is 8 × 2^30, about 8.6 × 10^9 bytes. So the address is about 16,000 times larger than the whole memory. That is possible only because it is a virtual address, a name and not a place. The time: the call came back at once. `malloc` asked the kernel for a region with `mmap`, and the kernel only promised the memory; nothing was found or cleared until the program touched it (Sections [3.3](class-1.md#sec-3-3) and [3.4](class-1.md#sec-3-4)).
+Smallest and largest: the code is lowest and the stack highest, with the heap between. The reason is the layout of OSTEP Figure 13.3: code at the low end, where nothing needs room; the heap and the stack at opposite ends so they can grow toward each other. [Section 1.4](class-1.md#sec-1-4)'s run confirms it: 0x55c5... < 0x7f9e... < 0x7ffc.... (Compare first digits: 5 < 7; then for the two that start 0x7f, compare the next digits, 9 < f.) The stack address does not fit inside 8 GB. It has 12 hexadecimal digits and starts with 7, so it is just under 0x800000000000 = 2^47, about 1.4 × 10^14 bytes. 8 GB is 8 × 2^30, about 8.6 × 10^9 bytes. So the address is about 16,000 times larger than the whole memory. That is possible only because it is a virtual address, a name and not a place. The time: the call came back at once. `malloc` asked the kernel for a region with `mmap`, and the kernel only promised the memory; nothing was found or cleared until the program touched it (Sections [3.3](class-1.md#sec-3-3) and [3.4](class-1.md#sec-3-4)).
 
 </details>
 
@@ -49,7 +51,7 @@ Heap growth: subtract the two `brk` addresses. They agree in every digit up to `
 
 ### Exercise 3 {#exercise-3}
 
-The program of [Section 3.4](class-1.md#sec-3-4) is changed to ask for 2 GB and then to touch only the first quarter of the block, one byte per 4096-byte page. Using the startup numbers of Figure 3.6 (2,700 kB promised, 1,432 kB delivered) and the 328 kB that the `malloc` call itself delivered, predict VmSize and VmRSS after the `malloc`, and after the touching. Assume the promise grows by the size asked plus 4 kB, as in Figure 3.6.
+The program of [Section 3.4](class-1.md#sec-3-4) is changed to ask for 2 GB and then to touch only the first quarter of the block, one byte per 4096-byte page. Using the startup numbers of the table in [Section 3.4](class-1.md#sec-3-4) (2,700 kB promised, 1,432 kB delivered) and the 328 kB that the `malloc` call itself delivered, predict VmSize and VmRSS after the `malloc`, and after the touching. Assume the promise grows by the size asked plus 4 kB, as in [Section 3.4](class-1.md#sec-3-4).
 
 <details class="success answer" id="answer-3" markdown="1">
 <summary>Answer 3 <span class="hint">click to show</span></summary>
@@ -71,29 +73,34 @@ For each fragment, say which of the six classic mistakes of [Chapter 2](class-1.
 <details class="success answer" id="answer-4" markdown="1">
 <summary>Answer 4 <span class="hint">click to show</span></summary>
 
-Not allocating enough, a buffer overflow: the block holds positions 0 to 4, and `a[5]` writes the integer just past its end. It will probably not crash, which is what makes it dangerous (error 2 printed the right answer and exited 0). valgrind reports it as an "Invalid write of size 4", 0 bytes after a block of size 20 (5 × 4 = 20), with the line number of the write and of the `malloc`. (b) Use after free, a dangling pointer: `printf` reads the block after `free` gave it back. It may print "hi", garbage, or nothing harmful; it will probably not crash. valgrind reports an "Invalid read" inside a block that was freed, with three line numbers: where it was allocated, freed and read (as in Figure E11.2). (c) A memory leak: 1000 blocks of 80 bytes are allocated and never freed, 80,000 bytes in all. No crash, no output; the program just uses more memory. valgrind with `--leak-check=yes` reports 80,000 bytes in 1,000 blocks definitely lost, at the line of the `malloc` (as in Figure 2.8). As for `-Wall`: it does warn about (b), "pointer 'p' used after 'free'", the same kind of warning it gave error 5 in [Section 2.4](class-1.md#sec-2-4) (checked with gcc 13.3.0). The free and the use sit together in one place, where the compiler can see both. It says nothing about (a) or (c), which depend on sizes and lifetimes. (a)
+Not allocating enough, a buffer overflow: the block holds positions 0 to 4, and `a[5]` writes the integer just past its end. It will probably not crash, which is what makes it dangerous (error 2 printed the right answer and exited 0). valgrind reports it as an "Invalid write of size 4", 0 bytes after a block of size 20 (5 × 4 = 20), with the line number of the write and of the `malloc`. (b) Use after free, a dangling pointer: `printf` reads the block after `free` gave it back. It may print "hi", garbage, or nothing harmful; it will probably not crash. valgrind reports an "Invalid read" inside a block that was freed, with three line numbers: where it was allocated, freed and read (as in [Extra 11](class-1.md#extra-11)). (c) A memory leak: 1000 blocks of 80 bytes are allocated and never freed, 80,000 bytes in all. No crash, no output; the program just uses more memory. valgrind with `--leak-check=yes` reports 80,000 bytes in 1,000 blocks definitely lost, at the line of the `malloc` (as in [Section 2.5](class-1.md#sec-2-5)). As for `-Wall`: it does warn about (b), "pointer 'p' used after 'free'", the same kind of warning it gave error 5 in [Section 2.4](class-1.md#sec-2-4) (checked with gcc 13.3.0). The free and the use sit together in one place, where the compiler can see both. It says nothing about (a) or (c), which depend on sizes and lifetimes. (a)
 
 </details>
 
 ### Exercise 5 {#exercise-5}
 
-The question of [Extra 9](class-1.md#extra-9) (Figure E9.1): `x` points at 40 bytes from `malloc`, and `arr` is an array of 10 integers, also 40 bytes. What do the two lines print on the Ubuntu machine, and why are the two numbers different?
+The question of [Extra 9](class-1.md#extra-9): `x` points at 40 bytes from `malloc`, and `arr` is an array of 10 integers, also 40 bytes. What do the two lines print on the Ubuntu machine, and why are the two numbers different?
 
 <details class="success answer" id="answer-5" markdown="1">
 <summary>Answer 5 <span class="hint">click to show</span></summary>
 
-It prints 8 and 40. Figure R.2 is the deck's reveal. `sizeof` is worked out by the compiler from what it knows about the name. `x` is a pointer, so `sizeof(x)` is the size of a pointer, which is the size of an address on the Ubuntu machine: 8 bytes, because, as [Section 1.4](class-1.md#sec-1-4) said, the Ubuntu machine keeps every address in 64 bits, which is 8 bytes, even though only 48 of those bits are used. The 40 bytes it points at appear nowhere, because the 10 passed to `malloc` is only known when the program runs. `arr` is an array the compiler declared, so it knows its size: 10 × 4 = 40. The practical rule: never use `sizeof` on a pointer from `malloc` to get the block's size; keep the length in a separate variable.
+It prints 8 and 40.
 
-<figure markdown="1">
-![Figure R.2. The deck's reveal for Exercise 5: sizeof(x) = 8 and sizeof(arr) = 40, and why.](figs/sz_a.png){width=100%}
-<figcaption markdown="1">Figure R.2. The deck's reveal for [Exercise 5](#exercise-5): sizeof(x) = 8 and sizeof(arr) = 40, and why.</figcaption>
-</figure>
+*`captures/sz.out`*
+
+```text
+$ ./sz
+sizeof(x)   = 8
+sizeof(arr) = 40
+```
+
+ `sizeof` is worked out by the compiler from what it knows about the name. `x` is a pointer, so `sizeof(x)` is the size of a pointer, which is the size of an address on the Ubuntu machine: 8 bytes, because, as [Section 1.4](class-1.md#sec-1-4) said, the Ubuntu machine keeps every address in 64 bits, which is 8 bytes, even though only 48 of those bits are used. The 40 bytes it points at appear nowhere, because the 10 passed to `malloc` is only known when the program runs. `arr` is an array the compiler declared, so it knows its size: 10 × 4 = 40. The practical rule: never use `sizeof` on a pointer from `malloc` to get the block's size; keep the length in a separate variable.
 
 </details>
 
 ### Exercise 6 {#exercise-6}
 
-A reading of a real capture. Use the map of `hold` in Figure E5.5 ([Extra 5](class-1.md#extra-5)) and four addresses: 0x555555556004, 0x7ffff7d00000, 0x555555570000, and 0x400000. For each, say which line it falls in, what the program may do with the bytes there (read, write, run), and what happens on a store to it.
+A reading of a real capture. Use the map of `hold` in [Extra 5](class-1.md#extra-5) and four addresses: 0x555555556004, 0x7ffff7d00000, 0x555555570000, and 0x400000. For each, say which line it falls in, what the program may do with the bytes there (read, write, run), and what happens on a store to it.
 
 <details class="success answer" id="answer-6" markdown="1">
 <summary>Answer 6 <span class="hint">click to show</span></summary>
@@ -104,12 +111,12 @@ A reading of a real capture. Use the map of `hold` in Figure E5.5 ([Extra 5](cla
 
 ### Exercise 7 {#exercise-7}
 
-The deck's counting question (Figures 4.5, 4.6 and 4.7): when the three instructions `lw a5,-20(s0)`, `addiw a5,a5,3`, `sw a5,-20(s0)` run, how many times does the processor go to memory? Pick one of A (2), B (3), C (5) or D (6), say what each wrong answer forgot or added, and say how many of the addresses are virtual.
+The counting question of [Section 4.2](class-2.md#sec-4-2): when the three instructions `lw a5,-20(s0)`, `addiw a5,a5,3`, `sw a5,-20(s0)` run, how many times does the processor go to memory? Pick one of A (2), B (3), C (5) or D (6), say what each wrong answer forgot or added, and say how many of the addresses are virtual.
 
 <details class="success answer" id="answer-7" markdown="1">
 <summary>Answer 7 <span class="hint">click to show</span></summary>
 
-C, five. Figure 4.8 is the deck's answer. In order: fetch at 0x10 (read), the load of `x` (read), fetch at 0x14 (read), the addition (no memory, it happens in the register `a5`), fetch at 0x16 (read), the store of `x` (write). A counted the data only and forgot that each instruction must be fetched. B counted one access per instruction and forgot that `lw` and `sw` each go to memory a second time to do their work. D counted writing into `a5` as memory, but a register is inside the processor. All five addresses are virtual, the three fetches included.
+C, five. In order (the table in [Section 4.3](class-2.md#sec-4-3)): fetch at 0x10 (read), the load of `x` (read), fetch at 0x14 (read), the addition (no memory, it happens in the register `a5`), fetch at 0x16 (read), the store of `x` (write). A counted the data only and forgot that each instruction must be fetched. B counted one access per instruction and forgot that `lw` and `sw` each go to memory a second time to do their work. D counted writing into `a5` as memory, but a register is inside the processor. All five addresses are virtual, the three fetches included.
 
 </details>
 
@@ -126,17 +133,28 @@ Seven. Four instructions means four fetches. The two `lw` instructions each read
 
 ### Exercise 9 {#exercise-9}
 
-The deck's translation drill (Figure 5.13). Set A, our program, base 32 KB, bounds 16 KB: fetch 128, load 15 KB, fetch 132, store 15 KB. Set B, a different process, base 16 KB, bounds 4 KB: virtual 0, 1 KB, 3000, 4400. Translate all eight in bytes, bounds first, and find the one that is not like the others.
+The translation drill of [Section 5.6](class-2.md#sec-5-6). Set A, our program, base 32 KB, bounds 16 KB: fetch 128, load 15 KB, fetch 132, store 15 KB. Set B, a different process, base 16 KB, bounds 4 KB: virtual 0, 1 KB, 3000, 4400. Translate all eight in bytes, bounds first, and find the one that is not like the others.
 
 <details class="success answer" id="answer-9" markdown="1">
 <summary>Answer 9 <span class="hint">click to show</span></summary>
 
-Write every number in bytes: 32 KB = 32,768, 16 KB = 16,384, 15 KB = 15,360, 4 KB = 4,096, 1 KB = 1,024. Set A: 128 < 16,384, so 128 + 32,768 = 32,896. 15,360 < 16,384, so 15,360 + 32,768 = 48,128. 132 + 32,768 = 32,900. The store of `x` goes to the same 48,128 as the load, because it is the same variable. Set B: 0 < 4,096, so 0 + 16,384 = 16,384. 1,024 + 16,384 = 17,408. 3,000 < 4,096, so 3,000 + 16,384 = 19,384. 4,400 is not below 4,096, so the check fails, no physical address is formed, and the hardware raises an exception: a fault. That is the odd one out. Figure R.3 is the deck's answer slide. Two checks: the load and store of set A agree, and 19,384 comes out right only if KB means 1024 (with 1000 you would get 19,000).
+Write every number in bytes: 32 KB = 32,768, 16 KB = 16,384, 15 KB = 15,360, 4 KB = 4,096, 1 KB = 1,024. Set A: 128 < 16,384, so 128 + 32,768 = 32,896. 15,360 < 16,384, so 15,360 + 32,768 = 48,128. 132 + 32,768 = 32,900. The store of `x` goes to the same 48,128 as the load, because it is the same variable. Set B: 0 < 4,096, so 0 + 16,384 = 16,384. 1,024 + 16,384 = 17,408. 3,000 < 4,096, so 3,000 + 16,384 = 19,384. 4,400 is not below 4,096, so the check fails, no physical address is formed, and the hardware raises an exception: a fault. That is the odd one out. Here are the answers written as sums.
 
-<figure markdown="1">
-![Figure R.3. The deck's answers to Exercise 9, written as sums: set A all inside its bound, set B ending in a fault at 4400.](figs/answers.png){width=100%}
-<figcaption markdown="1">Figure R.3. The deck's answers to [Exercise 9](#exercise-9), written as sums: set A all inside its bound, set B ending in a fault at 4400.</figcaption>
-</figure>
+```text
+set A: base = 32 KB (32768), bounds = 16 KB (16384)
+fetch  128     ->    128 + 32768 = 32896
+load   15 KB   ->  15360 + 32768 = 48128
+fetch  132     ->    132 + 32768 = 32900
+store  15 KB   ->  15360 + 32768 = 48128
+
+set B: base = 16 KB (16384), bounds = 4 KB (4096)
+virtual     0  ->      0 + 16384 = 16384
+virtual  1 KB  ->   1024 + 16384 = 17408
+virtual  3000  ->   3000 + 16384 = 19384
+virtual  4400  ->   4400 >= 4096 = FAULT
+```
+
+ Two checks: the load and store of set A agree, and 19,384 comes out right only if KB means 1024 (with 1000 you would get 19,000).
 
 </details>
 
@@ -158,12 +176,7 @@ Two discussion questions. First: imagine an OS that knows where in physical memo
 <details class="success answer" id="answer-11" markdown="1">
 <summary>Answer 11 <span class="hint">click to show</span></summary>
 
-Figure R.4 is the deck's slide with its answers. First: because the heap pointer is already a virtual address. It is a distance along the program's own ruler, counted from the start of the address space, not from physical 0. Translation adds one base, the address space's own, after checking the distance against the bound. Take the process of Figure 5.1, placed at base 32 KB. Under base and bounds the whole space moves as one block, so its heap, which starts at virtual 2 KB, starts physically at 32 KB + 2 KB = 34 KB. A heap pointer such as virtual 3 KB already counts from the start of the whole address space, not from the start of the heap. The right translation is 32 KB + 3 KB = 35 KB. Adding the heap's physical start instead gives 34 KB + 3 KB = 37 KB: the 2 KB from 0 to the heap is counted twice, and the access lands in the wrong place. And the process never sees, and never needs, any physical base. Second: because those two registers are the protection. A process that could rewrite its own bounds would give itself all of physical memory and read everyone else's data. So only the kernel may set them, at every context switch, and a user-mode attempt traps. Protection that the protected party can edit is not protection.
-
-<figure markdown="1">
-![Figure R.4. The deck's two official discussion questions, with their answers.](figs/dq.png){width=100%}
-<figcaption markdown="1">Figure R.4. The deck's two official discussion questions, with their answers.</figcaption>
-</figure>
+First: because the heap pointer is already a virtual address. It is a distance along the program's own ruler, counted from the start of the address space, not from physical 0. Translation adds one base, the address space's own, after checking the distance against the bound. Take the process of Figure 5.1, placed at base 32 KB. Under base and bounds the whole space moves as one block, so its heap, which starts at virtual 2 KB, starts physically at 32 KB + 2 KB = 34 KB. A heap pointer such as virtual 3 KB already counts from the start of the whole address space, not from the start of the heap. The right translation is 32 KB + 3 KB = 35 KB. Adding the heap's physical start instead gives 34 KB + 3 KB = 37 KB: the 2 KB from 0 to the heap is counted twice, and the access lands in the wrong place. And the process never sees, and never needs, any physical base. Second: because those two registers are the protection. A process that could rewrite its own bounds would give itself all of physical memory and read everyone else's data. So only the kernel may set them, at every context switch, and a user-mode attempt traps. Protection that the protected party can edit is not protection.
 
 </details>
 
