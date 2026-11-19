@@ -296,4 +296,4 @@ The tabs at the top are the parts of the course: Introduction, Virtualization, C
 
 ## Sources
 
-The guides follow [*Operating Systems: Three Easy Pieces*](https://pages.cs.wisc.edu/~remzi/OSTEP/) by Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau, which the authors publish free; each week's "Where this guide comes from" links the chapters it uses. The code the guides read is [xv6](https://github.com/mit-pdos/xv6-riscv), the teaching operating system from MIT.
+The guides follow [*Operating Systems: Three Easy Pieces*](https://pages.cs.wisc.edu/~remzi/OSTEP/) by Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau, which the authors publish free; each week's "Where this guide comes from" links the chapters it uses. The code the guides read is [xv6](https://github.com/mit-pdos/xv6-riscv), the teaching operating system from MIT. What on this site is ours, what belongs to others, and the xv6 license notice are on the [License and credits](license.md) page.
