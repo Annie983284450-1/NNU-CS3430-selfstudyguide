@@ -492,6 +492,7 @@ The size said three pages; the table said 0, then 1, then 2. Pages appear only w
     > **You should now be able to** name the three outcomes of a TLB miss (invalid, valid and present, valid and not present) and say what the kernel does in the third.
     
 
+
 <!-- anim:lazyalloc:start -->
 Step through the run yourself: a touch inside the heap that vmfault() fixes, and a touch beyond sz that kills the process.
 

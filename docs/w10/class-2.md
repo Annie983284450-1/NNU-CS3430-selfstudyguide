@@ -120,6 +120,13 @@ Here is what happens when the two calls meet at the wrong moment. Inside the fun
 
 After step 4, each thread holds the lock the other one waits for. It is the circle of [Section 3.4](class-1.md#sec-3-4), and the program prints nothing per lock, so this order of steps is a reading of the code. The next part shows that the real runs end exactly this way.
 
+
+<!-- anim:vector10:start -->
+Step through the hang yourself: the same line 24 takes a different first lock in each thread, and the circle closes at line 25.
+
+<div class="anim" data-anim="vector10" markdown="0"></div>
+<!-- anim:vector10:end -->
+
 - What this part settled: `vector_add()` is `AddAll()` in C; its lock order is the argument order, so two callers that pass the same two vectors in opposite orders take the same two locks in opposite orders.
 - What it leaves open: whether this really hangs on a machine, and whether passing the same order really cures it.
 
@@ -326,6 +333,13 @@ Here is the moment that hung `vector_deadlock.c`, run through this code. Thread 
 5. Thread 1 starts again at line 26, with both locks free.
 
 No circle could form, because the thread that met a busy lock let go of its own. This order of steps is a reading of the code; the program prints only its totals.
+
+
+<!-- anim:trylock10:start -->
+Step through attempt 3 yourself: the moment that hung the last program, with trylock in place of the second lock.
+
+<div class="anim" data-anim="trylock10" markdown="0"></div>
+<!-- anim:trylock10:end -->
 
 - What this part settled: trylock plus giving back the first lock breaks no preemption from the inside: the holder gives up its own lock, so no thread ever waits while holding, and no deadlock can form.
 - What it leaves open: what the retries cost, and whether the two threads could keep getting in each other's way.
@@ -784,6 +798,13 @@ The chapter's verdict: "both threads and events are likely to persist as two dif
 | 6 | line 48: swap n2 for n1: succeeds | | n1 | n2 | A |
 
 Step 4 is the one that matters. A plain store there would have set `head` to `n1`, which points at A, and `n2` would have vanished from the list: that is how the unprotected insert of [Section 5.7](#sec-5-7) lost about half its nodes. The compare refused, thread 1 looked again, and in the end the list is `n1`, then `n2`, then A. No lock was held at any step.
+
+
+<!-- anim:casinsert10:start -->
+Step through the two inserts yourself: thread 2 swaps first, thread 1's swap fails, and thread 1 looks again.
+
+<div class="anim" data-anim="casinsert10" markdown="0"></div>
+<!-- anim:casinsert10:end -->
 
 ### Extra 6 <span class="lbl lbl-deeper">Deeper, Q2</span> The dining philosophers again: one reversed reach breaks the circle {#extra-6 data-toc-label="Extra 6 [Deeper, Q2] The dining philosophers again: one reversed reach breaks the circle"}
 

@@ -599,6 +599,13 @@ So there are two ways in:
 
 Either way the total comes out short, and different every run. This matters for the fix. Whatever we build must make the three instructions act as one on two cores, not only stop interrupts on one. A cure that only stopped interrupts would fix the one-CPU case and leave this one broken. Keep that in mind for the second class.
 
+
+<!-- anim:race:start -->
+Step through both races yourself: the one-CPU trace of Section 2.4, row by row, and the two-core run of this section.
+
+<div class="anim" data-anim="race" markdown="0"></div>
+<!-- anim:race:end -->
+
 - What this part settled: on two cores, adds are lost with no interrupt at all.
 - What it leaves open: a name for what we want, and how to get it. The next part names it.
 
@@ -684,6 +691,13 @@ Freeing a page has the same shape. `kfree` pushes a page onto the front of the l
 Line 60 reads the head into the new page's `next` field, and line 61 writes the head. Two steps, with a gap, and a lock around them. (`pa` is the address of the page being freed; `(struct run*)` tells the compiler to treat that address as a list record.)
 
 Kernels met this problem early; the textbook calls the OS the first concurrent program. An interrupt can arrive at any instruction, and a kernel may run on several CPUs at once. So every kernel list, table and bitmap (a table of bits, one per page or disk block) is a shared variable: the process table (Roadmap 1), the free list, the file system's records. In xv6 each shared one is protected by a lock. (Data that each CPU keeps for itself needs none. Larger kernels also use lock-free structures, which threads share without any lock. They rely on instructions such as compare-and-swap, which writes a new value only if the cell still holds the expected one; [Extra 4](class-2.md#extra-4) has more.) That is why this is taught in an operating systems class.
+
+
+<!-- anim:kallocrace:start -->
+Step through it yourself: two CPUs in kalloc() with the lock gone, and then with it.
+
+<div class="anim" data-anim="kallocrace" markdown="0"></div>
+<!-- anim:kallocrace:end -->
 
 - What this part settled: a kernel list is a shared variable too, and its pop and push are critical sections.
 - What it leaves open: how a program, not the kernel, asks for threads and locks. That is [Chapter 3](#chapter-3).

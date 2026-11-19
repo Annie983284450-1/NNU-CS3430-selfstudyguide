@@ -256,6 +256,13 @@ void *consumer(void *arg) {
 
 So there are two queues and two kinds of sleeper, and each side rings only the other side's bell. The producer's flow, with the `while`: lock; while `count == MAX`, wait on `empty`; `put(base + i)`; signal `fill` (a consumer); unlock; and a woken producer goes back to the test, not straight to `put()`. The consumer mirrors it.
 
+
+<!-- anim:prodcons:start -->
+Step through the three versions of Sections 4.3 to 4.6 yourself: the if that fails, the single queue where everyone sleeps, and the two queues that work.
+
+<div class="anim" data-anim="prodcons" markdown="0"></div>
+<!-- anim:prodcons:end -->
+
 - What this part settled: producers sleep on `empty` and signal `fill`; consumers sleep on `fill` and signal `empty`; and the check stays a `while`.
 - What it leaves open: why the buffer grew to `MAX` slots.
 
@@ -555,6 +562,13 @@ wakeup(void *chan)
 
 The flow of `sleep()`, with `wakeup()` in the middle: `sleep(chan, lk)`: acquire `p->lock`; release `lk`; `p->chan = chan`, state `SLEEPING`; `sched()`: the scheduler runs and releases `p->lock`; `wakeup(chan)` takes `p->lock`, sets the state to `RUNNABLE`, releases; the scheduler takes `p->lock` and switches back; release `p->lock`, acquire `lk`, return.
 
+
+<!-- anim:xv6sleep:start -->
+Step through it yourself: a reader sleeps on an empty pipe, a write wakes every sleeper on that address, and each one checks again.
+
+<div class="anim" data-anim="xv6sleep" markdown="0"></div>
+<!-- anim:xv6sleep:end -->
+
 - What this part settled: `sleep()` is `wait()` with the gap closed by taking the process's own lock first; `wakeup()` wakes every sleeper on the address, so the `while` is mandatory.
 - What it leaves open: nothing in this question. The checkpoint is next.
 
@@ -728,6 +742,13 @@ The parent ends after the child, in this run and in the second one the file hold
 
 Why does the order no longer matter? If the post comes first, the value holds the event until the wait arrives. If the wait comes first, it sleeps at −1 until the post. Both end at 0.
 
+
+<!-- anim:sema:start -->
+Step through both uses yourself: a semaphore that starts at 1 (Section 5.3), and one that starts at 0 (this section).
+
+<div class="anim" data-anim="sema" markdown="0"></div>
+<!-- anim:sema:end -->
+
 - What this part settled: started at 0, a semaphore makes one thread wait for another, in either order, with no variable and no lock of our own.
 - What it leaves open: why one counter can do both jobs, on one page.
 
@@ -822,6 +843,13 @@ About 33,000 items were never consumed, and about 33,000 were consumed more than
 2. a binary semaphore around the whole step: both sides wait forever;
 3. the binary semaphore only around `put()` and `get()`: it works.
 
+
+<!-- anim:twoprod:start -->
+Step through the table yourself, one action at a time: two producers write slot 3, and slot 4 is skipped.
+
+<div class="anim" data-anim="twoprod" markdown="0"></div>
+<!-- anim:twoprod:end -->
+
 - What this part settled: counting semaphores give the two waits for free, but two producers can both be inside `put()`.
 - What it leaves open: where the lock goes. The obvious place turns out to be wrong.
 
@@ -912,6 +940,13 @@ real 2.59 s
 Every item once, and 2.59 s against the 2.99 s of the condition-variable version with 10 slots ([Section 4.8](#sec-4-8)): about the same. It is the same problem as [Chapter 4](#chapter-4), solved with semaphores: two that count slots for the waits, one binary one for the lock, and the binary one inside the waits.
 
 Here is the design. Step 1 counted slots and items but left `put()` open to a race. Step 2 locked the whole step, and a sleeper took the lock down with it. Step 3 keeps the lock only around the two lines that touch the ring, and every item comes out once. The counting semaphores decide when, the binary one decides who, and the binary one must never be held while waiting. The producer's flow: `sem_wait(&empty)`: a free slot, or sleep holding nothing; `sem_wait(&mutex)`; `put()`: the two ring lines, one producer at a time; `sem_post(&mutex)`; `sem_post(&full)`: wake a consumer.
+
+
+<!-- anim:bbdeadlock:start -->
+Step through both versions yourself: the lock around everything of Section 6.2, and the lock only around put() and get().
+
+<div class="anim" data-anim="bbdeadlock" markdown="0"></div>
+<!-- anim:bbdeadlock:end -->
 
 - What this part settled: a thread sleeps on `empty` or `full` holding nothing; the mutex covers only the ring update; no sleeper ever holds it.
 - What it leaves open: one more structure, back from the first class: the list.

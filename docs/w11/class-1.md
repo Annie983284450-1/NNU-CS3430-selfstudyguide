@@ -212,6 +212,13 @@ At the start, the kernel wants to print the letter A, so it calls `uartputc_sync
 
 Three asks for one character. Only the last one learned anything new. A console chip is quick, so here the waste is small. On a slow device the CPU could ask far more times, and [Chapter 2](#chapter-2) starts from exactly that.
 
+
+<!-- anim:w11uart:start -->
+Step through it yourself: one call of uartputc_sync(), asking, asking again, and writing.
+
+<div class="anim" data-anim="w11uart" markdown="0"></div>
+<!-- anim:w11uart:end -->
+
 - What this part settled: polling works, and its cost is visible: the CPU spends every pass of the loop asking, and runs nothing else.
 - What it leaves open: how much that matters for a device far slower than a console chip.
 
@@ -509,6 +516,13 @@ At the start, process A needs one block of a file that is not in memory. So the 
 | 8 | 284 | 0 | the block | done | A | running | ready |
 
 One request cost one notify, one sleep, one interrupt and one wake-up, and no polling at all.
+
+
+<!-- anim:w11disk:start -->
+Step through it yourself: the request side and the interrupt side of one disk read, in the order they happen.
+
+<div class="anim" data-anim="w11disk" markdown="0"></div>
+<!-- anim:w11disk:end -->
 
 - What this part settled: run in order, the two halves make the interrupts timeline real: A sleeps, B runs, the disk copies the block and interrupts, the handler wakes A.
 - What it leaves open: does every request really go this way? We can count.

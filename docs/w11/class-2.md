@@ -284,6 +284,13 @@ Which sector of the middle track is the head in now? On the outer track, the sec
 
 Now look at where the time went. Of 375 units, the seek took 40 and the two transfers took 60. Waiting for the platter to turn took 275. On this disk and for these two requests, most of the time was the rotational delay. That is a result for this one example, not a law. [Chapter 5](#chapter-5) puts real milliseconds on the three parts.
 
+
+<!-- anim:w11seek:start -->
+Step through the two requests yourself: the platter turns to scale, and the table fills in one part at a time.
+
+<div class="anim" data-anim="w11seek" markdown="0"></div>
+<!-- anim:w11seek:end -->
+
 - What this part settled: the three parts of a request can be computed and added, and the simulator's output agrees with the hand calculation.
 - What it leaves open: the simulator counts in its own units. We still do not know how many milliseconds each part takes on a real drive.
 
@@ -735,6 +742,13 @@ Block:  16  Seek: 10  Rotate:200  Transfer: 30  Total: 240
 - Both: 60 + 240 = 300 units.
 
 With this fast arm the other order, 16 first, costs 300 + 120 = 420 on the simulator. The fast arm reaches the middle track after 10 units and waits 270 − 10 = 260 for sector 16, so that request costs 10 + 260 + 30 = 300. Then sector 8 is 90 units away, as it was for the slow arm. The seek takes 10, the wait is 90 − 10 = 80, and the request costs 10 + 80 + 30 = 120. So with the slow arm, 16 first wins by 420 to 660. With the fast arm, 8 first wins by 300 to 420. The best order really does depend on how fast the arm is compared with the spin, and a rule has to add both to find it.
+
+
+<!-- anim:w11sptf:start -->
+Step through both runs yourself: the slow arm, which goes to sector 16 first, and the fast arm, which goes to sector 8 first.
+
+<div class="anim" data-anim="w11sptf" markdown="0"></div>
+<!-- anim:w11sptf:end -->
 
 - What this part settled: every number in the table of [Section 6.6](#sec-6-6) follows from the seek and the rotation of each request. In this example, adding the two finds the cheaper order at either arm speed.
 - What it leaves open: how the work is shared between the operating system and the drive in a real system.
