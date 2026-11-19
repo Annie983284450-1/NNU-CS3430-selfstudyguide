@@ -111,12 +111,12 @@ A reading of a real capture. Use the map of `hold` in [Extra 5](class-1.md#extra
 
 ### Exercise 7 {#exercise-7}
 
-The counting question of [Section 4.2](class-2.md#sec-4-2): when the three instructions `lw a5,-20(s0)`, `addiw a5,a5,3`, `sw a5,-20(s0)` run, how many times does the processor go to memory? Pick one of A (2), B (3), C (5) or D (6), say what each wrong answer forgot or added, and say how many of the addresses are virtual.
+The counting question of [Section 4.2](class-2.md#sec-4-2): when the three instructions `lw a5,-20(s0)`, `addiw a5,a5,2`, `sw a5,-20(s0)` run, how many times does the processor go to memory? Pick one of A (2), B (3), C (5) or D (6), say what each wrong answer forgot or added, and say how many of the addresses are virtual.
 
 <details class="success answer" id="answer-7" markdown="1">
 <summary>Answer 7 <span class="hint">click to show</span></summary>
 
-C, five. In order (the table in [Section 4.3](class-2.md#sec-4-3)): fetch at 0x10 (read), the load of `x` (read), fetch at 0x14 (read), the addition (no memory, it happens in the register `a5`), fetch at 0x16 (read), the store of `x` (write). A counted the data only and forgot that each instruction must be fetched. B counted one access per instruction and forgot that `lw` and `sw` each go to memory a second time to do their work. D counted writing into `a5` as memory, but a register is inside the processor. All five addresses are virtual, the three fetches included.
+C, five. In order (the table in [Section 4.3](class-2.md#sec-4-3)): fetch at 0xe (read), the load of `count` (read), fetch at 0x12 (read), the addition (no memory, it happens in the register `a5`), fetch at 0x14 (read), the store of `count` (write). A counted the data only and forgot that each instruction must be fetched. B counted one access per instruction and forgot that `lw` and `sw` each go to memory a second time to do their work. D counted writing into `a5` as memory, but a register is inside the processor. All five addresses are virtual, the three fetches included.
 
 </details>
 
@@ -133,28 +133,28 @@ Seven. Four instructions means four fetches. The two `lw` instructions each read
 
 ### Exercise 9 {#exercise-9}
 
-The translation drill of [Section 5.6](class-2.md#sec-5-6). Set A, our program, base 32 KB, bounds 16 KB: fetch 128, load 15 KB, fetch 132, store 15 KB. Set B, a different process, base 16 KB, bounds 4 KB: virtual 0, 1 KB, 3000, 4400. Translate all eight in bytes, bounds first, and find the one that is not like the others.
+The translation drill of [Section 5.6](class-2.md#sec-5-6). Set A, our program, base 72 KB, bounds 8 KB: fetch 14, load 7 KB, fetch 18, store 7 KB. Set B, a different process, base 44 KB, bounds 3 KB: virtual 0, 2 KB, 3000, 3100. Translate all eight in bytes, bounds first, and find the one that is not like the others.
 
 <details class="success answer" id="answer-9" markdown="1">
 <summary>Answer 9 <span class="hint">click to show</span></summary>
 
-Write every number in bytes: 32 KB = 32,768, 16 KB = 16,384, 15 KB = 15,360, 4 KB = 4,096, 1 KB = 1,024. Set A: 128 < 16,384, so 128 + 32,768 = 32,896. 15,360 < 16,384, so 15,360 + 32,768 = 48,128. 132 + 32,768 = 32,900. The store of `x` goes to the same 48,128 as the load, because it is the same variable. Set B: 0 < 4,096, so 0 + 16,384 = 16,384. 1,024 + 16,384 = 17,408. 3,000 < 4,096, so 3,000 + 16,384 = 19,384. 4,400 is not below 4,096, so the check fails, no physical address is formed, and the hardware raises an exception: a fault. That is the odd one out. Here are the answers written as sums.
+Write every number in bytes: 72 KB = 73,728, 8 KB = 8,192, 7 KB = 7,168, 44 KB = 45,056, 3 KB = 3,072, 2 KB = 2,048. Set A: 14 < 8,192, so 14 + 73,728 = 73,742. 7,168 < 8,192, so 7,168 + 73,728 = 80,896. 18 + 73,728 = 73,746. The store of `count` goes to the same 80,896 as the load, because it is the same variable. Set B: 0 < 3,072, so 0 + 45,056 = 45,056. 2,048 + 45,056 = 47,104. 3,000 < 3,072, so 3,000 + 45,056 = 48,056. 3,100 is not below 3,072, so the check fails, no physical address is formed, and the hardware raises an exception: a fault. That is the odd one out. Here are the answers written as sums.
 
 ```text
-set A: base = 32 KB (32768), bounds = 16 KB (16384)
-fetch  128     ->    128 + 32768 = 32896
-load   15 KB   ->  15360 + 32768 = 48128
-fetch  132     ->    132 + 32768 = 32900
-store  15 KB   ->  15360 + 32768 = 48128
+set A: base = 72 KB (73728), bounds = 8 KB (8192)
+fetch  14      ->     14 + 73728 = 73742
+load   7 KB    ->   7168 + 73728 = 80896
+fetch  18      ->     18 + 73728 = 73746
+store  7 KB    ->   7168 + 73728 = 80896
 
-set B: base = 16 KB (16384), bounds = 4 KB (4096)
-virtual     0  ->      0 + 16384 = 16384
-virtual  1 KB  ->   1024 + 16384 = 17408
-virtual  3000  ->   3000 + 16384 = 19384
-virtual  4400  ->   4400 >= 4096 = FAULT
+set B: base = 44 KB (45056), bounds = 3 KB (3072)
+virtual     0  ->      0 + 45056 = 45056
+virtual  2 KB  ->   2048 + 45056 = 47104
+virtual  3000  ->   3000 + 45056 = 48056
+virtual  3100  ->   3100 >= 3072 = FAULT
 ```
 
- Two checks: the load and store of set A agree, and 19,384 comes out right only if KB means 1024 (with 1000 you would get 19,000).
+ Two checks: the load and store of set A agree, and set B comes out right only if KB means 1024. With 1000, the bound would be 3,000, so virtual 3000 would wrongly fault, and 3100 would look like an ordinary fault for the wrong reason.
 
 </details>
 

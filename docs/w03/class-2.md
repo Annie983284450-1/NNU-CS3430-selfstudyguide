@@ -57,7 +57,7 @@
 <path d="M216,334 C232,334 232,431 248,431" fill="none" stroke="#2f3e9e" stroke-width="1.4" stroke-dasharray="4 3"/>
 <a href="#chapter-4" class="cmap-link"><title>Q1. How often an address is translated, and why that means hardware</title><rect x="10" y="300" width="206" height="68" rx="8" fill="#ffffff" stroke="#2f3e9e" stroke-width="1.9"/><circle cx="28" cy="320" r="11" fill="#2f3e9e"/><text x="28" y="324" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff">Q1</text><text x="48" y="324" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">How often an address is</text><text x="48" y="340" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">translated, and why that</text><text x="48" y="356" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#1b2430">means hardware</text></a>
 <text x="113.0" y="497" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="10" font-style="italic" fill="#6b7482">↓ what is left open leads to the next question</text>
-<a href="#sec-5-2" class="cmap-link"><title>5.2 Problem: Relocation: the program placed at 32 KB, and its address 128 inside the OS</title><rect x="384" y="509" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="515" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="525.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="527" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.2 Relocation: the program placed at 32 KB, and its</text><text x="448" y="542" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">address 128 inside the OS</text></a>
+<a href="#sec-5-2" class="cmap-link"><title>5.2 Problem: Relocation: the program placed at 72 KB, and its address 14 inside the OS</title><rect x="384" y="509" width="400" height="42" rx="6" fill="#ffffff" stroke="#b23a48" stroke-width="1.1"/><rect x="390" y="515" width="51" height="15" rx="3" fill="#b23a48"/><text x="396" y="525.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Problem</text><text x="448" y="527" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.2 Relocation: the program placed at 72 KB, and its</text><text x="448" y="542" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">address 14 inside the OS</text></a>
 <path d="M352,530 C368,530 368,530 384,530" fill="none" stroke="#b23a48" stroke-width="1.4"/>
 <rect x="248" y="517" width="104" height="26" rx="13" fill="#ffffff" stroke="#b23a48" stroke-width="1.5"/>
 <text x="300.0" y="534" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#b23a48">Why we ask</text>
@@ -74,12 +74,12 @@
 <rect x="248" y="663" width="104" height="26" rx="13" fill="#ffffff" stroke="#1f6f8b" stroke-width="1.5"/>
 <text x="300.0" y="680" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#1f6f8b">The steps</text>
 <a href="#sec-5-6" class="cmap-link"><title>5.6 Your turn: Translation practice: two processes, eight addresses</title><rect x="384" y="801" width="400" height="42" rx="6" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.1"/><rect x="390" y="807" width="90" height="15" rx="3" fill="#2a7a6b"/><text x="396" y="817.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Check yourself</text><text x="487" y="819" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">5.6 Translation practice: two processes, eight</text><text x="487" y="834" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">addresses</text></a>
-<a href="#summary-66" class="cmap-link"><title>The answer</title><rect x="384" y="847" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="863" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Base and bounds: check virtual &lt; bounds, then</text><text x="394" y="878" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">physical = virtual + base; 15 KB + 32 KB = 47 KB; out of bounds</text><text x="394" y="893" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">raises the exception behind your segmentation fault. Solved: the</text><text x="394" y="908" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">compiler counted from 0 and the OS placed the program at 32 KB.</text><text x="394" y="923" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Cost: one compare and one add per access.</text></a>
+<a href="#summary-66" class="cmap-link"><title>The answer</title><rect x="384" y="847" width="400" height="91" rx="6" fill="#eef7f4" stroke="#2a7a6b" stroke-width="1.1"/><text x="394" y="863" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">The answer: Base and bounds: check virtual &lt; bounds, then</text><text x="394" y="878" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">physical = virtual + base; 7 KB + 72 KB = 79 KB; out of bounds</text><text x="394" y="893" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">raises the exception behind your segmentation fault. Solved: the</text><text x="394" y="908" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">compiler counted from 0 and the OS placed the program at 72 KB.</text><text x="394" y="923" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#1b2430">Cost: one compare and one add per access.</text></a>
 <path d="M352,870 C368,870 368,822 384,822" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
 <path d="M352,870 C368,870 368,892 384,892" fill="none" stroke="#2a7a6b" stroke-width="1.4"/>
 <rect x="248" y="856" width="104" height="26" rx="13" fill="#ffffff" stroke="#2a7a6b" stroke-width="1.5"/>
 <text x="300.0" y="874" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#2a7a6b">What it settles</text>
-<a href="#extra-15" class="cmap-link"><title>Extra 15 Deeper, Q2: Why the compiler&#x27;s addresses are wrong on arrival: 1000 and 3000</title><rect x="384" y="950" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="956" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="966.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="968" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 15 Why the compiler&#x27;s addresses are wrong on</text><text x="465" y="983" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">arrival: 1000 and 3000</text></a>
+<a href="#extra-15" class="cmap-link"><title>Extra 15 Deeper, Q2: Why the compiler&#x27;s addresses are wrong on arrival: 1200 and 7000</title><rect x="384" y="950" width="400" height="42" rx="6" fill="#fafafa" stroke="#7a7a7a" stroke-width="1.1" stroke-dasharray="4 3"/><rect x="390" y="956" width="68" height="15" rx="3" fill="#7a7a7a"/><text x="396" y="966.5" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="9.5" font-weight="600" fill="#fff">Deeper, Q2</text><text x="465" y="968" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">Extra 15 Why the compiler&#x27;s addresses are wrong on</text><text x="465" y="983" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" fill="#5b6675">arrival: 1200 and 7000</text></a>
 <path d="M352,971 C368,971 368,971 384,971" fill="none" stroke="#7a7a7a" stroke-width="1.4" stroke-dasharray="4 3"/>
 <rect x="248" y="958" width="104" height="26" rx="13" fill="#ffffff" stroke="#7a7a7a" stroke-width="1.5" stroke-dasharray="4 3"/>
 <text x="300.0" y="975" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#7a7a7a">Going deeper</text>
@@ -126,7 +126,7 @@
 
 The second class starts where the first one stopped, with a sentence that has a hole in it. So before the new material, here is the first class in one paragraph, with the hole marked.
 
-Every process sees a private strip of memory counted from 0: code at the top, the heap growing down the page, the stack growing up. We printed that strip from inside a process three times and got three sets of numbers. The stack address was just under 128 TB (140 trillion bytes in decimal) on a machine with 8 GB. So an address is a name in the process's own map, not a place in the chips. The heap is the part a program grows by hand, with `malloc` and `free`, and six classic mistakes live between them; the compiler catches four and valgrind the other two. `malloc` is a library inside the process that buys from the kernel rarely, with `brk` and `mmap`, and sells to you often. And a yes from the kernel is a promise: 1 GB promised, 328 kB delivered, until the program touched it. Three goals grade whatever we build: the program must not notice (transparency), the cost must stay small (efficiency), and nobody reaches outside their own space (protection).
+Every process sees a private strip of memory counted from 0: code at the low end, the heap growing toward higher addresses, the stack growing toward lower ones. We printed that strip from inside a process three times and got three sets of numbers. The stack address was just under 128 TB (140 trillion bytes in decimal) on a machine with 8 GB. So an address is a name in the process's own map, not a place in the chips. The heap is the part a program grows by hand, with `malloc` and `free`, and six classic mistakes live between them; the compiler catches four and valgrind the other two. `malloc` is a library inside the process that buys from the kernel rarely, with `brk` and `mmap`, and sells to you often. And a yes from the kernel is a promise: 1 GB promised, 328 kB delivered, until the program touched it. Three goals grade whatever we build: the program must not notice (transparency), the cost must stay small (efficiency), and nobody reaches outside their own space (protection).
 
 Now the hole, in one sentence. When process A loads what it calls address 0, the hardware quietly sends that load somewhere else, and A never learns that anything happened. The first class never said what that hardware is, where it sits, or what it does on the way past. That is the whole of this class. The answer is two registers and one addition, and by the end you will also see the one thing it cannot do.
 
@@ -163,48 +163,48 @@ The shape of the answer is the deal the course made for the CPU. Run at full spe
 The problem section asked how much work the translating hardware has to do. That depends on how many times a program goes to memory, and nobody can see that from the C. So we take one line of C, compile it, and count. Here is the line, and the instructions the compiler made of it (riscv64-linux-gnu-gcc 13.3.0, `-O0`, real objdump output, three lines of it).
 
 ```c
-int x = 3000;
-x = x + 3;
+int count = 40;
+count = count + 2;
 ```
 
 ```text
-10:   lw      a5,-20(s0)     # load x
-14:   addiw   a5,a5,3        # add 3
-16:   sw      a5,-20(s0)     # store x
+e:    lw      a5,-20(s0)     # load count
+12:   addiw   a5,a5,2        # add 2
+14:   sw      a5,-20(s0)     # store count
 ```
 
-`x` is a local variable holding 3000, and the line adds 3 to it. The compiler turned that line into three **instructions**, the small steps a processor actually runs, written here in **assembly language**, the readable spelling of machine instructions. The instructions are for RISC-V, the **instruction set** (the list of instructions a processor family understands; ISA for short) of the labs. Read them with this key.
+`count` is a local variable holding 40, and the line adds 2 to it. The compiler turned that line into three **instructions**, the small steps a processor actually runs, written here in **assembly language**, the readable spelling of machine instructions. The instructions are for RISC-V, the **instruction set** (the list of instructions a processor family understands; ISA for short) of the labs. Read them with this key.
 
 | Mark | Meaning |
 |---|---|
-| `10:` `14:` `16:` | the address where each instruction sits |
+| `e:` `12:` `14:` | the address where each instruction sits |
 | `a5` | a register, inside the CPU |
 | `s0` | a register pointing at this function's stack frame |
-| `-20(s0)` | memory, 20 bytes below `s0`; `x` lives there |
+| `-20(s0)` | memory, 20 bytes below `s0`; `count` lives there |
 
- The number at the front of each line (`10:`, `14:`, `16:`) is the address where that instruction itself sits, in hexadecimal. The gaps are uneven because RISC-V has instructions of two lengths: `lw` takes 4 bytes (0x10 to 0x14), and `addiw` is a short 2-byte one, so `sw` starts at 0x16. `a5` is a register inside the processor. `s0` is a register that points at this function's stack frame. And `-20(s0)` means the memory 20 bytes below the address in `s0`, which is where `x` lives. So: `lw` (load word) loads `x` from memory into `a5`; `addiw` adds 3 to `a5`; `sw` (store word) stores `a5` back into `x`. A **word** here is 4 bytes, the size of an `int`.
+ The number at the front of each line (`e:`, `12:`, `14:`) is the address where that instruction itself sits, in hexadecimal (`e` is 14 in decimal). The gaps are uneven because RISC-V has instructions of two lengths: `lw` takes 4 bytes (0xe to 0x12), and `addiw` is a short 2-byte one, so `sw` starts at 0x14. `a5` is a register inside the processor. `s0` is a register that points at this function's stack frame. And `-20(s0)` means the memory 20 bytes below the address in `s0`, which is where `count` lives. So: `lw` (load word) loads `count` from memory into `a5`; `addiw` adds 2 to `a5`; `sw` (store word) stores `a5` back into `count`. A **word** here is 4 bytes, the size of an `int`.
 
 Now the question. When this runs, how many times does the processor go to memory? Count everything, not only the data. Then say how many of those addresses are virtual. Here are four candidate answers. A is 2: the load and the store, the data and only the data. B is 3: one for each instruction. C is 5: the three instruction fetches, plus the load, plus the store. D is 6: C plus writing the result into `a5`. The hint is the part people miss: the processor has to go and get each instruction before it can run it, and that trip is a memory access too, because the instructions themselves live in memory. Pick one before reading the next section. (This is [Exercise 7](review.md#exercise-7) at the end.)
 
 ??? note "The program behind the three instructions (you can skip this listing)"
 
-    The section showed the C line and three lines of the compiler's output. The source file was not kept from the class run, so here is the file as the course sources record it, rebuilt for this guide and compiled on an Ubuntu 24.04 x86-64 machine with the RISC-V cross-compiler (a compiler that runs on one processor family and makes programs for another), gcc 13.3.0. It is one function, `f`, that sets a local to 3000 and adds 3.
+    The section showed the C line and three lines of the compiler's output. Here is the whole file, compiled for this guide on an Ubuntu 24.04 x86-64 machine with the RISC-V cross-compiler (a compiler that runs on one processor family and makes programs for another), gcc 13.3.0. It is one function, `f`, that sets a local to 40 and adds 2. (The class used the textbook's own example, `x = x + 3`; this guide uses its own numbers, and the three instructions have the same shape.)
     
     ```c
     void f(void) {
-        int x = 3000;
-        x = x + 3;
+        int count = 40;
+        count = count + 2;
     }
     ```
     
     Compile it without linking (`-c`; linking is the step that joins a compiled file with the C library into a runnable program) and with no optimization (`-O0`), then print the instructions with `objdump -d` (`objdump` is a tool that reads a compiled file and prints its instructions; `-d` means disassemble):
     
     ```text
-    riscv64-linux-gnu-gcc -O0 -c addthree.c -o addthree_rv.o
-    riscv64-linux-gnu-objdump -d addthree_rv.o
+    riscv64-linux-gnu-gcc -O0 -c addtwo.c -o addtwo_rv.o
+    riscv64-linux-gnu-objdump -d addtwo_rv.o
     ```
     
-    The output has thirteen lines. The first six set up the function and store 3000 into `x`; lines `10`, `14` and `16` are the three shown above, `lw a5,-20(s0)`, `addiw a5,a5,3` and `sw a5,-20(s0)`; the last four tidy up and return. No `sudo` is needed. On Ubuntu the cross-compiler is the package `gcc-riscv64-linux-gnu`. The addresses come out the same with the same compiler version; another version may number them differently, but the load, the add and the store will be there.
+    The output has twelve lines. The first five set up the function and store 40 into `count`; lines `e`, `12` and `14` are the three shown above, `lw a5,-20(s0)`, `addiw a5,a5,2` and `sw a5,-20(s0)`; the last four tidy up and return. No `sudo` is needed. On Ubuntu the cross-compiler is the package `gcc-riscv64-linux-gnu`. The addresses come out the same with the same compiler version; another version may number them differently, but the load, the add and the store will be there.
     
 ### 4.3 <span class="lbl lbl-example">Worked example</span> Five memory accesses, all of them virtual {#sec-4-3 data-toc-label="4.3 [Worked example] Five memory accesses, all of them virtual"}
 
@@ -212,13 +212,13 @@ The four candidates differ only in what they count as a trip to memory, so settl
 
 | Step | Kind | Virtual address |
 |---|---|---|
-| fetch the instruction | read | 0x10 |
-| execute it: load `x` | read | `x` on the stack |
+| fetch the instruction | read | 0xe |
+| execute it: load `count` | read | `count` on the stack |
+| fetch the instruction | read | 0x12 |
 | fetch the instruction | read | 0x14 |
-| fetch the instruction | read | 0x16 |
-| execute it: store `x` | write | `x` on the stack |
+| execute it: store `count` | write | `count` on the stack |
 
-Fetch the instruction at 0x10: a read, the first access. Execute it: it loads `x` from the stack, a second read. Fetch the next instruction, at 0x14: a third read. Execute it: the addition happens entirely inside the register `a5`, so it touches no memory. Fetch the instruction at 0x16: the fourth read. Execute it: it stores `x` back, a write, the fifth access. Five in total, so the answer is C. The candidates that fail each dropped or added one kind: A forgot the three fetches, B forgot that `lw` and `sw` each go to memory a second time to do their work, and D counted a register as memory.
+Fetch the instruction at 0xe: a read, the first access. Execute it: it loads `count` from the stack, a second read. Fetch the next instruction, at 0x12: a third read. Execute it: the addition happens entirely inside the register `a5`, so it touches no memory. Fetch the instruction at 0x14: the fourth read. Execute it: it stores `count` back, a write, the fifth access. Five in total, so the answer is C. The candidates that fail each dropped or added one kind: A forgot the three fetches, B forgot that `lw` and `sw` each go to memory a second time to do their work, and D counted a register as memory.
 
 Now the second half of the question. All five addresses are names from the process's private map, the three instruction fetches included. Code addresses are virtual too; the address of `main` moved on every run in [Extra 4](class-1.md#extra-4). So whatever handles these addresses must handle all five.
 
@@ -244,52 +244,45 @@ Here is the first checkpoint of the second class.
 
 ### 5.1 <span class="lbl lbl-concept">Concept</span> The program's view: virtual addresses counted from 0 (Figure 15.1) {#sec-5-1 data-toc-label="5.1 [Concept] The program's view: virtual addresses counted from 0 (Figure 15.1)"}
 
-[Chapter 4](#chapter-4) showed that every address must be fixed on the way past, but not what "fixed" means. To say what the hardware must do to an address, we need two pictures of the same program at the same moment: the one the program believes, and the one the machine holds. This section is the first picture, drawn with the textbook's tidy numbers so that the arithmetic stays easy.
+[Chapter 4](#chapter-4) showed that every address must be fixed on the way past, but not what "fixed" means. To say what the hardware must do to an address, we need two pictures of the same program at the same moment: the one the program believes, and the one the machine holds. This section is the first picture, drawn with our own small numbers so that the arithmetic stays easy. (The textbook draws the same two pictures with numbers of its own, in OSTEP Figures 15.1 and 15.2.)
 
 <figure markdown="1">
-![Figure 5.1. OSTEP Figure 15.1 redrawn: a 16 KB address space with the three instructions at 128, 132 and 135, and x at 15 KB holding 3000. Every address here is virtual.](figs/fig151.svg){width=60%}
-<figcaption markdown="1">Figure 5.1. OSTEP Figure 15.1 redrawn: a 16 KB address space with the three instructions at 128, 132 and 135, and x at 15 KB holding 3000. Every address here is virtual.</figcaption>
+![Figure 5.1. The program's view: the 8 KB address space of Figure 1.2, with the three instructions of Section 4.2 at 14, 18 and 20, and `count` at 7 KB holding 40. Every address here is virtual. Our own numbers, after the idea of OSTEP Figure 15.1.](figs/fig151.svg){width=100%}
+<figcaption markdown="1">Figure 5.1. The program's view: the 8 KB address space of Figure 1.2, with the three instructions of [Section 4.2](#sec-4-2) at 14, 18 and 20, and `count` at 7 KB holding 40. Every address here is virtual. Our own numbers, after the idea of OSTEP Figure 15.1.</figcaption>
 </figure>
 
-Here is the C we have been carrying, and the textbook's illustration of its x86 instructions (OSTEP section 15.1).
-
-```c
-void func() {
-    int x = 3000;
-    x = x + 3;    // this line
-    ...
-```
+Here are the three instructions of [Section 4.2](#sec-4-2) again, with their addresses written in decimal: 0xe is 14, 0x12 is 18, and 0x14 is 20.
 
 ```text
-128: movl 0x0(%ebx),%eax  ;load 0+ebx into eax
-132: addl $0x03, %eax     ;add 3 to eax register
-135: movl %eax,0x0(%ebx)  ;store eax back to mem
+14:  lw      a5,-20(s0)     # load count
+18:  addiw   a5,a5,2        # add 2
+20:  sw      a5,-20(s0)     # store count
 ```
 
-That listing is the same line of C as the textbook shows it for x86. The textbook says the compiler's output "might look something like this", so it is an illustration, not a real compile ([Extra 14](#extra-14) compiles the line for real). The register names differ from the RISC-V of [Section 4.2](#sec-4-2), but the shape is the same: load, add, store. `movl 0x0(%ebx),%eax` loads `x` into the register `eax` (the textbook assumes the address of `x` is already in the register `ebx`); `addl $0x03, %eax` adds 3 to the register; `movl %eax,0x0(%ebx)` stores it back. Now look at the numbers in front of the three lines: 128, 132 and 135. (The gaps, 4 and then 3, are uneven because x86 instructions come in different lengths.) They are where those three instructions sit inside the program's memory, counted in bytes from the start. The first instruction is 128 bytes from the start of the program. That is all the number means.
+The numbers in front, 14, 18 and 20, are where those three instructions sit inside the program's memory, counted in bytes from the start. The first instruction is 14 bytes from the start of the program. That is all the number means.
 
-Figure 5.1 is the program's memory, all of it, from 0 KB at the top to 16 KB at the bottom. The code sits in the first kilobyte or so, with the three instructions printed inside it. Below the code is the heap. At 15 KB, in the stack, is `x` itself, holding 3000. When the load goes looking for `x`, 15 KB is the address it uses.
+Figure 5.1 is the program's memory, all of it, from 0 at the left to 8 KB at the right. The code takes the first 2 KB, with the three instructions inside it. After the code comes the heap. At 7 KB, in the stack, is `count` itself, holding 40. (Where exactly `count` lands depends on where the stack starts. In this small picture we put it at 7 KB, 7,168 bytes, to keep the numbers round.) When the load goes looking for `count`, 7 KB is the address it uses.
 
-So run it. Fetch at 128. Execute, which loads from 15 KB. Fetch at 132. Execute, which touches no memory. Fetch at 135. Execute, which stores to 15 KB. Six steps, five of them going to memory, the same five as the RISC-V count. Every one of those addresses came out of the box in Figure 5.1.
+So run it. Fetch at 14. Execute, which loads from 7 KB. Fetch at 18. Execute, which touches no memory. Fetch at 20. Execute, which stores to 7 KB. Six steps, five of them going to memory, the same five as in [Section 4.3](#sec-4-3). Every one of those addresses came out of the box in Figure 5.1.
 
 The compiler wrote these numbers assuming the program owns memory starting at 0. It had no idea where the program would really end up, so it counted from 0. These are virtual addresses. What it leaves open: where the program really is in the machine, which is the second picture.
 
-### 5.2 <span class="lbl lbl-problem">Problem</span> Relocation: the program placed at 32 KB, and its address 128 inside the OS {#sec-5-2 data-toc-label="5.2 [Problem] Relocation: the program placed at 32 KB, and its address 128 inside the OS"}
+### 5.2 <span class="lbl lbl-problem">Problem</span> Relocation: the program placed at 72 KB, and its address 14 inside the OS {#sec-5-2 data-toc-label="5.2 [Problem] Relocation: the program placed at 72 KB, and its address 14 inside the OS"}
 
-What we have is the program's own picture, counted from 0. Now the machine's picture at the same instant, OSTEP Figure 15.2, and the two do not agree.
+What we have is the program's own picture, counted from 0. Now the machine's picture at the same instant, and the two do not agree.
 
 <figure markdown="1">
-![Figure 5.2. OSTEP Figure 15.2 redrawn: 64 KB of physical memory, the OS in the first 16 KB, and the process relocated to 32 KB. Every address here is physical.](figs/fig152.svg){width=56%}
-<figcaption markdown="1">Figure 5.2. OSTEP Figure 15.2 redrawn: 64 KB of physical memory, the OS in the first 16 KB, and the process relocated to 32 KB. Every address here is physical.</figcaption>
+![Figure 5.2. The machine's view: 128 KB of physical memory, the OS in the first 32 KB, and the process placed at 72 KB. Every address here is physical. Our own numbers, after the idea of OSTEP Figure 15.2.](figs/fig152.svg){width=100%}
+<figcaption markdown="1">Figure 5.2. The machine's view: 128 KB of physical memory, the OS in the first 32 KB, and the process placed at 72 KB. Every address here is physical. Our own numbers, after the idea of OSTEP Figure 15.2.</figcaption>
 </figure>
 
-Physical memory here is 64 KB. The OS has taken the first 16 KB for itself. Then a free slot. Then, from 32 KB to 48 KB, our process, all 16 KB of it in one piece, with the code, heap and stack inside exactly as in Figure 5.1. Then another free slot. So the program really sits at 32 KB, and it does not know that; the OS picked that slot while loading it. Keep one rule for the rest of the class: Figure 5.2 is physical, and Figure 5.1 was virtual.
+Physical memory here is 128 KB. The OS has taken the first 32 KB for itself. Then a free stretch. Then, from 72 KB to 80 KB, our process, all 8 KB of it in one piece, with the code, heap and stack inside exactly as in Figure 5.1. Then more free memory. So the program really sits at 72 KB, and it does not know that; the OS picked that place while loading it. Keep one rule for the rest of the class: Figure 5.2 is physical, and Figure 5.1 was virtual.
 
-Where it breaks: put the two pictures together. The program asks for 128, a number out of its own box. Let it through to the chips untouched and it becomes physical 128, which is inside the OS. Same for `x`: virtual 15 KB would land at physical 15 KB, also inside the OS. So the very first instruction of this program would read kernel memory.
+Where it breaks: put the two pictures together. The program asks for 14, a number out of its own box. Let it through to the chips untouched and it becomes physical 14, which is inside the OS. Same for `count`: virtual 7 KB would land at physical 7 KB, also inside the OS. So the very first instruction of this program would read kernel memory.
 
 And here is what we may not do: tell the program. It was compiled counting from 0, it is already running, and the OS may want to move it again later. The word that matters is **transparent**, in the sense of [Section 1.5](class-1.md#sec-1-5): the fix has to work without the program knowing anything happened. So what we need is the textbook's question:
 
-> "From the program's perspective, its address space starts at address 0 and grows to a maximum of 16 KB; all memory references it generates should be within these bounds. However, to virtualize memory, the OS wants to place the process somewhere else in physical memory, not necessarily at address 0. Thus, we have the problem: how can we relocate this process in memory in a way that is transparent to the process?" (OSTEP section 15.2)
+> "Thus, we have the problem: how can we relocate this process in memory in a way that is transparent to the process?" (OSTEP section 15.2)
 
  Moving a program to a different place in memory and making its addresses still work is called **relocation**.
 
@@ -303,12 +296,12 @@ The cheap moment is load time: fix every address once, before the program runs, 
 
 ```text
 the program was compiled as if it sits at 0:
-        movl  1000, %eax
-the loader puts it at 3000, so it rewrites:
-        movl  4000, %eax        <- edited
+        load  r1, [1200]
+the loader puts it at 7000, so it rewrites:
+        load  r1, [8200]        <- edited
 ```
 
-The technique is called **static relocation**, and the word static is doing the work: the fixing happens once, at load time. One piece of software does it all, the **loader** (the part of the OS that copies a program from disk into memory and starts it). The program is compiled as if it lives at 0, so one of its instructions says `movl 1000, %eax`: load from address 1000. When the loader puts the program at 3000 instead, it walks through the program and adds 3000 to every address it can find, so the instruction becomes `movl 4000, %eax`. This worked, and real systems shipped it. Why it was abandoned matters more than the technique.
+The technique is called **static relocation**, and the word static is doing the work: the fixing happens once, at load time. One piece of software does it all, the **loader** (the part of the OS that copies a program from disk into memory and starts it). The program is compiled as if it lives at 0, so one of its instructions says `load r1, [1200]`: load from address 1200 into a register. (This is made-up assembly, to keep the idea free of any one processor.) When the loader puts the program at 7000 instead, it walks through the program and adds 7000 to every address it can find, so the instruction becomes `load r1, [8200]`. This worked, and real systems shipped it. Why it was abandoned matters more than the technique.
 
 The first reason is fatal: no protection. The loader can only rewrite the addresses it can see in the file. An address the program computes while it runs (with pointer arithmetic, adding to an address) goes straight to physical memory, unchecked. So the program can read another process's data, or the OS's. The second reason is mobility. With the numbers baked into the instructions, the process is stuck where it was loaded. The OS cannot move it to squeeze memory together, and it cannot write it out to disk and bring it back somewhere else. The third is practical: finding every address inside a program is fragile, because some addresses are computed, not written down.
 
@@ -319,19 +312,19 @@ Turn each failure around and you get a specification. The loader never saw the a
 The other moment, then: not once at load time, but every time an address leaves the processor. The specification says what this must be: a check at every access, in hardware, with a number the OS can change. The smallest piece of hardware that fits is two registers and an adder. Figure 5.3 shows one access going through it.
 
 <figure markdown="1">
-![Figure 5.3. Base and bounds: the MMU with its two registers, and one access (virtual 15 KB) checked and translated to physical 47 KB. Following textbook section 15.3.](figs/bb.svg){width=100%}
-<figcaption markdown="1">Figure 5.3. Base and bounds: the MMU with its two registers, and one access (virtual 15 KB) checked and translated to physical 47 KB. Following textbook section 15.3.</figcaption>
+![Figure 5.3. Base and bounds: the MMU with its two registers, and one access (virtual 7 KB) checked and translated to physical 79 KB. Following textbook section 15.3, with our own numbers.](figs/bb.svg){width=100%}
+<figcaption markdown="1">Figure 5.3. Base and bounds: the MMU with its two registers, and one access (virtual 7 KB) checked and translated to physical 79 KB. Following textbook section 15.3, with our own numbers.</figcaption>
 </figure>
 
-The hardware is two registers per processor, inside the part of the CPU called the **MMU**, the memory management unit: the hardware that translates every address. The **base register** holds where this process really starts in physical memory, 32 KB here. The **bounds register** (also called the limit register) holds how big its address space is, 16 KB.
+The hardware is two registers per processor, inside the part of the CPU called the **MMU**, the memory management unit: the hardware that translates every address. The **base register** holds where this process really starts in physical memory, 72 KB here. The **bounds register** (also called the limit register) holds how big its address space is, 8 KB.
 
-Now watch one access go through. 15 KB is where `x` lives. The processor puts that address out toward memory, and the MMU catches it on the way. First it checks that 15 is below the bound of 16, which it is. Then it adds the base: 15 KB + 32 KB = 47 KB. So the access lands at physical 47 KB. Check it in bytes: 15 KB is 15 × 1024 = 15,360, 32 KB is 32 × 1024 = 32,768, and 15,360 + 32,768 = 48,128, which is 47 × 1024 = 48,128. The program asked for 15 and got 47, and it has no way of finding out.
+Now watch one access go through. 7 KB is where `count` lives. The processor puts that address out toward memory, and the MMU catches it on the way. First it checks that 7 is below the bound of 8, which it is. Then it adds the base: 7 KB + 72 KB = 79 KB. So the access lands at physical 79 KB. Check it in bytes: 7 KB is 7 × 1024 = 7,168, 72 KB is 72 × 1024 = 73,728, and 7,168 + 73,728 = 80,896, which is 79 × 1024 = 80,896. The program asked for 7 and got 79, and it has no way of finding out.
 
 Every memory reference goes through the same two steps. Compare against the bound first; then add the base:
 
 physical address = virtual address + base, provided virtual address < bounds.
 
-The first instruction gets the same treatment: its fetch from virtual 128 goes to 128 + 32,768 = 32,896. This design is called **base and bounds**, and also **dynamic relocation**, because the relocation happens while the program runs, on every access, and the OS can change the base later.
+The first instruction gets the same treatment: its fetch from virtual 14 goes to 14 + 73,728 = 73,742. This design is called **base and bounds**, and also **dynamic relocation**, because the relocation happens while the program runs, on every access, and the OS can change the base later.
 
 Grade it against the three goals of [Section 1.5](class-1.md#sec-1-5). Transparency: nothing in the program was rewritten; it is still compiled as if it lives at 0, and the OS just loads the base register before running it. Efficiency: a comparison and an addition are a few logic gates (the smallest switching circuits a chip is built from), and they cost essentially nothing per access. Protection: the bound is checked first, every time, so nothing outside the address space is reachable. And look back at the three requirements of [Section 5.3](#sec-5-3). Checked at access time, done by hardware, adjustable while the program runs: all three, from two registers and an adder. That was the legal access. Next, the other case.
 
@@ -340,11 +333,11 @@ Grade it against the three goals of [Section 1.5](class-1.md#sec-1-5). Transpare
 Base and bounds has a second job besides adding, and it matters as much: refusing. [Section 1.1](class-1.md#sec-1-1) began with A storing into B's memory, and the bound is what is supposed to stop it. So run the same machine with an address the process does not have.
 
 <figure markdown="1">
-![Figure 5.4. The same two registers, and a virtual address of 20 KB in a 16 KB space: the check fails and no address is produced.](figs/oob.svg){width=100%}
-<figcaption markdown="1">Figure 5.4. The same two registers, and a virtual address of 20 KB in a 16 KB space: the check fails and no address is produced.</figcaption>
+![Figure 5.4. The same two registers, and a virtual address of 9 KB in an 8 KB space: the check fails and no address is produced.](figs/oob.svg){width=100%}
+<figcaption markdown="1">Figure 5.4. The same two registers, and a virtual address of 9 KB in an 8 KB space: the check fails and no address is produced.</figcaption>
 </figure>
 
-Same program, same machine, same two registers. This time the program asks for virtual 20 KB, and the space is only 16 KB long. 20 is not below 16, so the comparison fails.
+Same program, same machine, same two registers. This time the program asks for virtual 9 KB, and the space is only 8 KB long. 9 is not below 8, so the comparison fails.
 
 Three things happen. One: the hardware refuses. It does not compute a wrong address and catch it afterwards. No physical address is ever formed; nothing is read and nothing is written. Two: control goes to the OS. The hardware raises an **exception**, an event that stops the running program and makes the processor jump into the kernel, to a handler the OS installed at boot. That is the trap machinery of the processes week, reused unchanged; only the trigger is new. Three: the OS decides, and for a bad memory access the answer is almost always to kill the process. On Linux the kernel sends the signal SIGSEGV (the "segmentation violation" signal, number 11, from [Section 2.3](class-1.md#sec-2-3)), and the program prints "Segmentation fault" and stops.
 
@@ -368,27 +361,27 @@ So the name is not a metaphor. A segmentation fault is the name of the hardware 
 
 Two worked accesses are not yet a skill. The method has two steps and an order, bounds first and then base, and the order is where people go wrong, so here are eight addresses to translate. KB always means 1024 bytes, never 1000.
 
-*Set A: our program, base = 32 KB, bounds = 16 KB*
+*Set A: our program, base = 72 KB, bounds = 8 KB*
 
 ```text
-fetch  128     ->  ?
-load   15 KB   ->  ?
-fetch  132     ->  ?
-store  15 KB   ->  ?
+fetch  14      ->  ?
+load   7 KB    ->  ?
+fetch  18      ->  ?
+store  7 KB    ->  ?
 ```
 
-*Set B: a different, smaller process, base = 16 KB, bounds = 4 KB*
+*Set B: a different, smaller process, base = 44 KB, bounds = 3 KB*
 
 ```text
 virtual     0  ->  ?
-virtual  1 KB  ->  ?
+virtual  2 KB  ->  ?
 virtual  3000  ->  ?
-virtual  4400  ->  ?
+virtual  3100  ->  ?
 ```
 
-Set A is the program we have been tracing, with the base and bounds of [Section 5.4](#sec-5-4). Its four accesses are four of the five of `x = x + 3` in the textbook's numbering: two of the three instruction fetches (128 and 132; the fetch at 135 works the same way), the load and the store. Set B is a different, smaller process, so you see the arithmetic with a second pair of registers: base 16 KB, bounds 4 KB. In this course a KB is 1024 bytes, never 1000.
+Set A is the program we have been tracing, with the base and bounds of [Section 5.4](#sec-5-4). Its four accesses are four of the five of `count = count + 2`: two of the three instruction fetches (14 and 18; the fetch at 20 works the same way), the load and the store. Set B is a different, smaller process, so you see the arithmetic with a second pair of registers: base 44 KB, bounds 3 KB. In this course a KB is 1024 bytes, never 1000.
 
-The method: check the virtual address against the bound first, and only then add the base. Write every number in bytes first (15 KB = 15 × 1024 = 15,360, for example). One of the eight is not like the others; find it, and be ready to say why. This is [Exercise 9](review.md#exercise-9), and the answers are at the end of the guide.
+The method: check the virtual address against the bound first, and only then add the base. Write every number in bytes first (7 KB = 7 × 1024 = 7,168, for example). One of the eight is not like the others; find it, and be ready to say why. This is [Exercise 9](review.md#exercise-9), and the answers are at the end of the guide.
 
 ### 5.7 <span class="lbl lbl-example">Worked example</span> Why you add: a virtual address is a distance, not a place {#sec-5-7 data-toc-label="5.7 [Worked example] Why you add: a virtual address is a distance, not a place"}
 
@@ -399,9 +392,9 @@ The formula "physical = virtual + base" can look like a rule somebody made up. I
 <figcaption markdown="1">Figure 5.5. Why you add: the program's own ruler, which always restarts at 0, laid over the machine's ruler; base plus virtual address is two distances end to end.</figcaption>
 </figure>
 
-The long bar is physical memory, all 64 KB, and the numbers under it are real locations. Our process sits in the shaded part, 32 KB to 48 KB. The short bar above is the same stretch measured with the program's own ruler. Its 0 sits where physical memory says 32 KB. That is the whole trick: the program has its own ruler and its own 0.
+The long bar is physical memory, all 128 KB, and the numbers under it are real locations. Our process sits in the shaded part, 72 KB to 80 KB. The short bar above is the same stretch measured with the program's own ruler. Its 0 sits where physical memory says 72 KB. That is the whole trick: the program has its own ruler and its own 0.
 
-So when the program says 15 KB, it names a distance, not a place: 15 KB along its own ruler. From physical 0 to where the program starts is 32,768 bytes; that is the base. From there to `x` is another 15,360 bytes; that is the virtual address. Two distances end to end: 32,768 + 15,360 = 48,128. You are not adding two places. You are walking two distances one after the other. (That is why the textbook calls a virtual address an **offset** into the address space: a distance from its start.)
+So when the program says 7 KB, it names a distance, not a place: 7 KB along its own ruler. From physical 0 to where the program starts is 73,728 bytes; that is the base. From there to `count` is another 7,168 bytes; that is the virtual address. Two distances end to end: 73,728 + 7,168 = 80,896. You are not adding two places. You are walking two distances one after the other. (That is why the textbook calls a virtual address an **offset** into the address space: a distance from its start.)
 
 The same picture explains a fault. The program's ruler is only as long as its address space, the bound. An address past the end of the ruler is not a distance along it at all, so there is nothing to add it to, no physical address exists, and the hardware raises the exception. And it gives two small checks for any translation you do. A load and a store of the same variable must land on the same physical address, because they are the same distance along the same ruler. And a translation that mixes 1024 and 1000 will be off, because both rulers count in the same unit.
 
@@ -409,7 +402,7 @@ Here is the second checkpoint of the second class.
 
 !!! settled "Settled"
 
-    On every access the MMU compares the virtual address with the bounds register, then adds the base register: 15 KB + 32 KB = 47 KB. An address at or past the bound is refused before any physical address exists, and that refusal is the segmentation fault.
+    On every access the MMU compares the virtual address with the bounds register, then adds the base register: 7 KB + 72 KB = 79 KB. An address at or past the bound is refused before any physical address exists, and that refusal is the segmentation fault.
 
 !!! open "Still open"
 
@@ -417,7 +410,7 @@ Here is the second checkpoint of the second class.
 
 !!! able "You should now be able to"
 
-    Translate virtual 3000 with base 16 KB and bounds 4 KB, and say what happens to virtual 4400 ([Exercise 9](review.md#exercise-9) asks exactly that).
+    Translate virtual 3000 with base 44 KB and bounds 3 KB, and say what happens to virtual 3100 ([Exercise 9](review.md#exercise-9) asks exactly that).
 
 ## Chapter 6. What the OS must do, and why base and bounds did not last {#chapter-6}
 
@@ -502,11 +495,11 @@ One honest caveat. xv6 does not implement base and bounds. `uvmalloc` installs r
 What we have works: base and bounds scores well on transparency, efficiency and protection. But [Section 4.1](#sec-4-1) added a fourth goal, flexibility, and the design has not been graded on it yet. Grade it honestly, starting from one process's slot.
 
 <figure markdown="1">
-![Figure 6.1. One process's 16 KB slot in physical memory: code, heap, the free middle, and stack.](figs/intfrag.svg){width=42%}
-<figcaption markdown="1">Figure 6.1. One process's 16 KB slot in physical memory: code, heap, the free middle, and stack.</figcaption>
+![Figure 6.1. One process's 8 KB slot in physical memory: code, heap, the free middle, and stack.](figs/intfrag.svg){width=100%}
+<figcaption markdown="1">Figure 6.1. One process's 8 KB slot in physical memory: code, heap, the free middle, and stack.</figcaption>
 </figure>
 
-Here is the 16 KB block one process occupies in the chips: code at the top, heap under it, stack at the bottom. And the red part in the middle is the problem. That space is free; the process is not using it. But it is inside the block, so it belongs to this process, and no other process can have it. Real chips, holding nothing. Waste inside an allocated unit has a name: **internal fragmentation**. "Internal" because it sits inside the block that was handed out. (Its sibling, external fragmentation, arrives in the next week, when the slots stop being the same size.)
+Here is the 8 KB block one process occupies in the chips: code at the left, the heap after it, the stack at the right end. And the red part in the middle is the problem. That space is free; the process is not using it. But it is inside the block, so it belongs to this process, and no other process can have it. Real chips, holding nothing. Waste inside an allocated unit has a name: **internal fragmentation**. "Internal" because it sits inside the block that was handed out. (Its sibling, external fragmentation, arrives in the next week, when the slots stop being the same size.)
 
 Where it breaks: put the waste together with the first class's measurement. A program's address space on the Ubuntu machine reaches up to 2^47 bytes, 128 TB: [Section 1.4](class-1.md#sec-1-4) found the stack just below that. Nearly all of it is empty, and the machine has only 7.8 GB, about 16,700 times less ([Extra 6](class-1.md#extra-6) draws the few islands in use). If the whole address space has to sit in one unbroken block of physical memory, the empty middle must be stored too, and 128 TB does not fit in 7.8 GB. Not even one process fits. That is the flexibility the crux asked for, failed: a program cannot use its address space the way programs really do, as a few small islands spread over a huge range.
 
@@ -538,7 +531,7 @@ Question 3, where `malloc`'s bytes really come from. A library that buys from th
 
 Question 4, how often an address is translated, and why that pushes the job into hardware. One line of C is five memory accesses, all virtual, billions a second. Solved: software is too slow (valgrind, 20 to 50 times), so the MMU sits in the path of every access.
 
-Question 5, how one addition lets a program run anywhere without knowing it moved. Base and bounds: check virtual < bounds, then physical = virtual + base; 15 KB + 32 KB = 47 KB; out of bounds raises the exception behind your segmentation fault. Solved: the compiler counted from 0 and the OS placed the program at 32 KB. Cost: one compare and one add per access.
+Question 5, how one addition lets a program run anywhere without knowing it moved. Base and bounds: check virtual < bounds, then physical = virtual + base; 7 KB + 72 KB = 79 KB; out of bounds raises the exception behind your segmentation fault. Solved: the compiler counted from 0 and the OS placed the program at 72 KB. Cost: one compare and one add per access.
 
 Question 6, what the OS must do for that, and why the design did not last. The OS keeps a free list of slots, sets the pair on every switch, installs the handlers at boot, and moves a process by changing one number; xv6 keeps the bound in `p->sz`. Not lasting: one contiguous slot stores the empty gap, internal fragmentation, fatal at 128 TB. Next: cut the address space into pieces.
 
@@ -562,39 +555,39 @@ Why not interpose on memory in software, as valgrind does? Frequency. A busy pro
 
 ### Extra 14 <span class="lbl lbl-deeper">Deeper, Q1</span> Load-store architectures: five accesses on RISC-V, three on x86-64 {#extra-14 data-toc-label="Extra 14 [Deeper, Q1] Load-store architectures: five accesses on RISC-V, three on x86-64"}
 
-[Section 4.3](#sec-4-3) counted five accesses for `x = x + 3`, and the textbook counts the same five on its x86 listing. That agreement is less solid than it looks. The textbook's x86 code is a hand-written example, not compiler output, so the honest test is to compile the same line for both machines and count again, same gcc, same `-O0`.
+[Section 4.3](#sec-4-3) counted five accesses for `count = count + 2` on RISC-V, and the textbook counts the same five on an x86 listing of its own example. That agreement is less solid than it looks. The textbook says its x86 code is an illustration, not compiler output, so the honest test is to compile our line for both machines and count again, same gcc, same `-O0`.
 
 *RISC-V (a load-store architecture): three instructions, five memory accesses*
 
 ```text
-10:   lw      a5,-20(s0)
-14:   addiw   a5,a5,3
-16:   sw      a5,-20(s0)
+e:    lw      a5,-20(s0)
+12:   addiw   a5,a5,2
+14:   sw      a5,-20(s0)
 ```
 
 *x86-64: one instruction, three memory accesses*
 
 ```text
-f:   addl   $0x3,-0x4(%rbp)
+f:   addl   $0x2,-0x4(%rbp)
 ```
 
-For RISC-V the count is exactly as before: load, add, store, three instructions, five accesses. For x86-64, with the same compiler and the same settings, the whole line is one instruction: `addl $0x3,-0x4(%rbp)`, add 3 directly to a memory location (`rbp` points at the stack frame, like `s0` on RISC-V). One fetch, one read of `x`, one write of `x`: three accesses instead of five.
+For RISC-V the count is exactly as before: load, add, store, three instructions, five accesses. For x86-64, with the same compiler and the same settings, the whole line is one instruction: `addl $0x2,-0x4(%rbp)`, add 2 directly to a memory location (`rbp` points at the stack frame, like `s0` on RISC-V). One fetch, one read of `count`, one write of `count`: three accesses instead of five.
 
-The reason is a real difference between the two machines. RISC-V cannot do arithmetic on memory at all. A value must come into a register first and go back to memory afterwards. A processor built that way is called a **load-store architecture**, and that is why the RISC-V listing has three instructions. x86-64 can add straight to a value in memory, so it does. The textbook's x86 listing (OSTEP Figure 15.1, in [Section 5.1](#sec-5-1)) splits the line into load, add and store by choice, to show the load and the store separately.
+The reason is a real difference between the two machines. RISC-V cannot do arithmetic on memory at all. A value must come into a register first and go back to memory afterwards. A processor built that way is called a **load-store architecture**, and that is why the RISC-V listing has three instructions. x86-64 can add straight to a value in memory, so it does. The textbook's x86 illustration (OSTEP section 15.1) splits the line into load, add and store by choice, to show the load and the store separately.
 
-Where this shows up in practice. One more honest point. The count also depends on the **optimizer**, the part of the compiler that rewrites a program to run faster (switched on with flags such as `-O2`). With it on, both compilers would keep `x` in a register, and this line would never touch memory. What stays the same on any machine at any setting is the shape of the problem: each fetch and each data access carries a virtual address out of the processor, and each one has to be translated. And for once the textbook and your lab agree exactly: the textbook's count of five describes a load-store machine, and the labs run on RISC-V, so you can check it yourself with `objdump`.
+Where this shows up in practice. One more honest point. The count also depends on the **optimizer**, the part of the compiler that rewrites a program to run faster (switched on with flags such as `-O2`). With it on, both compilers would keep `count` in a register, and this line would never touch memory. What stays the same on any machine at any setting is the shape of the problem: each fetch and each data access carries a virtual address out of the processor, and each one has to be translated. And for once the textbook and your lab agree exactly: the textbook's count of five describes a load-store machine, and the labs run on RISC-V, so you can check it yourself with `objdump`.
 
-To reproduce the x86-64 line, compile the file of [Section 4.2](#sec-4-2) for the Ubuntu machine itself: `gcc -O0 -c addthree.c -o addthree.o` and `objdump -d addthree.o`. The line `f: 83 45 fc 03  addl $0x3,-0x4(%rbp)` is the one.
+To reproduce the x86-64 line, compile the file of [Section 4.2](#sec-4-2) for the Ubuntu machine itself: `gcc -O0 -c addtwo.c -o addtwo.o` and `objdump -d addtwo.o`. The line `f: 83 45 fc 02  addl $0x2,-0x4(%rbp)` is the one.
 
-### Extra 15 <span class="lbl lbl-deeper">Deeper, Q2</span> Why the compiler's addresses are wrong on arrival: 1000 and 3000 {#extra-15 data-toc-label="Extra 15 [Deeper, Q2] Why the compiler's addresses are wrong on arrival: 1000 and 3000"}
+### Extra 15 <span class="lbl lbl-deeper">Deeper, Q2</span> Why the compiler's addresses are wrong on arrival: 1200 and 7000 {#extra-15 data-toc-label="Extra 15 [Deeper, Q2] Why the compiler's addresses are wrong on arrival: 1200 and 7000"}
 
-[Section 5.2](#sec-5-2) showed the collision with the textbook's figure: virtual 128 landing inside the OS. It did not say why the compiler writes addresses that are bound to be wrong, which makes it sound like a careless compiler. It is not careless; it has no choice. The textbook tells the story a second time with rounder numbers, in its aside on software-based relocation.
+[Section 5.2](#sec-5-2) showed the collision: virtual 14 landing inside the OS. It did not say why the compiler writes addresses that are bound to be wrong, which makes it sound like a careless compiler. It is not careless; it has no choice. The textbook tells this story too, in its aside on software-based relocation; here it is with the numbers of [Section 5.3](#sec-5-3).
 
-What we have: when the compiler turns your C into instructions, it has to write down actual numbers. It cannot emit an instruction that says "load the variable x". It has to emit one that says "load from address 1000", a real number printed into the instruction at compile time. But the compiler has no idea where the program will end up. It is compiled once, on somebody's machine, and run tomorrow on a different one, next to whatever else happens to be running. So it does the only thing it can: it assumes the program starts at 0 and counts from there.
+What we have: when the compiler turns your C into instructions, it has to write down actual numbers. It cannot emit an instruction that says "load the variable count". It has to emit one that says "load from address 1200", a real number printed into the instruction at compile time. But the compiler has no idea where the program will end up. It is compiled once, on somebody's machine, and run tomorrow on a different one, next to whatever else happens to be running. So it does the only thing it can: it assumes the program starts at 0 and counts from there.
 
-That assumption is wrong on arrival. Address 0 is taken by the OS, and by the time your program loads there may be three other processes in memory. So it goes wherever there is room; here, 3000. Now count what broke. The instruction still says 1000, because that number was printed into it long ago. But `x` is really at 1000 + 3000 = 4000. Every jump, every load and every store is off by 3000, starting with the first instruction.
+That assumption is wrong on arrival. Address 0 is taken by the OS, and by the time your program loads there may be three other processes in memory. So it goes wherever there is room; here, 7000. Now count what broke. The instruction still says 1200, because that number was printed into it long ago. But the data is really at 1200 + 7000 = 8200. Every jump, every load and every store is off by 7000, starting with the first instruction.
 
-Where it breaks: run the program unchanged and its first load reads address 1000, which belongs to somebody else. Not a crash you can debug, but a silent read of someone else's bytes on the very first instruction. So we need to close the gap, and only two moments exist for that: once, before the program starts (static relocation, [Section 5.3](#sec-5-3)), or on every access, as the address comes out of the processor (base and bounds, [Section 5.4](#sec-5-4)). Doing it once is cheap but permanent. Doing it every time costs a little per access and buys everything else.
+Where it breaks: run the program unchanged and its first load reads address 1200, which belongs to somebody else. Not a crash you can debug, but a silent read of someone else's bytes on the very first instruction. So we need to close the gap, and only two moments exist for that: once, before the program starts (static relocation, [Section 5.3](#sec-5-3)), or on every access, as the address comes out of the processor (base and bounds, [Section 5.4](#sec-5-4)). Doing it once is cheap but permanent. Doing it every time costs a little per access and buys everything else.
 
 ### Extra 16 <span class="lbl lbl-deeper">Deeper, Q3</span> Dynamic relocation: moving a process by changing one number {#extra-16 data-toc-label="Extra 16 [Deeper, Q3] Dynamic relocation: moving a process by changing one number"}
 
